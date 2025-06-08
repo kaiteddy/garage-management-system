@@ -974,11 +974,18 @@
                 Vehicles
                 <span class="nav-badge">3</span>
             </a>
-            <a href="#" class="nav-item" onclick="showPage('jobs')">
+            <div class="nav-item" onclick="showPage('jobs')">
                 <i class="fas fa-wrench"></i>
-                Jobs
-                <span class="nav-badge">4</span>
-            </a>
+                <span>Jobs</span>
+            </div>
+            <div class="nav-item" onclick="showPage('estimates')">
+                <i class="fas fa-file-invoice"></i>
+                <span>Estimates</span>
+            </div>
+            <div class="nav-item" onclick="showPage('invoices')">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>Invoices</span>
+            </div>
             <a href="#" class="nav-item" onclick="showPage('reminders')">
                 <i class="fas fa-bell"></i>
                 Reminders
@@ -988,10 +995,6 @@
                 <i class="fas fa-cogs"></i>
                 Parts
                 <span class="nav-badge">6</span>
-            </a>
-            <a href="#" class="nav-item" onclick="showPage('invoices')">
-                <i class="fas fa-file-invoice"></i>
-                Invoices
             </a>
             <a href="#" class="nav-item" onclick="showPage('reports')">
                 <i class="fas fa-chart-bar"></i>
@@ -1232,15 +1235,68 @@
                                 <th>Vehicle</th>
                                 <th>Description</th>
                                 <th>Status</th>
+                                <th>Estimate</th>
                                 <th>Total</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="jobs-table-body">
                             <tr>
-                                <td colspan="8" class="loading">
+                                <td colspan="9" class="loading">
                                     <div class="spinner"></div>
                                     Loading jobs...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Estimates Page -->
+            <div id="estimates" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">
+                            <i class="fas fa-file-invoice"></i>
+                            Estimate List
+                        </h1>
+                        <p class="page-subtitle">All estimates and billing</p>
+                    </div>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="estimate-search" placeholder="Estimate Search">
+                    </div>
+                    <button class="btn btn-primary" onclick="showNewEstimateForm()">
+                        <i class="fas fa-plus"></i>
+                        New Estimate
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <i class="fas fa-file-invoice"></i>
+                        Estimate List
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Estimate No</th>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Vehicle</th>
+                                <th>Job</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Valid Until</th>
+                                <th>Total</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="estimates-table-body">
+                            <tr>
+                                <td colspan="10" class="loading">
+                                    <div class="spinner"></div>
+                                    Loading estimates...
                                 </td>
                             </tr>
                         </tbody>
@@ -1253,7 +1309,7 @@
                 <div class="page-header">
                     <div>
                         <h1 class="page-title">
-                            <i class="fas fa-file-invoice"></i>
+                            <i class="fas fa-file-invoice-dollar"></i>
                             Invoice Management
                         </h1>
                         <p class="page-subtitle">All invoices and billing</p>
@@ -1270,7 +1326,7 @@
 
                 <div class="table-container">
                     <div class="table-header">
-                        <i class="fas fa-file-invoice"></i>
+                        <i class="fas fa-file-invoice-dollar"></i>
                         Invoice List
                     </div>
                     <table class="data-table">
@@ -1864,6 +1920,7 @@
             loadCustomers();
             loadVehicles();
             loadJobs();
+            loadEstimates();
             loadInvoices();
         });
 
@@ -1892,6 +1949,8 @@
                 loadVehicles();
             } else if (pageId === 'jobs') {
                 loadJobs();
+            } else if (pageId === 'estimates') {
+                loadEstimates();
             } else if (pageId === 'invoices') {
                 loadInvoices();
             }
@@ -2339,7 +2398,7 @@
         // Job functions
         function loadJobs() {
             const tableBody = document.getElementById('jobs-table-body');
-            tableBody.innerHTML = '<tr><td colspan="8" class="loading"><div class="spinner"></div>Loading jobs...</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="9" class="loading"><div class="spinner"></div>Loading jobs...</td></tr>';
             
             fetch('/api/jobs')
                 .then(response => response.json())
@@ -2348,7 +2407,7 @@
                 })
                 .catch(error => {
                     console.error('Error loading jobs:', error);
-                    tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #dc3545;">Error loading jobs</td></tr>';
+                    tableBody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #dc3545;">Error loading jobs</td></tr>';
                 });
         }
 
@@ -2358,13 +2417,14 @@
             if (jobs && jobs.length > 0) {
                 tableBody.innerHTML = jobs.map(job => `
                     <tr>
-                        <td>${job.job_no}</td>
-                        <td>${formatDate(job.date)}</td>
-                        <td>${job.customer}</td>
-                        <td>${job.vehicle}</td>
+                        <td>${job.job_number}</td>
+                        <td>${formatDate(job.created_date)}</td>
+                        <td>${job.customer_name}</td>
+                        <td>${job.registration}</td>
                         <td>${job.description}</td>
                         <td><span class="status-badge status-${job.status.toLowerCase()}">${job.status}</span></td>
-                        <td>£${job.total.toFixed(2)}</td>
+                        <td>${job.estimate_number ? `<span class="status-badge status-${job.estimate_status.toLowerCase()}">${job.estimate_number}</span>` : '-'}</td>
+                        <td>£${job.total_amount.toFixed(2)}</td>
                         <td>
                             <button class="btn btn-primary" onclick="showJobDetail('${job.id}')">
                                 <i class="fas fa-eye"></i>
@@ -2374,14 +2434,57 @@
                     </tr>
                 `).join('');
             } else {
-                tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No jobs found</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="9" style="text-align: center;">No jobs found</td></tr>';
+            }
+        }
+
+        function loadEstimates() {
+            const tableBody = document.getElementById('estimates-table-body');
+            tableBody.innerHTML = '<tr><td colspan="10" class="loading"><div class="spinner"></div>Loading estimates...</td></tr>';
+            
+            fetch('/api/estimates')
+                .then(response => response.json())
+                .then(data => {
+                    displayEstimates(data.estimates || []);
+                })
+                .catch(error => {
+                    console.error('Error loading estimates:', error);
+                    tableBody.innerHTML = '<tr><td colspan="10" style="text-align: center; color: #dc3545;">Error loading estimates</td></tr>';
+                });
+        }
+
+        function displayEstimates(estimates) {
+            const tableBody = document.getElementById('estimates-table-body');
+            
+            if (estimates && estimates.length > 0) {
+                tableBody.innerHTML = estimates.map(estimate => `
+                    <tr>
+                        <td>${estimate.estimate_number}</td>
+                        <td>${formatDate(estimate.created_date)}</td>
+                        <td>${estimate.customer_name}</td>
+                        <td>${estimate.registration}</td>
+                        <td>${estimate.job_number || '-'}</td>
+                        <td>${estimate.description}</td>
+                        <td><span class="status-badge status-${estimate.status.toLowerCase()}">${estimate.status}</span></td>
+                        <td>${formatDate(estimate.valid_until)}</td>
+                        <td>£${estimate.total_amount.toFixed(2)}</td>
+                        <td>
+                            <button class="btn btn-primary" onclick="showEstimateDetail('${estimate.id}')">
+                                <i class="fas fa-eye"></i>
+                                View
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="10" style="text-align: center;">No estimates found</td></tr>';
             }
         }
 
         // Invoice functions
         function loadInvoices() {
             const tableBody = document.getElementById('invoices-table-body');
-            tableBody.innerHTML = '<tr><td colspan="8" class="loading"><div class="spinner"></div>Loading invoices...</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="9" class="loading"><div class="spinner"></div>Loading invoices...</td></tr>';
             
             fetch('/api/invoices')
                 .then(response => response.json())
@@ -2390,7 +2493,7 @@
                 })
                 .catch(error => {
                     console.error('Error loading invoices:', error);
-                    tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #dc3545;">Error loading invoices</td></tr>';
+                    tableBody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #dc3545;">Error loading invoices</td></tr>';
                 });
         }
 
@@ -2400,12 +2503,13 @@
             if (invoices && invoices.length > 0) {
                 tableBody.innerHTML = invoices.map(invoice => `
                     <tr>
-                        <td>${invoice.invoice_no}</td>
-                        <td>${formatDate(invoice.date)}</td>
-                        <td>${invoice.customer}</td>
-                        <td>${invoice.vehicle}</td>
-                        <td>${invoice.description}</td>
-                        <td>£${invoice.total.toFixed(2)}</td>
+                        <td>${invoice.invoice_number}</td>
+                        <td>${formatDate(invoice.created_date)}</td>
+                        <td>${invoice.customer_name}</td>
+                        <td>${invoice.registration}</td>
+                        <td>${invoice.job_description}</td>
+                        <td>${invoice.estimate_number || '-'}</td>
+                        <td>£${invoice.amount.toFixed(2)}</td>
                         <td><span class="status-badge status-${invoice.status.toLowerCase()}">${invoice.status}</span></td>
                         <td>
                             <button class="btn btn-primary" onclick="showInvoiceDetail('${invoice.id}')">
@@ -2416,7 +2520,7 @@
                     </tr>
                 `).join('');
             } else {
-                tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No invoices found</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="9" style="text-align: center;">No invoices found</td></tr>';
             }
         }
 
@@ -2560,6 +2664,7 @@
             loadCustomers();
             loadVehicles();
             loadJobs();
+            loadEstimates();
             loadInvoices();
         }
 
@@ -2590,6 +2695,10 @@
 
         function showNewJobForm() {
             showNotification('New job form coming soon', 'info');
+        }
+
+        function showNewEstimateForm() {
+            showNotification('New estimate form coming soon', 'info');
         }
 
         function showNewInvoiceForm() {
