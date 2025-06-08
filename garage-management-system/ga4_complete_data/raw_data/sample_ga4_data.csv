@@ -1,0 +1,9 @@
+date,event_name,event_count,user_pseudo_id,session_id,page_location,page_title,device_category,country
+2024-03-01,page_view,150,user_123,session_456,https://example.com/,Homepage,mobile,United States
+2024-03-01,page_view,120,user_124,session_457,https://example.com/products,Products,mobile,United Kingdom
+2024-03-01,add_to_cart,45,user_123,session_456,https://example.com/cart,Cart,desktop,United States
+2024-03-01,purchase,30,user_125,session_458,https://example.com/checkout,Checkout,tablet,Canada
+2024-03-02,page_view,180,user_126,session_459,https://example.com/,Homepage,desktop,Germany
+2024-03-02,page_view,90,user_127,session_460,https://example.com/about,About Us,mobile,France
+2024-03-02,add_to_cart,60,user_126,session_459,https://example.com/cart,Cart,desktop,Germany
+2024-03-02,purchase,40,user_128,session_461,https://example.com/checkout,Checkout,mobile,Spain 
