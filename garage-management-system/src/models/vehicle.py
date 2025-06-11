@@ -1,12 +1,18 @@
+"""
+Vehicle model for the Garage Management System.
+"""
 from datetime import datetime
 import requests
 from flask import current_app
 from . import db
+from .base import BaseModel
 
-class Vehicle(db.Model):
+
+class Vehicle(BaseModel):
+    """Vehicle model with DVLA integration."""
+
     __tablename__ = 'vehicles'
-    
-    id = db.Column(db.Integer, primary_key=True)
+
     registration = db.Column(db.String(10), unique=True, nullable=False)
     make = db.Column(db.String(50))
     model = db.Column(db.String(50))
@@ -15,11 +21,19 @@ class Vehicle(db.Model):
     fuel_type = db.Column(db.String(20))
     mot_expiry = db.Column(db.Date)
     tax_due = db.Column(db.Date)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    mileage = db.Column(db.Integer)
 
-    def __init__(self, registration):
-        self.registration = registration
+    # Foreign key
+    customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'), nullable=True)
+
+    # Relationships
+    jobs = db.relationship('Job', backref='vehicle', lazy=True)
+    estimates = db.relationship('Estimate', backref='vehicle', lazy=True)
+    invoices = db.relationship('Invoice', backref='vehicle', lazy=True)
+
+    def __init__(self, registration, **kwargs):
+        super().__init__(**kwargs)
+        self.registration = registration.upper().replace(' ', '')  # Normalize registration
         self.fetch_dvla_data()
 
     def fetch_dvla_data(self):
@@ -63,17 +77,68 @@ class Vehicle(db.Model):
             current_app.logger.error(f"Error fetching DVLA data: {str(e)}")
             return False
 
+    @property
+    def display_name(self):
+        """Get display name for the vehicle."""
+        parts = [self.make, self.model]
+        if self.year:
+            parts.insert(0, str(self.year))
+        return ' '.join(filter(None, parts)) or self.registration
+
+    @property
+    def mot_status(self):
+        """Get MOT status."""
+        if not self.mot_expiry:
+            return 'unknown'
+
+        from datetime import date, timedelta
+        today = date.today()
+
+        if self.mot_expiry < today:
+            return 'expired'
+        elif self.mot_expiry <= today + timedelta(days=30):
+            return 'due_soon'
+        else:
+            return 'valid'
+
+    @property
+    def tax_status(self):
+        """Get tax status."""
+        if not self.tax_due:
+            return 'unknown'
+
+        from datetime import date, timedelta
+        today = date.today()
+
+        if self.tax_due < today:
+            return 'expired'
+        elif self.tax_due <= today + timedelta(days=30):
+            return 'due_soon'
+        else:
+            return 'valid'
+
     def to_dict(self):
-        return {
-            'id': self.id,
-            'registration': self.registration,
-            'make': self.make,
-            'model': self.model,
-            'year': self.year,
-            'color': self.color,
-            'fuel_type': self.fuel_type,
-            'mot_expiry': self.mot_expiry.isoformat() if self.mot_expiry else None,
-            'tax_due': self.tax_due.isoformat() if self.tax_due else None,
-            'created_at': self.created_at.isoformat(),
-            'updated_at': self.updated_at.isoformat()
-        } 
+        """Convert vehicle to dictionary with additional computed fields."""
+        data = super().to_dict()
+        data.update({
+            'display_name': self.display_name,
+            'mot_status': self.mot_status,
+            'tax_status': self.tax_status,
+            'customer_name': self.customer.full_name if self.customer else None
+        })
+        return data
+
+    @classmethod
+    def search(cls, query):
+        """Search vehicles by registration, make, or model."""
+        search_term = f'%{query}%'
+        return cls.query.filter(
+            db.or_(
+                cls.registration.ilike(search_term),
+                cls.make.ilike(search_term),
+                cls.model.ilike(search_term)
+            )
+        ).all()
+
+    def __repr__(self):
+        return f'<Vehicle {self.registration}: {self.display_name}>'

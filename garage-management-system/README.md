@@ -74,29 +74,123 @@ A comprehensive garage management system built with Flask backend and modern HTM
 
 3. **Install dependencies**
    ```bash
+   # For development (recommended)
+   pip install -r requirements/development.txt
+
+   # Or for production
+   pip install -r requirements/production.txt
+
+   # Or use the main requirements file
    pip install -r requirements.txt
    ```
 
-4. **Run the application**
+4. **Configure environment (optional)**
    ```bash
+   cp .env.example .env
+   # Edit .env with your configuration (DVLA API key, etc.)
+   ```
+
+5. **Run the application**
+   ```bash
+   # New organized structure (recommended)
+   python run.py
+
+   # Or legacy entry point (backward compatibility)
    python src/main.py
    ```
 
-5. **Access the application**
-   Open your browser and navigate to `http://localhost:5000`
+6. **Access the application**
+   Open your browser and navigate to `http://localhost:5001`
 
 ## 📁 Project Structure
 
+**🎉 NEW: Completely Reorganized Codebase for Better Maintainability!**
+
+The project has been completely restructured following Flask best practices with proper separation of concerns:
+
 ```
 garage-management-system/
-├── src/
-│   ├── main.py              # Flask application
-│   └── static/
-│       └── index.html       # Frontend application
-├── requirements.txt         # Python dependencies
-├── README.md               # This file
-└── LICENSE                 # MIT License
+├── src/                          # Application source code
+│   ├── app.py                   # Application factory (NEW)
+│   ├── main.py                  # Legacy entry point (backward compatibility)
+│   ├── config/                  # Configuration management (NEW)
+│   │   ├── __init__.py
+│   │   ├── base.py             # Base configuration
+│   │   ├── development.py      # Development settings
+│   │   ├── production.py       # Production settings
+│   │   └── testing.py          # Testing configuration
+│   ├── models/                  # Database models (REORGANIZED)
+│   │   ├── __init__.py
+│   │   ├── base.py             # Base model class
+│   │   ├── customer.py         # Customer model
+│   │   ├── vehicle.py          # Vehicle model
+│   │   ├── job.py              # Job model
+│   │   ├── estimate.py         # Estimate model
+│   │   ├── invoice.py          # Invoice model
+│   │   └── user.py             # User model
+│   ├── routes/                  # Route handlers (NEW)
+│   │   ├── __init__.py
+│   │   ├── main.py             # Main routes (frontend)
+│   │   └── api/                # API routes
+│   │       ├── customers.py    # Customer API
+│   │       ├── vehicles.py     # Vehicle API
+│   │       ├── jobs.py         # Job API
+│   │       ├── estimates.py    # Estimate API
+│   │       ├── invoices.py     # Invoice API
+│   │       └── dashboard.py    # Dashboard API
+│   ├── services/                # Business logic layer (NEW)
+│   │   ├── customer_service.py # Customer operations
+│   │   ├── vehicle_service.py  # Vehicle operations
+│   │   ├── dvla_service.py     # DVLA API integration
+│   │   └── database_service.py # Database utilities
+│   ├── utils/                   # Utility functions (NEW)
+│   │   ├── date_utils.py       # Date formatting utilities
+│   │   ├── validators.py       # Input validation
+│   │   └── exceptions.py       # Custom exceptions
+│   ├── static/                  # Frontend assets (REORGANIZED)
+│   │   ├── css/                # Stylesheets (SEPARATED)
+│   │   │   ├── main.css        # Main styles
+│   │   │   ├── components.css  # Component styles
+│   │   │   ├── forms.css       # Form styles
+│   │   │   └── responsive.css  # Responsive design
+│   │   ├── js/                 # JavaScript modules (SEPARATED)
+│   │   │   ├── main.js         # Main application logic
+│   │   │   ├── api.js          # API communication
+│   │   │   ├── utils.js        # Utility functions
+│   │   │   └── components/     # UI components
+│   │   │       ├── customers.js
+│   │   │       └── vehicles.js
+│   │   ├── assets/             # Images and other assets
+│   │   └── index.html          # Main HTML template (CLEANED)
+│   └── migrations/             # Database migrations (NEW)
+├── tests/                       # Test suite (NEW)
+│   ├── conftest.py             # Test configuration
+│   ├── test_models/            # Model tests
+│   ├── test_routes/            # Route tests
+│   ├── test_services/          # Service tests
+│   └── test_utils/             # Utility tests
+├── docs/                        # Documentation (NEW)
+├── scripts/                     # Utility scripts (NEW)
+│   └── migrate_db.py           # Database migration script
+├── requirements/                # Requirements files (ORGANIZED)
+│   ├── base.txt                # Base requirements
+│   ├── development.txt         # Development requirements
+│   └── production.txt          # Production requirements
+├── .env.example                # Environment variables example (NEW)
+├── run.py                      # Application entry point (NEW)
+├── requirements.txt            # Main requirements file
+├── README.md                   # This file
+└── LICENSE                     # MIT License
 ```
+
+### 🔄 Migration Benefits
+
+- **Modular Architecture**: Clear separation of models, services, routes, and utilities
+- **Scalable Structure**: Easy to add new features and maintain existing code
+- **Professional Standards**: Follows Flask and Python best practices
+- **Better Testing**: Organized test structure for comprehensive coverage
+- **Environment Management**: Proper configuration for different environments
+- **Asset Organization**: Separated CSS and JavaScript for better maintainability
 
 ## 🔧 Configuration
 
