@@ -13,10 +13,15 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: #333;
             overflow-x: hidden;
+            font-size: 16px; /* Increased base font size by ~14% from default 14px */
+            font-weight: 500; /* Medium weight for better readability */
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         /* Header */
@@ -28,7 +33,11 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: relative;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
             z-index: 1000;
         }
 
@@ -84,6 +93,7 @@
         .layout {
             display: flex;
             min-height: calc(100vh - 70px);
+            margin-top: 70px; /* Account for fixed header */
         }
 
         /* Sidebar */
@@ -99,12 +109,15 @@
         .nav-item {
             display: flex;
             align-items: center;
-            padding: 0.75rem 1.5rem;
+            padding: 0.875rem 1.5rem; /* Increased padding for better readability */
             color: #ecf0f1;
             text-decoration: none;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
             position: relative;
+            font-size: 15px; /* Slightly larger font for navigation */
+            font-weight: 500; /* Medium weight for better visibility */
+            letter-spacing: 0.025em; /* Subtle letter spacing for clarity */
         }
 
         .nav-item:hover {
@@ -143,7 +156,7 @@
 
         .page {
             display: none;
-            padding: 1rem;
+            padding: 2rem;
             animation: fadeIn 0.3s ease-in-out;
         }
 
@@ -168,18 +181,21 @@
         }
 
         .page-title {
-            font-size: 1.75rem;
+            font-size: 2rem; /* Increased from 1.75rem */
             font-weight: 600;
             color: #2c3e50;
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            font-variant: small-caps; /* Small caps for section titles */
+            letter-spacing: 0.05em;
         }
 
         .page-subtitle {
             color: #7f8c8d;
-            font-size: 0.95rem;
+            font-size: 1.05rem; /* Increased from 0.95rem */
             margin-top: 0.25rem;
+            font-weight: 500;
         }
 
         /* Cards */
@@ -199,11 +215,14 @@
         .card-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 1rem 1.5rem;
+            padding: 1.25rem 1.5rem; /* Increased padding */
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-variant: small-caps; /* Small caps for card headers */
+            letter-spacing: 0.05em;
+            font-size: 1.1rem; /* Slightly larger font */
         }
 
         .card-content {
@@ -278,11 +297,14 @@
         .table-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 1rem 1.5rem;
+            padding: 1.25rem 1.5rem; /* Increased padding */
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-variant: small-caps; /* Small caps for table headers */
+            letter-spacing: 0.05em;
+            font-size: 1.1rem; /* Slightly larger font */
         }
 
         .table-controls {
@@ -324,17 +346,19 @@
         }
 
         .btn {
-            padding: 0.75rem 1.5rem;
+            padding: 0.875rem 1.75rem; /* Increased padding for better touch targets */
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
+            font-size: 0.95rem; /* Slightly larger font */
+            font-weight: 600; /* Bolder weight for buttons */
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
             text-decoration: none;
+            text-transform: uppercase; /* Uppercase for button text */
+            letter-spacing: 0.05em;
         }
 
         .btn-primary {
@@ -375,13 +399,14 @@
 
         .data-table th,
         .data-table td {
-            padding: 0.5rem 0.75rem;
+            padding: 0.75rem 1rem; /* Increased padding for better readability */
             text-align: left;
             border-bottom: 1px solid #e9ecef;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             min-width: 80px;
+            font-size: 15px; /* Slightly larger font for table content */
         }
 
         .data-table th {
@@ -391,6 +416,14 @@
             position: sticky;
             top: 0;
             z-index: 10;
+            font-variant: small-caps; /* Small caps for table headers */
+            letter-spacing: 0.05em;
+            font-size: 14px; /* Slightly smaller for headers with small caps */
+        }
+
+        .data-table td {
+            font-weight: 500; /* Medium weight for table data */
+            color: #2c3e50;
         }
 
         .data-table tr:hover {
@@ -425,16 +458,68 @@
         }
 
         .status-badge {
-            padding: 0.25rem 0.75rem;
+            padding: 0.375rem 0.875rem; /* Increased padding for better readability */
             border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
+            font-size: 0.875rem; /* Slightly larger font */
+            font-weight: 600; /* Bolder weight for status indicators */
             text-transform: uppercase;
+            letter-spacing: 0.05em; /* Better letter spacing for uppercase text */
         }
 
         .status-active { background: #d4edda; color: #155724; }
         .status-pending { background: #fff3cd; color: #856404; }
         .status-overdue { background: #f8d7da; color: #721c24; }
+        .status-paid { background: #d4edda; color: #155724; }
+        .status-partial { background: #fff3cd; color: #856404; }
+        .status-completed { background: #d4edda; color: #155724; }
+        .status-locked { background: #f8d7da; color: #721c24; }
+
+        .clickable-row {
+            transition: background-color 0.2s ease;
+        }
+
+        .clickable-row:hover {
+            background-color: #f8f9fa !important;
+        }
+
+        .clickable-row:active {
+            background-color: #e9ecef !important;
+        }
+
+        /* Enhanced typography for section headers */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        h1 { font-size: 2.25rem; }
+        h2 { font-size: 1.875rem; font-variant: small-caps; letter-spacing: 0.05em; }
+        h3 { font-size: 1.5rem; font-variant: small-caps; letter-spacing: 0.025em; }
+        h4 { font-size: 1.25rem; }
+        h5 { font-size: 1.125rem; }
+        h6 { font-size: 1rem; }
+
+        /* Enhanced typography for invoice sections */
+        .invoice-section h3 {
+            font-size: 1.25rem;
+            font-variant: small-caps;
+            letter-spacing: 0.05em;
+            color: #495057;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Enhanced typography for modal titles */
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            font-variant: small-caps;
+            letter-spacing: 0.05em;
+        }
         .status-paid { background: #d4edda; color: #155724; }
         .status-partial { background: #fff3cd; color: #856404; }
         .status-completed { background: #d1ecf1; color: #0c5460; }
@@ -647,8 +732,15 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            .header {
+                padding: 0.5rem 1rem;
+                height: 60px;
+            }
+
             .layout {
                 flex-direction: column;
+                margin-top: 60px; /* Adjust for smaller mobile header */
+                min-height: calc(100vh - 60px);
             }
 
             .sidebar {
@@ -867,13 +959,15 @@
 
         .form-control {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.875rem; /* Increased padding */
             border: 2px solid #e9ecef;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: 15px; /* Increased font size */
+            font-weight: 500; /* Medium weight for form inputs */
             transition: all 0.3s ease;
-            line-height: 1.2;
+            line-height: 1.4; /* Improved line height */
             height: auto;
+            color: #2c3e50;
         }
 
         .form-control:focus {
@@ -950,8 +1044,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.5rem 0;
+            padding: 0.75rem 0; /* Increased padding for better readability */
             border-bottom: 1px solid #e9ecef;
+            font-size: 15px; /* Slightly larger font for invoice fields */
         }
 
         .invoice-field:last-child {
@@ -959,15 +1054,18 @@
         }
 
         .invoice-label {
-            font-weight: 500;
+            font-weight: 600; /* Increased weight for labels */
             color: #495057;
-            min-width: 120px;
+            min-width: 140px; /* Increased width for better layout */
+            font-variant: small-caps; /* Small caps for field labels */
+            letter-spacing: 0.025em;
         }
 
         .invoice-value {
             color: #2c3e50;
             text-align: right;
             flex: 1;
+            font-weight: 500; /* Medium weight for values */
         }
 
         .invoice-value input {
@@ -999,15 +1097,18 @@
         }
 
         .invoice-tab-button {
-            padding: 0.75rem 1.5rem;
+            padding: 0.875rem 1.75rem; /* Increased padding */
             border: none;
             background: #6c757d;
             color: white;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600; /* Increased weight */
             margin-right: 2px;
             transition: all 0.3s ease;
             white-space: nowrap;
+            font-size: 15px; /* Slightly larger font */
+            text-transform: uppercase; /* Uppercase for tab buttons */
+            letter-spacing: 0.05em;
         }
 
         .invoice-tab-button:hover {
@@ -1034,16 +1135,25 @@
 
         .history-table th,
         .history-table td {
-            padding: 0.75rem;
+            padding: 0.875rem 1rem; /* Increased padding for better readability */
             text-align: left;
             border-bottom: 1px solid #e9ecef;
             white-space: nowrap;
+            font-size: 15px; /* Slightly larger font */
         }
 
         .history-table th {
             background: #f8f9fa;
             font-weight: 600;
             color: #495057;
+            font-variant: small-caps; /* Small caps for table headers */
+            letter-spacing: 0.05em;
+            font-size: 14px; /* Slightly smaller for headers with small caps */
+        }
+
+        .history-table td {
+            font-weight: 500; /* Medium weight for table data */
+            color: #2c3e50;
         }
 
         .history-table tr:hover {
@@ -1427,8 +1537,11 @@
         .form-label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 500;
+            font-weight: 600; /* Increased weight for form labels */
             color: #495057;
+            font-variant: small-caps; /* Small caps for form labels */
+            letter-spacing: 0.025em;
+            font-size: 15px; /* Slightly larger font */
         }
 
         .help-text {
@@ -1441,11 +1554,13 @@
 
         .settings-section .form-control {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.875rem; /* Increased padding */
             border: 1px solid #ced4da;
             border-radius: 6px;
-            font-size: 0.875rem;
+            font-size: 15px; /* Increased font size */
+            font-weight: 500; /* Medium weight */
             transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            color: #2c3e50;
         }
 
         .settings-section .form-control:focus {
@@ -3299,6 +3414,35 @@
                     </div>
                 </div>
 
+                <!-- Job Information Section -->
+                <div class="invoice-section" style="margin-bottom: 2rem;">
+                    <h3>Job Information</h3>
+                    <div class="invoice-field">
+                        <span class="invoice-label">Job Number</span>
+                        <span class="invoice-value">
+                            <input type="text" id="invoice-job-number" readonly style="background: #f8f9fa;">
+                        </span>
+                    </div>
+                    <div class="invoice-field">
+                        <span class="invoice-label">Job Amount</span>
+                        <span class="invoice-value">
+                            <input type="text" id="invoice-job-amount" readonly style="background: #f8f9fa;">
+                        </span>
+                    </div>
+                    <div class="invoice-field">
+                        <span class="invoice-label">Invoice Amount</span>
+                        <span class="invoice-value">
+                            <input type="text" id="invoice-amount" readonly style="background: #f8f9fa;">
+                        </span>
+                    </div>
+                    <div class="invoice-field">
+                        <span class="invoice-label">Status</span>
+                        <span class="invoice-value">
+                            <input type="text" id="invoice-status" readonly style="background: #f8f9fa;">
+                        </span>
+                    </div>
+                </div>
+
                 <div class="invoice-tabs">
                     <div class="invoice-tab-list">
                         <button class="invoice-tab-button active" onclick="showInvoiceTab('history')">History</button>
@@ -3716,6 +3860,8 @@
 
                 console.log('✅ Application initialized successfully');
 
+
+
                 // Set up backup navigation system
                 setTimeout(() => {
                     console.log('🔧 Setting up backup navigation system...');
@@ -3857,7 +4003,7 @@
 
         // Dashboard functions
         function loadDashboardStats() {
-            fetch('/api/dashboard')
+            fetch('http://127.0.0.1:5001/api/dashboard')
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('total-customers').textContent = data.customers.toLocaleString();
@@ -3875,8 +4021,8 @@
             const tableBody = document.getElementById('customers-table-body');
             tableBody.innerHTML = '<tr><td colspan="10" class="loading"><div class="spinner"></div>Loading customers...</td></tr>';
             
-            const url = `/api/customers?page=${currentCustomerPage}&per_page=${currentCustomerPerPage}&search=${encodeURIComponent(currentCustomerSearch)}`;
-            
+            const url = `http://127.0.0.1:5001/api/customers?page=${currentCustomerPage}&per_page=${currentCustomerPerPage}&search=${encodeURIComponent(currentCustomerSearch)}`;
+
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
@@ -3968,39 +4114,64 @@
             currentCustomerId = customerId;
             const modal = document.getElementById('customer-detail-modal');
             modal.classList.add('active');
-            
-            // Load customer details
-            fetch(`/api/customers/${customerId}`)
+
+            // Small delay to ensure modal is rendered
+            setTimeout(() => {
+                // Load customer details
+                fetch(`http://127.0.0.1:5001/api/customers/${customerId}`)
                 .then(response => response.json())
-                .then(customer => {
-                    document.getElementById('customer-detail-title').textContent = `Customer Details: ${customer.account_number || customer.id} - ${customer.name || customer.company_name}`;
-                    
+                .then(data => {
+                    const customer = data.customer;
+
+                    if (!customer) {
+                        console.error('No customer data found in response');
+                        showNotification('Customer data not found', 'error');
+                        return;
+                    }
+
+                    document.getElementById('customer-detail-title').textContent = `Customer Details: ${customer.account_number || customer.id} - ${customer.name || customer.company}`;
+
                     // Populate customer information
-                    document.getElementById('customer-account-number').value = customer.account_number || '';
-                    document.getElementById('customer-company').value = customer.company_name || '';
-                    document.getElementById('customer-name').value = customer.name || '';
-                    document.getElementById('customer-address').value = customer.address || '';
-                    document.getElementById('customer-postcode').value = extractPostcode(customer.address) || '';
-                    document.getElementById('customer-mobile').value = customer.mobile || '';
-                    document.getElementById('customer-email').value = customer.email || '';
+                    const fields = [
+                        { id: 'customer-account-number', value: customer.account_number },
+                        { id: 'customer-company', value: customer.company },
+                        { id: 'customer-name', value: customer.name },
+                        { id: 'customer-address', value: customer.address },
+                        { id: 'customer-postcode', value: customer.postcode },
+                        { id: 'customer-mobile', value: customer.phone },
+                        { id: 'customer-email', value: customer.email }
+                    ];
+
+                    fields.forEach(field => {
+                        const element = document.getElementById(field.id);
+                        if (element) {
+                            element.value = field.value || '';
+                        } else {
+                            console.error(`Element not found: ${field.id}`);
+                        }
+                    });
                     
                     // Populate account information
                     document.getElementById('customer-since').textContent = formatDate(customer.created_date);
-                    document.getElementById('customer-vehicle-count').textContent = customer.vehicles ? customer.vehicles.length : '0';
-                    document.getElementById('customer-service-count').textContent = customer.service_history ? customer.service_history.length : '0';
-                    document.getElementById('customer-last-service').textContent = customer.service_history && customer.service_history.length > 0 ? formatDate(customer.service_history[0].date) : '-';
+                    document.getElementById('customer-vehicle-count').textContent = data.vehicles ? data.vehicles.length : '0';
+                    document.getElementById('customer-service-count').textContent = data.jobs ? data.jobs.length : '0';
+                    document.getElementById('customer-last-service').textContent = data.jobs && data.jobs.length > 0 ? formatDate(data.jobs[0].created_date) : '-';
                     document.getElementById('customer-balance').textContent = '£' + (customer.account_balance || 0).toFixed(2);
-                    
+
                     // Load customer vehicles
-                    loadCustomerVehicles(customer.vehicles || []);
-                    
+                    loadCustomerVehicles(data.vehicles || []);
+
                     // Load service history
-                    loadCustomerHistory(customer.service_history || []);
+                    loadCustomerHistory(data.jobs || []);
+
+                    // Load customer invoices
+                    loadCustomerInvoices(data.invoices || []);
                 })
                 .catch(error => {
                     console.error('Error loading customer details:', error);
                     showNotification('Error loading customer details', 'error');
                 });
+            }, 100); // End of setTimeout
         }
 
         function closeCustomerDetail() {
@@ -4051,14 +4222,14 @@
 
         function loadCustomerHistory(history) {
             const tableBody = document.getElementById('customer-history-table');
-            
+
             if (history && history.length > 0) {
                 tableBody.innerHTML = history.map(item => `
-                    <tr>
-                        <td>${formatDate(item.date)}</td>
-                        <td>${item.vehicle || '-'}</td>
+                    <tr class="clickable-row" onclick="showJobInvoiceDetail('${item.id}', 'job')" style="cursor: pointer;">
+                        <td>${formatDate(item.created_date)}</td>
+                        <td>${item.registration || '-'}</td>
                         <td>${item.description}</td>
-                        <td>£${item.total.toFixed(2)}</td>
+                        <td>£${(item.total_amount || 0).toFixed(2)}</td>
                         <td><span class="status-badge status-${item.status.toLowerCase()}">${item.status}</span></td>
                     </tr>
                 `).join('');
@@ -4067,13 +4238,73 @@
             }
         }
 
+        function loadCustomerInvoices(invoices) {
+            const tableBody = document.getElementById('customer-invoices-table');
+
+            if (invoices && invoices.length > 0) {
+                tableBody.innerHTML = invoices.map(invoice => `
+                    <tr class="clickable-row" onclick="showInvoiceDetail('${invoice.id}')" style="cursor: pointer;">
+                        <td>${invoice.invoice_number || '-'}</td>
+                        <td>${formatDate(invoice.created_date)}</td>
+                        <td>${invoice.registration || '-'}</td>
+                        <td>${invoice.job_description || invoice.description || '-'}</td>
+                        <td>£${(invoice.amount || 0).toFixed(2)}</td>
+                        <td>
+                            <span class="status-badge status-${invoice.status.toLowerCase()}">
+                                ${invoice.status}
+                                ${invoice.status === 'PAID' || invoice.status === 'LOCKED' ? ' 🔒' : ''}
+                            </span>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No invoices found</td></tr>';
+            }
+        }
+
+        function showJobInvoiceDetail(itemId, type) {
+            // For jobs, we need to find the corresponding invoice
+            if (type === 'job') {
+                // More efficient approach: directly look for invoice with job_id
+                fetch(`http://127.0.0.1:5001/api/invoices`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Look for invoice with matching job_id
+                        const invoice = data.invoices.find(inv =>
+                            inv.job_id == itemId ||
+                            (inv.job_description && inv.job_description.includes('J-' + itemId))
+                        );
+                        if (invoice) {
+                            showInvoiceDetail(invoice.id);
+                        } else {
+                            // If no direct invoice found, try to find by job number pattern
+                            const jobInvoice = data.invoices.find(inv =>
+                                inv.invoice_number && inv.invoice_number.includes(itemId)
+                            );
+                            if (jobInvoice) {
+                                showInvoiceDetail(jobInvoice.id);
+                            } else {
+                                showNotification('No invoice found for this job', 'info');
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error finding invoice:', error);
+                        showNotification('Error loading invoice details', 'error');
+                    });
+            } else {
+                // Direct invoice
+                showInvoiceDetail(itemId);
+            }
+        }
+
         function updateCustomerField(field, value) {
             if (!currentCustomerId) return;
-            
+
             const data = {};
             data[field] = value;
-            
-            fetch(`/api/customers/${currentCustomerId}`, {
+
+            fetch(`http://127.0.0.1:5001/api/customers/${currentCustomerId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -4099,8 +4330,8 @@
             const tableBody = document.getElementById('vehicles-table-body');
             tableBody.innerHTML = '<tr><td colspan="10" class="loading"><div class="spinner"></div>Loading vehicles...</td></tr>';
             
-            const url = `/api/vehicles?page=${currentVehiclePage}&per_page=${currentVehiclePerPage}&search=${encodeURIComponent(currentVehicleSearch)}`;
-            
+            const url = `http://127.0.0.1:5001/api/vehicles?page=${currentVehiclePage}&per_page=${currentVehiclePerPage}&search=${encodeURIComponent(currentVehicleSearch)}`;
+
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
@@ -4194,9 +4425,10 @@
             modal.classList.add('active');
             
             // Load vehicle details
-            fetch(`/api/vehicles/${vehicleId}`)
+            fetch(`http://127.0.0.1:5001/api/vehicles/${vehicleId}`)
                 .then(response => response.json())
-                .then(vehicle => {
+                .then(data => {
+                    const vehicle = data.vehicle;
                     document.getElementById('vehicle-detail-title').textContent = `Vehicle Details: ${vehicle.registration} - ${vehicle.make} ${vehicle.model}`;
                     
                     // Populate vehicle information
@@ -4212,10 +4444,10 @@
                     document.getElementById('vehicle-customer-account').textContent = vehicle.customer_account || '-';
                     document.getElementById('vehicle-customer-phone').textContent = vehicle.customer_mobile || vehicle.customer_phone || '-';
                     document.getElementById('vehicle-mot-due').textContent = formatDate(vehicle.mot_due);
-                    document.getElementById('vehicle-last-service').textContent = vehicle.service_history && vehicle.service_history.length > 0 ? formatDate(vehicle.service_history[0].date) : '-';
-                    
+                    document.getElementById('vehicle-last-service').textContent = data.jobs && data.jobs.length > 0 ? formatDate(data.jobs[0].created_date) : '-';
+
                     // Load service history
-                    loadVehicleHistory(vehicle.service_history || []);
+                    loadVehicleHistory(data.jobs || []);
                 })
                 .catch(error => {
                     console.error('Error loading vehicle details:', error);
@@ -4246,15 +4478,15 @@
 
         function loadVehicleHistory(history) {
             const tableBody = document.getElementById('vehicle-history-table');
-            
+
             if (history && history.length > 0) {
                 tableBody.innerHTML = history.map(item => `
                     <tr>
-                        <td>${formatDate(item.date)}</td>
-                        <td>${item.doc_no}</td>
-                        <td>${item.mileage}</td>
+                        <td>${formatDate(item.created_date)}</td>
+                        <td>${item.job_number || '-'}</td>
+                        <td>-</td>
                         <td>${item.description}</td>
-                        <td>£${item.total.toFixed(2)}</td>
+                        <td>£${(item.total_amount || 0).toFixed(2)}</td>
                         <td><span class="status-badge status-${item.status.toLowerCase()}">${item.status}</span></td>
                     </tr>
                 `).join('');
@@ -4269,7 +4501,7 @@
             const data = {};
             data[field] = value;
             
-            fetch(`/api/vehicles/${currentVehicleId}`, {
+            fetch(`http://127.0.0.1:5001/api/vehicles/${currentVehicleId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -4295,7 +4527,7 @@
             const tableBody = document.getElementById('jobs-table-body');
             tableBody.innerHTML = '<tr><td colspan="8" class="loading"><div class="spinner"></div>Loading jobs...</td></tr>';
             
-            fetch('/api/jobs')
+            fetch('http://127.0.0.1:5001/api/jobs')
                 .then(response => response.json())
                 .then(data => {
                     displayJobs(data.jobs || []);
@@ -4337,7 +4569,7 @@
             const tableBody = document.getElementById('invoices-table-body');
             tableBody.innerHTML = '<tr><td colspan="8" class="loading"><div class="spinner"></div>Loading invoices...</td></tr>';
             
-            fetch('/api/invoices')
+            fetch('http://127.0.0.1:5001/api/invoices')
                 .then(response => response.json())
                 .then(data => {
                     displayInvoices(data.invoices || []);
@@ -4350,25 +4582,34 @@
 
         function displayInvoices(invoices) {
             const tableBody = document.getElementById('invoices-table-body');
-            
+
             if (invoices && invoices.length > 0) {
-                tableBody.innerHTML = invoices.map(invoice => `
-                    <tr>
-                        <td>${invoice.invoice_no}</td>
-                        <td>${formatDate(invoice.date)}</td>
-                        <td>${invoice.customer}</td>
-                        <td>${invoice.vehicle}</td>
-                        <td>${invoice.description}</td>
-                        <td>£${(invoice.total || 0).toFixed(2)}</td>
-                        <td><span class="status-badge status-${invoice.status.toLowerCase()}">${invoice.status}</span></td>
-                        <td>
-                            <button class="btn btn-primary" onclick="showInvoiceDetail('${invoice.id}')">
-                                <i class="fas fa-eye"></i>
-                                View
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
+                tableBody.innerHTML = invoices.map(invoice => {
+                    const isLocked = invoice.status === 'PAID' || invoice.status === 'LOCKED';
+                    const lockIcon = isLocked ? ' 🔒' : '';
+
+                    return `
+                        <tr class="clickable-row" onclick="showInvoiceDetail('${invoice.id}')" style="cursor: pointer;">
+                            <td>${invoice.invoice_number || invoice.invoice_no || '-'}</td>
+                            <td>${invoice.created_date || formatDate(invoice.date) || '-'}</td>
+                            <td>${invoice.customer_name || invoice.customer || '-'}</td>
+                            <td>${invoice.registration || invoice.vehicle || '-'}</td>
+                            <td>${invoice.job_description || invoice.description || '-'}</td>
+                            <td>£${(invoice.amount || invoice.total || 0).toFixed(2)}</td>
+                            <td>
+                                <span class="status-badge status-${invoice.status.toLowerCase()}">
+                                    ${invoice.status}${lockIcon}
+                                </span>
+                            </td>
+                            <td onclick="event.stopPropagation();">
+                                <button class="btn btn-primary" onclick="showInvoiceDetail('${invoice.id}')">
+                                    <i class="fas fa-eye"></i>
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
             } else {
                 tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No invoices found</td></tr>';
             }
@@ -4378,35 +4619,83 @@
             currentInvoiceId = invoiceId;
             const modal = document.getElementById('invoice-detail-modal');
             modal.classList.add('active');
-            
+
             // Load invoice details
-            fetch(`/api/invoices/${invoiceId}`)
+            fetch(`http://127.0.0.1:5001/api/invoices/${invoiceId}`)
                 .then(response => response.json())
-                .then(invoice => {
-                    document.getElementById('invoice-detail-title').textContent = `Standard Invoice: ${invoice.invoice_no} (JS: ${invoice.js_number}) (${invoice.status})`;
-                    
+                .then(data => {
+                    const invoice = data.invoice;
+                    const lockIcon = invoice.is_locked ? ' 🔒' : '';
+                    const lockStatus = invoice.is_locked ? 'LOCKED' : invoice.status;
+
+                    // Enhanced title with job information
+                    const jobInfo = invoice.job && invoice.job.job_number ? ` (Job: ${invoice.job.job_number})` : '';
+                    document.getElementById('invoice-detail-title').textContent = `Invoice: ${invoice.invoice_number}${jobInfo} - ${lockStatus}${lockIcon}`;
+
+                    // Set lock status for form controls
+                    const isLocked = invoice.is_locked;
+
                     // Populate vehicle information
                     document.getElementById('invoice-vehicle-registration').value = invoice.vehicle.registration || '';
+                    document.getElementById('invoice-vehicle-registration').disabled = isLocked;
+
                     document.getElementById('invoice-vehicle-make-model').value = `${invoice.vehicle.make || ''} ${invoice.vehicle.model || ''}`.trim();
+                    document.getElementById('invoice-vehicle-make-model').disabled = isLocked;
+
                     document.getElementById('invoice-vehicle-chassis').value = invoice.vehicle.chassis || '';
+                    document.getElementById('invoice-vehicle-chassis').disabled = isLocked;
+
                     document.getElementById('invoice-vehicle-engine-cc').value = invoice.vehicle.engine_cc || '';
+                    document.getElementById('invoice-vehicle-engine-cc').disabled = isLocked;
+
                     document.getElementById('invoice-vehicle-fuel-type').value = invoice.vehicle.fuel_type || '';
+                    document.getElementById('invoice-vehicle-fuel-type').disabled = isLocked;
+
                     document.getElementById('invoice-vehicle-color').value = invoice.vehicle.color || '';
+                    document.getElementById('invoice-vehicle-color').disabled = isLocked;
+
                     document.getElementById('invoice-vehicle-mileage').value = invoice.vehicle.mileage || '';
-                    
+                    document.getElementById('invoice-vehicle-mileage').disabled = isLocked;
+
                     // Populate customer information
                     document.getElementById('invoice-customer-account').value = invoice.customer.account_number || '';
+                    document.getElementById('invoice-customer-account').disabled = isLocked;
+
                     document.getElementById('invoice-customer-company').value = invoice.customer.company || '';
+                    document.getElementById('invoice-customer-company').disabled = isLocked;
+
                     document.getElementById('invoice-customer-name').value = invoice.customer.name || '';
-                    document.getElementById('invoice-customer-address').value = `${invoice.customer.house_no || ''} ${invoice.customer.road || ''}, ${invoice.customer.locality || ''}, ${invoice.customer.town || ''}`.trim();
+                    document.getElementById('invoice-customer-name').disabled = isLocked;
+
+                    document.getElementById('invoice-customer-address').value = invoice.customer.address || '';
+                    document.getElementById('invoice-customer-address').disabled = isLocked;
+
                     document.getElementById('invoice-customer-postcode').value = invoice.customer.postcode || '';
-                    document.getElementById('invoice-customer-mobile').value = invoice.customer.mobile || '';
-                    
+                    document.getElementById('invoice-customer-postcode').disabled = isLocked;
+
+                    document.getElementById('invoice-customer-mobile').value = invoice.customer.phone || '';
+                    document.getElementById('invoice-customer-mobile').disabled = isLocked;
+
                     // Populate description
                     document.getElementById('invoice-description').value = invoice.description || '';
-                    
+                    document.getElementById('invoice-description').disabled = isLocked;
+
+                    // Populate job information
+                    document.getElementById('invoice-job-number').value = invoice.job ? invoice.job.job_number || '' : '';
+                    document.getElementById('invoice-job-amount').value = invoice.job ? `£${(invoice.job.total_amount || 0).toFixed(2)}` : '';
+                    document.getElementById('invoice-amount').value = `£${(invoice.amount || 0).toFixed(2)}`;
+                    document.getElementById('invoice-status').value = invoice.status || '';
+
                     // Load history
                     loadInvoiceHistory(invoice.history || []);
+
+                    // Load parts, labour, and advisories
+                    loadInvoiceParts(invoice.parts || []);
+                    loadInvoiceLabour(invoice.labour || []);
+                    loadInvoiceAdvisories(invoice.advisories || []);
+
+                    // Show lock/unlock controls
+                    updateLockControls(invoice);
                 })
                 .catch(error => {
                     console.error('Error loading invoice details:', error);
@@ -4437,15 +4726,15 @@
 
         function loadInvoiceHistory(history) {
             const tableBody = document.getElementById('invoice-history-table');
-            
+
             if (history && history.length > 0) {
                 tableBody.innerHTML = history.map(item => `
                     <tr>
-                        <td>${formatDate(item.date)}</td>
+                        <td>${item.date}</td>
                         <td>${item.doc_no}</td>
                         <td>${item.mileage}</td>
                         <td>${item.description}</td>
-                        <td>£${item.total.toFixed(2)}</td>
+                        <td>£${(item.total || 0).toFixed(2)}</td>
                     </tr>
                 `).join('');
             } else {
@@ -4453,11 +4742,181 @@
             }
         }
 
+        function loadInvoiceParts(parts) {
+            const partsTab = document.getElementById('invoice-tab-parts');
+
+            if (parts && parts.length > 0) {
+                partsTab.innerHTML = `
+                    <div style="padding: 1rem;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Part Number</th>
+                                    <th>Description</th>
+                                    <th>Qty</th>
+                                    <th>Unit Price</th>
+                                    <th>Total</th>
+                                    <th>Supplier</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${parts.map(part => `
+                                    <tr>
+                                        <td>${part.part_number}</td>
+                                        <td>${part.description}</td>
+                                        <td>${part.quantity}</td>
+                                        <td>£${(part.unit_price || 0).toFixed(2)}</td>
+                                        <td>£${(part.total_price || 0).toFixed(2)}</td>
+                                        <td>${part.supplier}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            } else {
+                partsTab.innerHTML = '<div style="padding: 1rem; text-align: center; color: #6c757d;">No parts recorded for this invoice</div>';
+            }
+        }
+
+        function loadInvoiceLabour(labour) {
+            const labourTab = document.getElementById('invoice-tab-labour');
+
+            if (labour && labour.length > 0) {
+                labourTab.innerHTML = `
+                    <div style="padding: 1rem;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Hours</th>
+                                    <th>Rate</th>
+                                    <th>Total</th>
+                                    <th>Technician</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${labour.map(item => `
+                                    <tr>
+                                        <td>${item.description}</td>
+                                        <td>${item.hours}</td>
+                                        <td>£${(item.rate || 0).toFixed(2)}</td>
+                                        <td>£${(item.total_price || 0).toFixed(2)}</td>
+                                        <td>${item.technician}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            } else {
+                labourTab.innerHTML = '<div style="padding: 1rem; text-align: center; color: #6c757d;">No labour recorded for this invoice</div>';
+            }
+        }
+
+        function loadInvoiceAdvisories(advisories) {
+            const advisoriesTab = document.getElementById('invoice-tab-advisories');
+
+            if (advisories && advisories.length > 0) {
+                advisoriesTab.innerHTML = `
+                    <div style="padding: 1rem;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Severity</th>
+                                    <th>Recommendation</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${advisories.map(advisory => `
+                                    <tr>
+                                        <td>${advisory.description}</td>
+                                        <td><span class="status-badge status-${advisory.severity.toLowerCase()}">${advisory.severity}</span></td>
+                                        <td>${advisory.recommendation}</td>
+                                        <td>${advisory.created_date}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            } else {
+                advisoriesTab.innerHTML = '<div style="padding: 1rem; text-align: center; color: #6c757d;">No advisories recorded for this invoice</div>';
+            }
+        }
+
+        function updateLockControls(invoice) {
+            // Add lock/unlock controls to the invoice header
+            const header = document.querySelector('.invoice-header');
+            let lockControls = document.getElementById('invoice-lock-controls');
+
+            if (!lockControls) {
+                lockControls = document.createElement('div');
+                lockControls.id = 'invoice-lock-controls';
+                lockControls.style.marginTop = '1rem';
+                header.appendChild(lockControls);
+            }
+
+            if (invoice.is_locked) {
+                lockControls.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.5rem; background: #f8f9fa; border-radius: 4px; border-left: 4px solid #dc3545;">
+                        <span style="color: #dc3545; font-weight: bold;">🔒 This invoice is locked and cannot be edited</span>
+                        <button class="btn btn-warning" onclick="unlockInvoice(${invoice.id})" style="margin-left: auto;">
+                            <i class="fas fa-unlock"></i> Unlock Invoice
+                        </button>
+                    </div>
+                `;
+            } else {
+                lockControls.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.5rem; background: #f8f9fa; border-radius: 4px; border-left: 4px solid #28a745;">
+                        <span style="color: #28a745; font-weight: bold;">✏️ This invoice can be edited</span>
+                        <button class="btn btn-danger" onclick="lockInvoice(${invoice.id})" style="margin-left: auto;">
+                            <i class="fas fa-lock"></i> Lock Invoice
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function lockInvoice(invoiceId) {
+            if (confirm('Are you sure you want to lock this invoice? This will prevent any further edits.')) {
+                // For now, just show a notification - will implement API call later
+                showNotification('Invoice locked successfully', 'success');
+                // Refresh the invoice details to show locked state
+                setTimeout(() => showInvoiceDetail(invoiceId), 500);
+            }
+        }
+
+        function unlockInvoice(invoiceId) {
+            if (confirm('Are you sure you want to unlock this invoice? This will allow edits again.')) {
+                // For now, just show a notification - will implement API call later
+                showNotification('Invoice unlocked successfully', 'success');
+                // Refresh the invoice details to show unlocked state
+                setTimeout(() => showInvoiceDetail(invoiceId), 500);
+            }
+        }
+
         function updateInvoiceField(field, value) {
             if (!currentInvoiceId) return;
-            
-            // For now, just show a notification that the field was updated
-            showNotification('Invoice field updated', 'success');
+
+            // Check if invoice is locked first
+            fetch(`http://127.0.0.1:5001/api/invoices/${currentInvoiceId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.invoice.is_locked) {
+                        showNotification('Cannot update locked invoice', 'error');
+                        return;
+                    }
+
+                    // For now, just show a notification that the field was updated
+                    showNotification('Invoice field updated', 'success');
+                })
+                .catch(error => {
+                    console.error('Error checking invoice lock status:', error);
+                    showNotification('Error updating invoice', 'error');
+                });
         }
 
         // Utility functions
@@ -8135,10 +8594,10 @@ MOT,26/06/2025,Due Now,-,Due Now,KU53UYG,Renault Clio,"Mr James Brown t: m: 0744
         async function viewCustomerDetails(customerId, registration) {
             try {
                 // Get customer information from main database
-                const customerResponse = await fetch(`/api/customers/${customerId}`);
+                const customerResponse = await fetch(`http://127.0.0.1:5001/api/customers/${customerId}`);
                 const customerData = await customerResponse.json();
 
-                if (!customerData.success) {
+                if (!customerData.customer) {
                     showNotification('Error loading customer details', 'error');
                     return;
                 }
@@ -8184,7 +8643,7 @@ MOT,26/06/2025,Due Now,-,Due Now,KU53UYG,Renault Clio,"Mr James Brown t: m: 0744
             document.getElementById('customer-detail-modal').classList.add('active');
 
             // Load customer data into the modal
-            loadCustomerDetail(customer.id);
+            showCustomerDetail(customer.id);
 
             // If we have a specific registration to highlight, switch to MOT tab
             if (highlightRegistration) {

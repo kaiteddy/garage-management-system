@@ -42,7 +42,7 @@ def init_db():
     try:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
-        
+
         # Create tables
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS customers (
@@ -57,7 +57,7 @@ def init_db():
                 created_date TEXT
             )
         ''')
-        
+
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS vehicles (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -72,7 +72,7 @@ def init_db():
                 FOREIGN KEY (customer_id) REFERENCES customers (id)
             )
         ''')
-        
+
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS jobs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -87,7 +87,7 @@ def init_db():
                 FOREIGN KEY (customer_id) REFERENCES customers (id)
             )
         ''')
-        
+
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS invoices (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -103,84 +103,56 @@ def init_db():
                 FOREIGN KEY (vehicle_id) REFERENCES vehicles (id)
             )
         ''')
-        
-        # Check if we have data
-        cursor.execute("SELECT COUNT(*) FROM customers")
-        customer_count = cursor.fetchone()[0]
-        
-        if customer_count == 0:
-            # Insert sample data
-            sample_customers = [
-                ('ACM001', 'A.c.m Autos Limited', 'A.c.m Autos Limited', '14 Holmfield Avenue, Hendon, London', 'NW4 2LN', '07816768877', 'info@acmautos.com', '2023-01-15'),
-                ('ACM002', 'Acm Sparks Ltd', 'Acm Sparks Ltd', '241 Haydons Road, London', 'SW19 8TY', '07904651884', 'contact@acmsparks.com', '2023-02-20'),
-                ('ACT001', 'Action 365', 'Action 365', '592 North End Road Finchley Road, Golders Green, London', 'NW11 7RX', '07903771232', 'info@action365.com', '2023-03-10'),
-                ('ADM001', 'Admiral Insurance', 'Admiral Insurance', '5 Glenham Road, London', 'SW13 9JB', '07812147078', 'claims@admiral.com', '2023-04-05'),
-                ('AGE001', 'Ageas Insurance Limited', 'Ageas Insurance Limited', '12 Priory Avenue, Wembley', 'HA0 2SB', '07342212131', 'support@ageas.com', '2023-05-12'),
-                ('ALE001', 'Alex', 'Alex', '26 Midford House, Hendon, London', 'NW4 2BG', '07751865149', 'alex@email.com', '2023-06-18'),
-                ('ALI001', 'Alice', 'Alice', '18a Nant Road, Granville Place, London', 'NW2 2AT', '07398201776', 'alice@email.com', '2023-07-22'),
-                ('UNA001', 'Unal Altun', 'Unal Altun', '1 Forest Way, London', 'N19 5XG', '07506577918', 'unal@email.com', '2023-08-15'),
-                ('JOE001', 'Joel Alterman', 'Joel Alterman', '14 Lodge Road, Hendon, London', 'NW4 4EF', '07968437789', 'joel@email.com', '2023-09-10'),
-                ('AMA001', 'Amanda', 'Amanda', 'Mob: 07891234850', '', '07891234850', 'amanda@email.com', '2023-10-05')
-            ]
-            
-            cursor.executemany('''
-                INSERT INTO customers (account_number, name, company, address, postcode, phone, email, created_date)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ''', sample_customers)
-            
-            sample_vehicles = [
-                ('EY20VBO', 'Volkswagen', 'Polo Match Tsi Dsg', 'Grey', 'Petrol', '2024-03-15', 16967, 1),
-                ('Y905SLB', 'Ford', 'Focus', 'Blue', 'Petrol', '2024-06-20', 125789, 2),
-                ('BF51XYZ', 'Vauxhall', 'Astra', 'Silver', 'Petrol', '2024-08-12', 67234, 3),
-                ('LE21FXA', 'Skoda', 'Kodiaq Se L Tsi Dsg', 'White', 'Petrol', '2024-09-03', 12469, 4),
-                ('KF69HTE', 'Mercedes', 'Gle-Class Gle', 'Black', 'Diesel', '2024-05-04', 30045, 5),
-                ('RV02ATF', 'Rover', '25', 'Red', 'Petrol', '2024-07-18', 89456, 6),
-                ('WX51ABC', 'BMW', '320i', 'Blue', 'Petrol', '2024-11-22', 45678, 7),
-                ('DE03XYZ', 'Audi', 'A4', 'Black', 'Diesel', '2024-12-15', 78901, 8),
-                ('FG55DEF', 'Toyota', 'Corolla', 'White', 'Hybrid', '2024-10-30', 23456, 9),
-                ('HI07GHI', 'Honda', 'Civic', 'Silver', 'Petrol', '2024-09-25', 56789, 10)
-            ]
-            
-            cursor.executemany('''
-                INSERT INTO vehicles (registration, make, model, color, fuel_type, mot_due, mileage, customer_id)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ''', sample_vehicles)
-            
-            sample_jobs = [
-                ('J001', 1, 1, 'Carry Out Mot Repairs - Remove Rear Offside Seat Assembly', 'COMPLETED', 678.00, '2025-01-16'),
-                ('J002', 1, 1, 'Carry Out Mot', 'COMPLETED', 45.00, '2025-01-08'),
-                ('J003', 2, 2, 'Annual Service', 'COMPLETED', 150.00, '2024-12-15'),
-                ('J004', 3, 3, 'Brake Pad Replacement', 'COMPLETED', 120.00, '2024-11-20'),
-                ('J005', 4, 4, 'Oil Change', 'COMPLETED', 80.00, '2024-10-25'),
-                ('J006', 5, 5, 'MOT Test', 'COMPLETED', 45.00, '2024-09-30'),
-                ('J007', 6, 6, 'Timing Belt Replacement', 'COMPLETED', 350.00, '2024-08-15'),
-                ('J008', 7, 7, 'Clutch Repair', 'IN_PROGRESS', 450.00, '2024-12-01'),
-                ('J009', 8, 8, 'Exhaust System Repair', 'PENDING', 200.00, '2024-11-10'),
-                ('J010', 9, 9, 'Battery Replacement', 'COMPLETED', 90.00, '2024-10-05')
-            ]
-            
-            cursor.executemany('''
-                INSERT INTO jobs (job_number, vehicle_id, customer_id, description, status, total_amount, created_date)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            ''', sample_jobs)
-            
-            sample_invoices = [
-                ('88187', 1, 1, 1, 678.00, 'PARTIAL', '2025-01-16'),
-                ('88139', 2, 1, 1, 45.00, 'PAID', '2025-01-08'),
-                ('87542', 3, 2, 2, 150.00, 'PAID', '2024-12-15'),
-                ('86916', 4, 3, 3, 120.00, 'PAID', '2024-11-20'),
-                ('86001', 5, 4, 4, 80.00, 'PAID', '2024-10-25'),
-                ('85789', 6, 5, 5, 45.00, 'PAID', '2024-09-30'),
-                ('85234', 7, 6, 6, 350.00, 'PAID', '2024-08-15'),
-                ('84567', 8, 7, 7, 450.00, 'PENDING', '2024-12-01'),
-                ('84123', 9, 8, 8, 200.00, 'PENDING', '2024-11-10'),
-                ('83890', 10, 9, 9, 90.00, 'PAID', '2024-10-05')
-            ]
-            
-            cursor.executemany('''
-                INSERT INTO invoices (invoice_number, job_id, customer_id, vehicle_id, amount, status, created_date)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            ''', sample_invoices)
+
+        # Create new tables for detailed parts and labour information
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS parts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                invoice_id INTEGER,
+                job_id INTEGER,
+                part_number TEXT,
+                description TEXT,
+                quantity REAL,
+                unit_price REAL,
+                total_price REAL,
+                supplier TEXT,
+                created_date TEXT,
+                FOREIGN KEY (invoice_id) REFERENCES invoices (id),
+                FOREIGN KEY (job_id) REFERENCES jobs (id)
+            )
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS labour (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                invoice_id INTEGER,
+                job_id INTEGER,
+                description TEXT,
+                hours REAL,
+                rate REAL,
+                total_price REAL,
+                technician TEXT,
+                created_date TEXT,
+                FOREIGN KEY (invoice_id) REFERENCES invoices (id),
+                FOREIGN KEY (job_id) REFERENCES jobs (id)
+            )
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS advisories (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                invoice_id INTEGER,
+                job_id INTEGER,
+                vehicle_id INTEGER,
+                description TEXT,
+                severity TEXT,
+                recommendation TEXT,
+                created_date TEXT,
+                FOREIGN KEY (invoice_id) REFERENCES invoices (id),
+                FOREIGN KEY (job_id) REFERENCES jobs (id),
+                FOREIGN KEY (vehicle_id) REFERENCES vehicles (id)
+            )
+        ''')
         
         conn.commit()
         conn.close()
@@ -448,6 +420,197 @@ def get_invoices():
         
         conn.close()
         return jsonify({'invoices': invoices})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/invoices/<int:invoice_id>')
+def get_invoice_detail(invoice_id):
+    try:
+        conn = get_db_connection()
+        if not conn:
+            return jsonify({'error': 'Database connection failed'}), 500
+
+        cursor = conn.cursor()
+
+        # Get invoice details with related data using explicit column aliases
+        cursor.execute('''
+            SELECT
+                i.id as invoice_id,
+                i.invoice_number,
+                i.job_id,
+                i.customer_id,
+                i.vehicle_id,
+                i.amount,
+                i.status,
+                i.created_date as invoice_date,
+                v.id as vehicle_table_id,
+                v.registration,
+                v.make,
+                v.model,
+                v.color,
+                v.fuel_type,
+                v.mot_due,
+                v.mileage,
+                c.id as customer_table_id,
+                c.account_number,
+                c.name as customer_name,
+                c.company as customer_company,
+                c.address,
+                c.postcode,
+                c.phone,
+                c.email,
+                j.job_number,
+                j.description as job_description,
+                j.total_amount as job_total
+            FROM invoices i
+            LEFT JOIN vehicles v ON i.vehicle_id = v.id
+            LEFT JOIN customers c ON i.customer_id = c.id
+            LEFT JOIN jobs j ON i.job_id = j.id
+            WHERE i.id = ?
+        ''', (invoice_id,))
+
+        row = cursor.fetchone()
+        if not row:
+            conn.close()
+            return jsonify({'error': 'Invoice not found'}), 404
+
+        # Build invoice object with proper data extraction
+        invoice = {
+            'id': row['invoice_id'],
+            'invoice_number': row['invoice_number'],
+            'job_id': row['job_id'],
+            'customer_id': row['customer_id'],
+            'vehicle_id': row['vehicle_id'],
+            'amount': row['amount'],
+            'status': row['status'],
+            'created_date': format_date_for_display(row['invoice_date']),
+            'is_locked': row['status'] in ['PAID', 'LOCKED'],  # Auto-lock paid invoices
+            'vehicle': {
+                'id': row['vehicle_id'],
+                'registration': row['registration'] or '',
+                'make': row['make'] or '',
+                'model': row['model'] or '',
+                'color': row['color'] or '',
+                'fuel_type': row['fuel_type'] or '',
+                'mileage': row['mileage'] or 0,
+                'mot_due': format_date_for_display(row['mot_due']) if row['mot_due'] else '',
+                'chassis': '',  # Not in current schema
+                'engine_cc': ''  # Not in current schema
+            },
+            'customer': {
+                'id': row['customer_id'],
+                'account_number': row['account_number'] or '',
+                'name': row['customer_name'] or '',
+                'company': row['customer_company'] or '',
+                'address': row['address'] or '',
+                'postcode': row['postcode'] or '',
+                'phone': row['phone'] or '',
+                'email': row['email'] or ''
+            },
+            'job': {
+                'id': row['job_id'],
+                'job_number': row['job_number'] or '',
+                'total_amount': row['job_total'] or 0
+            },
+            'description': row['job_description'] or '',
+            'parts': [],  # Will be populated below
+            'labour': [],  # Will be populated below
+            'advisories': [],  # Will be populated below
+            'history': []  # Service history for this vehicle
+        }
+
+        # Get parts for this invoice/job
+        cursor.execute('''
+            SELECT * FROM parts
+            WHERE invoice_id = ? OR job_id = ?
+            ORDER BY created_date DESC
+        ''', (invoice_id, invoice['job_id']))
+
+        parts = []
+        for part_row in cursor.fetchall():
+            parts.append({
+                'id': part_row['id'],
+                'part_number': part_row['part_number'] or '',
+                'description': part_row['description'] or '',
+                'quantity': part_row['quantity'] or 0,
+                'unit_price': part_row['unit_price'] or 0,
+                'total_price': part_row['total_price'] or 0,
+                'supplier': part_row['supplier'] or '',
+                'created_date': format_date_for_display(part_row['created_date'])
+            })
+        invoice['parts'] = parts
+
+        # Get labour for this invoice/job
+        cursor.execute('''
+            SELECT * FROM labour
+            WHERE invoice_id = ? OR job_id = ?
+            ORDER BY created_date DESC
+        ''', (invoice_id, invoice['job_id']))
+
+        labour = []
+        for labour_row in cursor.fetchall():
+            labour.append({
+                'id': labour_row['id'],
+                'description': labour_row['description'] or '',
+                'hours': labour_row['hours'] or 0,
+                'rate': labour_row['rate'] or 0,
+                'total_price': labour_row['total_price'] or 0,
+                'technician': labour_row['technician'] or '',
+                'created_date': format_date_for_display(labour_row['created_date'])
+            })
+        invoice['labour'] = labour
+
+        # Get advisories for this invoice/job/vehicle
+        cursor.execute('''
+            SELECT * FROM advisories
+            WHERE invoice_id = ? OR job_id = ? OR vehicle_id = ?
+            ORDER BY created_date DESC
+        ''', (invoice_id, invoice['job_id'], invoice['vehicle_id']))
+
+        advisories = []
+        for advisory_row in cursor.fetchall():
+            advisories.append({
+                'id': advisory_row['id'],
+                'description': advisory_row['description'] or '',
+                'severity': advisory_row['severity'] or 'INFO',
+                'recommendation': advisory_row['recommendation'] or '',
+                'created_date': format_date_for_display(advisory_row['created_date'])
+            })
+        invoice['advisories'] = advisories
+
+        # Get service history for this vehicle
+        if invoice['vehicle']['id']:
+            cursor.execute('''
+                SELECT
+                    i2.created_date,
+                    i2.invoice_number,
+                    i2.amount,
+                    i2.status,
+                    j2.description,
+                    j2.total_amount as job_amount,
+                    v2.mileage
+                FROM invoices i2
+                LEFT JOIN jobs j2 ON i2.job_id = j2.id
+                LEFT JOIN vehicles v2 ON i2.vehicle_id = v2.id
+                WHERE i2.vehicle_id = ? AND i2.id != ?
+                ORDER BY i2.created_date DESC
+                LIMIT 10
+            ''', (invoice['vehicle']['id'], invoice_id))
+
+            history = []
+            for hist_row in cursor.fetchall():
+                history.append({
+                    'date': format_date_for_display(hist_row['created_date']),
+                    'doc_no': hist_row['invoice_number'],
+                    'mileage': hist_row['mileage'] or 0,
+                    'description': hist_row['description'] or 'Service',
+                    'total': hist_row['amount'] or hist_row['job_amount'] or 0,
+                    'status': hist_row['status']
+                })
+            invoice['history'] = history
+
+        conn.close()
+        return jsonify({'invoice': invoice})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
