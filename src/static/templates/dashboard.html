@@ -1,0 +1,104 @@
+<!-- Dashboard Page -->
+<div class="page-header">
+    <div>
+        <h1 class="page-title">
+            <i class="fas fa-tachometer-alt"></i>
+            Dashboard
+        </h1>
+        <p class="page-subtitle">Overview of your garage management system</p>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon customers">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-info">
+            <h3 id="total-customers">7,037</h3>
+            <p>Total Customers</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon vehicles">
+            <i class="fas fa-car"></i>
+        </div>
+        <div class="stat-info">
+            <h3 id="total-vehicles">10,364</h3>
+            <p>Total Vehicles</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon revenue">
+            <i class="fas fa-pound-sign"></i>
+        </div>
+        <div class="stat-info">
+            <h3 id="total-revenue">£8.6M</h3>
+            <p>Total Revenue</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon documents">
+            <i class="fas fa-file-alt"></i>
+        </div>
+        <div class="stat-info">
+            <h3 id="total-documents">30,354</h3>
+            <p>Documents</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-chart-line"></i>
+        Recent Activity
+    </div>
+    <div class="card-content">
+        <div id="recent-activity-container">
+            <p>Recent jobs, invoices, and customer activity will be displayed here.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Additional dashboard widgets -->
+<div class="dashboard-widgets">
+    <div class="widget-row">
+        <div class="widget">
+            <div class="widget-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> MOT Alerts</h3>
+            </div>
+            <div class="widget-content" id="mot-alerts">
+                <!-- MOT alerts will be loaded here -->
+            </div>
+        </div>
+        
+        <div class="widget">
+            <div class="widget-header">
+                <h3><i class="fas fa-clock"></i> Pending Jobs</h3>
+            </div>
+            <div class="widget-content" id="pending-jobs">
+                <!-- Pending jobs will be loaded here -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="widget-row">
+        <div class="widget">
+            <div class="widget-header">
+                <h3><i class="fas fa-money-bill-wave"></i> Outstanding Invoices</h3>
+            </div>
+            <div class="widget-content" id="outstanding-invoices">
+                <!-- Outstanding invoices will be loaded here -->
+            </div>
+        </div>
+        
+        <div class="widget">
+            <div class="widget-header">
+                <h3><i class="fas fa-calendar-alt"></i> Today's Schedule</h3>
+            </div>
+            <div class="widget-content" id="todays-schedule">
+                <!-- Today's schedule will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>

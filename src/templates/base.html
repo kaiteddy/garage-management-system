@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GarageManager Pro - Professional Garage Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Application Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-car"></i>
+            GarageManager Pro
+        </div>
+        <div class="header-actions">
+            <button class="header-btn" onclick="refreshData()">
+                <i class="fas fa-sync-alt"></i>
+                Refresh
+            </button>
+            <button class="header-btn" onclick="exportData()">
+                <i class="fas fa-download"></i>
+                Export
+            </button>
+            <button class="header-btn" onclick="printPage()">
+                <i class="fas fa-print"></i>
+                Print
+            </button>
+            <button class="header-btn" onclick="showHelp()">
+                <i class="fas fa-question-circle"></i>
+                Help
+            </button>
+            <button class="header-btn" style="position: relative;">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </button>
+            <button class="header-btn" onclick="showAdminMenu()">
+                <i class="fas fa-user-circle"></i>
+                Admin
+            </button>
+        </div>
+    </div>
+
+    <!-- Layout -->
+    <div class="layout">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <a href="#" class="nav-item active" onclick="showPage('dashboard')">
+                <i class="fas fa-tachometer-alt"></i>
+                Dashboard
+                <span class="nav-badge">1</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showPage('customers')">
+                <i class="fas fa-users"></i>
+                Customers
+                <span class="nav-badge">2</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showPage('vehicles')">
+                <i class="fas fa-car"></i>
+                Vehicles
+                <span class="nav-badge">3</span>
+            </a>
+            <div class="nav-item" onclick="showPage('jobs')">
+                <i class="fas fa-wrench"></i>
+                <span>Jobs</span>
+            </div>
+            <div class="nav-item" onclick="showPage('estimates')">
+                <i class="fas fa-file-invoice"></i>
+                <span>Estimates</span>
+            </div>
+            <div class="nav-item" onclick="showPage('invoices')">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>Invoices</span>
+            </div>
+            <a href="#" class="nav-item" onclick="showPage('reminders')">
+                <i class="fas fa-bell"></i>
+                Reminders
+                <span class="nav-badge">5</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showPage('parts')">
+                <i class="fas fa-cogs"></i>
+                Parts
+                <span class="nav-badge">6</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showPage('reports')">
+                <i class="fas fa-chart-bar"></i>
+                Reports
+            </a>
+            <a href="#" class="nav-item" onclick="showPage('settings')">
+                <i class="fas fa-cog"></i>
+                Settings
+                <span class="nav-badge">7</span>
+            </a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Page content will be loaded here -->
+            <div id="page-container">
+                <!-- Default to dashboard -->
+                <div id="dashboard-page" class="page active">
+                    <!-- Dashboard content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modals-container">
+        <!-- Modals will be loaded here -->
+    </div>
+
+    <!-- Core JavaScript -->
+    <script src="js/core/app.js"></script>
+    <script src="js/core/router.js"></script>
+    <script src="js/core/state.js"></script>
+    
+    <!-- Services -->
+    <script src="js/services/api-service.js"></script>
+    <script src="js/services/storage-service.js"></script>
+    <script src="js/services/validation-service.js"></script>
+    
+    <!-- Components -->
+    <script src="js/components/table-component.js"></script>
+    <script src="js/components/modal-component.js"></script>
+    <script src="js/components/form-component.js"></script>
+    
+    <!-- Pages -->
+    <script src="js/pages/dashboard.js"></script>
+    <script src="js/pages/customers.js"></script>
+    <script src="js/pages/vehicles.js"></script>
+    <script src="js/pages/jobs.js"></script>
+    <script src="js/pages/estimates.js"></script>
+    <script src="js/pages/invoices.js"></script>
+    
+    <!-- Legacy utilities (to be refactored) -->
+    <script src="js/utils.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional garage management system for automotive businesses">
+    <title>{% block title %}Garage Management System{% endblock %}</title>
+    
+    <!-- Preload critical fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Critical CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/design-system.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modern-layout.css') }}">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="min-h-screen bg-gray-50 font-sans antialiased">
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary-600 text-white px-4 py-2 rounded-lg z-50">
+        Skip to main content
+    </a>
+
+    <!-- Main Application Layout -->
+    <div class="flex h-screen bg-gray-50">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-car-side text-primary-500"></i>
+                    <span class="sidebar-logo-text">GarageMS</span>
+                </div>
+                <button id="sidebar-toggle" class="sidebar-toggle lg:hidden">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Main</div>
+                    <ul class="sidebar-menu">
+                        <li>
+                            <a href="/" class="sidebar-link active">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/customers" class="sidebar-link">
+                                <i class="fas fa-users"></i>
+                                <span>Customers</span>
+                                <span class="sidebar-badge" id="customers-count">0</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/vehicles" class="sidebar-link">
+                                <i class="fas fa-car"></i>
+                                <span>Vehicles</span>
+                                <span class="sidebar-badge" id="vehicles-count">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Operations</div>
+                    <ul class="sidebar-menu">
+                        <li>
+                            <a href="/jobs" class="sidebar-link">
+                                <i class="fas fa-wrench"></i>
+                                <span>Jobs</span>
+                                <span class="sidebar-badge sidebar-badge-warning" id="active-jobs-count">0</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/estimates" class="sidebar-link">
+                                <i class="fas fa-file-invoice"></i>
+                                <span>Estimates</span>
+                                <span class="sidebar-badge sidebar-badge-info" id="pending-estimates-count">0</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/invoices" class="sidebar-link">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                                <span>Invoices</span>
+                                <span class="sidebar-badge sidebar-badge-success" id="unpaid-invoices-count">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="sidebar-user-info">
+                        <div class="sidebar-user-name">Demo User</div>
+                        <div class="sidebar-user-role">Admin</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button id="mobile-sidebar-toggle" class="header-menu-btn lg:hidden">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <div class="header-breadcrumb">
+                        <nav class="breadcrumb">
+                            <ol class="breadcrumb-list">
+                                <li class="breadcrumb-item">
+                                    <a href="/">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    {% block page_title %}Page{% endblock %}
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <!-- Global Search -->
+                    <div class="header-search">
+                        <div class="search-input-group">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="global-search" placeholder="Search customers, vehicles, jobs..." class="search-input">
+                            <div id="search-results" class="search-results hidden"></div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications -->
+                    <div class="header-notifications">
+                        <button class="notification-btn" id="notifications-toggle">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge" id="notification-count">3</span>
+                        </button>
+                        <div id="notifications-dropdown" class="notifications-dropdown hidden">
+                            <!-- Notifications will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- User Menu -->
+                    <div class="header-user-menu">
+                        <button class="user-menu-btn" id="user-menu-toggle">
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <span class="user-name hidden sm:block">Demo</span>
+                            <i class="fas fa-chevron-down user-menu-arrow"></i>
+                        </button>
+                        <div id="user-menu-dropdown" class="user-menu-dropdown hidden">
+                            <div class="user-menu-header">
+                                <div class="user-menu-info">
+                                    <div class="user-menu-name">Demo User</div>
+                                    <div class="user-menu-email">demo@example.com</div>
+                                </div>
+                            </div>
+                            <div class="user-menu-items">
+                                <a href="/profile" class="user-menu-item">
+                                    <i class="fas fa-user"></i>
+                                    Profile
+                                </a>
+                                <a href="/settings" class="user-menu-item">
+                                    <i class="fas fa-cog"></i>
+                                    Settings
+                                </a>
+                                <div class="user-menu-divider"></div>
+                                <button onclick="logout()" class="user-menu-item user-menu-logout">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Sign Out
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main id="main-content" class="main-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <div class="page-header-content">
+                        <div class="page-title-section">
+                            <h1 class="page-title">{% block page_title %}Page Title{% endblock %}</h1>
+                            {% block page_subtitle %}{% endblock %}
+                        </div>
+                        <div class="page-actions">
+                            {% block page_actions %}{% endblock %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Page Body -->
+                <div class="page-body">
+                    {% block content %}{% endblock %}
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <div class="loading-text">Loading...</div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Core JavaScript -->
+    <script src="{{ url_for('static', filename='js/core/app.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/core/error-handler.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/services/api-service.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/modern-layout.js') }}"></script>
+    
+    {% block scripts %}{% endblock %}
+
+    <!-- Initialize Application -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize modern layout
+            if (window.ModernLayout) {
+                window.modernLayout = new ModernLayout();
+                window.modernLayout.init();
+            }
+            
+            // Initialize page-specific functionality
+            {% block page_init %}{% endblock %}
+        });
+    </script>
+</body>
+</html>

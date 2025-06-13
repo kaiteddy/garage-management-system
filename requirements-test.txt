@@ -1,0 +1,21 @@
+# Testing dependencies
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.1
+pytest-flask>=1.2.0
+pytest-xdist>=3.3.1
+coverage>=7.2.7
+factory-boy>=3.3.0
+faker>=19.3.0
+
+# Development dependencies
+black>=23.7.0
+flake8>=6.0.0
+isort>=5.12.0
+mypy>=1.5.0
+pre-commit>=3.3.3
+
+# Additional testing utilities
+responses>=0.23.1
+freezegun>=1.2.2
+parameterized>=0.9.0

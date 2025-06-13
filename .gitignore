@@ -1,0 +1,94 @@
+# Virtual environment
+venv/
+env/
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Build files
+build/
+dist/
+*.egg-info/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+
+# Testing
+.pytest_cache/
+.tox/
+
+# Documentation builds
+docs/_build/
+
+# Backup files
+*.bak
+*.backup
+
+# Local configuration
+config.local.py
+settings.local.py
+
+# Uploads
+uploads/
+media/
+
+# Static files (if generated)
+static/collected/
+
+# Node modules (if using frontend build tools)
+node_modules/
+npm-debug.log*
+
+# Package files
+*.tar.gz
+*.zip
+
+# Garage Management System specific
+launch_report_*.json
+gui_test_report_*.json
+.env.production
+.env.local
+gunicorn.conf.py
+nginx-garage-management.conf
+garage-management.service
+
+# Generated assets
+src/static/dist/
+*.min.css
+*.min.js
+
+# SSL certificates
+*.crt
+*.key
+*.pem
+

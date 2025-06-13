@@ -1,0 +1,133 @@
+<!-- Customers Page -->
+<div class="page-header">
+    <div>
+        <h1 class="page-title">
+            <i class="fas fa-users"></i>
+            Customer Management
+        </h1>
+        <p class="page-subtitle">Manage all customers and their information</p>
+    </div>
+    <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="customer-search" placeholder="Customer Search" onkeyup="searchCustomers()">
+    </div>
+    <button class="btn btn-primary" onclick="showNewCustomerForm()">
+        <i class="fas fa-plus"></i>
+        New Customer
+    </button>
+</div>
+
+<div class="table-container">
+    <div class="table-header">
+        <i class="fas fa-list"></i>
+        Customer List
+    </div>
+    <div class="table-controls">
+        <div>Showing <span id="customer-range">1 to 50</span> of <span id="customer-total">7,037</span> customers</div>
+        <div>
+            <select id="customer-per-page" onchange="changeCustomerPerPage()">
+                <option value="25">25 per page</option>
+                <option value="50" selected>50 per page</option>
+                <option value="100">100 per page</option>
+            </select>
+        </div>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Account Number</th>
+                <th>Name</th>
+                <th>Company</th>
+                <th>Address</th>
+                <th>Postcode</th>
+                <th>Phone</th>
+                <th>Vehicles</th>
+                <th>Documents</th>
+                <th>Last Invoice</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="customers-table-body">
+            <tr>
+                <td colspan="10" class="loading">
+                    <div class="spinner"></div>
+                    Loading customers...
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination" id="customer-pagination">
+        <!-- Pagination will be generated here -->
+    </div>
+</div>
+
+<!-- Customer Detail Modal -->
+<div id="customer-detail-modal" class="modal">
+    <div class="modal-content large">
+        <div class="modal-header">
+            <h2><i class="fas fa-user"></i> Customer Details</h2>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="customer-detail-content">
+                <!-- Customer details will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Customer Modal -->
+<div id="new-customer-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2><i class="fas fa-user-plus"></i> New Customer</h2>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="new-customer-form" onsubmit="createCustomer(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="customer-name">Name *</label>
+                        <input type="text" id="customer-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-company">Company</label>
+                        <input type="text" id="customer-company" name="company">
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-email">Email</label>
+                        <input type="email" id="customer-email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-phone">Phone</label>
+                        <input type="tel" id="customer-phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-mobile">Mobile</label>
+                        <input type="tel" id="customer-mobile" name="mobile">
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-address1">Address Line 1</label>
+                        <input type="text" id="customer-address1" name="address_line1">
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-address2">Address Line 2</label>
+                        <input type="text" id="customer-address2" name="address_line2">
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-city">City</label>
+                        <input type="text" id="customer-city" name="city">
+                    </div>
+                    <div class="form-group">
+                        <label for="customer-postcode">Postcode</label>
+                        <input type="text" id="customer-postcode" name="postcode">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Customer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

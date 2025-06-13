@@ -1,0 +1,4 @@
+# Main requirements file - points to base requirements
+# For development: pip install -r requirements/development.txt
+# For production: pip install -r requirements/production.txt
+-r requirements/base.txt

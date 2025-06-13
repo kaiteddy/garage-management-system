@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Monitoring - Garage Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/monitoring.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-chart-line"></i> System Monitoring
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <!-- System Status Overview -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-heartbeat"></i> System Health Overview
+                        </h5>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary" onclick="refreshAll()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                            <span class="badge bg-secondary" id="last-updated">
+                                Last updated: --
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" id="health-overview">
+                            <!-- Health status cards will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="row mb-4">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-tachometer-alt"></i> System Performance
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="performance-metrics">
+                            <!-- Performance metrics will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-database"></i> Database Status
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="database-status">
+                            <!-- Database status will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Real-time Charts -->
+        <div class="row mb-4">
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">CPU Usage</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="cpu-chart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">Memory Usage</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="memory-chart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">Disk Usage</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="disk-chart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Application Metrics -->
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-bar"></i> Application Metrics
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="app-metrics">
+                            <!-- Application metrics will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-exclamation-triangle"></i> Alerts
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="alerts-list">
+                            <!-- Alerts will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Logs -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-list"></i> System Logs
+                        </h5>
+                        <div>
+                            <select class="form-select form-select-sm" id="log-level-filter">
+                                <option value="">All Levels</option>
+                                <option value="ERROR">Error</option>
+                                <option value="WARNING">Warning</option>
+                                <option value="INFO">Info</option>
+                                <option value="DEBUG">Debug</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="logs-container" style="max-height: 400px; overflow-y: auto;">
+                            <!-- Logs will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/js/core/error-handler.js"></script>
+    <script src="/static/js/services/api-service.js"></script>
+    <script src="/static/js/components/monitoring-widget.js"></script>
+    <script>
+        // Monitoring Dashboard JavaScript
+        class MonitoringDashboard {
+            constructor() {
+                this.refreshInterval = 30000; // 30 seconds
+                this.charts = {};
+                this.refreshTimer = null;
+            }
+
+            async init() {
+                console.log('Initializing monitoring dashboard...');
+                
+                try {
+                    await this.loadInitialData();
+                    this.initializeCharts();
+                    this.startAutoRefresh();
+                    
+                    console.log('Monitoring dashboard initialized successfully');
+                } catch (error) {
+                    console.error('Failed to initialize monitoring dashboard:', error);
+                    window.showError('Failed to load monitoring data');
+                }
+            }
+
+            async loadInitialData() {
+                await Promise.all([
+                    this.loadHealthStatus(),
+                    this.loadPerformanceMetrics(),
+                    this.loadDatabaseStatus(),
+                    this.loadApplicationMetrics(),
+                    this.loadAlerts(),
+                    this.loadLogs()
+                ]);
+            }
+
+            async loadHealthStatus() {
+                try {
+                    const response = await fetch('/api/monitoring/health');
+                    const data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        this.renderHealthOverview(data.data);
+                    }
+                } catch (error) {
+                    console.error('Error loading health status:', error);
+                }
+            }
+
+            async loadPerformanceMetrics() {
+                try {
+                    const response = await fetch('/api/monitoring/metrics?hours=1');
+                    const data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        this.renderPerformanceMetrics(data.data.metrics);
+                        this.updateCharts(data.data.metrics);
+                    }
+                } catch (error) {
+                    console.error('Error loading performance metrics:', error);
+                }
+            }
+
+            async loadDatabaseStatus() {
+                try {
+                    const response = await fetch('/api/monitoring/metrics/database');
+                    const data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        this.renderDatabaseStatus(data.data);
+                    }
+                } catch (error) {
+                    console.error('Error loading database status:', error);
+                }
+            }
+
+            renderHealthOverview(healthData) {
+                const container = document.getElementById('health-overview');
+                const checks = healthData.checks || {};
+                
+                container.innerHTML = Object.entries(checks).map(([name, check]) => `
+                    <div class="col-md-4 mb-3">
+                        <div class="card border-${this.getStatusColor(check.status)}">
+                            <div class="card-body text-center">
+                                <i class="fas fa-${this.getStatusIcon(check.status)} fa-2x text-${this.getStatusColor(check.status)} mb-2"></i>
+                                <h6 class="card-title">${this.formatCheckName(name)}</h6>
+                                <span class="badge bg-${this.getStatusColor(check.status)}">
+                                    ${this.formatStatus(check.status)}
+                                </span>
+                                ${check.details?.response_time ? 
+                                    `<small class="d-block mt-1 text-muted">${check.details.response_time.toFixed(0)}ms</small>` : 
+                                    ''
+                                }
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Update last updated time
+                document.getElementById('last-updated').textContent = 
+                    `Last updated: ${new Date().toLocaleTimeString()}`;
+            }
+
+            renderPerformanceMetrics(metrics) {
+                const container = document.getElementById('performance-metrics');
+                const importantMetrics = ['cpu_usage', 'memory_usage', 'disk_usage'];
+                
+                container.innerHTML = importantMetrics.map(metricName => {
+                    const metric = metrics[metricName];
+                    if (!metric) return '';
+                    
+                    return `
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <strong>${this.formatMetricName(metricName)}</strong>
+                            </div>
+                            <div class="col-6">
+                                <div class="progress">
+                                    <div class="progress-bar bg-${this.getMetricColor(metricName, metric.latest)}" 
+                                         style="width: ${metric.latest}%">
+                                        ${metric.latest.toFixed(1)}%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            initializeCharts() {
+                // Initialize Chart.js charts
+                this.charts.cpu = new Chart(document.getElementById('cpu-chart'), {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'CPU Usage (%)',
+                            data: [],
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100
+                            }
+                        }
+                    }
+                });
+
+                // Similar initialization for memory and disk charts
+                // ... (abbreviated for space)
+            }
+
+            getStatusColor(status) {
+                const colors = {
+                    'healthy': 'success',
+                    'warning': 'warning',
+                    'critical': 'danger',
+                    'unknown': 'secondary'
+                };
+                return colors[status] || 'secondary';
+            }
+
+            getStatusIcon(status) {
+                const icons = {
+                    'healthy': 'check-circle',
+                    'warning': 'exclamation-triangle',
+                    'critical': 'times-circle',
+                    'unknown': 'question-circle'
+                };
+                return icons[status] || 'question-circle';
+            }
+
+            formatStatus(status) {
+                return status.charAt(0).toUpperCase() + status.slice(1);
+            }
+
+            formatCheckName(name) {
+                return name.charAt(0).toUpperCase() + name.slice(1);
+            }
+
+            formatMetricName(name) {
+                return name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            }
+
+            getMetricColor(metricName, value) {
+                const thresholds = {
+                    'cpu_usage': { warning: 70, critical: 90 },
+                    'memory_usage': { warning: 80, critical: 95 },
+                    'disk_usage': { warning: 85, critical: 95 }
+                };
+
+                const threshold = thresholds[metricName];
+                if (!threshold) return 'primary';
+
+                if (value >= threshold.critical) return 'danger';
+                if (value >= threshold.warning) return 'warning';
+                return 'success';
+            }
+
+            startAutoRefresh() {
+                this.refreshTimer = setInterval(() => {
+                    this.loadInitialData();
+                }, this.refreshInterval);
+            }
+
+            stopAutoRefresh() {
+                if (this.refreshTimer) {
+                    clearInterval(this.refreshTimer);
+                    this.refreshTimer = null;
+                }
+            }
+        }
+
+        // Global functions
+        window.refreshAll = function() {
+            if (window.monitoringDashboard) {
+                window.monitoringDashboard.loadInitialData();
+            }
+        };
+
+        // Initialize dashboard when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            window.monitoringDashboard = new MonitoringDashboard();
+            window.monitoringDashboard.init();
+        });
+    </script>
+</body>
+</html>

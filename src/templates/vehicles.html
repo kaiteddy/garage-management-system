@@ -1,0 +1,157 @@
+<!-- Vehicles Page -->
+<div class="page-header">
+    <div>
+        <h1 class="page-title">
+            <i class="fas fa-car"></i>
+            Vehicle Management
+        </h1>
+        <p class="page-subtitle">Manage all vehicles and their information</p>
+    </div>
+    <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="vehicle-search" placeholder="Vehicle Search" onkeyup="searchVehicles()">
+    </div>
+    <button class="btn btn-primary" onclick="showNewVehicleForm()">
+        <i class="fas fa-plus"></i>
+        New Vehicle
+    </button>
+</div>
+
+<div class="table-container">
+    <div class="table-header">
+        <i class="fas fa-list"></i>
+        Vehicle List
+    </div>
+    <div class="table-controls">
+        <div>Showing <span id="vehicle-range">1 to 50</span> of <span id="vehicle-total">10,364</span> vehicles</div>
+        <div>
+            <select id="vehicle-per-page" onchange="changeVehiclePerPage()">
+                <option value="25">25 per page</option>
+                <option value="50" selected>50 per page</option>
+                <option value="100">100 per page</option>
+            </select>
+        </div>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Registration</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Color</th>
+                <th>Fuel Type</th>
+                <th>MOT Due</th>
+                <th>Mileage</th>
+                <th>Customer</th>
+                <th>Last Service</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="vehicles-table-body">
+            <tr>
+                <td colspan="10" class="loading">
+                    <div class="spinner"></div>
+                    Loading vehicles...
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination" id="vehicle-pagination">
+        <!-- Pagination will be generated here -->
+    </div>
+</div>
+
+<!-- Vehicle Detail Modal -->
+<div id="vehicle-detail-modal" class="modal">
+    <div class="modal-content large">
+        <div class="modal-header">
+            <h2><i class="fas fa-car"></i> Vehicle Details</h2>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="vehicle-detail-content">
+                <!-- Vehicle details will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Vehicle Modal -->
+<div id="new-vehicle-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2><i class="fas fa-car-side"></i> New Vehicle</h2>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="new-vehicle-form" onsubmit="createVehicle(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="vehicle-registration">Registration *</label>
+                        <input type="text" id="vehicle-registration" name="registration" required 
+                               placeholder="e.g. AB12 CDE" style="text-transform: uppercase;">
+                    </div>
+                    <div class="form-group">
+                        <label for="vehicle-customer">Customer</label>
+                        <select id="vehicle-customer" name="customer_id">
+                            <option value="">Select Customer</option>
+                            <!-- Customer options will be loaded here -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="vehicle-mileage">Mileage</label>
+                        <input type="number" id="vehicle-mileage" name="mileage" min="0">
+                    </div>
+                </div>
+                <div class="form-note">
+                    <i class="fas fa-info-circle"></i>
+                    Vehicle details (make, model, MOT, etc.) will be automatically fetched from DVLA when you enter the registration.
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Vehicle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Vehicle Modal -->
+<div id="edit-vehicle-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2><i class="fas fa-edit"></i> Edit Vehicle</h2>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="edit-vehicle-form" onsubmit="updateVehicle(event)">
+                <input type="hidden" id="edit-vehicle-id" name="id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="edit-vehicle-registration">Registration *</label>
+                        <input type="text" id="edit-vehicle-registration" name="registration" required 
+                               style="text-transform: uppercase;">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-vehicle-customer">Customer</label>
+                        <select id="edit-vehicle-customer" name="customer_id">
+                            <option value="">Select Customer</option>
+                            <!-- Customer options will be loaded here -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-vehicle-mileage">Mileage</label>
+                        <input type="number" id="edit-vehicle-mileage" name="mileage" min="0">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="button" class="btn btn-info" onclick="refreshVehicleDVLA()">
+                        <i class="fas fa-sync-alt"></i> Refresh DVLA Data
+                    </button>
+                    <button type="submit" class="btn btn-primary">Update Vehicle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,265 @@
+{% extends "layouts/modern.html" %}
+
+{% block title %}Customers - Garage Management System{% endblock %}
+
+{% block page_title %}Customers{% endblock %}
+
+{% block page_subtitle %}
+<p class="page-subtitle">Manage your customer database and relationships.</p>
+{% endblock %}
+
+{% block page_actions %}
+<div class="flex items-center gap-3">
+    <button onclick="exportCustomers()" class="btn btn-secondary">
+        <i class="fas fa-download"></i>
+        Export
+    </button>
+    <button onclick="showNewCustomerModal()" class="btn btn-primary">
+        <i class="fas fa-plus"></i>
+        Add Customer
+    </button>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Search and Filters -->
+<div class="card mb-6">
+    <div class="card-body">
+        <div class="flex flex-col lg:flex-row gap-4">
+            <!-- Search -->
+            <div class="flex-1">
+                <div class="relative">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" 
+                           id="customer-search" 
+                           placeholder="Search customers by name, email, phone, or company..." 
+                           class="form-input pl-10 w-full">
+                </div>
+            </div>
+            
+            <!-- Filters -->
+            <div class="flex gap-3">
+                <select id="customer-status-filter" class="form-select">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+                
+                <select id="customer-type-filter" class="form-select">
+                    <option value="">All Types</option>
+                    <option value="individual">Individual</option>
+                    <option value="business">Business</option>
+                </select>
+                
+                <button onclick="clearFilters()" class="btn btn-ghost">
+                    <i class="fas fa-times"></i>
+                    Clear
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Customer Stats -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+    <div class="card">
+        <div class="card-body">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Total Customers</p>
+                    <p class="text-2xl font-bold text-gray-900" id="total-customers">0</p>
+                </div>
+                <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-users text-primary-600"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Active This Month</p>
+                    <p class="text-2xl font-bold text-gray-900" id="active-customers">0</p>
+                </div>
+                <div class="w-10 h-10 bg-success-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-user-check text-success-600"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">New This Month</p>
+                    <p class="text-2xl font-bold text-gray-900" id="new-customers">0</p>
+                </div>
+                <div class="w-10 h-10 bg-warning-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-user-plus text-warning-600"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Total Revenue</p>
+                    <p class="text-2xl font-bold text-gray-900" id="customer-revenue">£0</p>
+                </div>
+                <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-pound-sign text-purple-600"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Customers Table -->
+<div class="card">
+    <div class="card-header">
+        <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-gray-900">Customer List</h3>
+            <div class="flex items-center gap-3">
+                <span class="text-sm text-gray-500">
+                    Showing <span id="customer-range">0 to 0</span> of <span id="customer-total">0</span> customers
+                </span>
+                <select id="customer-per-page" class="form-select form-select-sm">
+                    <option value="10">10 per page</option>
+                    <option value="25" selected>25 per page</option>
+                    <option value="50">50 per page</option>
+                    <option value="100">100 per page</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="sortable" data-sort="name">
+                        <div class="flex items-center gap-2">
+                            Name
+                            <i class="fas fa-sort text-gray-400"></i>
+                        </div>
+                    </th>
+                    <th>Contact</th>
+                    <th>Company</th>
+                    <th class="sortable" data-sort="vehicles_count">
+                        <div class="flex items-center gap-2">
+                            Vehicles
+                            <i class="fas fa-sort text-gray-400"></i>
+                        </div>
+                    </th>
+                    <th class="sortable" data-sort="last_service">
+                        <div class="flex items-center gap-2">
+                            Last Service
+                            <i class="fas fa-sort text-gray-400"></i>
+                        </div>
+                    </th>
+                    <th class="sortable" data-sort="total_spent">
+                        <div class="flex items-center gap-2">
+                            Total Spent
+                            <i class="fas fa-sort text-gray-400"></i>
+                        </div>
+                    </th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="customers-table-body">
+                <!-- Customer rows will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Pagination -->
+    <div class="card-footer">
+        <div class="flex items-center justify-between">
+            <div class="text-sm text-gray-500">
+                Showing <span id="pagination-range">0 to 0</span> of <span id="pagination-total">0</span> results
+            </div>
+            <div class="flex items-center gap-2" id="pagination-controls">
+                <!-- Pagination buttons will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Customer Detail Modal -->
+<div id="customer-detail-modal" class="modal-backdrop hidden">
+    <div class="modal max-w-4xl">
+        <div class="modal-header">
+            <h3 class="modal-title">Customer Details</h3>
+            <button class="modal-close" onclick="closeCustomerDetail()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div id="customer-detail-content">
+                <!-- Customer details will be populated by JavaScript -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeCustomerDetail()" class="btn btn-secondary">Close</button>
+            <button onclick="editCurrentCustomer()" class="btn btn-primary">
+                <i class="fas fa-edit"></i>
+                Edit Customer
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/pages/customers-modern.js') }}"></script>
+{% endblock %}
+
+{% block page_init %}
+// Initialize modern customers page
+if (window.ModernCustomers) {
+    window.modernCustomers = new ModernCustomers();
+    window.modernCustomers.init();
+}
+{% endblock %}
+
+<style>
+/* Customer-specific styles */
+.sortable {
+    @apply cursor-pointer hover:bg-gray-50 transition-colors;
+}
+
+.sortable.asc i {
+    @apply text-primary-600;
+    transform: rotate(180deg);
+}
+
+.sortable.desc i {
+    @apply text-primary-600;
+}
+
+.customer-avatar {
+    @apply w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 font-semibold;
+}
+
+.customer-status-active {
+    @apply bg-success-100 text-success-800;
+}
+
+.customer-status-inactive {
+    @apply bg-gray-100 text-gray-800;
+}
+
+.customer-type-business {
+    @apply bg-purple-100 text-purple-800;
+}
+
+.customer-type-individual {
+    @apply bg-blue-100 text-blue-800;
+}
+</style>

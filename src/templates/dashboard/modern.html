@@ -1,0 +1,260 @@
+{% extends "layouts/modern.html" %}
+
+{% block title %}Dashboard - Garage Management System{% endblock %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block page_subtitle %}
+<p class="page-subtitle">Welcome back! Here's what's happening in your garage today.</p>
+{% endblock %}
+
+{% block page_actions %}
+<div class="flex items-center gap-3">
+    <button onclick="refreshDashboard()" class="btn btn-secondary btn-sm">
+        <i class="fas fa-sync-alt"></i>
+        Refresh
+    </button>
+    <button onclick="showQuickActions()" class="btn btn-primary">
+        <i class="fas fa-plus"></i>
+        Quick Actions
+    </button>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Key Metrics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Total Revenue Card -->
+    <div class="card hover-lift">
+        <div class="card-body">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Total Revenue</p>
+                    <p class="text-2xl font-bold text-gray-900" id="total-revenue">£0</p>
+                    <p class="text-xs text-success-600 mt-1">
+                        <i class="fas fa-arrow-up"></i>
+                        <span id="revenue-change">+0%</span> from last month
+                    </p>
+                </div>
+                <div class="w-12 h-12 bg-success-100 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-pound-sign text-success-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Jobs Card -->
+    <div class="card hover-lift">
+        <div class="card-body">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Active Jobs</p>
+                    <p class="text-2xl font-bold text-gray-900" id="active-jobs">0</p>
+                    <p class="text-xs text-warning-600 mt-1">
+                        <i class="fas fa-clock"></i>
+                        <span id="urgent-jobs">0</span> urgent
+                    </p>
+                </div>
+                <div class="w-12 h-12 bg-warning-100 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-wrench text-warning-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Estimates Card -->
+    <div class="card hover-lift">
+        <div class="card-body">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Pending Estimates</p>
+                    <p class="text-2xl font-bold text-gray-900" id="pending-estimates">0</p>
+                    <p class="text-xs text-primary-600 mt-1">
+                        <i class="fas fa-file-invoice"></i>
+                        <span id="estimate-value">£0</span> total value
+                    </p>
+                </div>
+                <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-file-invoice text-primary-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Outstanding Invoices Card -->
+    <div class="card hover-lift">
+        <div class="card-body">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Outstanding</p>
+                    <p class="text-2xl font-bold text-gray-900" id="outstanding-amount">£0</p>
+                    <p class="text-xs text-error-600 mt-1">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span id="overdue-count">0</span> overdue
+                    </p>
+                </div>
+                <div class="w-12 h-12 bg-error-100 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-file-invoice-dollar text-error-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Left Column - Charts and Analytics -->
+    <div class="lg:col-span-2 space-y-8">
+        <!-- Revenue Chart -->
+        <div class="card">
+            <div class="card-header">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-900">Revenue Overview</h3>
+                    <div class="flex items-center gap-2">
+                        <select id="revenue-period" class="form-select form-select-sm">
+                            <option value="7">Last 7 days</option>
+                            <option value="30" selected>Last 30 days</option>
+                            <option value="90">Last 90 days</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="revenue-chart" height="300"></canvas>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card">
+            <div class="card-header">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-900">Recent Activity</h3>
+                    <a href="/activity" class="text-sm text-primary-600 hover:text-primary-700">View all</a>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div id="recent-activity" class="divide-y divide-gray-200">
+                    <!-- Activity items will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column - Quick Info and Actions -->
+    <div class="space-y-8">
+        <!-- Today's Schedule -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-lg font-semibold text-gray-900">Today's Schedule</h3>
+            </div>
+            <div class="card-body p-0">
+                <div id="todays-schedule" class="divide-y divide-gray-200">
+                    <!-- Schedule items will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-lg font-semibold text-gray-900">Quick Actions</h3>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="showNewCustomerModal()" class="quick-action-btn">
+                        <i class="fas fa-user-plus"></i>
+                        <span>New Customer</span>
+                    </button>
+                    <button onclick="showNewJobModal()" class="quick-action-btn">
+                        <i class="fas fa-plus"></i>
+                        <span>New Job</span>
+                    </button>
+                    <button onclick="showNewEstimateModal()" class="quick-action-btn">
+                        <i class="fas fa-file-invoice"></i>
+                        <span>New Estimate</span>
+                    </button>
+                    <button onclick="showNewInvoiceModal()" class="quick-action-btn">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span>New Invoice</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Status -->
+        <div class="card">
+            <div class="card-header">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-900">System Status</h3>
+                    <a href="/monitoring" class="text-sm text-primary-600 hover:text-primary-700">Details</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="system-status" class="space-y-3">
+                    <!-- System status will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/pages/dashboard-modern.js') }}"></script>
+{% endblock %}
+
+{% block page_init %}
+// Initialize modern dashboard
+if (window.ModernDashboard) {
+    window.modernDashboard = new ModernDashboard();
+    window.modernDashboard.init();
+}
+{% endblock %}
+
+<style>
+/* Dashboard-specific styles */
+.quick-action-btn {
+    @apply flex flex-col items-center justify-center p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors text-center;
+}
+
+.quick-action-btn i {
+    @apply text-xl text-gray-600 mb-2;
+}
+
+.quick-action-btn span {
+    @apply text-sm font-medium text-gray-700;
+}
+
+.activity-item {
+    @apply flex items-center gap-4 p-4;
+}
+
+.activity-icon {
+    @apply w-10 h-10 rounded-full flex items-center justify-center text-sm;
+}
+
+.schedule-item {
+    @apply flex items-center justify-between p-4;
+}
+
+.status-indicator {
+    @apply flex items-center gap-2 text-sm;
+}
+
+.status-dot {
+    @apply w-2 h-2 rounded-full;
+}
+
+.status-healthy .status-dot {
+    @apply bg-success-500;
+}
+
+.status-warning .status-dot {
+    @apply bg-warning-500;
+}
+
+.status-error .status-dot {
+    @apply bg-error-500;
+}
+</style>

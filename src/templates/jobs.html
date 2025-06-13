@@ -1,0 +1,206 @@
+<!-- Jobs Page -->
+<div class="page-header">
+    <div>
+        <h1 class="page-title">
+            <i class="fas fa-wrench"></i>
+            Job Management
+        </h1>
+        <p class="page-subtitle">All jobs and work orders</p>
+    </div>
+    <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="job-search" placeholder="Job Search" onkeyup="searchJobs()">
+    </div>
+    <button class="btn btn-primary" onclick="showNewJobForm()">
+        <i class="fas fa-plus"></i>
+        New Job
+    </button>
+</div>
+
+<!-- Filter Controls -->
+<div class="filter-controls">
+    <div class="filter-group">
+        <label for="job-status-filter">Status:</label>
+        <select id="job-status-filter" onchange="filterJobsByStatus()">
+            <option value="">All Statuses</option>
+            <option value="pending">Pending</option>
+            <option value="in_progress">In Progress</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <label for="job-customer-filter">Customer:</label>
+        <select id="job-customer-filter" onchange="filterJobsByCustomer()">
+            <option value="">All Customers</option>
+            <!-- Customer options will be loaded here -->
+        </select>
+    </div>
+</div>
+
+<div class="table-container">
+    <div class="table-header">
+        <i class="fas fa-wrench"></i>
+        Job List
+    </div>
+    <div class="table-controls">
+        <div>Showing <span id="job-range">1 to 20</span> of <span id="job-total">0</span> jobs</div>
+        <div>
+            <select id="job-per-page" onchange="changeJobPerPage()">
+                <option value="20" selected>20 per page</option>
+                <option value="50">50 per page</option>
+                <option value="100">100 per page</option>
+            </select>
+        </div>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Job No</th>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Vehicle</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Estimate</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="jobs-table-body">
+            <tr>
+                <td colspan="9" class="loading">
+                    <div class="spinner"></div>
+                    Loading jobs...
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination" id="job-pagination">
+        <!-- Pagination will be generated here -->
+    </div>
+</div>
+
+<!-- Job Detail Modal -->
+<div id="job-detail-modal" class="modal">
+    <div class="modal-content large">
+        <div class="modal-header">
+            <h2><i class="fas fa-wrench"></i> Job Details</h2>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="job-detail-content">
+                <!-- Job details will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Job Modal -->
+<div id="new-job-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2><i class="fas fa-plus"></i> New Job</h2>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="new-job-form" onsubmit="createJob(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="job-customer">Customer *</label>
+                        <select id="job-customer" name="customer_id" required onchange="loadCustomerVehicles()">
+                            <option value="">Select Customer</option>
+                            <!-- Customer options will be loaded here -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="job-vehicle">Vehicle</label>
+                        <select id="job-vehicle" name="vehicle_id">
+                            <option value="">Select Vehicle</option>
+                            <!-- Vehicle options will be loaded here -->
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="job-description">Description *</label>
+                        <textarea id="job-description" name="description" required rows="3" 
+                                  placeholder="Describe the work to be performed..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="job-status">Status</label>
+                        <select id="job-status" name="status">
+                            <option value="pending">Pending</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="job-total-amount">Estimated Total (£)</label>
+                        <input type="number" id="job-total-amount" name="total_amount" 
+                               min="0" step="0.01" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Job</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Job Modal -->
+<div id="edit-job-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2><i class="fas fa-edit"></i> Edit Job</h2>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="edit-job-form" onsubmit="updateJob(event)">
+                <input type="hidden" id="edit-job-id" name="id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="edit-job-number">Job Number</label>
+                        <input type="text" id="edit-job-number" name="job_number" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-job-customer">Customer *</label>
+                        <select id="edit-job-customer" name="customer_id" required onchange="loadEditCustomerVehicles()">
+                            <option value="">Select Customer</option>
+                            <!-- Customer options will be loaded here -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-job-vehicle">Vehicle</label>
+                        <select id="edit-job-vehicle" name="vehicle_id">
+                            <option value="">Select Vehicle</option>
+                            <!-- Vehicle options will be loaded here -->
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="edit-job-description">Description *</label>
+                        <textarea id="edit-job-description" name="description" required rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-job-status">Status</label>
+                        <select id="edit-job-status" name="status">
+                            <option value="pending">Pending</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-job-total-amount">Total Amount (£)</label>
+                        <input type="number" id="edit-job-total-amount" name="total_amount" 
+                               min="0" step="0.01">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Job</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
