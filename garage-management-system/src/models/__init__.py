@@ -12,7 +12,15 @@ from .vehicle import Vehicle
 from .job import Job
 from .estimate import Estimate
 from .invoice import Invoice
-from .user import User
+
+# Import authentication models
+from auth.models import User, Role, Permission, UserSession, LoginAttempt
+
+# Import audit models
+from auth.audit import AuditLog
+
+# Import GDPR models
+from gdpr.models import ConsentRecord, DataSubjectRequest, DataProcessingRecord, DataRetentionPolicy
 
 __all__ = [
     'db',
@@ -22,5 +30,14 @@ __all__ = [
     'Job',
     'Estimate',
     'Invoice',
-    'User'
+    'User',
+    'Role',
+    'Permission',
+    'UserSession',
+    'LoginAttempt',
+    'AuditLog',
+    'ConsentRecord',
+    'DataSubjectRequest',
+    'DataProcessingRecord',
+    'DataRetentionPolicy'
 ]

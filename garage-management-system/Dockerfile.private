@@ -1,0 +1,41 @@
+# Private Docker deployment for Garage Management System
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements
+COPY requirements/ requirements/
+RUN pip install --no-cache-dir -r requirements/base.txt
+
+# Copy application code
+COPY src/ src/
+COPY scripts/ scripts/
+COPY docs/ docs/
+COPY *.py ./
+
+# Create non-root user for security
+RUN useradd -m -u 1000 garage && chown -R garage:garage /app
+USER garage
+
+# Set environment variables for private mode
+ENV FLASK_ENV=production
+ENV DEBUG=False
+ENV PRIVATE_MODE=True
+ENV ALLOW_PUBLIC_REGISTRATION=False
+ENV REQUIRE_ADMIN_APPROVAL=True
+
+# Expose port (only accessible within Docker network)
+EXPOSE 5000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:5000/api/status || exit 1
+
+# Run the private application
+CMD ["python3", "run_private.py"]

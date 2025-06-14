@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  garage-private:
+    build:
+      context: .
+      dockerfile: Dockerfile.private
+    container_name: garage-management-private
+    restart: unless-stopped
+    
+    # Private network configuration
+    networks:
+      - garage-private-network
+    
+    # Only expose to localhost (not accessible from outside)
+    ports:
+      - "127.0.0.1:5000:5000"  # Only localhost can access
+    
+    # Environment variables for private deployment
+    environment:
+      - FLASK_ENV=production
+      - DEBUG=False
+      - PRIVATE_MODE=True
+      - ALLOW_PUBLIC_REGISTRATION=False
+      - REQUIRE_ADMIN_APPROVAL=True
+      - SECRET_KEY=private-docker-secret-change-me
+      - DATABASE_URL=sqlite:///private_garage.db
+      - COMPANY_NAME=Private Garage Management
+      - COMPANY_EMAIL=admin@private-garage.local
+      - DPO_EMAIL=dpo@private-garage.local
+    
+    # Persistent storage for database and logs
+    volumes:
+      - garage-data:/app/data
+      - garage-logs:/app/logs
+      - garage-backups:/app/backups
+    
+    # Security settings
+    security_opt:
+      - no-new-privileges:true
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Private database (if you want separate DB container)
+  garage-db-private:
+    image: postgres:13-alpine
+    container_name: garage-db-private
+    restart: unless-stopped
+    
+    networks:
+      - garage-private-network
+    
+    environment:
+      - POSTGRES_DB=garage_private
+      - POSTGRES_USER=garage_user
+      - POSTGRES_PASSWORD=secure_private_password
+    
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    
+    # No external ports - only accessible within Docker network
+    # ports: []  # Commented out for security
+
+# Private network (isolated from external access)
+networks:
+  garage-private-network:
+    driver: bridge
+    internal: false  # Set to true for complete isolation
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# Persistent volumes
+volumes:
+  garage-data:
+    driver: local
+  garage-logs:
+    driver: local
+  garage-backups:
+    driver: local
+  postgres-data:
+    driver: local
