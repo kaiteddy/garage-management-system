@@ -1,89 +1,126 @@
-# GarageManager Pro - Professional Garage Management System
+# 🚗 GarageManager Pro - Complete Garage Management System
 
-A comprehensive garage management system built with Flask backend and modern HTML/CSS/JavaScript frontend. This system provides complete customer, vehicle, job, and invoice management for automotive service businesses.
+A comprehensive, modern garage management system built with Python Flask, featuring MOT reminders, customer management, SMS notifications, and a beautiful Apple-inspired user interface.
 
-## 🚀 Features
+## 🌟 Key Features
 
-### 📊 Dashboard
-- Real-time overview of business metrics
-- Customer, vehicle, and revenue statistics
-- Recent activity tracking
-- Professional modern interface
+### 🎯 **Unified Management Interface**
+- **Single Dashboard**: All garage operations in one unified interface
+- **Modern UI**: Apple-inspired design with blue and white color scheme
+- **Responsive Layout**: Works perfectly on desktop, tablet, and mobile
+- **Real-time Updates**: Live data synchronization across all modules
+- **Professional Design**: Clean, minimalistic interface with proper spacing
 
-### 👥 Customer Management
-- Complete customer database with search and pagination
-- Customer details with contact information
-- Service history tracking
-- Vehicle ownership management
-- Invoice and payment tracking
+### 🔔 **MOT Reminder System**
+- **DVSA API Integration**: Real-time MOT data from official DVLA sources
+- **SMS Notifications**: Automated reminders via Twilio integration
+- **Bulk Processing**: Handle hundreds of vehicles efficiently
+- **Smart Filtering**: Urgent, due soon, and completed status tracking
+- **Completion Tracking**: Mark reminders as sent and track history
+- **Archive System**: Hide completed reminders for better organization
 
-### 🚙 Vehicle Management
-- Comprehensive vehicle database
-- MOT due date tracking
-- Service history for each vehicle
-- Mileage tracking
-- Customer linking
+### 👥 **Customer & Vehicle Management**
+- **Complete Customer Database**: Detailed customer profiles and history
+- **Vehicle Tracking**: Comprehensive vehicle records with MOT integration
+- **Service History**: Track all jobs, invoices, and maintenance
+- **Advanced Search**: Find customers and vehicles quickly
+- **Data Linking**: Intelligent connection between customers, vehicles, and jobs
+- **Import/Export**: CSV bulk operations with validation
 
-### 💼 Job Management
-- Job creation and tracking
-- Status management (Pending, In Progress, Completed)
-- Service descriptions and notes
-- Cost tracking and invoicing
+### 📊 **Business Intelligence Dashboard**
+- **Key Metrics**: Customer count, vehicle tracking, revenue monitoring
+- **Quick Actions**: Fast access to common operations
+- **Activity Overview**: Recent jobs, invoices, and system activity
+- **Performance Tracking**: Business analytics and insights
+- **Modern Cards**: Clean, professional data presentation
 
-### 📄 Invoice System
-- Automatic invoice generation from jobs
-- Payment status tracking (Paid, Partial, Pending)
-- Customer and vehicle linking
-- Financial reporting
+### 🔧 **Advanced Data Management**
+- **CSV Import/Export**: Bulk data operations with intelligent validation
+- **Google Drive Integration**: Seamless cloud data synchronization
+- **Data Validation**: Intelligent error detection and correction
+- **Backup & Restore**: Secure data protection and recovery
+- **Real-time Linking**: Automatic customer-vehicle-job connections
 
-### 🔧 Additional Features
-- Modern responsive design
-- Professional TechmanGMS-inspired interface
-- Search functionality across all sections
-- Pagination for large datasets
-- Error handling and validation
-- CORS support for API access
+### ⚙️ **Comprehensive Settings System**
+- **MOT Configuration**: DVSA API setup and SMS service configuration
+- **System Preferences**: Date formats, UI themes, and display options
+- **Garage Information**: Business details and operating hours
+- **User Account**: Personal settings and security preferences
+- **Data Management**: Import/export tools and backup options
 
 ## 🛠️ Technology Stack
 
-- **Backend**: Flask (Python)
-- **Database**: SQLite
-- **Frontend**: HTML5, CSS3, JavaScript
-- **Icons**: FontAwesome
-- **Styling**: Modern CSS with gradients and animations
-- **API**: RESTful JSON API
+### **Backend**
+- **Flask**: Python web framework with modular route structure
+- **SQLite**: Lightweight, reliable database with automatic initialization
+- **Python 3.7+**: Modern Python with type hints and async support
+
+### **Frontend**
+- **HTML5**: Semantic markup with modern standards
+- **CSS3**: Apple San Francisco font family, CSS Grid, Flexbox
+- **JavaScript**: ES6+ with modern DOM manipulation
+- **Responsive Design**: Mobile-first approach with breakpoints
+
+### **Integrations**
+- **DVSA API**: Official UK government MOT data integration
+- **Twilio SMS**: Professional SMS notification service
+- **Google Drive API**: Cloud storage and data synchronization
+- **Font Awesome**: Professional icon library
+
+### **Design System**
+- **Apple Design Language**: Consistent with iOS/macOS aesthetics
+- **Blue & White Theme**: Professional color scheme
+- **Typography**: San Francisco font family (SF Pro, SF Compact, SF Mono)
+- **Spacing**: Consistent padding, margins, and layout density options
 
 ## 📋 Prerequisites
 
-- Python 3.7 or higher
-- pip (Python package installer)
+- **Python 3.7+**: Modern Python with pip package installer
+- **Git**: For repository cloning and version control
+- **Web Browser**: Chrome, Firefox, Safari, or Edge (modern browsers)
 
-## 🚀 Installation
+## 🚀 Quick Start
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/garage-management-system.git
-   cd garage-management-system
-   ```
+### **1. Clone & Setup**
+```bash
+git clone https://github.com/kaiteddy/garage-management-system.git
+cd garage-management-system
 
-2. **Create virtual environment**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+# Install dependencies
+pip install -r requirements.txt
+```
 
-4. **Run the application**
-   ```bash
-   python src/main.py
-   ```
+### **2. Initialize Database**
+```bash
+# Initialize the database with sample data
+python src/init_database.py
+```
 
-5. **Access the application**
-   Open your browser and navigate to `http://localhost:5000`
+### **3. Run the Application**
+```bash
+# Start the main application
+python src/main.py
+```
+
+### **4. Access the System**
+- **Main Application**: `http://localhost:5001`
+- **MOT Reminder Service**: `http://localhost:5003` (if running separately)
+
+### **5. Optional: Configure Integrations**
+```bash
+# Set up Google Drive integration (optional)
+python setup_google_drive.py
+
+# Test DVSA API connection (optional)
+python mot_reminder/test_api_connection.py
+
+# Test SMS service (optional)
+python test_twilio_credentials.py
+```
 
 ## 📁 Project Structure
 
