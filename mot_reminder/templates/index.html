@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOT Reminder System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --light-bg: #f8fafc;
+            --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --border-radius: 0.75rem;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1d4ed8 100%) !important;
+            box-shadow: var(--card-shadow);
+            border: none;
+        }
+
+        .card {
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .card:hover {
+            box-shadow: var(--card-shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .vehicle-card {
+            transition: all 0.3s ease;
+            border-radius: var(--border-radius);
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .expired {
+            border-left: 4px solid var(--danger-color);
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.05) 0%, transparent 100%);
+        }
+
+        .warning {
+            border-left: 4px solid var(--warning-color);
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.05) 0%, transparent 100%);
+        }
+
+        .good {
+            border-left: 4px solid var(--success-color);
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%);
+        }
+
+        .flash-messages {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .btn {
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1d4ed8 100%);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+            border: none;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-1px);
+        }
+
+        .table {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            border: none;
+            font-weight: 600;
+            color: var(--secondary-color);
+            padding: 1rem;
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            border-color: #f1f5f9;
+            vertical-align: middle;
+        }
+
+        .badge {
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+        }
+
+        .template-links {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Drag and Drop Styles */
+        .drop-zone {
+            border: 2px dashed #dee2e6;
+            border-radius: 0.5rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            background-color: #f8f9fa;
+        }
+
+        .drop-zone:hover {
+            border-color: #0d6efd;
+            background-color: #f0f8ff;
+        }
+
+        .drop-zone.drag-over {
+            border-color: #0d6efd;
+            background-color: #e7f3ff;
+            transform: scale(1.02);
+        }
+
+        .drop-zone-content {
+            transition: opacity 0.3s ease;
+        }
+
+        .drop-zone-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(13, 110, 253, 0.1);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .drop-zone.drag-over .drop-zone-overlay {
+            opacity: 1;
+        }
+
+        .drop-zone.drag-over .drop-zone-content {
+            opacity: 0.3;
+        }
+
+        .file-info {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('mot.index') }}">
+                <i class="fas fa-car me-2"></i> MOT Reminder System
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link active px-3 rounded-pill me-2" href="{{ url_for('mot.index') }}">
+                    <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+                </a>
+                <a class="nav-link px-3 rounded-pill" href="{{ url_for('mot.sms_dashboard') }}">
+                    <i class="fas fa-sms me-1"></i> SMS Center
+                    {% if stats and (stats.expired > 0 or stats.critical > 0) %}
+                        <span class="badge bg-danger ms-1">{{ stats.expired + stats.critical }}</span>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Flash Messages -->
+        <div class="flash-messages" id="flashMessages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <!-- Main Header -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="text-center">
+                    <h1 class="display-5 fw-bold text-dark mb-3">
+                        <i class="fas fa-car text-primary me-3"></i>
+                        MOT Reminder Dashboard
+                    </h1>
+                    <p class="lead text-muted">
+                        Monitor vehicle MOT status, manage customer data, and send automated reminders
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Vehicle Forms -->
+        <div class="row mb-5"> <!-- Increased from mb-4 for better section separation -->
+            <!-- Single Vehicle Form -->
+            <div class="col-md-6 mb-4"> <!-- Added mb-4 for mobile spacing -->
+                <div class="card h-100">
+                    <div class="card-body" style="padding: 2rem;"> <!-- Increased padding for better spacing -->
+                        <h5 class="card-title" style="margin-bottom: 1.5rem; font-size: 1.2rem;"> <!-- Increased margin and font size -->
+                            <i class="fas fa-plus"></i> Add Single Vehicle
+                        </h5>
+                        <form action="{{ url_for('mot.add_vehicle') }}" method="POST" class="row g-3">
+                            <div class="col-12" style="margin-bottom: 1.5rem;"> <!-- Added margin for better form spacing -->
+                                <input type="text" class="form-control" name="registration" placeholder="Enter Registration Number" required style="padding: 1rem; font-size: 1rem;"> <!-- Increased padding and font size -->
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary w-100" style="padding: 1rem; font-size: 1rem;"> <!-- Increased padding and font size -->
+                                    <i class="fas fa-plus"></i> Add Vehicle
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bulk Upload Form -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-upload"></i> Bulk Upload
+                        </h5>
+                        <form action="{{ url_for('mot.upload_file') }}" method="POST" enctype="multipart/form-data" class="row g-3" id="uploadForm">
+                            <div class="col-12">
+                                <!-- Drag and Drop Area -->
+                                <div id="dropZone" class="drop-zone mb-3">
+                                    <div class="drop-zone-content">
+                                        <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                                        <p class="mb-2"><strong>Drag and drop your file here</strong></p>
+                                        <p class="text-muted mb-3">or</p>
+                                        <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('fileInput').click()">
+                                            <i class="fas fa-folder-open"></i> Browse Files
+                                        </button>
+                                    </div>
+                                    <div class="drop-zone-overlay">
+                                        <div class="drop-zone-overlay-content">
+                                            <i class="fas fa-download fa-3x text-primary mb-3"></i>
+                                            <p class="text-primary"><strong>Drop file to upload</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Hidden File Input -->
+                                <input type="file" id="fileInput" class="d-none" name="file" accept=".csv,.xlsx,.xls" required>
+
+                                <!-- File Info Display -->
+                                <div id="fileInfo" class="file-info d-none">
+                                    <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-file-excel text-success me-2"></i>
+                                            <span id="fileName"></span>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="clearFile()">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="form-text">Upload CSV or Excel file with vehicle registrations</div>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-success w-100" id="uploadBtn" disabled>
+                                    <i class="fas fa-upload"></i> Upload File
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Template Downloads -->
+                        <div class="mt-3">
+                            <small class="text-muted">Download templates:</small><br>
+                            <a href="{{ url_for('mot.download_template', file_type='csv') }}" class="btn btn-outline-secondary btn-sm me-2">
+                                <i class="fas fa-download"></i> CSV Template
+                            </a>
+                            <a href="{{ url_for('mot.download_template', file_type='excel') }}" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-download"></i> Excel Template
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Summary -->
+        {% if vehicles %}
+        <div class="row mb-5"> <!-- Increased from mb-4 for better section separation -->
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body" style="padding: 2rem;"> <!-- Increased padding for better content spacing -->
+                        <h6 class="card-title mb-4" style="font-size: 1.2rem;"> <!-- Increased margin and font size -->
+                            <i class="fas fa-chart-bar"></i> MOT Status Summary
+                        </h6>
+                        <div class="row text-center" style="gap: 1rem 0;"> <!-- Added gap for better spacing -->
+                            <div class="col-md-2 mb-3"> <!-- Added mb-3 for mobile spacing -->
+                                <div class="border rounded p-3" style="min-height: 100px; display: flex; flex-direction: column; justify-content: center;"> <!-- Increased padding and added min-height -->
+                                    <div class="h4 mb-2" style="font-size: 1.75rem;">{{ stats.total }}</div> <!-- Increased font size and margin -->
+                                    <small class="text-muted" style="font-size: 0.9rem;">Total</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2 mb-3"> <!-- Added mb-3 for mobile spacing -->
+                                <div class="border rounded p-3 {% if stats.expired > 0 %}bg-danger text-white{% endif %}" style="min-height: 100px; display: flex; flex-direction: column; justify-content: center;"> <!-- Increased padding and added min-height -->
+                                    <div class="h4 mb-2" style="font-size: 1.75rem;">{{ stats.expired }}</div> <!-- Increased font size and margin -->
+                                    <small class="{% if stats.expired > 0 %}text-white{% else %}text-muted{% endif %}" style="font-size: 0.9rem;">Expired</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="border rounded p-2 {% if stats.critical > 0 %}bg-warning text-dark{% endif %}">
+                                    <div class="h4 mb-1">{{ stats.critical }}</div>
+                                    <small class="{% if stats.critical > 0 %}text-dark{% else %}text-muted{% endif %}">≤ 7 days</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="border rounded p-2 {% if stats.due_soon > 0 %}bg-warning bg-opacity-50{% endif %}">
+                                    <div class="h4 mb-1">{{ stats.due_soon }}</div>
+                                    <small class="text-muted">8-30 days</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="border rounded p-2 {% if stats.valid > 0 %}bg-success text-white{% endif %}">
+                                    <div class="h4 mb-1">{{ stats.valid }}</div>
+                                    <small class="{% if stats.valid > 0 %}text-white{% else %}text-muted{% endif %}">Valid</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="border rounded p-2">
+                                    <div class="h4 mb-1">{{ ((stats.expired + stats.critical) / stats.total * 100)|round(1) if stats.total > 0 else 0 }}%</div>
+                                    <small class="text-muted">Urgent</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Data Summary -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title mb-3">
+                            <i class="fas fa-users"></i> Customer Data Summary
+                        </h6>
+                        <div class="row text-center">
+                            <div class="col-md-3">
+                                <div class="border rounded p-3">
+                                    <div class="h4 mb-1 text-success">{{ stats.complete_data }}</div>
+                                    <small class="text-muted">Complete Data</small>
+                                    <div class="small text-muted mt-1">
+                                        <i class="fas fa-user me-1"></i>
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="border rounded p-3">
+                                    <div class="h4 mb-1 text-info">{{ stats.with_customer_data }}</div>
+                                    <small class="text-muted">With Customer Name</small>
+                                    <div class="small text-muted mt-1">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="border rounded p-3">
+                                    <div class="h4 mb-1 text-primary">{{ stats.with_mobile }}</div>
+                                    <small class="text-muted">With Mobile Number</small>
+                                    <div class="small text-muted mt-1">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="border rounded p-3 {% if (stats.total - stats.complete_data) > 0 %}bg-warning text-dark{% endif %}">
+                                    <div class="h4 mb-1">{{ stats.total - stats.complete_data }}</div>
+                                    <small class="{% if (stats.total - stats.complete_data) > 0 %}text-dark{% else %}text-muted{% endif %}">Missing Data</small>
+                                    <div class="small {% if (stats.total - stats.complete_data) > 0 %}text-dark{% else %}text-muted{% endif %} mt-1">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% if (stats.total - stats.complete_data) > 0 %}
+                        <div class="alert alert-warning mt-3 mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>{{ stats.total - stats.complete_data }}</strong> vehicle(s) are missing customer information.
+                            Consider updating your data to enable SMS notifications.
+                        </div>
+                        {% endif %}
+
+                        <!-- Reset Controls -->
+                        <div class="mt-3 pt-3 border-top">
+                            <h6 class="text-muted mb-2">
+                                <i class="fas fa-cog"></i> Management Controls
+                            </h6>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button class="btn btn-outline-warning" onclick="resetCompleted()" title="Reset all completion status">
+                                    <i class="fas fa-undo"></i> Reset Completed
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="resetArchived()" title="Show all archived vehicles">
+                                    <i class="fas fa-eye"></i> Show Archived
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Vehicle List -->
+        <div class="row">
+            {% if vehicles %}
+                <div class="col-12 mb-3 d-flex justify-content-between align-items-center">
+                    <div>
+                        <a href="{{ url_for('mot.check_all') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-sync"></i> Check All Vehicles
+                        </a>
+                        <span class="ms-3 text-muted">{{ vehicles|length }} vehicle(s) total</span>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="toggleView()">
+                            <i class="fas fa-th-large" id="view-icon"></i> <span id="view-text">Card View</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- List View -->
+                <div class="col-12" id="list-view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-list"></i> Vehicle MOT Status
+                                <small class="text-muted">(Sorted by urgency - expired first)</small>
+                            </h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0 table-compact">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="width: 8%;">Status</th>
+                                            <th style="width: 12%;">Registration</th>
+                                            <th style="width: 15%;">Vehicle</th>
+                                            <th style="width: 15%;">Customer</th>
+                                            <th style="width: 12%;">Mobile</th>
+                                            <th style="width: 10%;">MOT Expiry</th>
+                                            <th style="width: 8%;">Days</th>
+                                            <th style="width: 10%;">Last Test</th>
+                                            <th style="width: 10%;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for vehicle in vehicles|sort(attribute='days_until_expiry') %}
+                                        <tr class="{% if vehicle.is_expired %}table-danger{% elif vehicle.days_until_expiry <= 30 %}table-warning{% endif %}"
+                                            data-registration="{{ vehicle.registration }}">
+                                            <td>
+                                                {% if vehicle.is_expired %}
+                                                    <span class="badge bg-danger fs-6">
+                                                        <i class="fas fa-exclamation-triangle"></i> URGENT
+                                                    </span>
+                                                {% elif vehicle.days_until_expiry <= 7 %}
+                                                    <span class="badge bg-danger">
+                                                        <i class="fas fa-clock"></i> Critical
+                                                    </span>
+                                                {% elif vehicle.days_until_expiry <= 30 %}
+                                                    <span class="badge bg-warning text-dark">
+                                                        <i class="fas fa-exclamation"></i> Due Soon
+                                                    </span>
+                                                {% else %}
+                                                    <span class="badge bg-success">
+                                                        <i class="fas fa-check"></i> Valid
+                                                    </span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <strong class="{% if vehicle.is_expired %}text-danger{% endif %}">
+                                                    {{ vehicle.registration }}
+                                                </strong>
+                                            </td>
+                                            <td>{{ vehicle.make }} {{ vehicle.model }}</td>
+                                            <td>
+                                                {% if vehicle.customer_name %}
+                                                    <span class="text-truncate d-inline-block" style="max-width: 120px;" title="{{ vehicle.customer_name }}">
+                                                        {{ vehicle.customer_name }}
+                                                    </span>
+                                                {% else %}
+                                                    <small class="text-muted">No customer</small>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if vehicle.mobile_number %}
+                                                    <a href="tel:{{ vehicle.mobile_number }}" class="text-decoration-none small">
+                                                        {{ vehicle.mobile_number }}
+                                                    </a>
+                                                {% else %}
+                                                    <small class="text-muted">No mobile</small>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <span class="{% if vehicle.is_expired %}text-danger fw-bold{% elif vehicle.days_until_expiry <= 30 %}text-warning fw-bold{% endif %}">
+                                                    {{ vehicle.mot_expiry_date | format_date }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {% if vehicle.is_expired %}
+                                                    <span class="text-danger fw-bold small">
+                                                        -{{ vehicle.days_until_expiry|abs }}
+                                                    </span>
+                                                {% elif vehicle.days_until_expiry == 0 %}
+                                                    <span class="text-danger fw-bold small">
+                                                        TODAY
+                                                    </span>
+                                                {% elif vehicle.days_until_expiry <= 7 %}
+                                                    <span class="text-danger fw-bold small">
+                                                        {{ vehicle.days_until_expiry }}
+                                                    </span>
+                                                {% elif vehicle.days_until_expiry <= 30 %}
+                                                    <span class="text-warning fw-bold small">
+                                                        {{ vehicle.days_until_expiry }}
+                                                    </span>
+                                                {% else %}
+                                                    <span class="text-success small">
+                                                        {{ vehicle.days_until_expiry }}
+                                                    </span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <small class="text-muted">
+                                                    {{ vehicle.last_test_date | format_date }}
+                                                </small>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <!-- Completion Status Checkbox -->
+                                                    <div class="form-check form-check-inline me-2">
+                                                        <input class="form-check-input completion-checkbox"
+                                                               type="checkbox"
+                                                               id="complete_{{ vehicle.registration }}"
+                                                               data-registration="{{ vehicle.registration }}"
+                                                               onchange="toggleCompletion('{{ vehicle.registration }}')">
+                                                        <label class="form-check-label small text-muted"
+                                                               for="complete_{{ vehicle.registration }}"
+                                                               title="Mark as completed">
+                                                            Done
+                                                        </label>
+                                                    </div>
+
+                                                    <!-- Customer Details Button -->
+                                                    {% if vehicle.customer_name %}
+                                                    <button class="btn btn-outline-info btn-sm me-1"
+                                                            title="Customer Details"
+                                                            onclick="showCustomerDetails('{{ vehicle.registration }}')">
+                                                        <i class="fas fa-user"></i>
+                                                    </button>
+                                                    {% endif %}
+
+                                                    <!-- Refresh MOT Data -->
+                                                    <a href="{{ url_for('mot.check_vehicle', registration=vehicle.registration) }}"
+                                                       class="btn btn-outline-primary btn-sm me-1"
+                                                       title="Refresh MOT Data">
+                                                        <i class="fas fa-sync"></i>
+                                                    </a>
+
+                                                    <!-- Archive Button -->
+                                                    <button class="btn btn-outline-warning btn-sm me-1"
+                                                            title="Archive Vehicle"
+                                                            onclick="archiveVehicle('{{ vehicle.registration }}')">
+                                                        <i class="fas fa-archive"></i>
+                                                    </button>
+
+                                                    <!-- Remove Vehicle -->
+                                                    <a href="{{ url_for('mot.remove_vehicle', registration=vehicle.registration) }}"
+                                                       class="btn btn-outline-danger btn-sm"
+                                                       title="Remove Vehicle"
+                                                       onclick="return confirm('Remove {{ vehicle.registration }}?')">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card View (Hidden by default) -->
+                <div class="row" id="card-view" style="display: none;">
+                    {% for vehicle in vehicles|sort(attribute='days_until_expiry') %}
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card vehicle-card h-100 {% if vehicle.is_expired %}expired{% elif vehicle.days_until_expiry <= 30 %}warning{% else %}good{% endif %}">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <h5 class="card-title">{{ vehicle.registration }}</h5>
+                                        <div class="dropdown">
+                                            <button class="btn btn-link text-dark" type="button" data-bs-toggle="dropdown">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ url_for('mot.check_vehicle', registration=vehicle.registration) }}">
+                                                        <i class="fas fa-sync"></i> Check Now
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item text-danger" href="{{ url_for('mot.remove_vehicle', registration=vehicle.registration) }}">
+                                                        <i class="fas fa-trash"></i> Remove
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <p class="card-text">
+                                        <strong>Make/Model:</strong> {{ vehicle.make }} {{ vehicle.model }}<br>
+
+                                        {% if vehicle.customer_name %}
+                                            <strong>Customer:</strong>
+                                            <i class="fas fa-user text-muted me-1"></i>
+                                            {{ vehicle.customer_name }}<br>
+                                        {% else %}
+                                            <strong>Customer:</strong>
+                                            <span class="text-muted fst-italic">
+                                                <i class="fas fa-user-slash me-1"></i>
+                                                No customer data
+                                            </span><br>
+                                        {% endif %}
+
+                                        {% if vehicle.mobile_number %}
+                                            <strong>Mobile:</strong>
+                                            <i class="fas fa-phone text-muted me-1"></i>
+                                            <a href="tel:{{ vehicle.mobile_number }}" class="text-decoration-none">
+                                                {{ vehicle.mobile_number }}
+                                            </a><br>
+                                        {% else %}
+                                            <strong>Mobile:</strong>
+                                            <span class="text-muted fst-italic">
+                                                <i class="fas fa-phone-slash me-1"></i>
+                                                No mobile number
+                                            </span><br>
+                                        {% endif %}
+
+                                        <strong>MOT Expiry:</strong> {{ vehicle.mot_expiry_date | format_date }}<br>
+                                        <strong>Last Test:</strong> {{ vehicle.last_test_date | format_date }}<br>
+                                        <strong>Last Result:</strong> {{ vehicle.test_result }}<br>
+                                        <strong>Status:</strong>
+                                        {% if vehicle.is_expired %}
+                                            <span class="badge bg-danger">EXPIRED</span>
+                                        {% elif vehicle.days_until_expiry <= 30 %}
+                                            <span class="badge bg-warning">Due Soon</span>
+                                        {% else %}
+                                            <span class="badge bg-success">Valid</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> No vehicles added yet. Add a vehicle to start monitoring MOT status.
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Auto-dismiss flash messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for URL parameter messages
+            const urlParams = new URLSearchParams(window.location.search);
+            const message = urlParams.get('message');
+            const messageType = urlParams.get('message_type');
+
+            if (message && messageType) {
+                // Create and show alert
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert alert-${messageType === 'error' ? 'danger' : messageType} alert-dismissible fade show`;
+                alertDiv.innerHTML = `
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+
+                const flashContainer = document.getElementById('flashMessages');
+                flashContainer.appendChild(alertDiv);
+
+                // Clean URL by removing the message parameters
+                const newUrl = new URL(window.location);
+                newUrl.searchParams.delete('message');
+                newUrl.searchParams.delete('message_type');
+                window.history.replaceState({}, '', newUrl);
+            }
+
+            setTimeout(function() {
+                document.querySelectorAll('.alert').forEach(function(alert) {
+                    new bootstrap.Alert(alert).close();
+                });
+            }, 5000);
+        });
+
+        // Toggle between list and card view
+        function toggleView() {
+            const listView = document.getElementById('list-view');
+            const cardView = document.getElementById('card-view');
+            const viewIcon = document.getElementById('view-icon');
+            const viewText = document.getElementById('view-text');
+
+            if (listView.style.display === 'none') {
+                // Switch to list view
+                listView.style.display = 'block';
+                cardView.style.display = 'none';
+                viewIcon.className = 'fas fa-th-large';
+                viewText.textContent = 'Card View';
+                localStorage.setItem('motViewMode', 'list');
+            } else {
+                // Switch to card view
+                listView.style.display = 'none';
+                cardView.style.display = 'block';
+                viewIcon.className = 'fas fa-list';
+                viewText.textContent = 'List View';
+                localStorage.setItem('motViewMode', 'card');
+            }
+        }
+
+        // Restore view preference on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedView = localStorage.getItem('motViewMode');
+            if (savedView === 'card') {
+                toggleView();
+            }
+        });
+
+        // Add urgency indicators and animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add pulsing animation to urgent items
+            const urgentRows = document.querySelectorAll('.table-danger');
+            urgentRows.forEach(row => {
+                const urgentBadge = row.querySelector('.badge.bg-danger');
+                if (urgentBadge && urgentBadge.textContent.includes('URGENT')) {
+                    urgentBadge.style.animation = 'pulse 2s infinite';
+                }
+            });
+
+            // Initialize drag and drop functionality
+            initializeDragAndDrop();
+        });
+
+        // Drag and Drop Functionality
+        function initializeDragAndDrop() {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const fileInfo = document.getElementById('fileInfo');
+            const fileName = document.getElementById('fileName');
+            const uploadBtn = document.getElementById('uploadBtn');
+
+            // Prevent default drag behaviors
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+
+            // Highlight drop zone when item is dragged over it
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, unhighlight, false);
+            });
+
+            // Handle dropped files
+            dropZone.addEventListener('drop', handleDrop, false);
+
+            // Handle file input change
+            fileInput.addEventListener('change', handleFileSelect, false);
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            function highlight(e) {
+                dropZone.classList.add('drag-over');
+            }
+
+            function unhighlight(e) {
+                dropZone.classList.remove('drag-over');
+            }
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles(files);
+            }
+
+            function handleFileSelect(e) {
+                const files = e.target.files;
+                handleFiles(files);
+            }
+
+            function handleFiles(files) {
+                if (files.length > 0) {
+                    const file = files[0];
+
+                    // Check file type
+                    const allowedTypes = ['.csv', '.xlsx', '.xls'];
+                    const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+
+                    if (!allowedTypes.includes(fileExtension)) {
+                        alert('Please select a CSV or Excel file (.csv, .xlsx, .xls)');
+                        return;
+                    }
+
+                    // Update file input
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    fileInput.files = dataTransfer.files;
+
+                    // Show file info
+                    fileName.textContent = file.name;
+                    fileInfo.classList.remove('d-none');
+                    dropZone.style.display = 'none';
+                    uploadBtn.disabled = false;
+                }
+            }
+        }
+
+        function clearFile() {
+            const fileInput = document.getElementById('fileInput');
+            const fileInfo = document.getElementById('fileInfo');
+            const dropZone = document.getElementById('dropZone');
+            const uploadBtn = document.getElementById('uploadBtn');
+
+            fileInput.value = '';
+            fileInfo.classList.add('d-none');
+            dropZone.style.display = 'block';
+            uploadBtn.disabled = true;
+        }
+    </script>
+
+    <style>
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .table-danger {
+            --bs-table-bg: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+
+        .table-warning {
+            --bs-table-bg: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+
+        .badge.fs-6 {
+            font-size: 0.9rem !important;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .btn-group-sm .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .table th {
+            border-top: none;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .vehicle-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Compact table styling */
+        .table-compact {
+            font-size: 1rem; /* Increased from 0.9rem for better readability */
+        }
+
+        .table-compact th,
+        .table-compact td {
+            padding: 0.875rem 0.75rem; /* Increased from 0.5rem 0.3rem for better spacing */
+            white-space: nowrap;
+            line-height: 1.5; /* Added for better text spacing */
+        }
+
+        .table-compact .btn-group-sm .btn {
+            padding: 0.5rem 0.75rem; /* Increased from 0.2rem 0.4rem for better touch targets */
+            font-size: 0.85rem; /* Increased from 0.7rem for better readability */
+        }
+
+        /* Ensure table fits screen width */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Make sure Actions column is always visible */
+        .table-compact th:last-child,
+        .table-compact td:last-child {
+            position: sticky;
+            right: 0;
+            background-color: white;
+            z-index: 10;
+            border-left: 1px solid #dee2e6;
+        }
+
+        .table-compact thead th:last-child {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .table-compact {
+                font-size: 0.9rem; /* Increased from 0.8rem for better mobile readability */
+            }
+
+            .table-compact th,
+            .table-compact td {
+                padding: 0.75rem 0.5rem; /* Increased from 0.4rem 0.2rem for better mobile spacing */
+            }
+        }
+
+        /* Completion tracking styles */
+        .vehicle-completed {
+            opacity: 0.6;
+            background-color: #f8f9fa !important;
+        }
+
+        .vehicle-completed td {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+
+        .completion-checkbox:checked + label {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        /* Archive status */
+        .vehicle-archived {
+            display: none;
+        }
+
+        /* Filter buttons */
+        .filter-buttons {
+            margin-bottom: 2rem; /* Increased from 1rem for better section separation */
+            padding: 1rem; /* Added padding for better visual grouping */
+            background: #f8f9fa; /* Added background for better visual separation */
+            border-radius: 8px; /* Added border radius for modern look */
+        }
+
+        .filter-btn {
+            margin-right: 1rem; /* Increased from 0.5rem for better button spacing */
+            margin-bottom: 1rem; /* Increased from 0.5rem for better vertical spacing */
+            padding: 0.75rem 1.25rem; /* Added padding for better touch targets */
+            font-size: 0.95rem; /* Added font size for consistency */
+        }
+
+        .filter-btn.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        /* File upload drag and drop styles */
+        .drop-zone {
+            border: 2px dashed #dee2e6;
+            border-radius: 0.375rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .drop-zone:hover {
+            border-color: #007bff;
+            background-color: #f8f9fa;
+        }
+
+        .drop-zone.drag-over {
+            border-color: #007bff;
+            background-color: #e3f2fd;
+            transform: scale(1.02);
+        }
+
+        .drop-zone-content {
+            pointer-events: none;
+        }
+
+        #filePreviewDiv {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+
+    <script>
+        // Completion tracking with localStorage
+        let completedVehicles = JSON.parse(localStorage.getItem('completedVehicles') || '[]');
+        let archivedVehicles = JSON.parse(localStorage.getItem('archivedVehicles') || '[]');
+        let currentFilter = 'all';
+
+        // Initialize completion status on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCompletionStatus();
+            addFilterButtons();
+            applyFilter(currentFilter);
+            initializeFileUpload();
+        });
+
+        function initializeCompletionStatus() {
+            completedVehicles.forEach(registration => {
+                const checkbox = document.getElementById(`complete_${registration}`);
+                const row = document.querySelector(`tr[data-registration="${registration}"]`);
+                if (checkbox) {
+                    checkbox.checked = true;
+                    if (row) {
+                        row.classList.add('vehicle-completed');
+                    }
+                }
+            });
+
+            archivedVehicles.forEach(registration => {
+                const row = document.querySelector(`tr[data-registration="${registration}"]`);
+                if (row) {
+                    row.classList.add('vehicle-archived');
+                }
+            });
+        }
+
+        function toggleCompletion(registration) {
+            const checkbox = document.getElementById(`complete_${registration}`);
+            const row = document.querySelector(`tr[data-registration="${registration}"]`);
+
+            if (checkbox.checked) {
+                // Mark as completed
+                if (!completedVehicles.includes(registration)) {
+                    completedVehicles.push(registration);
+                }
+                if (row) {
+                    row.classList.add('vehicle-completed');
+                }
+            } else {
+                // Mark as not completed
+                completedVehicles = completedVehicles.filter(reg => reg !== registration);
+                if (row) {
+                    row.classList.remove('vehicle-completed');
+                }
+            }
+
+            // Save to localStorage
+            localStorage.setItem('completedVehicles', JSON.stringify(completedVehicles));
+
+            // Optional: Send to backend for logging
+            fetch(`/api/vehicle/${registration}/complete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ completed: checkbox.checked })
+            }).catch(err => console.log('Backend logging failed:', err));
+        }
+
+        function archiveVehicle(registration) {
+            if (confirm(`Archive vehicle ${registration}? This will hide it from the main view.`)) {
+                const row = document.querySelector(`tr[data-registration="${registration}"]`);
+                if (row) {
+                    row.classList.add('vehicle-archived');
+                }
+
+                if (!archivedVehicles.includes(registration)) {
+                    archivedVehicles.push(registration);
+                }
+
+                localStorage.setItem('archivedVehicles', JSON.stringify(archivedVehicles));
+                applyFilter(currentFilter);
+
+                // Optional: Send to backend for logging
+                fetch(`/api/vehicle/${registration}/archive`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ archived: true })
+                }).catch(err => console.log('Backend logging failed:', err));
+            }
+        }
+
+        function showCustomerDetails(registration) {
+            // Find vehicle data from the table
+            const row = document.querySelector(`tr[data-registration="${registration}"]`);
+            if (!row) return;
+
+            const customerCell = row.querySelector('td:nth-child(4)');
+            const mobileCell = row.querySelector('td:nth-child(5)');
+
+            const customerName = customerCell ? customerCell.textContent.trim() : 'No customer';
+            const mobileNumber = mobileCell ? mobileCell.textContent.trim() : 'No mobile';
+
+            alert(`Customer Details for ${registration}:\n\nName: ${customerName}\nMobile: ${mobileNumber}`);
+        }
+
+        function addFilterButtons() {
+            const vehicleSection = document.querySelector('.card-body');
+            if (!vehicleSection) return;
+
+            const filterDiv = document.createElement('div');
+            filterDiv.className = 'filter-buttons mb-3';
+            filterDiv.innerHTML = `
+                <button class="btn btn-outline-secondary filter-btn active" onclick="setFilter('all')">
+                    All (<span id="count-all">0</span>)
+                </button>
+                <button class="btn btn-outline-danger filter-btn" onclick="setFilter('expired')">
+                    Expired (<span id="count-expired">0</span>)
+                </button>
+                <button class="btn btn-outline-warning filter-btn" onclick="setFilter('critical')">
+                    Critical (<span id="count-critical">0</span>)
+                </button>
+                <button class="btn btn-outline-info filter-btn" onclick="setFilter('due_soon')">
+                    Due Soon (<span id="count-due-soon">0</span>)
+                </button>
+                <button class="btn btn-outline-success filter-btn" onclick="setFilter('normal')">
+                    Normal (<span id="count-normal">0</span>)
+                </button>
+                <button class="btn btn-outline-secondary filter-btn" onclick="setFilter('completed')">
+                    Completed (<span id="count-completed">0</span>)
+                </button>
+                <button class="btn btn-outline-dark filter-btn" onclick="setFilter('archived')">
+                    Archived (<span id="count-archived">0</span>)
+                </button>
+            `;
+
+            const tableContainer = document.querySelector('.table-responsive');
+            if (tableContainer) {
+                tableContainer.parentNode.insertBefore(filterDiv, tableContainer);
+            }
+
+            updateFilterCounts();
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            applyFilter(filter);
+        }
+
+        function applyFilter(filter) {
+            const rows = document.querySelectorAll('tbody tr');
+
+            rows.forEach(row => {
+                const registration = row.querySelector('input[data-registration]')?.getAttribute('data-registration');
+                const isExpired = row.classList.contains('table-danger');
+                const isCritical = row.classList.contains('table-warning');
+                const isCompleted = completedVehicles.includes(registration);
+                const isArchived = archivedVehicles.includes(registration);
+
+                let show = false;
+
+                switch(filter) {
+                    case 'all':
+                        show = !isArchived;
+                        break;
+                    case 'expired':
+                        show = isExpired && !isArchived;
+                        break;
+                    case 'critical':
+                        show = isCritical && !isExpired && !isArchived;
+                        break;
+                    case 'due_soon':
+                        show = !isExpired && !isCritical && !isArchived;
+                        break;
+                    case 'normal':
+                        show = !isExpired && !isCritical && !isCompleted && !isArchived;
+                        break;
+                    case 'completed':
+                        show = isCompleted && !isArchived;
+                        break;
+                    case 'archived':
+                        show = isArchived;
+                        break;
+                }
+
+                row.style.display = show ? '' : 'none';
+            });
+
+            updateFilterCounts();
+        }
+
+        function updateFilterCounts() {
+            const rows = document.querySelectorAll('tbody tr');
+            const counts = {
+                all: 0,
+                expired: 0,
+                critical: 0,
+                'due-soon': 0,
+                normal: 0,
+                completed: 0,
+                archived: 0
+            };
+
+            rows.forEach(row => {
+                const registration = row.querySelector('input[data-registration]')?.getAttribute('data-registration');
+                const isExpired = row.classList.contains('table-danger');
+                const isCritical = row.classList.contains('table-warning');
+                const isCompleted = completedVehicles.includes(registration);
+                const isArchived = archivedVehicles.includes(registration);
+
+                if (!isArchived) counts.all++;
+                if (isExpired && !isArchived) counts.expired++;
+                if (isCritical && !isExpired && !isArchived) counts.critical++;
+                if (!isExpired && !isCritical && !isArchived) counts['due-soon']++;
+                if (!isExpired && !isCritical && !isCompleted && !isArchived) counts.normal++;
+                if (isCompleted && !isArchived) counts.completed++;
+                if (isArchived) counts.archived++;
+            });
+
+            Object.keys(counts).forEach(key => {
+                const element = document.getElementById(`count-${key}`);
+                if (element) {
+                    element.textContent = counts[key];
+                }
+            });
+        }
+
+        // Reset functions
+        function resetCompleted() {
+            if (confirm('Reset all completion status? This will mark all vehicles as not completed.')) {
+                completedVehicles = [];
+                localStorage.setItem('completedVehicles', JSON.stringify(completedVehicles));
+
+                document.querySelectorAll('.completion-checkbox').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+
+                document.querySelectorAll('.vehicle-completed').forEach(row => {
+                    row.classList.remove('vehicle-completed');
+                });
+
+                updateFilterCounts();
+            }
+        }
+
+        function resetArchived() {
+            if (confirm('Reset all archived vehicles? This will show all archived vehicles again.')) {
+                archivedVehicles = [];
+                localStorage.setItem('archivedVehicles', JSON.stringify(archivedVehicles));
+
+                document.querySelectorAll('.vehicle-archived').forEach(row => {
+                    row.classList.remove('vehicle-archived');
+                });
+
+                applyFilter(currentFilter);
+            }
+        }
+
+        // File upload functionality
+        function initializeFileUpload() {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const filePreview = document.getElementById('filePreview');
+
+            if (!dropZone || !fileInput) return;
+
+            // Drag and drop handlers
+            dropZone.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                dropZone.classList.add('drag-over');
+            });
+
+            dropZone.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+            });
+
+            dropZone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    fileInput.files = files;
+                    handleFileSelection(files[0]);
+                }
+            });
+
+            // File input change handler
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    handleFileSelection(e.target.files[0]);
+                }
+            });
+
+            function handleFileSelection(file) {
+                if (!file) return;
+
+                // Validate file type
+                const allowedTypes = ['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+                const allowedExtensions = ['.csv', '.xls', '.xlsx'];
+
+                const isValidType = allowedTypes.includes(file.type) ||
+                                  allowedExtensions.some(ext => file.name.toLowerCase().endsWith(ext));
+
+                if (!isValidType) {
+                    alert('Please select a CSV or Excel file (.csv, .xls, .xlsx)');
+                    fileInput.value = '';
+                    return;
+                }
+
+                // Show file preview
+                showFilePreview(file);
+
+                // Enable upload button
+                if (uploadBtn) {
+                    uploadBtn.disabled = false;
+                }
+            }
+
+            function showFilePreview(file) {
+                // Create or update file preview
+                let previewDiv = document.getElementById('filePreviewDiv');
+                if (!previewDiv) {
+                    previewDiv = document.createElement('div');
+                    previewDiv.id = 'filePreviewDiv';
+                    previewDiv.className = 'mt-3 p-3 border rounded bg-light';
+                    dropZone.parentNode.insertBefore(previewDiv, dropZone.nextSibling);
+                }
+
+                const fileSize = (file.size / 1024).toFixed(2);
+                const fileSizeUnit = fileSize > 1024 ? `${(fileSize / 1024).toFixed(2)} MB` : `${fileSize} KB`;
+
+                previewDiv.innerHTML = `
+                    <h6 class="mb-2">
+                        <i class="fas fa-file-alt text-primary"></i> File Preview
+                    </h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>File:</strong> ${file.name}<br>
+                            <strong>Size:</strong> ${fileSizeUnit}<br>
+                            <strong>Type:</strong> ${file.type || 'Unknown'}
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert alert-info mb-0">
+                                <i class="fas fa-info-circle"></i>
+                                <strong>DVLA Data Only</strong><br>
+                                <small>Only vehicles found in the DVLA database will be added. Vehicles not found will be skipped to ensure data accuracy.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="clearFileSelection()">
+                            <i class="fas fa-times"></i> Clear File
+                        </button>
+                    </div>
+                `;
+
+                // Try to read and preview CSV content
+                if (file.name.toLowerCase().endsWith('.csv')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const csvContent = e.target.result;
+                        const lines = csvContent.split('\n').slice(0, 5); // First 5 lines
+
+                        if (lines.length > 1) {
+                            const previewTable = document.createElement('div');
+                            previewTable.className = 'mt-3';
+                            previewTable.innerHTML = `
+                                <h6>Data Preview (first 5 rows):</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-bordered">
+                                        ${lines.map((line, index) => {
+                                            const cells = line.split(',').map(cell => cell.trim().replace(/"/g, ''));
+                                            const cellsHtml = cells.map(cell => `<td>${cell || '-'}</td>`).join('');
+                                            return `<tr class="${index === 0 ? 'table-light' : ''}">${cellsHtml}</tr>`;
+                                        }).join('')}
+                                    </table>
+                                </div>
+                            `;
+                            previewDiv.appendChild(previewTable);
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            }
+        }
+
+        function clearFileSelection() {
+            const fileInput = document.getElementById('fileInput');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const previewDiv = document.getElementById('filePreviewDiv');
+
+            if (fileInput) fileInput.value = '';
+            if (uploadBtn) uploadBtn.disabled = true;
+            if (previewDiv) previewDiv.remove();
+        }
+    </script>
+</body>
+</html>

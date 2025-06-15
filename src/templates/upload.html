@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Data Upload - Garage Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .upload-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .upload-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .upload-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .upload-header h1 {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .upload-header p {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+        
+        .upload-zone {
+            border: 2px dashed #dee2e6;
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: #f8f9fa;
+            position: relative;
+        }
+
+        .upload-zone:hover {
+            border-color: #6366f1;
+            background-color: #f0f4ff;
+            transform: translateY(-2px);
+        }
+
+        .upload-zone.dragover {
+            border-color: #10b981;
+            background-color: #d1fae5;
+            transform: scale(1.02);
+        }
+
+        .upload-zone #browseBtn {
+            margin-top: 1rem;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+        
+        .table-selector {
+            margin: 1.5rem 0;
+        }
+        
+        .table-selector label {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .progress-container {
+            display: none;
+            margin: 1.5rem 0;
+        }
+        
+        .results-container {
+            display: none;
+            margin-top: 2rem;
+        }
+        
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .template-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .template-card:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+        
+        .template-icon {
+            font-size: 2rem;
+            color: #007bff;
+            margin-bottom: 1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <!-- Header -->
+        <div class="upload-card">
+            <div class="upload-header">
+                <h1><i class="fas fa-upload"></i> ELI MOTORS Data Upload</h1>
+                <p>Import your complete garage database from CSV files</p>
+            </div>
+        </div>
+        
+        <!-- Upload Section -->
+        <div class="upload-card">
+            <h3><i class="fas fa-file-csv"></i> Upload CSV Files</h3>
+            <p class="text-muted">Select the type of data you're uploading and choose your CSV file</p>
+            
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="table-selector">
+                    <label for="tableSelect" class="form-label">Data Type:</label>
+                    <select id="tableSelect" name="table_name" class="form-select">
+                        <option value="customers">Customers</option>
+                        <option value="vehicles">Vehicles</option>
+                        <option value="jobs">Jobs/Work Orders</option>
+                        <option value="invoices">Invoices</option>
+                        <option value="parts">Parts/Stock</option>
+                        <option value="suppliers">Suppliers</option>
+                        <option value="expenses">Expenses</option>
+                        <option value="document_extras">Document Extras (Job Descriptions)</option>
+                        <option value="documents">Documents (Jobs + Invoices + Vehicles)</option>
+                        <option value="receipts">Receipts/Payments</option>
+                    </select>
+                </div>
+                
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h4 id="uploadText">Drag & Drop your CSV file here</h4>
+                    <p class="text-muted">or click to browse files, or use Google Drive integration</p>
+                    <input type="file" id="fileInput" name="file" accept=".csv,.xlsx,.xls" style="display: none;">
+                    <button type="button" class="btn btn-primary" id="browseBtn">
+                        <i class="fas fa-folder-open"></i> Browse Files
+                    </button>
+                    <div class="btn-group ms-2" role="group">
+                        <button type="button" class="btn btn-success" id="googleDriveBtn">
+                            <i class="fab fa-google-drive"></i> Google Drive
+                        </button>
+                        <a href="/google-drive/" target="_blank" class="btn btn-outline-success" title="Open Google Drive in new tab">
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="clearExisting" name="clear_existing">
+                            <label class="form-check-label" for="clearExisting">
+                                Clear existing data before import
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="updateDuplicates" name="update_duplicates" checked>
+                            <label class="form-check-label" for="updateDuplicates">
+                                Update existing records
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <p class="text-center mt-2">Uploading and processing...</p>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-success btn-lg" id="uploadBtn" disabled>
+                        <i class="fas fa-upload"></i> Upload Data
+                    </button>
+                </div>
+            </form>
+            
+            <div class="results-container" id="resultsContainer">
+                <div class="alert" id="resultsAlert"></div>
+                <div id="resultsDetails"></div>
+            </div>
+        </div>
+        
+        <!-- Templates Section -->
+        <div class="upload-card">
+            <h3><i class="fas fa-download"></i> Download Templates</h3>
+            <p class="text-muted">Download CSV templates to ensure your data is formatted correctly</p>
+            
+            <div class="template-grid">
+                <div class="template-card">
+                    <div class="template-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h5>Customers</h5>
+                    <p class="text-muted">Customer information and contact details</p>
+                    <a href="/upload/templates/customers" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+                
+                <div class="template-card">
+                    <div class="template-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h5>Vehicles</h5>
+                    <p class="text-muted">Vehicle registrations and details</p>
+                    <a href="/upload/templates/vehicles" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+                
+                <div class="template-card">
+                    <div class="template-icon">
+                        <i class="fas fa-wrench"></i>
+                    </div>
+                    <h5>Jobs</h5>
+                    <p class="text-muted">Work orders and job records</p>
+                    <a href="/upload/templates/jobs" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+                
+                <div class="template-card">
+                    <div class="template-icon">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <h5>Invoices</h5>
+                    <p class="text-muted">Invoice and billing records</p>
+                    <a href="/upload/templates/invoices" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+                
+                <div class="template-card">
+                    <div class="template-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h5>Parts</h5>
+                    <p class="text-muted">Parts inventory and stock</p>
+                    <a href="/upload/templates/parts" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+                
+                <div class="template-card">
+                    <div class="template-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h5>Suppliers</h5>
+                    <p class="text-muted">Supplier contact information</p>
+                    <a href="/upload/templates/suppliers" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+                
+                <div class="template-card">
+                    <div class="template-icon">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <h5>Expenses</h5>
+                    <p class="text-muted">Business expenses and costs</p>
+                    <a href="/upload/templates/expenses" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+
+                <div class="template-card">
+                    <div class="template-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h5>Document Extras</h5>
+                    <p class="text-muted">Job descriptions and service notes</p>
+                    <a href="/upload/templates/document_extras" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+
+                <div class="template-card">
+                    <div class="template-icon">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <h5>Documents</h5>
+                    <p class="text-muted">Complete job, invoice & vehicle data</p>
+                    <a href="/upload/templates/documents" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+
+                <div class="template-card">
+                    <div class="template-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h5>Receipts</h5>
+                    <p class="text-muted">Payment records and transactions</p>
+                    <a href="/upload/templates/receipts" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Statistics Section -->
+        <div class="upload-card">
+            <h3><i class="fas fa-chart-bar"></i> Database Statistics</h3>
+            <p class="text-muted">Current record counts in your database</p>
+            
+            <div class="stats-grid" id="statsGrid">
+                <!-- Stats will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Upload functionality
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const uploadForm = document.getElementById('uploadForm');
+        const progressContainer = document.querySelector('.progress-container');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const browseBtn = document.getElementById('browseBtn');
+        const googleDriveBtn = document.getElementById('googleDriveBtn');
+        const uploadText = document.getElementById('uploadText');
+
+        // Debug logging
+        console.log('Upload elements found:', {
+            uploadZone: !!uploadZone,
+            fileInput: !!fileInput,
+            uploadBtn: !!uploadBtn,
+            browseBtn: !!browseBtn,
+            googleDriveBtn: !!googleDriveBtn
+        });
+
+        // Browse button click handler
+        if (browseBtn) {
+            browseBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                console.log('Browse button clicked');
+                if (fileInput) {
+                    fileInput.click();
+                } else {
+                    console.error('File input not found');
+                }
+            });
+        }
+
+        // Google Drive button click handler
+        if (googleDriveBtn) {
+            googleDriveBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                console.log('Google Drive button clicked');
+                openGoogleDriveInterface();
+            });
+            console.log('Google Drive button event listener added');
+        } else {
+            console.error('Google Drive button not found');
+        }
+
+        // Upload zone click handler (but not when clicking the buttons)
+        if (uploadZone) {
+            uploadZone.addEventListener('click', (e) => {
+                // Don't trigger if clicking any buttons or links
+                if (e.target.closest('#browseBtn') || e.target.closest('#googleDriveBtn') || e.target.closest('.btn-group')) {
+                    return;
+                }
+                console.log('Upload zone clicked');
+                if (fileInput) {
+                    fileInput.click();
+                }
+            });
+        }
+
+        // Drag and drop functionality
+        if (uploadZone) {
+            uploadZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadZone.classList.add('dragover');
+            });
+
+            uploadZone.addEventListener('dragleave', () => {
+                uploadZone.classList.remove('dragover');
+            });
+
+            uploadZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadZone.classList.remove('dragover');
+
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFileSelection(files);
+                }
+            });
+        }
+
+        // File input change handler
+        if (fileInput) {
+            fileInput.addEventListener('change', (e) => {
+                console.log('File input changed:', e.target.files.length);
+                if (e.target.files.length > 0) {
+                    handleFileSelection(e.target.files);
+                }
+            });
+        }
+
+        function handleFileSelection(files) {
+            console.log('Handling file selection:', files.length);
+            if (files.length > 0) {
+                const file = files[0];
+                console.log('Selected file:', file.name);
+
+                // Update the file input if it's from drag and drop
+                if (fileInput && files !== fileInput.files) {
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    fileInput.files = dataTransfer.files;
+                }
+
+                updateUploadButton(file);
+            }
+        }
+
+        function updateUploadButton(file = null) {
+            const hasFiles = fileInput && fileInput.files.length > 0;
+            console.log('Updating upload button:', hasFiles);
+
+            if (uploadBtn) {
+                uploadBtn.disabled = !hasFiles;
+            }
+
+            if (hasFiles) {
+                const fileName = file ? file.name : fileInput.files[0].name;
+                if (uploadText) {
+                    uploadText.textContent = `Selected: ${fileName}`;
+                }
+                console.log('File selected:', fileName);
+            } else {
+                if (uploadText) {
+                    uploadText.textContent = 'Drag & Drop your CSV file here';
+                }
+            }
+        }
+        
+        // Form submission
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!fileInput.files.length) {
+                alert('Please select a file to upload');
+                return;
+            }
+            
+            const formData = new FormData(uploadForm);
+            
+            // Show progress
+            progressContainer.style.display = 'block';
+            uploadBtn.disabled = true;
+            resultsContainer.style.display = 'none';
+            
+            try {
+                const response = await fetch('/upload/csv', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                // Hide progress
+                progressContainer.style.display = 'none';
+                uploadBtn.disabled = false;
+                
+                // Show results
+                showResults(result);
+                
+                // Refresh stats
+                loadStats();
+                
+            } catch (error) {
+                progressContainer.style.display = 'none';
+                uploadBtn.disabled = false;
+                
+                showResults({
+                    success: false,
+                    error: 'Upload failed: ' + error.message
+                });
+            }
+        });
+        
+        function showResults(result) {
+            const alertDiv = document.getElementById('resultsAlert');
+            const detailsDiv = document.getElementById('resultsDetails');
+            
+            if (result.success) {
+                alertDiv.className = 'alert alert-success';
+                alertDiv.innerHTML = `
+                    <i class="fas fa-check-circle"></i> Upload completed successfully!
+                    <br>Imported: ${result.imported || 0} | Failed: ${result.failed || 0} | Duplicates: ${result.duplicates || 0}
+                `;
+                
+                if (result.errors && result.errors.length > 0) {
+                    detailsDiv.innerHTML = `
+                        <h6>Errors encountered:</h6>
+                        <ul class="list-unstyled">
+                            ${result.errors.map(error => `<li class="text-warning"><i class="fas fa-exclamation-triangle"></i> ${error}</li>`).join('')}
+                        </ul>
+                    `;
+                }
+            } else {
+                alertDiv.className = 'alert alert-danger';
+                alertDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${result.error}`;
+                detailsDiv.innerHTML = '';
+            }
+            
+            resultsContainer.style.display = 'block';
+        }
+        
+        // Load statistics
+        async function loadStats() {
+            try {
+                const response = await fetch('/upload/status');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const statsGrid = document.getElementById('statsGrid');
+                    const counts = result.counts;
+                    
+                    statsGrid.innerHTML = Object.entries(counts).map(([table, count]) => `
+                        <div class="stat-card">
+                            <div class="stat-number">${count.toLocaleString()}</div>
+                            <div class="stat-label">${table.charAt(0).toUpperCase() + table.slice(1)}</div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+        
+        // Google Drive integration
+        function openGoogleDriveInterface() {
+            console.log('Opening Google Drive interface...');
+
+            // Add visual feedback
+            const btn = document.getElementById('googleDriveBtn');
+            if (btn) {
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Opening...';
+                btn.disabled = true;
+            }
+
+            // Try to open in a new window first
+            const googleDriveWindow = window.open('/google-drive/', 'googleDrive', 'width=1200,height=800,scrollbars=yes,resizable=yes');
+
+            // Reset button after a short delay
+            setTimeout(() => {
+                if (btn) {
+                    btn.innerHTML = '<i class="fab fa-google-drive"></i> Google Drive';
+                    btn.disabled = false;
+                }
+            }, 2000);
+
+            if (!googleDriveWindow || googleDriveWindow.closed || typeof googleDriveWindow.closed == 'undefined') {
+                // Popup was blocked, open in same tab
+                if (confirm('Popup blocked. Open Google Drive interface in this tab? (You can use the back button to return)')) {
+                    window.location.href = '/google-drive/';
+                }
+            } else {
+                // Focus the new window
+                googleDriveWindow.focus();
+                console.log('Google Drive window opened successfully');
+            }
+        }
+
+        // Load stats on page load
+        loadStats();
+    </script>
+</body>
+</html>

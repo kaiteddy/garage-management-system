@@ -1,0 +1,1359 @@
+/* Job Sheets Styles - Professional Digital Job Cards */
+
+.job-sheets-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.08);
+    border: 1px solid rgba(0, 122, 255, 0.1);
+}
+
+.job-sheets-title h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+    font-variant: small-caps;
+}
+
+.job-sheets-title i {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+
+.job-sheets-title .subtitle {
+    color: #64748b;
+    font-size: 0.875rem;
+    margin: 0.25rem 0 0 0;
+}
+
+.job-sheets-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.view-filters {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.view-filters select {
+    padding: 0.5rem 1rem;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    background: white;
+    color: #495057;
+    font-size: 0.875rem;
+    min-width: 120px;
+}
+
+.view-filters select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.1);
+}
+
+.job-sheets-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.08);
+    border: 1px solid rgba(0, 122, 255, 0.1);
+    min-height: 60vh;
+}
+
+.job-sheets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+}
+
+.job-sheet-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.job-sheet-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color);
+}
+
+.job-sheet-card.status-draft {
+    border-left: 4px solid #6b7280;
+}
+
+.job-sheet-card.status-active {
+    border-left: 4px solid #3b82f6;
+}
+
+.job-sheet-card.status-completed {
+    border-left: 4px solid #10b981;
+}
+
+.job-sheet-card.status-archived {
+    border-left: 4px solid #9ca3af;
+}
+
+.job-sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.sheet-number {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    background: rgba(59, 130, 246, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.sheet-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-draft .sheet-status {
+    color: #6b7280;
+}
+
+.status-active .sheet-status {
+    color: #3b82f6;
+}
+
+.status-completed .sheet-status {
+    color: #10b981;
+}
+
+.status-archived .sheet-status {
+    color: #9ca3af;
+}
+
+.job-sheet-content {
+    margin-bottom: 1rem;
+}
+
+.job-info h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 0.5rem 0;
+}
+
+.job-description {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0 0 1rem 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.customer-info,
+.template-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.customer-info i,
+.template-info i {
+    width: 12px;
+    text-align: center;
+    opacity: 0.7;
+}
+
+.vehicle-info {
+    margin-left: 1.125rem;
+    margin-top: 0.25rem;
+}
+
+.job-sheet-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid #f3f4f6;
+}
+
+.signatures {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.signature-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.625rem;
+    color: #9ca3af;
+    transition: color 0.3s ease;
+}
+
+.signature-status.signed {
+    color: #10b981;
+}
+
+.signature-status i {
+    font-size: 0.875rem;
+}
+
+.created-date {
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: #6b7280;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+}
+
+.empty-state h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: #374151;
+}
+
+.empty-state p {
+    margin: 0 0 1.5rem 0;
+    font-size: 0.875rem;
+}
+
+/* Modal Styles */
+.job-sheet-modal {
+    max-width: 900px;
+    width: 90vw;
+}
+
+.job-sheet-detail {
+    padding: 1rem;
+}
+
+.sheet-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.info-section h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.info-section p {
+    margin: 0.5rem 0;
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+.status-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-badge.status-draft {
+    background: rgba(107, 114, 128, 0.1);
+    color: #6b7280;
+}
+
+.status-badge.status-active {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.status-badge.status-completed {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.status-badge.status-archived {
+    background: rgba(156, 163, 175, 0.1);
+    color: #9ca3af;
+}
+
+.work-sections {
+    margin-bottom: 2rem;
+}
+
+.work-section {
+    margin-bottom: 1.5rem;
+}
+
+.work-section h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 0.75rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.work-content {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #374151;
+}
+
+.work-content.safety-notes {
+    background: rgba(239, 68, 68, 0.05);
+    border-color: rgba(239, 68, 68, 0.2);
+    color: #dc2626;
+}
+
+.work-content ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.work-content li {
+    margin-bottom: 0.25rem;
+}
+
+.signatures-section {
+    margin-bottom: 2rem;
+}
+
+.signatures-section h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.signatures-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.signature-box {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.signature-box.signed {
+    background: rgba(16, 185, 129, 0.05);
+    border-color: rgba(16, 185, 129, 0.2);
+    color: #059669;
+}
+
+.signature-box h5 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: #374151;
+}
+
+.signature-box.signed h5 {
+    color: #059669;
+}
+
+.signature-box i {
+    margin-right: 0.5rem;
+}
+
+.sheet-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Form Styles */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.1);
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .job-sheets-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .job-sheets-controls {
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .view-filters {
+        flex: 1;
+        min-width: 200px;
+    }
+    
+    .job-sheets-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    
+    .sheet-info-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .signatures-grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .sheet-actions {
+        flex-direction: column;
+    }
+}
+
+/* ============================================================================
+   QUOTES & ESTIMATES STYLES
+   ============================================================================ */
+
+.quotes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.08);
+    border: 1px solid rgba(0, 122, 255, 0.1);
+}
+
+.quotes-title h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+    font-variant: small-caps;
+}
+
+.quotes-title i {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+
+.quotes-title .subtitle {
+    color: #64748b;
+    font-size: 0.875rem;
+    margin: 0.25rem 0 0 0;
+}
+
+.quotes-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.quotes-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.08);
+    border: 1px solid rgba(0, 122, 255, 0.1);
+    min-height: 60vh;
+}
+
+.quotes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+}
+
+.quote-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.quote-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color);
+}
+
+.quote-card.status-draft {
+    border-left: 4px solid #6b7280;
+}
+
+.quote-card.status-sent {
+    border-left: 4px solid #3b82f6;
+}
+
+.quote-card.status-approved {
+    border-left: 4px solid #10b981;
+}
+
+.quote-card.status-rejected {
+    border-left: 4px solid #ef4444;
+}
+
+.quote-card.status-converted {
+    border-left: 4px solid #8b5cf6;
+}
+
+.quote-card.status-expired {
+    border-left: 4px solid #f59e0b;
+    opacity: 0.7;
+}
+
+.quote-card.expired {
+    background: #fef3f2;
+    border-color: #fecaca;
+}
+
+.quote-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.quote-number {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    background: rgba(59, 130, 246, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.quote-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-draft .quote-status {
+    color: #6b7280;
+}
+
+.status-sent .quote-status {
+    color: #3b82f6;
+}
+
+.status-approved .quote-status {
+    color: #10b981;
+}
+
+.status-rejected .quote-status {
+    color: #ef4444;
+}
+
+.status-converted .quote-status {
+    color: #8b5cf6;
+}
+
+.status-expired .quote-status {
+    color: #f59e0b;
+}
+
+.quote-content {
+    margin-bottom: 1rem;
+}
+
+.customer-info h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 0.5rem 0;
+}
+
+.vehicle-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+}
+
+.vehicle-info i {
+    width: 12px;
+    text-align: center;
+    opacity: 0.7;
+}
+
+.quote-description {
+    font-size: 0.875rem;
+    color: #374151;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.quote-amount {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background: rgba(59, 130, 246, 0.05);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.amount-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.amount-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.quote-footer {
+    padding-top: 1rem;
+    border-top: 1px solid #f3f4f6;
+}
+
+.quote-dates {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.quote-dates > div {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.valid-until.expired {
+    color: #ef4444;
+    font-weight: 600;
+}
+
+.quote-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.btn-sm {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+    border-radius: 4px;
+}
+
+.btn-success {
+    background: #10b981;
+    color: white;
+    border: 1px solid #10b981;
+}
+
+.btn-success:hover {
+    background: #059669;
+    border-color: #059669;
+}
+
+/* Quote Modal Styles */
+.quote-modal {
+    max-width: 700px;
+    width: 90vw;
+}
+
+.quote-totals {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    font-size: 0.875rem;
+}
+
+.total-row:not(:last-child) {
+    border-bottom: 1px solid #e9ecef;
+}
+
+.total-final {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--primary-color);
+    border-top: 2px solid var(--primary-color) !important;
+    margin-top: 0.5rem;
+    padding-top: 1rem !important;
+}
+
+/* Responsive Design for Quotes */
+@media (max-width: 768px) {
+    .quotes-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+
+    .quotes-controls {
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .quotes-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .quote-dates {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+
+    .quote-actions {
+        justify-content: center;
+    }
+}
+
+/* ============================================================================
+   ONLINE BOOKING WIDGET STYLES
+   ============================================================================ */
+
+.booking-widget {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 122, 255, 0.1);
+    overflow: hidden;
+}
+
+.booking-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+.booking-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.booking-subtitle {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin: 0 0 2rem 0;
+}
+
+.booking-progress {
+    margin-top: 2rem;
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.progress-steps::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.3);
+    z-index: 1;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 2;
+    background: var(--primary-color);
+    padding: 0 1rem;
+}
+
+.step i {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.step.active i {
+    background: white;
+    color: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.step span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+    opacity: 0.8;
+}
+
+.step.active span {
+    opacity: 1;
+}
+
+.booking-content {
+    padding: 2rem;
+}
+
+.booking-step {
+    display: none;
+}
+
+.booking-step.active {
+    display: block;
+}
+
+.booking-step h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+}
+
+/* Date & Time Selection */
+.date-time-selection {
+    display: grid;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.date-selection,
+.service-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.date-selection label,
+.service-selection label {
+    font-weight: 600;
+    color: #374151;
+}
+
+.date-selection input,
+.service-selection select {
+    padding: 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.date-selection input:focus,
+.service-selection select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.time-slots {
+    margin-top: 1rem;
+}
+
+.time-slots h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+    margin: 0 0 1rem 0;
+}
+
+.time-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+.time-slot-btn {
+    padding: 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-weight: 600;
+    color: #374151;
+}
+
+.time-slot-btn:hover {
+    border-color: var(--primary-color);
+    background: rgba(0, 122, 255, 0.05);
+}
+
+.time-slot-btn.selected {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+.time-slot-btn small {
+    display: block;
+    font-size: 0.75rem;
+    opacity: 0.8;
+    margin-top: 0.25rem;
+}
+
+.select-date-message,
+.no-slots,
+.error {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
+    font-style: italic;
+}
+
+.error {
+    color: #ef4444;
+}
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: var(--primary-color);
+}
+
+/* Form Styles */
+.vehicle-form,
+.contact-form {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.875rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #e5e7eb;
+    border-radius: 4px;
+    position: relative;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+    content: '✓';
+    position: absolute;
+    top: -2px;
+    left: 2px;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/* Step Actions */
+.step-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.step-actions .btn {
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Booking Summary */
+.booking-summary {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.summary-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.summary-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.summary-section h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 0.75rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.summary-section p {
+    margin: 0.25rem 0;
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+.terms-conditions {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: rgba(0, 122, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 122, 255, 0.1);
+}
+
+/* Success Message */
+.success-message {
+    text-align: center;
+    padding: 2rem;
+}
+
+.success-message i {
+    font-size: 4rem;
+    color: #10b981;
+    margin-bottom: 1rem;
+}
+
+.success-message h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 0.5rem 0;
+}
+
+.success-message > p {
+    font-size: 1.125rem;
+    color: #6b7280;
+    margin: 0 0 2rem 0;
+}
+
+.confirmation-details {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: left;
+}
+
+.confirmation-card h4 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0 0 1rem 0;
+    text-align: center;
+    padding: 1rem;
+    background: rgba(0, 122, 255, 0.1);
+    border-radius: 8px;
+}
+
+.confirmation-card p {
+    margin: 0.5rem 0;
+    font-size: 0.875rem;
+}
+
+.next-steps {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(16, 185, 129, 0.05);
+    border-radius: 8px;
+    border-left: 4px solid #10b981;
+}
+
+.next-steps h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #059669;
+    margin: 0 0 0.75rem 0;
+}
+
+.next-steps ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.next-steps li {
+    margin: 0.25rem 0;
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+.contact-info {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(59, 130, 246, 0.05);
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.contact-info p {
+    margin: 0.25rem 0;
+}
+
+.success-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .booking-widget {
+        margin: 1rem;
+        border-radius: 12px;
+    }
+
+    .booking-header {
+        padding: 1.5rem;
+    }
+
+    .booking-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .progress-steps {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .step span {
+        display: none;
+    }
+
+    .booking-content {
+        padding: 1.5rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .time-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 0.5rem;
+    }
+
+    .step-actions {
+        flex-direction: column;
+    }
+
+    .step-actions .btn {
+        justify-content: center;
+    }
+
+    .success-actions {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,141 @@
+/**
+ * Base CSS - Root Variables, Reset, and Typography
+ * Extracted from monolithic index.html
+ */
+
+/* Root Variables - Apple Design System */
+:root {
+    --primary-color: #007AFF;
+    --primary-dark: #0051D5;
+    --primary-light: #5AC8FA;
+    --secondary-color: #8E8E93;
+    --success-color: #34C759;
+    --danger-color: #FF3B30;
+    --warning-color: #FF9500;
+    --info-color: #007AFF;
+    --light-color: #F2F2F7;
+    --dark-color: #1C1C1E;
+    --text-primary: #000000;
+    --text-secondary: #3C3C43;
+    --border-radius: 0.75rem;
+    --box-shadow: 0 4px 16px rgba(0, 122, 255, 0.1);
+    --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    /* Dynamic spacing variables - default to compact */
+    --card-padding: 1rem;
+    --card-gap: 1rem;
+    --section-gap: 1.25rem;
+    --row-padding: 0.5rem;
+    --table-cell-padding: 0.5rem;
+    --grid-gap: 1rem;
+    --info-row-gap: 0.75rem;
+}
+
+/* CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Base Typography and Body Styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+    background: linear-gradient(135deg, #F1F3F4 0%, #E9ECEF 50%, #DEE2E6 100%);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.01em;
+}
+
+/* Page Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Utility Classes */
+.loading-spinner {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 2rem;
+}
+
+.loading-spinner i {
+    margin-right: 0.5rem;
+}
+
+.no-activity, .error-message {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 2rem;
+    font-style: italic;
+}
+
+/* Activity Styles */
+.recent-activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 3px solid var(--primary-color);
+}
+
+.activity-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 14px;
+}
+
+.activity-icon.job {
+    background: rgba(52, 152, 219, 0.2);
+    color: #3498db;
+}
+
+.activity-icon.invoice {
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+}
+
+.activity-details {
+    flex: 1;
+}
+
+.activity-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.activity-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.activity-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}

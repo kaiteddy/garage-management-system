@@ -1,0 +1,32 @@
+{
+  "folder_mappings": {
+    "customers": {
+      "folder_id": "153McUchSClwNMA5FN-RQMhx-Nh7tAFAj",
+      "folder_name": "New folder",
+      "last_modified": "2025-06-11T23:34:23.059Z"
+    },
+    "documents": {
+      "folder_id": "153McUchSClwNMA5FN-RQMhx-Nh7tAFAj",
+      "folder_name": "New folder",
+      "last_modified": "2025-06-12T03:07:06.730Z"
+    },
+    "parts": {
+      "folder_id": "153McUchSClwNMA5FN-RQMhx-Nh7tAFAj",
+      "folder_name": "New folder",
+      "last_modified": "2025-06-11T23:34:51.101Z"
+    },
+    "receipts": {
+      "folder_id": "153McUchSClwNMA5FN-RQMhx-Nh7tAFAj",
+      "folder_name": "New folder",
+      "last_modified": "2025-06-11T23:34:07.906Z"
+    },
+    "vehicles": {
+      "folder_id": "153McUchSClwNMA5FN-RQMhx-Nh7tAFAj",
+      "folder_name": "New folder",
+      "last_modified": "2025-06-11T23:34:50.966Z"
+    }
+  },
+  "auto_sync_enabled": false,
+  "sync_interval_minutes": 30,
+  "last_sync": "2025-06-13T20:10:21.444693"
+}

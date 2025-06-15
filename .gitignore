@@ -1,0 +1,162 @@
+# Virtual environment
+venv/
+env/
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Build files
+build/
+dist/
+*.egg-info/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+
+# Testing
+.pytest_cache/
+.tox/
+
+# Documentation builds
+docs/_build/
+
+# Backup files
+*.bak
+*.backup
+
+# Local configuration
+config.local.py
+settings.local.py
+
+# Uploads
+uploads/
+media/
+
+# Static files (if generated)
+static/collected/
+
+# Node modules (if using frontend build tools)
+node_modules/
+npm-debug.log*
+
+# Package files
+*.tar.gz
+*.zip
+
+# Sensitive configuration files
+config/google_credentials.json
+config/google_token.pickle
+
+# Test and debug files
+test_*.csv
+test_*.xlsx
+test_*.html
+*_test.csv
+*_test.xlsx
+*_test.html
+sample_*.csv
+demo_*.csv
+debug_*.html
+debug_*.py
+emergency_*.js
+emergency_*.py
+performance_fix.*
+simple_*.html
+minimal_*.html
+enhanced_*.html
+full_*.html
+unified_*.html
+
+# Data files (exclude sensitive customer data)
+ga4_complete_data/
+eli_motors_*.csv
+real_customer_data/
+customer_exports/
+
+# System health and monitoring
+system_health_log.json
+
+# Cache and temporary
+.cache/
+*.cache
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Additional OS files
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Additional Python
+*.so
+develop-eggs/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg
+MANIFEST
+.installed.cfg
+
+# Virtual environments
+.venv/
+ENV/
+
+# Additional IDE
+*.swp~
+*~
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# pyenv
+.python-version
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# Pyre type checker
+.pyre/

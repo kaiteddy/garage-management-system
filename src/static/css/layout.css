@@ -1,0 +1,221 @@
+/**
+ * Layout CSS - Header, Sidebar, Main Content Layout
+ * Extracted from monolithic index.html
+ */
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--box-shadow);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    z-index: 1000;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+.logo i {
+    margin-right: 0.5rem;
+    color: #495057;
+    font-size: 1.75rem;
+    filter: drop-shadow(0 4px 8px rgba(73, 80, 87, 0.2));
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.header-btn:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-1px);
+}
+
+.notification-badge {
+    background: #f44336;
+    color: white;
+    border-radius: 50%;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+}
+
+/* Layout */
+.layout {
+    display: flex;
+    min-height: calc(100vh - 70px);
+    margin-top: 70px; /* Account for fixed header */
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    background: linear-gradient(180deg, #F1F3F4 0%, #E9ECEF 100%);
+    color: var(--text-primary);
+    padding: 1rem 0;
+    box-shadow: 2px 0 10px rgba(0, 122, 255, 0.05);
+    position: relative;
+    border-right: 1px solid rgba(0, 122, 255, 0.1);
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: var(--transition);
+    border-left: 3px solid transparent;
+    position: relative;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.025em;
+    margin: 0.25rem 0.5rem;
+    border-radius: var(--border-radius);
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.nav-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, #007bff 0%, #0056b3 100%);
+    border-radius: 0 2px 2px 0;
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.nav-item:hover {
+    background: rgba(0, 122, 255, 0.1);
+    color: var(--primary-color);
+    transform: translateX(8px);
+    border-radius: var(--border-radius);
+}
+
+.nav-item:hover::before {
+    transform: scaleY(1);
+}
+
+.nav-item.active {
+    background: rgba(0, 122, 255, 0.15);
+    color: var(--primary-color);
+    border-radius: var(--border-radius);
+    font-weight: 600;
+}
+
+.nav-item.active::before {
+    transform: scaleY(1);
+}
+
+.nav-item i {
+    margin-right: 0.75rem;
+    width: 20px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.nav-badge {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    border-radius: 12px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    margin-left: auto;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    background: linear-gradient(135deg, #F1F3F4 0%, #E9ECEF 100%);
+    overflow-y: auto;
+    width: 100%;
+    min-width: 0;
+}
+
+.page {
+    display: none;
+    padding: 1.5rem;
+    animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    min-height: calc(100vh - 70px - 3rem);
+    box-sizing: border-box;
+}
+
+.page.active {
+    display: block;
+}
+
+.page-header {
+    background: white;
+    padding: 1rem 1.5rem; /* Much more compact padding */
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 1rem; /* Reduced margin */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem; /* Reduced gap */
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 123, 255, 0.1);
+}
+
+.page-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-variant: small-caps;
+    letter-spacing: -0.025em;
+}
+
+.page-subtitle {
+    color: #64748b;
+    font-size: 1.1rem;
+    margin-top: 0.25rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}

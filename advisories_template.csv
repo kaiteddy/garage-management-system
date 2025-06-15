@@ -1,0 +1,3 @@
+invoice_number,job_number,vehicle_registration,description,severity,recommendation
+90941,J-90941,LS18 ZZA,Rear brake discs showing wear,MINOR,Replace within 6 months
+88769,J-88769,RF53 FJO,Air filter requires replacement,ADVISORY,Replace at next service
