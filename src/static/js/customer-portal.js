@@ -242,7 +242,7 @@ class CustomerPortal {
         grid.innerHTML = this.vehicles.map(vehicle => `
             <div class="vehicle-card">
                 <div class="vehicle-header">
-                    <h4>${vehicle.registration}</h4>
+                    <span class="uk-number-plate">${vehicle.registration}</span>
                     <span class="vehicle-type">${vehicle.make} ${vehicle.model}</span>
                 </div>
                 

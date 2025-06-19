@@ -618,12 +618,19 @@ def sms_dashboard():
         sms_status = sms_service.get_service_status()
 
         # Calculate SMS statistics
+        booked_in_vehicles = [v for v in vehicles if v.get('is_booked_in')]
+        booked_in_with_mobile = [v for v in vehicles_with_mobile if v.get('is_booked_in')]
+        available_for_sms = [v for v in vehicles_with_mobile if not v.get('is_booked_in')]
+
         sms_stats = {
             'total_vehicles': len(vehicles),
             'vehicles_with_mobile': len(vehicles_with_mobile),
             'vehicles_without_mobile': len(vehicles) - len(vehicles_with_mobile),
-            'urgent_with_mobile': len([v for v in vehicles_with_mobile if v.get('is_expired') or v.get('days_until_expiry', 999) <= 7]),
-            'due_soon_with_mobile': len([v for v in vehicles_with_mobile if not v.get('is_expired') and 7 < v.get('days_until_expiry', 999) <= 30])
+            'urgent_with_mobile': len([v for v in available_for_sms if v.get('is_expired') or v.get('days_until_expiry', 999) <= 7]),
+            'due_soon_with_mobile': len([v for v in available_for_sms if not v.get('is_expired') and 7 < v.get('days_until_expiry', 999) <= 30]),
+            'booked_in_total': len(booked_in_vehicles),
+            'booked_in_with_mobile': len(booked_in_with_mobile),
+            'available_for_sms': len(available_for_sms)
         }
 
         return render_template('sms_dashboard.html',
@@ -748,17 +755,24 @@ def get_vehicles_api():
     """Get vehicles for MOT reminders via API"""
     try:
         include_archived = request.args.get('include_archived', 'false').lower() == 'true'
+        include_flagged = request.args.get('include_flagged', 'true').lower() == 'true'
 
-        # Return the current vehicles list
-        filtered_vehicles = vehicles
-        if not include_archived:
-            # Filter out archived vehicles (this would be handled by frontend localStorage)
-            filtered_vehicles = [v for v in vehicles if not v.get('archived', False)]
+        # Use integrated MOT service to get vehicles with booked in data
+        if integrated_mot_service:
+            vehicles_data = integrated_mot_service.get_all_mot_vehicles(
+                include_flagged=include_flagged,
+                include_archived=include_archived
+            )
+        else:
+            # Fallback to global vehicles list
+            vehicles_data = vehicles
+            if not include_archived:
+                vehicles_data = [v for v in vehicles if not v.get('archived', False)]
 
         return jsonify({
             'success': True,
-            'vehicles': filtered_vehicles,
-            'count': len(filtered_vehicles)
+            'vehicles': vehicles_data,
+            'count': len(vehicles_data)
         })
     except Exception as e:
         print(f"Error getting vehicles via API: {str(e)}")
@@ -946,6 +960,162 @@ def check_delivery_status():
     except Exception as e:
         print(f"Error checking delivery status: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
+@mot_bp.route('/set_booked_status/<registration>', methods=['POST'])
+def set_vehicle_booked_status(registration):
+    """Set booked in status for a specific vehicle"""
+    try:
+        # Handle both JSON and form data
+        if request.is_json:
+            data = request.get_json()
+            is_booked_in = data.get('is_booked_in', False)
+            notes = data.get('notes', '')
+        else:
+            is_booked_in = request.form.get('is_booked_in', 'false').lower() == 'true'
+            notes = request.form.get('notes', '')
+
+        # Use integrated MOT service to handle booked status
+        if integrated_mot_service:
+            result = integrated_mot_service.set_vehicle_booked_status(registration, is_booked_in, notes)
+
+            if result.get('success'):
+                if request.is_json:
+                    return jsonify(result)
+                else:
+                    flash(result.get('message', 'Status updated successfully'), 'success')
+                    return redirect(url_for('mot.index'))
+            else:
+                if request.is_json:
+                    return jsonify(result), 400
+                else:
+                    flash(result.get('error', 'Failed to update status'), 'error')
+                    return redirect(url_for('mot.index'))
+        else:
+            error_msg = 'MOT service not available'
+            if request.is_json:
+                return jsonify({'success': False, 'error': error_msg}), 503
+            else:
+                flash(error_msg, 'error')
+                return redirect(url_for('mot.index'))
+
+    except Exception as e:
+        print(f"Error in set_vehicle_booked_status: {e}")
+        error_msg = str(e)
+        if request.is_json:
+            return jsonify({'success': False, 'error': error_msg}), 500
+        else:
+            flash(f'Error: {error_msg}', 'error')
+            return redirect(url_for('mot.index'))
+
+@mot_bp.route('/bulk_set_booked_status', methods=['POST'])
+def bulk_set_booked_status():
+    """Set booked in status for multiple vehicles"""
+    try:
+        # Handle both JSON and form data
+        if request.is_json:
+            data = request.get_json()
+            registrations = data.get('registrations', [])
+            is_booked_in = data.get('is_booked_in', False)
+            notes = data.get('notes', '')
+        else:
+            registrations = request.form.getlist('registrations')
+            is_booked_in = request.form.get('is_booked_in', 'false').lower() == 'true'
+            notes = request.form.get('notes', '')
+
+        if not registrations:
+            error_msg = 'No vehicles specified'
+            if request.is_json:
+                return jsonify({'success': False, 'error': error_msg}), 400
+            else:
+                flash(error_msg, 'error')
+                return redirect(url_for('mot.index'))
+
+        # Use integrated MOT service to handle bulk booked status
+        if integrated_mot_service:
+            result = integrated_mot_service.bulk_set_booked_status(registrations, is_booked_in, notes)
+
+            if result.get('success'):
+                if request.is_json:
+                    return jsonify(result)
+                else:
+                    flash(result.get('message', 'Bulk status updated successfully'), 'success')
+                    return redirect(url_for('mot.index'))
+            else:
+                if request.is_json:
+                    return jsonify(result), 400
+                else:
+                    flash(result.get('error', 'Failed to update bulk status'), 'error')
+                    return redirect(url_for('mot.index'))
+        else:
+            error_msg = 'MOT service not available'
+            if request.is_json:
+                return jsonify({'success': False, 'error': error_msg}), 503
+            else:
+                flash(error_msg, 'error')
+                return redirect(url_for('mot.index'))
+
+    except Exception as e:
+        print(f"Error in bulk_set_booked_status: {e}")
+        error_msg = str(e)
+        if request.is_json:
+            return jsonify({'success': False, 'error': error_msg}), 500
+        else:
+            flash(f'Error: {error_msg}', 'error')
+            return redirect(url_for('mot.index'))
+
+# Alternative form-based endpoints for better compatibility
+@mot_bp.route('/book_vehicle', methods=['POST'])
+def book_vehicle():
+    """Form-based endpoint to book a vehicle"""
+    try:
+        registration = request.form.get('registration')
+        notes = request.form.get('notes', '')
+
+        if not registration:
+            flash('Vehicle registration is required', 'error')
+            return redirect(url_for('mot.index'))
+
+        if integrated_mot_service:
+            result = integrated_mot_service.set_vehicle_booked_status(registration, True, notes)
+
+            if result.get('success'):
+                flash(result.get('message', 'Vehicle booked successfully'), 'success')
+            else:
+                flash(result.get('error', 'Failed to book vehicle'), 'error')
+        else:
+            flash('MOT service not available', 'error')
+
+        return redirect(url_for('mot.index'))
+
+    except Exception as e:
+        flash(f'Error booking vehicle: {str(e)}', 'error')
+        return redirect(url_for('mot.index'))
+
+@mot_bp.route('/unbook_vehicle', methods=['POST'])
+def unbook_vehicle():
+    """Form-based endpoint to unbook a vehicle"""
+    try:
+        registration = request.form.get('registration')
+
+        if not registration:
+            flash('Vehicle registration is required', 'error')
+            return redirect(url_for('mot.index'))
+
+        if integrated_mot_service:
+            result = integrated_mot_service.set_vehicle_booked_status(registration, False, '')
+
+            if result.get('success'):
+                flash(result.get('message', 'Vehicle unbooked successfully'), 'success')
+            else:
+                flash(result.get('error', 'Failed to unbook vehicle'), 'error')
+        else:
+            flash('MOT service not available', 'error')
+
+        return redirect(url_for('mot.index'))
+
+    except Exception as e:
+        flash(f'Error unbooking vehicle: {str(e)}', 'error')
+        return redirect(url_for('mot.index'))
 
 # Blueprint initialization function
 def init_mot_blueprint(app):

@@ -29,16 +29,32 @@ def start_mot_service():
         print("🛑 MOT service stopped by user")
 
 def start_main_application():
-    """Start the main garage management application"""
+    """Start the main garage management application server"""
     print("🏢 Starting Main Garage Management System...")
-    
-    # Wait a moment for the MOT service to start
-    time.sleep(2)
-    
+
+    # Change to the src directory
+    src_dir = Path(__file__).parent / 'src'
+    os.chdir(src_dir)
+
+    try:
+        # Start the main application server
+        subprocess.run([sys.executable, 'main_app_server.py'], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Error starting main application server: {e}")
+    except KeyboardInterrupt:
+        print("🛑 Main application server stopped by user")
+
+def open_browser():
+    """Open the browser after services are ready"""
+    print("🌐 Opening main application in browser...")
+
+    # Wait for services to be ready
+    time.sleep(5)
+
     # Open the main application in browser
-    main_app_url = "file://" + str(Path(__file__).parent / 'src' / 'static' / 'index.html')
+    main_app_url = "http://127.0.0.1:5001"
     print(f"🌐 Opening main application: {main_app_url}")
-    
+
     try:
         webbrowser.open(main_app_url)
         print("✅ Main application opened in browser")
@@ -85,17 +101,19 @@ def main():
         # Start MOT service in a separate thread
         mot_thread = threading.Thread(target=start_mot_service, daemon=True)
         mot_thread.start()
-        
-        # Wait a moment for the service to start
-        time.sleep(3)
-        
-        # Start main application
-        start_main_application()
-        
+
+        # Start main application server in a separate thread
+        main_app_thread = threading.Thread(target=start_main_application, daemon=True)
+        main_app_thread.start()
+
+        # Open browser after services are ready
+        browser_thread = threading.Thread(target=open_browser, daemon=True)
+        browser_thread.start()
+
         print("\n" + "=" * 70)
         print("🎉 System started successfully!")
         print("\n📋 Available Services:")
-        print("   • Main Application: file:///.../src/static/index.html")
+        print("   • Main Application: http://127.0.0.1:5001")
         print("   • MOT Service API:  http://127.0.0.1:5002/api")
         print("\n🔧 Features Available:")
         print("   • Customer Management")

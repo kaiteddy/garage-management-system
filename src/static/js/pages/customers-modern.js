@@ -410,26 +410,38 @@ const CustomersModern = {
 
 // Global functions for modal and actions
 function openAddCustomerModal() {
-    const backdrop = document.getElementById('add-customer-modal-backdrop');
-    const modal = document.getElementById('add-customer-modal');
-    
-    if (backdrop && modal) {
-        backdrop.style.display = 'flex';
-        backdrop.classList.add('show');
-        modal.classList.add('show');
+    // Use the new utility function for consistent modal behavior
+    if (Utils && Utils.showModal) {
+        Utils.showModal('add-customer-modal');
+    } else {
+        // Fallback to manual implementation
+        const backdrop = document.getElementById('add-customer-modal-backdrop');
+        const modal = document.getElementById('add-customer-modal');
+
+        if (backdrop && modal) {
+            backdrop.style.display = 'flex';
+            backdrop.classList.add('show');
+            modal.classList.add('show');
+        }
     }
 }
 
 function closeAddCustomerModal() {
-    const backdrop = document.getElementById('add-customer-modal-backdrop');
-    const modal = document.getElementById('add-customer-modal');
-    
-    if (backdrop && modal) {
-        backdrop.classList.remove('show');
-        modal.classList.remove('show');
-        setTimeout(() => {
-            backdrop.style.display = 'none';
-        }, 250);
+    // Use the new utility function for consistent modal behavior
+    if (Utils && Utils.hideModal) {
+        Utils.hideModal('add-customer-modal');
+    } else {
+        // Fallback to manual implementation
+        const backdrop = document.getElementById('add-customer-modal-backdrop');
+        const modal = document.getElementById('add-customer-modal');
+
+        if (backdrop && modal) {
+            backdrop.classList.remove('show');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                backdrop.style.display = 'none';
+            }, 250);
+        }
     }
 }
 

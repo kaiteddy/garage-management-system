@@ -440,13 +440,27 @@
                             <h6 class="text-muted mb-2">
                                 <i class="fas fa-cog"></i> Management Controls
                             </h6>
-                            <div class="btn-group btn-group-sm" role="group">
-                                <button class="btn btn-outline-warning" onclick="resetCompleted()" title="Reset all completion status">
-                                    <i class="fas fa-undo"></i> Reset Completed
-                                </button>
-                                <button class="btn btn-outline-secondary" onclick="resetArchived()" title="Show all archived vehicles">
-                                    <i class="fas fa-eye"></i> Show Archived
-                                </button>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="btn-group btn-group-sm mb-2" role="group">
+                                        <button class="btn btn-outline-warning" onclick="resetCompleted()" title="Reset all completion status">
+                                            <i class="fas fa-undo"></i> Reset Completed
+                                        </button>
+                                        <button class="btn btn-outline-secondary" onclick="resetArchived()" title="Show all archived vehicles">
+                                            <i class="fas fa-eye"></i> Show Archived
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="btn-group btn-group-sm mb-2" role="group">
+                                        <button class="btn btn-outline-primary" onclick="markSelectedAsBooked(true)" title="Mark selected vehicles as booked in">
+                                            <i class="fas fa-calendar-check"></i> Book Selected
+                                        </button>
+                                        <button class="btn btn-outline-secondary" onclick="markSelectedAsBooked(false)" title="Mark selected vehicles as not booked in">
+                                            <i class="fas fa-calendar-times"></i> Unbook Selected
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -487,14 +501,15 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th style="width: 8%;">Status</th>
-                                            <th style="width: 12%;">Registration</th>
-                                            <th style="width: 15%;">Vehicle</th>
-                                            <th style="width: 15%;">Customer</th>
-                                            <th style="width: 12%;">Mobile</th>
-                                            <th style="width: 10%;">MOT Expiry</th>
-                                            <th style="width: 8%;">Days</th>
-                                            <th style="width: 10%;">Last Test</th>
-                                            <th style="width: 10%;">Actions</th>
+                                            <th style="width: 10%;">Registration</th>
+                                            <th style="width: 12%;">Vehicle</th>
+                                            <th style="width: 12%;">Customer</th>
+                                            <th style="width: 10%;">Mobile</th>
+                                            <th style="width: 8%;">MOT Expiry</th>
+                                            <th style="width: 6%;">Days</th>
+                                            <th style="width: 8%;">Booked In</th>
+                                            <th style="width: 8%;">Last Test</th>
+                                            <th style="width: 18%;">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -571,6 +586,27 @@
                                                         {{ vehicle.days_until_expiry }}
                                                     </span>
                                                 {% endif %}
+                                            </td>
+                                            <td>
+                                                <!-- Booked In Status -->
+                                                <div class="d-flex align-items-center">
+                                                    {% if vehicle.is_booked_in %}
+                                                        <span class="badge bg-info text-white me-1" title="Booked in on {{ vehicle.booked_in_date | format_date }}">
+                                                            <i class="fas fa-calendar-check"></i> Booked
+                                                        </span>
+                                                        <button class="btn btn-outline-secondary btn-sm"
+                                                                title="Mark as not booked in"
+                                                                onclick="toggleBookedStatus('{{ vehicle.registration }}', false)">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    {% else %}
+                                                        <button class="btn btn-outline-primary btn-sm"
+                                                                title="Mark as booked in"
+                                                                onclick="toggleBookedStatus('{{ vehicle.registration }}', true)">
+                                                            <i class="fas fa-calendar-plus"></i> Book In
+                                                        </button>
+                                                    {% endif %}
+                                                </div>
                                             </td>
                                             <td>
                                                 <small class="text-muted">
@@ -888,6 +924,109 @@
             fileInfo.classList.add('d-none');
             dropZone.style.display = 'block';
             uploadBtn.disabled = true;
+        }
+
+        // Booked In Status Management
+        function toggleBookedStatus(registration, isBookedIn) {
+            const notes = isBookedIn ? prompt('Add notes for booking (optional):') : '';
+            if (isBookedIn && notes === null) return; // User cancelled
+
+            fetch(`/mot/set_booked_status/${registration}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    is_booked_in: isBookedIn,
+                    notes: notes || ''
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    showFlashMessage(data.message, 'success');
+                    // Reload page to update UI
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    showFlashMessage(data.error || 'Failed to update booked status', 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showFlashMessage('Failed to update booked status', 'danger');
+            });
+        }
+
+        // Bulk Booked In Actions
+        function markSelectedAsBooked(isBookedIn) {
+            const selectedVehicles = getSelectedVehicles();
+            if (selectedVehicles.length === 0) {
+                showFlashMessage('Please select vehicles first', 'warning');
+                return;
+            }
+
+            const action = isBookedIn ? 'book in' : 'unbook';
+            const notes = isBookedIn ? prompt(`Add notes for booking ${selectedVehicles.length} vehicle(s) (optional):`) : '';
+            if (isBookedIn && notes === null) return; // User cancelled
+
+            if (!confirm(`Are you sure you want to ${action} ${selectedVehicles.length} selected vehicle(s)?`)) {
+                return;
+            }
+
+            fetch('/mot/bulk_set_booked_status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    registrations: selectedVehicles,
+                    is_booked_in: isBookedIn,
+                    notes: notes || ''
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showFlashMessage(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    showFlashMessage(data.error || 'Failed to update booked status', 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showFlashMessage('Failed to update booked status', 'danger');
+            });
+        }
+
+        // Helper function to show flash messages
+        function showFlashMessage(message, type) {
+            const flashContainer = document.getElementById('flashMessages');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            flashContainer.appendChild(alertDiv);
+
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    new bootstrap.Alert(alertDiv).close();
+                }
+            }, 5000);
+        }
+
+        // Helper function to get selected vehicles (for future bulk actions)
+        function getSelectedVehicles() {
+            const checkboxes = document.querySelectorAll('.completion-checkbox:checked');
+            return Array.from(checkboxes).map(cb => cb.dataset.registration);
         }
     </script>
 

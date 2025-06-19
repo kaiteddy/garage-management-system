@@ -607,8 +607,8 @@
                 btn.disabled = true;
             }
 
-            // Try to open in a new window first
-            const googleDriveWindow = window.open('/google-drive/', 'googleDrive', 'width=1200,height=800,scrollbars=yes,resizable=yes');
+            // Try to open in a new window first with proper positioning
+            const googleDriveWindow = Utils.openCenteredWindow('/google-drive/', 'googleDrive', 1200, 800);
 
             // Reset button after a short delay
             setTimeout(() => {
@@ -624,8 +624,6 @@
                     window.location.href = '/google-drive/';
                 }
             } else {
-                // Focus the new window
-                googleDriveWindow.focus();
                 console.log('Google Drive window opened successfully');
             }
         }

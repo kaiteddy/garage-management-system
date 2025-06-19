@@ -140,8 +140,11 @@
                 <i class="fas fa-car me-2"></i> MOT Reminder System
             </a>
             <div class="navbar-nav ms-auto">
+                <a class="nav-link px-3 rounded-pill me-2" href="/">
+                    <i class="fas fa-home me-1"></i> Main Site
+                </a>
                 <a class="nav-link px-3 rounded-pill me-2" href="{{ url_for('mot.index') }}">
-                    <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+                    <i class="fas fa-tachometer-alt me-1"></i> MOT Dashboard
                 </a>
                 <a class="nav-link active px-3 rounded-pill" href="{{ url_for('mot.sms_dashboard') }}">
                     <i class="fas fa-sms me-1"></i> SMS Center
@@ -244,21 +247,21 @@
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <div class="border rounded p-2 {% if sms_stats.vehicles_without_mobile > 0 %}bg-warning text-dark{% endif %}">
-                                    <div class="h4 mb-1">{{ sms_stats.vehicles_without_mobile }}</div>
-                                    <small class="{% if sms_stats.vehicles_without_mobile > 0 %}text-dark{% else %}text-muted{% endif %}">No Mobile</small>
+                                <div class="border rounded p-2 {% if sms_stats.booked_in_with_mobile > 0 %}bg-info text-white{% endif %}">
+                                    <div class="h4 mb-1">{{ sms_stats.booked_in_with_mobile }}</div>
+                                    <small class="{% if sms_stats.booked_in_with_mobile > 0 %}text-white{% else %}text-muted{% endif %}">Booked In</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="border rounded p-2 {% if sms_stats.available_for_sms > 0 %}bg-primary text-white{% endif %}">
+                                    <div class="h4 mb-1">{{ sms_stats.available_for_sms }}</div>
+                                    <small class="{% if sms_stats.available_for_sms > 0 %}text-white{% else %}text-muted{% endif %}">Available for SMS</small>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="border rounded p-2 {% if sms_stats.urgent_with_mobile > 0 %}bg-danger text-white{% endif %}">
                                     <div class="h4 mb-1">{{ sms_stats.urgent_with_mobile }}</div>
-                                    <small class="{% if sms_stats.urgent_with_mobile > 0 %}text-white{% else %}text-muted{% endif %}">Urgent + Mobile</small>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="border rounded p-2 {% if sms_stats.due_soon_with_mobile > 0 %}bg-warning text-dark{% endif %}">
-                                    <div class="h4 mb-1">{{ sms_stats.due_soon_with_mobile }}</div>
-                                    <small class="{% if sms_stats.due_soon_with_mobile > 0 %}text-dark{% else %}text-muted{% endif %}">Due Soon + Mobile</small>
+                                    <small class="{% if sms_stats.urgent_with_mobile > 0 %}text-white{% else %}text-muted{% endif %}">Urgent Need SMS</small>
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -284,12 +287,22 @@
                             <small class="text-muted">({{ vehicles|length }} vehicles)</small>
                         </h5>
                         <div>
-                            <button class="btn btn-success" onclick="selectUrgent()">
-                                <i class="fas fa-exclamation-triangle"></i> Select Urgent
-                            </button>
-                            <button class="btn btn-primary" onclick="sendBulkSMS()">
-                                <i class="fas fa-paper-plane"></i> Send Selected
-                            </button>
+                            <div class="btn-group me-2" role="group">
+                                <button class="btn btn-success" onclick="selectUrgent()">
+                                    <i class="fas fa-exclamation-triangle"></i> Select Urgent
+                                </button>
+                                <button class="btn btn-primary" onclick="sendBulkSMS()">
+                                    <i class="fas fa-paper-plane"></i> Send Selected
+                                </button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-outline-info" onclick="markSelectedAsBooked(true)">
+                                    <i class="fas fa-calendar-check"></i> Book Selected
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="markSelectedAsBooked(false)">
+                                    <i class="fas fa-calendar-times"></i> Unbook Selected
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body p-0">
@@ -307,15 +320,22 @@
                                             <th>Customer</th>
                                             <th>Mobile</th>
                                             <th>MOT Expiry</th>
+                                            <th>Booked In</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for vehicle in vehicles|sort(attribute='days_until_expiry') %}
-                                        <tr class="{% if vehicle.is_expired %}table-danger{% elif vehicle.days_until_expiry <= 7 %}table-warning{% endif %}">
+                                        <tr class="{% if vehicle.is_expired %}table-danger{% elif vehicle.days_until_expiry <= 7 %}table-warning{% endif %}{% if vehicle.is_booked_in %} table-secondary{% endif %}">
                                             <td>
-                                                <input type="checkbox" name="selected_vehicles" value="{{ vehicle.registration }}" 
+                                                {% if not vehicle.is_booked_in %}
+                                                <input type="checkbox" name="selected_vehicles" value="{{ vehicle.registration }}"
                                                        class="vehicle-checkbox {% if vehicle.is_expired or vehicle.days_until_expiry <= 7 %}urgent-vehicle{% endif %}">
+                                                {% else %}
+                                                <span class="text-muted" title="Vehicle is booked in - SMS not needed">
+                                                    <i class="fas fa-calendar-check"></i>
+                                                </span>
+                                                {% endif %}
                                             </td>
                                             <td>
                                                 {% if vehicle.is_expired %}
@@ -370,10 +390,30 @@
                                                 </span>
                                             </td>
                                             <td>
+                                                {% if vehicle.is_booked_in %}
+                                                    <span class="badge bg-info text-white" title="Booked in on {{ vehicle.booked_in_date | format_date }}">
+                                                        <i class="fas fa-calendar-check"></i> Booked
+                                                    </span>
+                                                    {% if vehicle.booked_in_notes %}
+                                                        <br><small class="text-muted">{{ vehicle.booked_in_notes }}</small>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <span class="text-muted">
+                                                        <i class="fas fa-calendar-times"></i> Not booked
+                                                    </span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if not vehicle.is_booked_in %}
                                                 <a href="{{ url_for('mot.send_single_sms', registration=vehicle.registration) }}"
                                                    class="btn btn-sm btn-outline-primary" title="Send SMS">
                                                     <i class="fas fa-paper-plane"></i>
                                                 </a>
+                                                {% else %}
+                                                <span class="text-muted" title="Vehicle is booked in - SMS not needed">
+                                                    <i class="fas fa-ban"></i> No SMS needed
+                                                </span>
+                                                {% endif %}
                                             </td>
                                         </tr>
                                         {% endfor %}
@@ -429,10 +469,54 @@
                 alert('Please select at least one vehicle to send SMS.');
                 return;
             }
-            
+
             if (confirm(`Send SMS to ${selected.length} selected vehicle(s)?`)) {
                 document.getElementById('bulkSMSForm').submit();
             }
+        }
+
+        // Bulk Booked In Actions
+        function markSelectedAsBooked(isBookedIn) {
+            const selected = document.querySelectorAll('.vehicle-checkbox:checked');
+            if (selected.length === 0) {
+                alert('Please select vehicles first.');
+                return;
+            }
+
+            const action = isBookedIn ? 'book in' : 'unbook';
+            const notes = isBookedIn ? prompt(`Add notes for booking ${selected.length} vehicle(s) (optional):`) : '';
+            if (isBookedIn && notes === null) return; // User cancelled
+
+            if (!confirm(`Are you sure you want to ${action} ${selected.length} selected vehicle(s)?`)) {
+                return;
+            }
+
+            const registrations = Array.from(selected).map(cb => cb.value);
+
+            fetch('/api/mot/vehicles/bulk-booked-status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    registrations: registrations,
+                    is_booked_in: isBookedIn,
+                    notes: notes || ''
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.reload();
+                } else {
+                    alert(data.error || 'Failed to update booked status');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to update booked status');
+            });
         }
     </script>
 </body>

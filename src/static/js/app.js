@@ -228,7 +228,10 @@ window.loadSpacingPreference = loadSpacingPreference;
 // Auto-initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
     console.log('📄 DOM Content Loaded - Starting Application');
-    initializeApplication();
+    // Small delay to ensure components are loaded
+    setTimeout(() => {
+        initializeApplication();
+    }, 100);
 });
 
 // Periodic health checks

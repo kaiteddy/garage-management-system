@@ -242,6 +242,10 @@ class SMSService:
         Returns:
             dict: {'should_send': bool, 'reason': str}
         """
+        # Check if vehicle is already booked in
+        if vehicle_info.get('is_booked_in'):
+            return {'should_send': False, 'reason': 'Vehicle is already booked in'}
+
         # Must have a valid mobile number
         if not mobile_number or not mobile_number.strip():
             return {'should_send': False, 'reason': 'No mobile number available'}

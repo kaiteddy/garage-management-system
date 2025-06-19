@@ -35,20 +35,31 @@ class WorkshopDiary {
             const techResult = await techResponse.json();
             const bayResult = await bayResponse.json();
 
-            if (techResult.success) {
+            // Handle technicians response
+            if (techResult.success && techResult.technicians) {
                 this.technicians = techResult.technicians;
+            } else {
+                console.warn('⚠️ Technicians API response format unexpected:', techResult);
+                this.technicians = [];
             }
 
-            if (bayResult.success) {
-                this.bays = bayResult.bays;
+            // Handle workshop bays response
+            if (bayResult.success && bayResult.workshop_bays) {
+                this.bays = bayResult.workshop_bays;
+            } else {
+                console.warn('⚠️ Workshop bays API response format unexpected:', bayResult);
+                this.bays = [];
             }
 
             console.log('Resources loaded:', {
-                technicians: this.technicians.length,
-                bays: this.bays.length
+                technicians: this.technicians ? this.technicians.length : 0,
+                bays: this.bays ? this.bays.length : 0
             });
         } catch (error) {
             console.error('Error loading resources:', error);
+            // Initialize empty arrays on error
+            this.technicians = [];
+            this.bays = [];
         }
     }
 

@@ -188,6 +188,32 @@ class IntegratedMOTService:
         except sqlite3.OperationalError:
             pass  # Column already exists
 
+        # Add booked_in column if it doesn't exist (for existing databases)
+        try:
+            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN is_booked_in BOOLEAN DEFAULT FALSE')
+        except sqlite3.OperationalError:
+            pass  # Column already exists
+
+        try:
+            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN booked_in_date TIMESTAMP')
+        except sqlite3.OperationalError:
+            pass  # Column already exists
+
+        try:
+            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN booked_in_notes TEXT')
+        except sqlite3.OperationalError:
+            pass  # Column already exists
+
+        try:
+            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN archived_at TIMESTAMP')
+        except sqlite3.OperationalError:
+            pass  # Column already exists
+
+        try:
+            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN archive_reason TEXT')
+        except sqlite3.OperationalError:
+            pass  # Column already exists
+
         # Add upload tracking columns
         try:
             cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN uploaded_at TIMESTAMP')
@@ -617,7 +643,9 @@ class IntegratedMOTService:
                        last_test_date, test_result, updated_at,
                        COALESCE(is_archived, 0) as is_archived,
                        archived_at, archive_reason, uploaded_at, upload_batch_id, sms_sent_at,
-                       main_customer_id, main_vehicle_id
+                       main_customer_id, main_vehicle_id,
+                       COALESCE(is_booked_in, 0) as is_booked_in,
+                       booked_in_date, booked_in_notes
                 FROM mot_vehicles
                 ORDER BY COALESCE(is_archived, 0) ASC, is_expired DESC, days_until_expiry ASC
             ''')
@@ -628,7 +656,9 @@ class IntegratedMOTService:
                        last_test_date, test_result, updated_at,
                        COALESCE(is_archived, 0) as is_archived,
                        archived_at, archive_reason, uploaded_at, upload_batch_id, sms_sent_at,
-                       main_customer_id, main_vehicle_id
+                       main_customer_id, main_vehicle_id,
+                       COALESCE(is_booked_in, 0) as is_booked_in,
+                       booked_in_date, booked_in_notes
                 FROM mot_vehicles
                 WHERE COALESCE(is_archived, 0) = 0
                 ORDER BY is_expired DESC, days_until_expiry ASC
@@ -655,7 +685,10 @@ class IntegratedMOTService:
                 'upload_batch_id': row[15] if len(row) > 15 else None,
                 'sms_sent_at': row[16] if len(row) > 16 else None,
                 'main_customer_id': row[17] if len(row) > 17 else None,
-                'main_vehicle_id': row[18] if len(row) > 18 else None
+                'main_vehicle_id': row[18] if len(row) > 18 else None,
+                'is_booked_in': bool(row[19]) if len(row) > 19 else False,
+                'booked_in_date': row[20] if len(row) > 20 else None,
+                'booked_in_notes': row[21] if len(row) > 21 else None
             }
 
             # Add classification
@@ -677,7 +710,7 @@ class IntegratedMOTService:
 
             vehicle['has_mobile'] = has_mobile
             vehicle['has_complete_data'] = has_complete_data
-            vehicle['can_send_sms'] = has_mobile and has_complete_data
+            vehicle['can_send_sms'] = has_mobile and has_complete_data and not vehicle.get('is_booked_in', False)
 
             # Determine if should be included based on filtering
             if not include_flagged and vehicle.get('flag_type'):
@@ -771,25 +804,128 @@ class IntegratedMOTService:
         except Exception as e:
             return {'success': False, 'error': str(e)}
 
+    def set_vehicle_booked_status(self, registration, is_booked_in, notes=''):
+        """Set the booked in status for a vehicle"""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+
+            current_time = datetime.now().isoformat()
+
+            if is_booked_in:
+                cursor.execute('''
+                    UPDATE mot_vehicles
+                    SET is_booked_in = TRUE,
+                        booked_in_date = ?,
+                        booked_in_notes = ?,
+                        updated_at = ?
+                    WHERE registration = ?
+                ''', (current_time, notes, current_time, registration))
+            else:
+                cursor.execute('''
+                    UPDATE mot_vehicles
+                    SET is_booked_in = FALSE,
+                        booked_in_date = NULL,
+                        booked_in_notes = NULL,
+                        updated_at = ?
+                    WHERE registration = ?
+                ''', (current_time, registration))
+
+            if cursor.rowcount == 0:
+                conn.close()
+                return {'success': False, 'error': 'Vehicle not found'}
+
+            conn.commit()
+            conn.close()
+
+            status_text = 'booked in' if is_booked_in else 'not booked in'
+            return {'success': True, 'message': f'Vehicle {registration} marked as {status_text}'}
+
+        except Exception as e:
+            return {'success': False, 'error': str(e)}
+
+    def bulk_set_booked_status(self, registrations, is_booked_in, notes=''):
+        """Set booked in status for multiple vehicles"""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+
+            current_time = datetime.now().isoformat()
+            updated_count = 0
+
+            for registration in registrations:
+                if is_booked_in:
+                    cursor.execute('''
+                        UPDATE mot_vehicles
+                        SET is_booked_in = TRUE,
+                            booked_in_date = ?,
+                            booked_in_notes = ?,
+                            updated_at = ?
+                        WHERE registration = ?
+                    ''', (current_time, notes, current_time, registration))
+                else:
+                    cursor.execute('''
+                        UPDATE mot_vehicles
+                        SET is_booked_in = FALSE,
+                            booked_in_date = NULL,
+                            booked_in_notes = NULL,
+                            updated_at = ?
+                        WHERE registration = ?
+                    ''', (current_time, registration))
+
+                if cursor.rowcount > 0:
+                    updated_count += 1
+
+            conn.commit()
+            conn.close()
+
+            status_text = 'booked in' if is_booked_in else 'not booked in'
+            return {
+                'success': True,
+                'message': f'{updated_count} vehicles marked as {status_text}',
+                'updated_count': updated_count
+            }
+
+        except Exception as e:
+            return {'success': False, 'error': str(e)}
+
     def send_mot_reminder_sms(self, registrations):
         """Send MOT reminder SMS to selected vehicles"""
         if not self.sms_service:
             return {'success': False, 'error': 'SMS service not available'}
-        
+
         results = []
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
-        
+
         for registration in registrations:
             cursor.execute('''
                 SELECT registration, make, model, customer_name, mobile_number,
-                       mot_expiry_date, days_until_expiry, is_expired, main_customer_id, main_vehicle_id
+                       mot_expiry_date, days_until_expiry, is_expired, main_customer_id, main_vehicle_id,
+                       COALESCE(is_booked_in, 0) as is_booked_in
                 FROM mot_vehicles
                 WHERE registration = ?
             ''', (registration,))
-            
+
             vehicle_data = cursor.fetchone()
-            if not vehicle_data or not vehicle_data[4]:  # No mobile number
+            if not vehicle_data:
+                results.append({
+                    'registration': registration,
+                    'success': False,
+                    'error': 'Vehicle not found'
+                })
+                continue
+
+            # Check if vehicle is booked in
+            if vehicle_data[10]:  # is_booked_in
+                results.append({
+                    'registration': registration,
+                    'success': False,
+                    'error': 'Vehicle is already booked in - SMS not sent'
+                })
+                continue
+
+            if not vehicle_data[4]:  # No mobile number
                 results.append({
                     'registration': registration,
                     'success': False,

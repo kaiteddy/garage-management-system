@@ -44,6 +44,50 @@ def safe_int(value):
     except:
         return 0
 
+def normalize_account_number(account_number):
+    """Normalize account number for consistent matching"""
+    if pd.isna(account_number):
+        return ''
+
+    account_str = str(account_number).strip()
+
+    # Remove common prefixes/suffixes and parentheses
+    account_str = account_str.replace('(', '').replace(')', '')
+
+    # Handle different formats
+    if account_str.startswith('-'):
+        account_str = account_str[1:]  # Remove leading dash
+
+    return account_str
+
+def find_customer_id_by_account(cursor, account_number):
+    """Find customer ID by account number with fuzzy matching"""
+    if not account_number:
+        return None
+
+    normalized_account = normalize_account_number(account_number)
+
+    # Try exact match first
+    cursor.execute('SELECT id FROM customers WHERE account_number = ?', (account_number,))
+    result = cursor.fetchone()
+    if result:
+        return result[0]
+
+    # Try normalized match
+    cursor.execute('SELECT id FROM customers WHERE REPLACE(REPLACE(account_number, "(", ""), ")", "") = ?', (normalized_account,))
+    result = cursor.fetchone()
+    if result:
+        return result[0]
+
+    # Try partial match (for cases like "002" matching "REN002")
+    if len(normalized_account) >= 3:
+        cursor.execute('SELECT id FROM customers WHERE account_number LIKE ?', (f'%{normalized_account}%',))
+        result = cursor.fetchone()
+        if result:
+            return result[0]
+
+    return None
+
 def import_customers(cursor, customers_df):
     """Import customers from GA4 data"""
     print(f"Importing {len(customers_df)} customers...")
@@ -113,15 +157,9 @@ def import_vehicles(cursor, vehicles_df):
             if not registration or registration == '*':
                 continue
                 
-            # Get customer_id from account_number
+            # Get customer_id from account_number with improved matching
             customer_account = safe_str(row.get('customer_account', ''))
-            customer_id = None
-            
-            if customer_account:
-                cursor.execute('SELECT id FROM customers WHERE account_number = ?', (customer_account,))
-                customer_result = cursor.fetchone()
-                if customer_result:
-                    customer_id = customer_result[0]
+            customer_id = find_customer_id_by_account(cursor, customer_account)
 
             cursor.execute('''
                 INSERT OR REPLACE INTO vehicles (
@@ -158,16 +196,9 @@ def import_jobs_and_invoices(cursor, documents_df):
             if not doc_number:
                 continue
             
-            # Get customer_id from ID Customer or Customer Account
-            customer_id = None
-            id_customer = safe_str(row.get('ID Customer', ''))
+            # Get customer_id from Customer Account with improved matching
             customer_account = safe_str(row.get('Customer Account', ''))
-            
-            if customer_account:
-                cursor.execute('SELECT id FROM customers WHERE account_number = ?', (customer_account,))
-                customer_result = cursor.fetchone()
-                if customer_result:
-                    customer_id = customer_result[0]
+            customer_id = find_customer_id_by_account(cursor, customer_account)
             
             # Get vehicle_id from Vehicle Reg
             vehicle_id = None

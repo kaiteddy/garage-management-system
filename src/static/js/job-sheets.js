@@ -5,6 +5,7 @@
 
 class JobSheetsManager {
     constructor() {
+        console.log('🔧 JobSheetsManager constructor called');
         this.jobSheets = [];
         this.templates = [];
         this.currentJobSheet = null;
@@ -13,10 +14,12 @@ class JobSheetsManager {
     }
 
     init() {
+        console.log('🔧 JobSheetsManager init() called');
         this.loadTemplates();
         this.loadJobSheets();
         this.createJobSheetsHTML();
         this.setupEventListeners();
+        console.log('✅ JobSheetsManager initialized successfully');
     }
 
     async loadTemplates() {
@@ -48,11 +51,13 @@ class JobSheetsManager {
     }
 
     createJobSheetsHTML() {
+        console.log('🔧 Creating job sheets HTML...');
         const container = document.getElementById('job-sheets-container');
         if (!container) {
-            console.error('Job sheets container not found');
+            console.error('❌ Job sheets container not found');
             return;
         }
+        console.log('✅ Job sheets container found:', container);
 
         container.innerHTML = `
             <div class="job-sheets-header">
@@ -198,7 +203,7 @@ class JobSheetsManager {
     createJobSheetCardHTML(sheet) {
         const statusClass = this.getStatusClass(sheet.status);
         const statusIcon = this.getStatusIcon(sheet.status);
-        
+
         return `
             <div class="job-sheet-card ${statusClass}" onclick="jobSheets.showJobSheetDetails(${sheet.id})">
                 <div class="job-sheet-header">
@@ -208,27 +213,26 @@ class JobSheetsManager {
                         ${sheet.status}
                     </div>
                 </div>
-                
+
                 <div class="job-sheet-content">
                     <div class="job-info">
                         <h4>${sheet.job_number || 'No Job'}</h4>
                         <p class="job-description">${sheet.job_description || 'No description'}</p>
                     </div>
-                    
+
                     <div class="customer-info">
-                        <div class="customer-name">
-                            <i class="fas fa-user"></i>
-                            ${sheet.customer_name || 'Unknown Customer'}
-                        </div>
-                        <div class="vehicle-info">
-                            <i class="fas fa-car"></i>
-                            ${sheet.vehicle_registration || 'No Vehicle'}
-                        </div>
+                        <i class="fas fa-user"></i>
+                        <span>${sheet.customer_name || 'Unknown Customer'}</span>
                     </div>
-                    
+
+                    <div class="vehicle-info">
+                        <i class="fas fa-car"></i>
+                        <span>${sheet.vehicle_registration || 'No Vehicle'}</span>
+                    </div>
+
                     <div class="template-info">
                         <i class="fas fa-file-alt"></i>
-                        ${sheet.template_name || 'Custom Template'}
+                        <span>${sheet.template_name || 'Custom Template'}</span>
                     </div>
                 </div>
                 
@@ -358,20 +362,28 @@ class JobSheetsManager {
                 this.closeNewJobSheetModal();
                 this.loadJobSheets();
             } else {
-                this.showError('Failed to create job sheet: ' + result.error);
+                this.showNotification('Failed to create job sheet: ' + result.error, 'error');
             }
         } catch (error) {
             console.error('Error creating job sheet:', error);
-            this.showError('Failed to create job sheet');
+            this.showNotification('Failed to create job sheet', 'error');
         }
     }
 
     showNewJobSheetModal() {
-        document.getElementById('new-job-sheet-modal').style.display = 'block';
+        if (Utils && Utils.showModal) {
+            Utils.showModal('new-job-sheet-modal');
+        } else {
+            document.getElementById('new-job-sheet-modal').style.display = 'block';
+        }
     }
 
     closeNewJobSheetModal() {
-        document.getElementById('new-job-sheet-modal').style.display = 'none';
+        if (Utils && Utils.hideModal) {
+            Utils.hideModal('new-job-sheet-modal');
+        } else {
+            document.getElementById('new-job-sheet-modal').style.display = 'none';
+        }
         document.getElementById('new-job-sheet-form').reset();
     }
 
@@ -380,15 +392,101 @@ class JobSheetsManager {
         if (!sheet) return;
 
         this.currentJobSheet = sheet;
-        
-        const modal = document.getElementById('job-sheet-modal');
-        const title = document.getElementById('job-sheet-modal-title');
-        const body = document.getElementById('job-sheet-modal-body');
 
-        title.textContent = `Job Sheet ${sheet.sheet_number}`;
-        body.innerHTML = this.createJobSheetDetailHTML(sheet);
-        
-        modal.style.display = 'block';
+        // Use full page view instead of modal for better user experience
+        this.showJobSheetDetailPage(sheet);
+    }
+
+    showJobSheetDetailPage(sheet) {
+        // Check if job-sheet-detail page exists, if not create it
+        let detailPage = document.getElementById('job-sheet-detail');
+        if (!detailPage) {
+            this.createJobSheetDetailPage();
+            detailPage = document.getElementById('job-sheet-detail');
+        }
+
+        // Populate the page with job sheet data
+        this.populateJobSheetDetailPage(sheet);
+
+        // Show the page using the global showPage function
+        if (typeof showPage === 'function') {
+            showPage('job-sheet-detail');
+        } else {
+            // Fallback to direct page switching
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            detailPage.classList.add('active');
+        }
+    }
+
+    createJobSheetDetailPage() {
+        // Create the job sheet detail page if it doesn't exist
+        const mainContent = document.querySelector('.main-content');
+        if (!mainContent) return;
+
+        const detailPageHTML = `
+            <div id="job-sheet-detail" class="page">
+                <div class="page-header">
+                    <div>
+                        <button class="btn btn-secondary" onclick="showPage('job-sheets')" style="margin-right: 1rem;">
+                            <i class="fas fa-arrow-left"></i>
+                            Back to Job Sheets
+                        </button>
+                        <h1 class="page-title" id="job-sheet-detail-title">
+                            <i class="fas fa-clipboard-list"></i>
+                            Job Sheet Details
+                        </h1>
+                        <p class="page-subtitle" id="job-sheet-detail-subtitle">View and manage job sheet information</p>
+                    </div>
+                    <div class="page-actions" id="job-sheet-detail-actions">
+                        <!-- Actions will be populated dynamically -->
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-content" id="job-sheet-detail-content">
+                        <!-- Content will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        `;
+
+        mainContent.insertAdjacentHTML('beforeend', detailPageHTML);
+    }
+
+    populateJobSheetDetailPage(sheet) {
+        // Update page title and subtitle
+        const title = document.getElementById('job-sheet-detail-title');
+        const subtitle = document.getElementById('job-sheet-detail-subtitle');
+        const content = document.getElementById('job-sheet-detail-content');
+        const actions = document.getElementById('job-sheet-detail-actions');
+
+        if (title) {
+            title.innerHTML = `
+                <i class="fas fa-clipboard-list"></i>
+                Job Sheet ${sheet.sheet_number}
+            `;
+        }
+
+        if (subtitle) {
+            subtitle.textContent = `${sheet.customer_name || 'Unknown Customer'} - ${sheet.vehicle_registration || 'No Vehicle'}`;
+        }
+
+        if (actions) {
+            actions.innerHTML = `
+                <button class="btn btn-primary" onclick="jobSheets.printJobSheet(${sheet.id})">
+                    <i class="fas fa-print"></i>
+                    Print
+                </button>
+                <button class="btn btn-secondary" onclick="jobSheets.editJobSheet(${sheet.id})">
+                    <i class="fas fa-edit"></i>
+                    Edit
+                </button>
+            `;
+        }
+
+        if (content) {
+            content.innerHTML = this.createJobSheetDetailHTML(sheet);
+        }
     }
 
     createJobSheetDetailHTML(sheet) {
@@ -489,7 +587,11 @@ class JobSheetsManager {
     }
 
     closeJobSheetModal() {
-        document.getElementById('job-sheet-modal').style.display = 'none';
+        if (Utils && Utils.hideModal) {
+            Utils.hideModal('job-sheet-modal');
+        } else {
+            document.getElementById('job-sheet-modal').style.display = 'none';
+        }
     }
 
     filterJobSheets() {
@@ -512,6 +614,15 @@ class JobSheetsManager {
     editJobSheet(sheetId) {
         console.log('Edit job sheet:', sheetId);
         // Implement edit functionality
+    }
+
+    showNotification(message, type = 'info') {
+        // Use global notification function if available
+        if (typeof window.showNotification === 'function') {
+            window.showNotification(message, type);
+        } else {
+            console.log(`${type.toUpperCase()}: ${message}`);
+        }
     }
 
     showNotification(message, type = 'info') {
@@ -965,11 +1076,19 @@ class QuotesManager {
     }
 
     showNewQuoteModal() {
-        document.getElementById('new-quote-modal').style.display = 'block';
+        if (Utils && Utils.showModal) {
+            Utils.showModal('new-quote-modal');
+        } else {
+            document.getElementById('new-quote-modal').style.display = 'block';
+        }
     }
 
     closeNewQuoteModal() {
-        document.getElementById('new-quote-modal').style.display = 'none';
+        if (Utils && Utils.hideModal) {
+            Utils.hideModal('new-quote-modal');
+        } else {
+            document.getElementById('new-quote-modal').style.display = 'none';
+        }
         document.getElementById('new-quote-form').reset();
         this.calculateTotal();
         this.setDefaultValidUntil();
@@ -986,14 +1105,125 @@ class QuotesManager {
 
         this.currentQuote = quote;
 
-        const modal = document.getElementById('quote-detail-modal');
-        const title = document.getElementById('quote-detail-modal-title');
-        const body = document.getElementById('quote-detail-modal-body');
+        // Use full page view instead of modal for better user experience
+        this.showQuoteDetailPage(quote);
+    }
 
-        title.textContent = `Quote ${quote.quote_number}`;
-        body.innerHTML = this.createQuoteDetailHTML(quote);
+    showQuoteDetailPage(quote) {
+        // Check if quote-detail page exists, if not create it
+        let detailPage = document.getElementById('quote-detail');
+        if (!detailPage) {
+            this.createQuoteDetailPage();
+            detailPage = document.getElementById('quote-detail');
+        }
 
-        modal.style.display = 'block';
+        // Populate the page with quote data
+        this.populateQuoteDetailPage(quote);
+
+        // Show the page using the global showPage function
+        if (typeof showPage === 'function') {
+            showPage('quote-detail');
+        } else {
+            // Fallback to direct page switching
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            detailPage.classList.add('active');
+        }
+    }
+
+    createQuoteDetailPage() {
+        // Create the quote detail page if it doesn't exist
+        const mainContent = document.querySelector('.main-content');
+        if (!mainContent) return;
+
+        const detailPageHTML = `
+            <div id="quote-detail" class="page">
+                <div class="page-header">
+                    <div>
+                        <button class="btn btn-secondary" onclick="showPage('quotes')" style="margin-right: 1rem;">
+                            <i class="fas fa-arrow-left"></i>
+                            Back to Quotes
+                        </button>
+                        <h1 class="page-title" id="quote-detail-title">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            Quote Details
+                        </h1>
+                        <p class="page-subtitle" id="quote-detail-subtitle">View and manage quote information</p>
+                    </div>
+                    <div class="page-actions" id="quote-detail-actions">
+                        <!-- Actions will be populated dynamically -->
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-content" id="quote-detail-content">
+                        <!-- Content will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        `;
+
+        mainContent.insertAdjacentHTML('beforeend', detailPageHTML);
+    }
+
+    populateQuoteDetailPage(quote) {
+        // Update page title and subtitle
+        const title = document.getElementById('quote-detail-title');
+        const subtitle = document.getElementById('quote-detail-subtitle');
+        const content = document.getElementById('quote-detail-content');
+        const actions = document.getElementById('quote-detail-actions');
+
+        if (title) {
+            title.innerHTML = `
+                <i class="fas fa-file-invoice-dollar"></i>
+                Quote ${quote.quote_number}
+            `;
+        }
+
+        if (subtitle) {
+            subtitle.textContent = `${quote.customer_name || 'Unknown Customer'} - £${(quote.total_amount || 0).toFixed(2)}`;
+        }
+
+        if (actions) {
+            const statusActions = this.getQuoteStatusActions(quote);
+            actions.innerHTML = statusActions;
+        }
+
+        if (content) {
+            content.innerHTML = this.createQuoteDetailHTML(quote);
+        }
+    }
+
+    getQuoteStatusActions(quote) {
+        let actions = `
+            <button class="btn btn-secondary" onclick="quotes.editQuote(${quote.id})">
+                <i class="fas fa-edit"></i>
+                Edit
+            </button>
+            <button class="btn btn-primary" onclick="quotes.printQuote(${quote.id})">
+                <i class="fas fa-print"></i>
+                Print
+            </button>
+        `;
+
+        if (quote.status === 'DRAFT') {
+            actions += `
+                <button class="btn btn-success" onclick="quotes.sendQuote(${quote.id})">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Quote
+                </button>
+            `;
+        }
+
+        if (quote.status === 'APPROVED') {
+            actions += `
+                <button class="btn btn-warning" onclick="quotes.convertToJob(${quote.id})">
+                    <i class="fas fa-arrow-right"></i>
+                    Convert to Job
+                </button>
+            `;
+        }
+
+        return actions;
     }
 
     createQuoteDetailHTML(quote) {
@@ -1167,6 +1397,9 @@ class QuotesManager {
 // Global instances
 let quotes;
 
+// Make QuotesManager available globally
+window.QuotesManager = QuotesManager;
+
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('job-sheets-container')) {
@@ -1175,5 +1408,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (document.getElementById('quotes-container')) {
         quotes = new QuotesManager();
+        // Also make it available globally
+        window.quotes = quotes;
     }
 });

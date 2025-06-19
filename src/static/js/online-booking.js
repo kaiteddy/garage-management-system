@@ -280,7 +280,7 @@ class OnlineBooking {
 
     renderTimeSlots() {
         const slotsContainer = document.getElementById('time-slots');
-        
+
         if (this.availableSlots.length === 0) {
             slotsContainer.innerHTML = '<p class="no-slots">No available appointments for this date. Please choose another date.</p>';
             return;
@@ -514,13 +514,16 @@ class OnlineBooking {
     }
 
     setupEventListeners() {
-        // Auto-format registration input
-        const regInput = document.getElementById('vehicle-registration');
-        if (regInput) {
-            regInput.addEventListener('input', (e) => {
-                e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-            });
-        }
+        // Wait for DOM to be ready before setting up listeners
+        setTimeout(() => {
+            // Auto-format registration input
+            const regInput = document.getElementById('vehicle-registration');
+            if (regInput) {
+                regInput.addEventListener('input', (e) => {
+                    e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                });
+            }
+        }, 100);
     }
 }
 

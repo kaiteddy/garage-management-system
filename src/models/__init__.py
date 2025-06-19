@@ -284,6 +284,55 @@ class JobSheet(db.Model):
             'created_date': safe_date_format(self.created_date)
         }
 
+class Quote(db.Model):
+    __tablename__ = 'quotes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    quote_number = db.Column(db.String(50), unique=True, nullable=False)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'))
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicles.id'))
+
+    description = db.Column(db.Text)
+    labour_cost = db.Column(db.Float, default=0.0)
+    parts_cost = db.Column(db.Float, default=0.0)
+    total_amount = db.Column(db.Float, default=0.0)
+    vat_amount = db.Column(db.Float, default=0.0)
+    final_total = db.Column(db.Float, default=0.0)
+
+    status = db.Column(db.String(20), default='DRAFT')  # DRAFT, SENT, ACCEPTED, REJECTED, EXPIRED
+    valid_until = db.Column(db.Date)
+    created_date = db.Column(db.Date, default=utc_now)
+    sent_date = db.Column(db.Date)
+    accepted_date = db.Column(db.Date)
+
+    notes = db.Column(db.Text)
+    terms_conditions = db.Column(db.Text)
+
+    # Relationships
+    customer = db.relationship('Customer', backref='quotes', lazy=True)
+    vehicle = db.relationship('Vehicle', backref='quotes', lazy=True)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'quote_number': self.quote_number,
+            'customer_id': self.customer_id,
+            'vehicle_id': self.vehicle_id,
+            'description': self.description,
+            'labour_cost': self.labour_cost,
+            'parts_cost': self.parts_cost,
+            'total_amount': self.total_amount,
+            'vat_amount': self.vat_amount,
+            'final_total': self.final_total,
+            'status': self.status,
+            'valid_until': safe_date_format(self.valid_until),
+            'created_date': safe_date_format(self.created_date),
+            'sent_date': safe_date_format(self.sent_date),
+            'accepted_date': safe_date_format(self.accepted_date),
+            'notes': self.notes,
+            'terms_conditions': self.terms_conditions
+        }
+
 class JobSheetTemplate(db.Model):
     __tablename__ = 'job_sheet_templates'
 

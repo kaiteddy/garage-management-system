@@ -1,9 +1,14 @@
-{% extends "layouts/modern.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GarageManager Pro - Professional Garage Management System</title>
 
-{% block page_title %}Dashboard - Garage Management System{% endblock %}
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-{% block extra_css %}
-<style>
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -11,333 +16,355 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background-color: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+            background: #f8f9fa;
             color: #333;
-            line-height: 1.5;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Clean Header Navigation */
+        /* Professional Header */
         .header {
-            background: white;
-            border-bottom: 1px solid #e9ecef;
-            padding: 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 0 2rem;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
+            box-shadow: 0 4px 20px rgba(0, 123, 255, 0.25);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            z-index: 1000;
         }
 
         .logo {
-            font-size: 18px;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-right: 40px;
-            padding: 15px 0;
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: white;
         }
 
-        .nav-menu {
+        .logo i {
+            margin-right: 0.75rem;
+            color: #5ac8fa;
+            font-size: 1.75rem;
+        }
+
+        .header-actions {
             display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Layout */
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 64px);
+            margin-top: 64px;
+        }
+
+        /* Professional Sidebar */
+        .sidebar {
+            width: 280px;
+            background: white;
+            color: #333;
+            padding: 1.5rem 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+            border-right: 1px solid #e9ecef;
         }
 
         .nav-item {
-            margin: 0;
-        }
-
-        .nav-link {
-            display: block;
-            padding: 15px 20px;
-            color: #6c757d;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            border-bottom: 3px solid transparent;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            color: #2c3e50;
-            background-color: #f8f9fa;
-            border-bottom-color: #007bff;
-        }
-
-        .user-menu {
-            margin-left: auto;
             display: flex;
             align-items: center;
-            gap: 15px;
-        }
-
-        .user-info {
-            font-size: 14px;
+            padding: 0.75rem 1.5rem;
             color: #6c757d;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin: 0.125rem 1rem;
+            border-radius: 6px;
         }
 
-        /* Main Content Area */
-        .main-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
+        .nav-item:hover {
+            background: #f8f9fa;
+            color: #495057;
+            transform: translateX(4px);
+        }
+
+        .nav-item.active {
+            background: rgba(0, 123, 255, 0.1);
+            color: #007bff;
+            font-weight: 600;
+        }
+
+        .nav-item i {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            background: #f8f9fa;
+            overflow-y: auto;
+            padding: 2rem;
         }
 
         .page-header {
-            margin-bottom: 30px;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border: 1px solid #e9ecef;
         }
 
         .page-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 5px;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .page-title i {
+            color: #007bff;
+            font-size: 1.75rem;
         }
 
         .page-subtitle {
             color: #6c757d;
-            font-size: 14px;
-        }
-
-        /* Job Sheets Table */
-        .content-section {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        .section-header {
-            padding: 20px;
-            border-bottom: 1px solid #e9ecef;
-            display: flex;
-            justify-content: between;
-            align-items: center;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #2c3e50;
-            margin: 0;
-        }
-
-        .section-controls {
-            display: flex;
-            gap: 10px;
-            margin-left: auto;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border: 1px solid #dee2e6;
-            background: white;
-            color: #6c757d;
-            text-decoration: none;
-            border-radius: 4px;
-            font-size: 13px;
+            font-size: 1rem;
+            margin-top: 0.5rem;
             font-weight: 500;
+        }
+
+        /* Dashboard Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
 
-        .btn:hover {
-            background: #f8f9fa;
-            border-color: #adb5bd;
-        }
-
-        .btn-primary {
-            background: #007bff;
-            color: white;
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 123, 255, 0.15);
             border-color: #007bff;
         }
 
-        .btn-primary:hover {
-            background: #0056b3;
-            border-color: #0056b3;
-        }
-
-        /* Job Sheet Detail View */
-        .job-detail-container {
-            display: none !important;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        .job-detail-container.show {
-            display: block !important;
-        }
-
-        .job-header {
-            background: linear-gradient(135deg, #6f42c1 0%, #5a2d91 100%);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 8px 8px 0 0;
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-        }
-
-        .job-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin: 0;
-        }
-
-        .job-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .job-actions .btn {
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
+            justify-content: center;
+            font-size: 1.5rem;
             color: white;
-            padding: 6px 12px;
-            font-size: 12px;
         }
 
-        .job-actions .btn:hover {
-            background: rgba(255,255,255,0.3);
+        .stat-icon.customers { background: linear-gradient(135deg, #6c757d 0%, #495057 100%); }
+        .stat-icon.vehicles { background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); }
+        .stat-icon.revenue { background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%); }
+        .stat-icon.jobs { background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%); }
+
+        .stat-info h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #495057;
+            margin-bottom: 0.25rem;
         }
 
-        .job-content {
+        .stat-info p {
+            color: #6c757d;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .stat-info small {
+            color: #adb5bd;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border: 1px solid #e9ecef;
+        }
+
+        .quick-actions h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quick-actions-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-            padding: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
         }
 
-        .job-main {
+        .quick-action-btn {
+            background: white;
+            border: 2px solid #e9ecef;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #495057;
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-        }
-
-        .job-sidebar {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 6px;
-        }
-
-        /* Vehicle and Customer Info Cards */
-        .info-card {
-            background: white;
-            border: 1px solid #e9ecef;
-            border-radius: 6px;
-            padding: 15px;
-        }
-
-        .info-card h4 {
-            margin: 0 0 10px 0;
-            font-size: 14px;
-            font-weight: 600;
-            color: #495057;
-            border-bottom: 1px solid #e9ecef;
-            padding-bottom: 8px;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            font-size: 12px;
-        }
-
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 3px 0;
-            border-bottom: 1px solid #f1f3f4;
-        }
-
-        .info-item:last-child {
-            border-bottom: none;
-        }
-
-        .info-label {
-            color: #6c757d;
-            font-weight: 500;
-            min-width: 80px;
-        }
-
-        .info-value {
-            color: #495057;
-            font-weight: 400;
-            text-align: right;
-        }
-
-        .required {
-            color: #dc3545 !important;
-            font-weight: 600 !important;
-        }
-
-        /* Tabs */
-        .tab-container {
-            border: 1px solid #e9ecef;
-            border-radius: 6px;
-            background: white;
-        }
-
-        .tab-nav {
-            display: flex;
-            background: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
-            border-radius: 6px 6px 0 0;
-        }
-
-        .tab-btn {
-            padding: 12px 20px;
-            border: none;
-            background: none;
-            color: #6c757d;
-            font-size: 13px;
-            font-weight: 500;
+            align-items: center;
+            gap: 0.75rem;
             cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s ease;
         }
 
-        .tab-btn.active {
-            color: #495057;
+        .quick-action-btn:hover {
+            border-color: #007bff;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+        }
+
+        .quick-action-btn i {
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .quick-action-btn span {
+            font-size: 0.95rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Content Cards */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .content-card {
             background: white;
-            border-bottom-color: #6f42c1;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid #e9ecef;
         }
 
-        .tab-content {
-            padding: 15px;
-            min-height: 300px;
+        .content-card-header {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 1.25rem 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
-        /* Clean Table Styles */
+        .content-card-body {
+            padding: 1.5rem;
+        }
+
+        /* Page System */
+        .page {
+            display: none;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Data Tables */
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 14px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .data-table th {
             background: #f8f9fa;
-            padding: 12px 15px;
+            padding: 1rem;
             text-align: left;
             font-weight: 600;
             color: #495057;
             border-bottom: 1px solid #dee2e6;
-            font-size: 13px;
         }
 
         .data-table td {
-            padding: 12px 15px;
+            padding: 1rem;
             border-bottom: 1px solid #f1f3f4;
             vertical-align: middle;
         }
@@ -346,321 +373,838 @@
             background-color: #f8f9fa;
         }
 
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-
-        .history-table th {
-            background: #f8f9fa;
-            padding: 8px 10px;
-            text-align: left;
-            font-weight: 600;
-            color: #495057;
-            border-bottom: 1px solid #dee2e6;
-            font-size: 11px;
-        }
-
-        .history-table td {
-            padding: 8px 10px;
-            border-bottom: 1px solid #f1f3f4;
-            vertical-align: middle;
-            font-size: 12px;
-        }
-
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-
-        .status-open {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-
-        .status-completed {
-            background: #e8f5e8;
-            color: #2e7d32;
-        }
-
-        .status-pending {
-            background: #fff3e0;
-            color: #f57c00;
-        }
-
-        /* Sidebar Info */
-        .sidebar {
-            position: fixed;
-            right: 20px;
-            top: 100px;
-            width: 280px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            padding: 20px;
-        }
-
-        .sidebar-section {
-            margin-bottom: 25px;
-        }
-
-        .sidebar-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-
-        .reminder-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #f1f3f4;
-        }
-
-        .reminder-item:last-child {
+        .data-table tr:last-child td {
             border-bottom: none;
         }
 
-        .reminder-text {
-            font-size: 13px;
+        /* Loading States */
+        .loading {
+            text-align: center;
+            padding: 2rem;
             color: #6c757d;
         }
 
-        .reminder-count {
-            background: #dc3545;
-            color: white;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 11px;
+        .loading i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 1200px) {
-            .sidebar {
-                display: none;
-            }
+        .status-draft { background: #f8f9fa; color: #6c757d; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-paid { background: #d4edda; color: #155724; }
+        .status-overdue { background: #f8d7da; color: #721c24; }
+        .status-completed { background: #d4edda; color: #155724; }
+        .status-open { background: #cce5ff; color: #004085; }
+        .status-in-progress { background: #fff3cd; color: #856404; }
+        .status-cancelled { background: #f8d7da; color: #721c24; }
+        .status-unknown { background: #e2e3e5; color: #383d41; }
+        .status-valid { background: #d4edda; color: #155724; }
+        .status-due-soon { background: #fff3cd; color: #856404; }
 
-            .main-container {
-                padding-right: 20px;
-            }
+        /* MOT Reminders Section */
+        .mot-reminders {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border: 1px solid #e9ecef;
         }
 
+        .mot-reminders h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mot-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .mot-stat {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .mot-stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #495057;
+        }
+
+        .mot-stat-label {
+            font-size: 0.875rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
+            .layout {
+                flex-direction: column;
             }
 
-            .main-container {
-                padding: 15px;
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+
+            .main-content {
+                order: 1;
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
-{% endblock %}
+</head>
+<body>
 
 
 
 
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-wrench"></i>
+            GarageManager Pro
+        </div>
+        <div class="header-actions">
+            <a href="#" class="header-btn">
+                <i class="fas fa-bell"></i>
+                Notifications
+            </a>
+            <a href="#" class="header-btn">
+                <i class="fas fa-user"></i>
+                Admin
+            </a>
+        </div>
+    </div>
 
-
-
-
-{% block content %}
-<div class="container">
-    <!-- Page Header -->
-    <div class="flex justify-between items-center mb-8">
-        <div>
-            <h1 class="text-3xl font-bold text-gray-900">
+    <!-- Layout -->
+    <div class="layout">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <a href="#" class="nav-item active" onclick="showPage('dashboard')">
+                <i class="fas fa-chart-line"></i>
                 Dashboard
-                <span class="badge badge-primary">Modern</span>
-            </h1>
-            <p class="text-gray-600 mt-2">Welcome back! Here's what's happening at your garage with real ELI MOTORS data.</p>
-        </div>
-        <div class="flex items-center" style="gap: 1rem;">
-            <!-- Google Drive Sync Status -->
-            <div class="flex items-center bg-gray-100 px-3 py-2 rounded-lg" style="gap: 0.5rem;" id="sync-status">
-                <div style="width: 8px; height: 8px; background-color: var(--gray-400); border-radius: 50%;" id="sync-indicator"></div>
-                <span class="text-sm text-gray-600" id="sync-text">Checking sync...</span>
-            </div>
-
-            <button class="btn btn-secondary">
-                <i class="fas fa-download"></i>
-                Export Report
-            </button>
-            <button class="btn btn-primary">
-                <i class="fas fa-plus"></i>
-                New Job
-            </button>
-        </div>
-    </div>
-
-    <!-- Key Metrics -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="metric-card">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-white/80 text-sm font-medium">Total Revenue</p>
-                    <p class="text-2xl font-bold mt-1" id="total-revenue">£0.00</p>
-                    <p class="text-white/80 text-xs mt-1">
-                        <span class="text-green-300" id="revenue-change">+0%</span> from last month
-                    </p>
-                </div>
-                <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-pound-sign text-xl"></i>
-                </div>
-            </div>
-        </div>
-
-        <div class="metric-card success">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-white/80 text-sm font-medium">Active Jobs</p>
-                    <p class="text-2xl font-bold mt-1" id="active-jobs">0</p>
-                    <p class="text-white/80 text-xs mt-1">
-                        <span class="text-green-300" id="urgent-jobs">0 urgent</span>
-                    </p>
-                </div>
-                <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-tools text-xl"></i>
-                </div>
-            </div>
+            </a>
+            <a href="#" class="nav-item" onclick="showPage('customers')">
+                <i class="fas fa-users"></i>
+                Customers
+            </a>
+            <a href="#" class="nav-item" onclick="showPage('vehicles')">
+                <i class="fas fa-car"></i>
+                Vehicles
+            </a>
+            <a href="#" class="nav-item" onclick="showPage('jobs')">
+                <i class="fas fa-tools"></i>
+                Jobs
+            </a>
+            <a href="#" class="nav-item" onclick="showPage('workshop-diary')">
+                <i class="fas fa-calendar-alt"></i>
+                Workshop Diary
+            </a>
+            <a href="#" class="nav-item" onclick="showPage('job-sheets')">
+                <i class="fas fa-clipboard-list"></i>
+                Job Sheets
+            </a>
+            <a href="#" class="nav-item" onclick="showPage('quotes')">
+                <i class="fas fa-file-invoice-dollar"></i>
+                Quotes
+            </a>
+            <a href="#" class="nav-item" onclick="showPage('invoices')">
+                <i class="fas fa-file-invoice"></i>
+                Invoices
+            </a>
+            <a href="#" class="nav-item" onclick="showPage('mot-reminders')">
+                <i class="fas fa-car-crash"></i>
+                MOT Reminders
+            </a>
+            <a href="#" class="nav-item" onclick="showPage('settings')">
+                <i class="fas fa-cog"></i>
+                Settings
+            </a>
         </div>
 
-        <div class="metric-card warning">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-white/80 text-sm font-medium">Pending Estimates</p>
-                    <p class="text-2xl font-bold mt-1" id="pending-estimates">0</p>
-                    <p class="text-white/80 text-xs mt-1">
-                        Value: <span id="estimate-value">£0.00</span>
-                    </p>
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Page -->
+            <div id="dashboard-page" class="page active">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">
+                            <i class="fas fa-chart-line"></i>
+                            Dashboard
+                        </h1>
+                        <p class="page-subtitle">Overview of your garage management system</p>
+                    </div>
                 </div>
-                <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-file-invoice text-xl"></i>
-                </div>
-            </div>
-        </div>
 
-        <div class="metric-card error">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-white/80 text-sm font-medium">Outstanding</p>
-                    <p class="text-2xl font-bold mt-1" id="outstanding-amount">£0.00</p>
-                    <p class="text-white/80 text-xs mt-1">
-                        <span id="overdue-count">0</span> overdue invoices
-                    </p>
-                </div>
-                <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-exclamation-triangle text-xl"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Charts and Activity -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <!-- Revenue Chart -->
-        <div class="card">
-            <div class="card-header">
-                <h3 class="text-lg font-semibold text-gray-900">Revenue Trend</h3>
-                <p class="text-sm text-gray-600">Last 30 days</p>
-            </div>
-            <div class="card-body">
-                <div class="chart-container">
-                    <canvas id="revenue-chart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recent Activity -->
-        <div class="card">
-            <div class="card-header">
-                <h3 class="text-lg font-semibold text-gray-900">Recent Activity</h3>
-                <p class="text-sm text-gray-600">Latest updates</p>
-            </div>
-            <div class="card-body">
-                <div class="space-y-4" id="recent-activity">
-                    <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                        <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                            <i class="fas fa-spinner fa-spin text-primary-600 text-sm"></i>
+                <!-- Dashboard Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon customers">
+                            <i class="fas fa-users"></i>
                         </div>
-                        <div class="flex-1">
-                            <p class="text-sm text-gray-600">Loading recent activity...</p>
+                        <div class="stat-info">
+                            <h3 id="customers-count">0</h3>
+                            <p>Customers</p>
+                            <small>Total registered</small>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon vehicles">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="vehicles-count">0</h3>
+                            <p>Vehicles</p>
+                            <small>In database</small>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon revenue">
+                            <i class="fas fa-pound-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="revenue-total">£0.00</h3>
+                            <p>Total Revenue</p>
+                            <small>All time</small>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon jobs">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="jobs-count">0</h3>
+                            <p>Jobs</p>
+                            <small>Completed</small>
                         </div>
                     </div>
                 </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h3>
+                    <i class="fas fa-bolt"></i>
+                    Quick Actions
+                </h3>
+                <div class="quick-actions-grid">
+                    <a href="#" class="quick-action-btn" onclick="showPage('customers')">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Add Customer</span>
+                    </a>
+                    <a href="#" class="quick-action-btn" onclick="showPage('vehicles')">
+                        <i class="fas fa-car"></i>
+                        <span>Add Vehicle</span>
+                    </a>
+                    <a href="#" class="quick-action-btn" onclick="showPage('jobs')">
+                        <i class="fas fa-plus"></i>
+                        <span>New Job</span>
+                    </a>
+                    <a href="#" class="quick-action-btn" onclick="showPage('invoices')">
+                        <i class="fas fa-file-invoice"></i>
+                        <span>Create Invoice</span>
+                    </a>
+                    <a href="#" class="quick-action-btn" onclick="showPage('customers')">
+                        <i class="fas fa-search"></i>
+                        <span>Test Customers Page</span>
+                    </a>
+                    <a href="#" class="quick-action-btn" onclick="showPage('vehicles')">
+                        <i class="fas fa-list"></i>
+                        <span>Test Vehicle Detail</span>
+                    </a>
+                    <a href="#" class="quick-action-btn" onclick="showPage('mot-reminders')">
+                        <i class="fas fa-car-crash"></i>
+                        <span>Test All Endpoints</span>
+                    </a>
+                    <a href="#" class="quick-action-btn" onclick="testCustomerDetail()">
+                        <i class="fas fa-user"></i>
+                        <span>Test Customer Detail</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- MOT Reminders -->
+            <div class="mot-reminders">
+                <h3>
+                    <i class="fas fa-car-crash"></i>
+                    MOT Reminders
+                </h3>
+                <div class="mot-stats">
+                    <div class="mot-stat">
+                        <div class="mot-stat-number" id="mot-due-soon">0</div>
+                        <div class="mot-stat-label">Due Soon</div>
+                    </div>
+                    <div class="mot-stat">
+                        <div class="mot-stat-number" id="mot-overdue">0</div>
+                        <div class="mot-stat-label">Overdue</div>
+                    </div>
+                    <div class="mot-stat">
+                        <div class="mot-stat-number" id="mot-this-month">0</div>
+                        <div class="mot-stat-label">This Month</div>
+                    </div>
+                    <div class="mot-stat">
+                        <div class="mot-stat-number" id="mot-total">0</div>
+                        <div class="mot-stat-label">Total Vehicles</div>
+                    </div>
+                </div>
+            </div>
+
+                <!-- Content Grid -->
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="content-card-header">
+                            <i class="fas fa-file-invoice"></i>
+                            Recent Invoices
+                        </div>
+                        <div class="content-card-body">
+                            <div id="recent-invoices">Loading...</div>
+                        </div>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="content-card-header">
+                            <i class="fas fa-tools"></i>
+                            Recent Jobs
+                        </div>
+                        <div class="content-card-body">
+                            <div id="recent-jobs">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customers Page -->
+            <div id="customers-page" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">
+                            <i class="fas fa-users"></i>
+                            Customers
+                        </h1>
+                        <p class="page-subtitle">Manage your customer database</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <i class="fas fa-users"></i>
+                        Customer List
+                    </div>
+                    <div class="content-card-body">
+                        <div id="customers-content">
+                            <div class="loading">
+                                <i class="fas fa-spinner"></i>
+                                <p>Loading customers...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vehicles Page -->
+            <div id="vehicles-page" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">
+                            <i class="fas fa-car"></i>
+                            Vehicles
+                        </h1>
+                        <p class="page-subtitle">Vehicle database and MOT tracking</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <i class="fas fa-car"></i>
+                        Vehicle List
+                    </div>
+                    <div class="content-card-body">
+                        <div id="vehicles-content">
+                            <div class="loading">
+                                <i class="fas fa-spinner"></i>
+                                <p>Loading vehicles...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jobs Page -->
+            <div id="jobs-page" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">
+                            <i class="fas fa-tools"></i>
+                            Jobs
+                        </h1>
+                        <p class="page-subtitle">Job management and tracking</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <i class="fas fa-tools"></i>
+                        Job List
+                    </div>
+                    <div class="content-card-body">
+                        <div id="jobs-content">
+                            <div class="loading">
+                                <i class="fas fa-spinner"></i>
+                                <p>Loading jobs...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invoices Page -->
+            <div id="invoices-page" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">
+                            <i class="fas fa-file-invoice"></i>
+                            Invoices
+                        </h1>
+                        <p class="page-subtitle">Invoice management and billing</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <i class="fas fa-file-invoice"></i>
+                        Invoice List
+                    </div>
+                    <div class="content-card-body">
+                        <div id="invoices-content">
+                            <div class="loading">
+                                <i class="fas fa-spinner"></i>
+                                <p>Loading invoices...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MOT Reminders Page -->
+            <div id="mot-reminders-page" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">
+                            <i class="fas fa-car-crash"></i>
+                            MOT Reminders
+                        </h1>
+                        <p class="page-subtitle">MOT expiry tracking and reminders</p>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <i class="fas fa-car-crash"></i>
+                        MOT Status
+                    </div>
+                    <div class="content-card-body">
+                        <div id="mot-content">
+                            <div class="loading">
+                                <i class="fas fa-spinner"></i>
+                                <p>Loading MOT data...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Today's Schedule and Upcoming MOTs -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Today's Schedule -->
-        <div class="card">
-            <div class="card-header">
-                <h3 class="text-lg font-semibold text-gray-900">Today's Schedule</h3>
-                <p class="text-sm text-gray-600" id="current-date"></p>
-            </div>
-            <div class="card-body">
-                <div class="space-y-3" id="todays-schedule">
-                    <div class="text-center py-8 text-gray-500">
-                        <i class="fas fa-calendar-alt text-2xl mb-2"></i>
-                        <p>Loading schedule...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- JavaScript -->
+    <script>
+        // Load dashboard data
+        async function loadDashboardData() {
+            try {
+                // Load stats
+                const statsResponse = await fetch('/api/stats');
+                const statsData = await statsResponse.json();
 
-        <!-- Upcoming MOTs -->
-        <div class="card">
-            <div class="card-header">
-                <h3 class="text-lg font-semibold text-gray-900">Upcoming MOTs</h3>
-                <p class="text-sm text-gray-600">Next 30 days</p>
-            </div>
-            <div class="card-body">
-                <div class="space-y-3" id="upcoming-mots">
-                    <div class="text-center py-8 text-gray-500">
-                        <i class="fas fa-car text-2xl mb-2"></i>
-                        <p>Loading MOT data...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+                if (statsData.success) {
+                    const stats = statsData.stats;
+                    document.getElementById('customers-count').textContent = stats.customers || 0;
+                    document.getElementById('vehicles-count').textContent = stats.vehicles || 0;
+                    document.getElementById('revenue-total').textContent = stats.revenue || '£0.00';
+                    document.getElementById('jobs-count').textContent = stats.jobs || 0;
+                }
 
-        <!-- Google Drive Sync Status -->
-        <div class="card">
-            <div class="card-header">
-                <h3 class="text-lg font-semibold text-gray-900">Data Sync</h3>
-                <p class="text-sm text-gray-600">Google Drive Integration</p>
-            </div>
-            <div class="card-body">
-                <div class="space-y-4" id="sync-status-card">
-                    <div class="text-center py-8 text-gray-500">
-                        <i class="fab fa-google-drive text-2xl mb-2"></i>
-                        <p>Loading sync status...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
+                // Load recent invoices
+                const invoicesResponse = await fetch('/api/invoices?limit=5');
+                const invoicesData = await invoicesResponse.json();
 
-{% block scripts %}
-<!-- Chart.js for beautiful charts -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{{ url_for('static', filename='js/pages/dashboard-modern.js') }}"></script>
-{% endblock %}
+                if (invoicesData.success) {
+                    const invoicesHtml = invoicesData.invoices.map(invoice => `
+                        <div style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between;">
+                            <div>
+                                <strong>${invoice.invoice_number || 'N/A'}</strong><br>
+                                <small>${invoice.customer_name || 'Unknown Customer'}</small>
+                            </div>
+                            <div style="text-align: right;">
+                                <strong>£${invoice.total_amount || '0.00'}</strong><br>
+                                <small>${invoice.status || 'Unknown'}</small>
+                            </div>
+                        </div>
+                    `).join('');
+                    document.getElementById('recent-invoices').innerHTML = invoicesHtml || '<p>No invoices found</p>';
+                }
 
-{% block page_init %}
-// Initialize dashboard
-if (typeof DashboardModern !== 'undefined') {
-    DashboardModern.init();
-}
-{% endblock %}
+                // Load recent jobs
+                const jobsResponse = await fetch('/api/jobs?limit=5');
+                const jobsData = await jobsResponse.json();
+
+                if (jobsData.success) {
+                    const jobsHtml = jobsData.jobs.map(job => `
+                        <div style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between;">
+                            <div>
+                                <strong>${job.job_number || 'N/A'}</strong><br>
+                                <small>${job.customer_name || 'Unknown Customer'}</small>
+                            </div>
+                            <div style="text-align: right;">
+                                <strong>${job.status || 'Unknown'}</strong><br>
+                                <small>£${job.total_amount || '0.00'}</small>
+                            </div>
+                        </div>
+                    `).join('');
+                    document.getElementById('recent-jobs').innerHTML = jobsHtml || '<p>No jobs found</p>';
+                }
+
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+            }
+        }
+
+        // Navigation function
+        function showPage(page) {
+            console.log('Navigating to:', page);
+
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+
+            // Show selected page
+            const pageElement = document.getElementById(page + '-page');
+            if (pageElement) {
+                pageElement.classList.add('active');
+
+                // Update active nav item
+                const navItem = document.querySelector(`[onclick="showPage('${page}')"]`);
+                if (navItem) navItem.classList.add('active');
+
+                // Load page data
+                loadPageData(page);
+            }
+        }
+
+        // Load data for specific pages
+        async function loadPageData(page) {
+            try {
+                switch(page) {
+                    case 'customers':
+                        await loadCustomers();
+                        break;
+                    case 'vehicles':
+                        await loadVehicles();
+                        break;
+                    case 'jobs':
+                        await loadJobs();
+                        break;
+                    case 'invoices':
+                        await loadInvoices();
+                        break;
+                    case 'mot-reminders':
+                        await loadMOTReminders();
+                        break;
+                }
+            } catch (error) {
+                console.error('Error loading page data:', error);
+            }
+        }
+
+        // Load customers data
+        async function loadCustomers() {
+            const response = await fetch('/api/customers');
+            const data = await response.json();
+
+            if (data.success) {
+                const customers = data.customers.slice(0, 50); // Show first 50
+                const html = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Account</th>
+                                <th>Name</th>
+                                <th>Company</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${customers.map(customer => `
+                                <tr>
+                                    <td><strong>${customer.account_number || 'N/A'}</strong></td>
+                                    <td>${customer.name || 'N/A'}</td>
+                                    <td>${customer.company || '-'}</td>
+                                    <td>${customer.phone || customer.mobile || 'N/A'}</td>
+                                    <td>${customer.email || 'N/A'}</td>
+                                    <td>${customer.address || 'N/A'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <p style="margin-top: 1rem; color: #6c757d; font-size: 0.875rem;">
+                        Showing ${customers.length} of ${data.customers.length} customers
+                    </p>
+                `;
+                document.getElementById('customers-content').innerHTML = html;
+            }
+        }
+
+        // Load vehicles data
+        async function loadVehicles() {
+            const response = await fetch('/api/vehicles');
+            const data = await response.json();
+
+            if (data.success) {
+                const vehicles = data.vehicles.slice(0, 50); // Show first 50
+                const html = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Registration</th>
+                                <th>Make/Model</th>
+                                <th>Customer</th>
+                                <th>MOT Expiry</th>
+                                <th>Tax Due</th>
+                                <th>Mileage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${vehicles.map(vehicle => `
+                                <tr>
+                                    <td><strong>${vehicle.registration || 'N/A'}</strong></td>
+                                    <td>${vehicle.make || 'N/A'} ${vehicle.model || ''}</td>
+                                    <td>${vehicle.customer_name || 'Unlinked'}</td>
+                                    <td>${vehicle.mot_expiry || 'N/A'}</td>
+                                    <td>${vehicle.tax_due || 'N/A'}</td>
+                                    <td>${vehicle.mileage || 'N/A'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <p style="margin-top: 1rem; color: #6c757d; font-size: 0.875rem;">
+                        Showing ${vehicles.length} of ${data.vehicles.length} vehicles
+                    </p>
+                `;
+                document.getElementById('vehicles-content').innerHTML = html;
+            }
+        }
+
+        // Load jobs data
+        async function loadJobs() {
+            const response = await fetch('/api/jobs');
+            const data = await response.json();
+
+            if (data.success) {
+                const jobs = data.jobs.slice(0, 50); // Show first 50
+                const html = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Job Number</th>
+                                <th>Customer</th>
+                                <th>Vehicle</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${jobs.map(job => `
+                                <tr>
+                                    <td><strong>${job.job_number ? job.job_number.substring(0, 8) + '...' : 'N/A'}</strong></td>
+                                    <td>${job.customer_name || 'N/A'}</td>
+                                    <td>${job.vehicle_registration || 'N/A'}</td>
+                                    <td>${job.description ? job.description.substring(0, 50) + '...' : 'N/A'}</td>
+                                    <td><span class="status-badge status-${job.status ? job.status.toLowerCase() : 'unknown'}">${job.status || 'Unknown'}</span></td>
+                                    <td>£${job.total_amount || '0.00'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <p style="margin-top: 1rem; color: #6c757d; font-size: 0.875rem;">
+                        Showing ${jobs.length} of ${data.jobs.length} jobs
+                    </p>
+                `;
+                document.getElementById('jobs-content').innerHTML = html;
+            }
+        }
+
+        // Load invoices data
+        async function loadInvoices() {
+            const response = await fetch('/api/invoices');
+            const data = await response.json();
+
+            if (data.success) {
+                const invoices = data.invoices.slice(0, 50); // Show first 50
+                const html = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Invoice #</th>
+                                <th>Customer</th>
+                                <th>Job</th>
+                                <th>Amount</th>
+                                <th>VAT</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${invoices.map(invoice => `
+                                <tr>
+                                    <td><strong>${invoice.invoice_number || 'N/A'}</strong></td>
+                                    <td>${invoice.customer_name || 'N/A'}</td>
+                                    <td>${invoice.job_number ? invoice.job_number.substring(0, 8) + '...' : 'N/A'}</td>
+                                    <td>£${invoice.amount || '0.00'}</td>
+                                    <td>£${invoice.vat_amount || '0.00'}</td>
+                                    <td><strong>£${invoice.total_amount || '0.00'}</strong></td>
+                                    <td><span class="status-badge status-${invoice.status ? invoice.status.toLowerCase() : 'unknown'}">${invoice.status || 'Unknown'}</span></td>
+                                    <td>${invoice.created_date || 'N/A'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <p style="margin-top: 1rem; color: #6c757d; font-size: 0.875rem;">
+                        Showing ${invoices.length} of ${data.invoices.length} invoices
+                    </p>
+                `;
+                document.getElementById('invoices-content').innerHTML = html;
+            }
+        }
+
+        // Load MOT reminders data
+        async function loadMOTReminders() {
+            try {
+                const response = await fetch('/api/mot/vehicles');
+                const data = await response.json();
+
+                if (data.success) {
+                    const vehicles = data.vehicles.slice(0, 50); // Show first 50
+                    const html = `
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Registration</th>
+                                    <th>Customer</th>
+                                    <th>Make/Model</th>
+                                    <th>MOT Expiry</th>
+                                    <th>Days Until</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${vehicles.map(vehicle => {
+                                    const motDate = vehicle.mot_expiry ? new Date(vehicle.mot_expiry) : null;
+                                    const today = new Date();
+                                    const daysUntil = motDate ? Math.ceil((motDate - today) / (1000 * 60 * 60 * 24)) : null;
+                                    let status = 'Unknown';
+                                    let statusClass = 'unknown';
+
+                                    if (daysUntil !== null) {
+                                        if (daysUntil < 0) {
+                                            status = 'Overdue';
+                                            statusClass = 'overdue';
+                                        } else if (daysUntil <= 30) {
+                                            status = 'Due Soon';
+                                            statusClass = 'due-soon';
+                                        } else {
+                                            status = 'Valid';
+                                            statusClass = 'valid';
+                                        }
+                                    }
+
+                                    return `
+                                        <tr>
+                                            <td><strong>${vehicle.registration || 'N/A'}</strong></td>
+                                            <td>${vehicle.customer_name || 'Unlinked'}</td>
+                                            <td>${vehicle.make || 'N/A'} ${vehicle.model || ''}</td>
+                                            <td>${vehicle.mot_expiry || 'N/A'}</td>
+                                            <td>${daysUntil !== null ? daysUntil + ' days' : 'N/A'}</td>
+                                            <td><span class="status-badge status-${statusClass}">${status}</span></td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                        <p style="margin-top: 1rem; color: #6c757d; font-size: 0.875rem;">
+                            Showing ${vehicles.length} vehicles with MOT data
+                        </p>
+                    `;
+                    document.getElementById('mot-content').innerHTML = html;
+                } else {
+                    document.getElementById('mot-content').innerHTML = '<p>Error loading MOT data</p>';
+                }
+            } catch (error) {
+                console.error('Error loading MOT data:', error);
+                document.getElementById('mot-content').innerHTML = '<p>Error loading MOT data</p>';
+            }
+        }
+
+        // Test customer detail function
+        function testCustomerDetail() {
+            console.log('Testing customer detail view');
+            showPage('customers');
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', loadDashboardData);
+    </script>
+</body>
+</html>

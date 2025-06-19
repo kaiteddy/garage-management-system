@@ -145,77 +145,48 @@ def get_jobs_kanban():
             'error': str(e)
         }), 500
 
-@job_bp.route('/api/technicians')
-def get_technicians():
-    """Get all technicians"""
-    try:
-        # Return mock data for now since technicians table might not exist
-        technicians = [
-            {'id': 1, 'name': 'John Smith', 'specialization': 'General Repair'},
-            {'id': 2, 'name': 'Mike Johnson', 'specialization': 'MOT Testing'},
-            {'id': 3, 'name': 'Sarah Wilson', 'specialization': 'Diagnostics'},
-            {'id': 4, 'name': 'David Brown', 'specialization': 'Bodywork'}
-        ]
-        
-        return jsonify({
-            'success': True,
-            'technicians': technicians
-        })
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 500
+# Technicians endpoint moved to src/routes/api/technician_api.py
 
-@job_bp.route('/api/workshop-bays')
-def get_workshop_bays():
-    """Get all workshop bays"""
-    try:
-        # Return mock data for now
-        bays = [
-            {'id': 1, 'bay_number': 'Bay 1', 'bay_type': 'GENERAL', 'is_available': True},
-            {'id': 2, 'bay_number': 'Bay 2', 'bay_type': 'MOT', 'is_available': False},
-            {'id': 3, 'bay_number': 'Bay 3', 'bay_type': 'LIFT', 'is_available': True},
-            {'id': 4, 'bay_number': 'Bay 4', 'bay_type': 'DIAGNOSTIC', 'is_available': True}
-        ]
-        
-        return jsonify({
-            'success': True,
-            'bays': bays
-        })
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 500
+# Workshop bays endpoint moved to src/routes/api/workshop_bay_api.py
 
-@job_bp.route('/api/appointments')
-def get_appointments():
-    """Get appointments"""
-    try:
-        # Return empty appointments for now
-        return jsonify({
-            'success': True,
-            'appointments': []
-        })
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 500
+# Appointments endpoint moved to src/routes/api/appointment_api.py
 
 @job_bp.route('/api/job-sheet-templates')
 def get_job_sheet_templates():
     """Get job sheet templates"""
     try:
-        # Return mock templates
-        templates = [
-            {'id': 1, 'name': 'MOT Test', 'service_type': 'MOT'},
-            {'id': 2, 'name': 'Annual Service', 'service_type': 'SERVICE'},
-            {'id': 3, 'name': 'Brake Repair', 'service_type': 'REPAIR'},
-            {'id': 4, 'name': 'Engine Diagnostics', 'service_type': 'DIAGNOSTIC'}
-        ]
-        
+        # Use direct SQLite query for now
+        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            SELECT id, name, service_type, description, default_instructions,
+                   default_safety_notes, default_parts, default_tools, default_checks,
+                   estimated_time, is_active
+            FROM job_sheet_templates
+            WHERE is_active = 1
+            ORDER BY name
+        ''')
+
+        templates = []
+        for row in cursor.fetchall():
+            templates.append({
+                'id': row[0],
+                'name': row[1],
+                'service_type': row[2],
+                'description': row[3],
+                'default_instructions': row[4],
+                'default_safety_notes': row[5],
+                'default_parts': row[6],
+                'default_tools': row[7],
+                'default_checks': row[8],
+                'estimated_time': row[9],
+                'is_active': bool(row[10])
+            })
+
+        conn.close()
+
         return jsonify({
             'success': True,
             'templates': templates
@@ -230,10 +201,58 @@ def get_job_sheet_templates():
 def get_job_sheets():
     """Get job sheets"""
     try:
-        # Return empty job sheets for now
+        # Use direct SQLite query for now
+        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            SELECT js.id, js.job_id, js.sheet_number, js.template_id, js.work_instructions,
+                   js.safety_notes, js.parts_required, js.tools_required, js.quality_checks,
+                   js.technician_signature, js.supervisor_signature, js.customer_signature,
+                   js.signed_date, js.completed_date, js.status, js.created_date,
+                   j.job_number, j.description as job_description,
+                   c.name as customer_name, v.registration as vehicle_registration,
+                   t.name as template_name
+            FROM job_sheets js
+            LEFT JOIN jobs j ON js.job_id = j.id
+            LEFT JOIN customers c ON j.customer_id = c.id
+            LEFT JOIN vehicles v ON j.vehicle_id = v.id
+            LEFT JOIN job_sheet_templates t ON js.template_id = t.id
+            ORDER BY js.created_date DESC
+        ''')
+
+        job_sheets = []
+        for row in cursor.fetchall():
+            job_sheets.append({
+                'id': row[0],
+                'job_id': row[1],
+                'sheet_number': row[2],
+                'template_id': row[3],
+                'work_instructions': row[4],
+                'safety_notes': row[5],
+                'parts_required': row[6],
+                'tools_required': row[7],
+                'quality_checks': row[8],
+                'technician_signature': row[9],
+                'supervisor_signature': row[10],
+                'customer_signature': row[11],
+                'signed_date': row[12],
+                'completed_date': row[13],
+                'status': row[14],
+                'created_date': row[15],
+                'job_number': row[16],
+                'job_description': row[17],
+                'customer_name': row[18],
+                'vehicle_registration': row[19],
+                'template_name': row[20]
+            })
+
+        conn.close()
+
         return jsonify({
             'success': True,
-            'job_sheets': []
+            'job_sheets': job_sheets
         })
     except Exception as e:
         return jsonify({
@@ -241,20 +260,63 @@ def get_job_sheets():
             'error': str(e)
         }), 500
 
-@job_bp.route('/api/quotes')
-def get_quotes():
-    """Get quotes"""
+@job_bp.route('/api/job-sheets', methods=['POST'])
+def create_job_sheet():
+    """Create a new job sheet"""
     try:
-        # Return empty quotes for now
+        data = request.get_json()
+
+        # Validate required fields
+        if not data.get('job_id'):
+            return jsonify({
+                'success': False,
+                'error': 'Job ID is required'
+            }), 400
+
+        # Generate sheet number
+        import time
+        sheet_number = f"JS-{int(time.time())}"
+
+        # Use direct SQLite query for now
+        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            INSERT INTO job_sheets (
+                job_id, sheet_number, template_id, work_instructions, safety_notes,
+                parts_required, tools_required, quality_checks, status, created_date
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, DATE('now'))
+        ''', (
+            data['job_id'],
+            sheet_number,
+            data.get('template_id'),
+            data.get('work_instructions', ''),
+            data.get('safety_notes', ''),
+            data.get('parts_required', '[]'),
+            data.get('tools_required', '[]'),
+            data.get('quality_checks', '[]'),
+            data.get('status', 'DRAFT')
+        ))
+
+        job_sheet_id = cursor.lastrowid
+        conn.commit()
+        conn.close()
+
         return jsonify({
             'success': True,
-            'quotes': []
+            'job_sheet_id': job_sheet_id,
+            'sheet_number': sheet_number,
+            'message': 'Job sheet created successfully'
         })
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
+# Quotes endpoint moved to src/routes/api/quote_api.py
 
 @job_bp.route('/api/jobs/<int:job_id>/status', methods=['PUT'])
 def update_job_status(job_id):
