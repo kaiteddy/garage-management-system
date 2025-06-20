@@ -1,5 +1,14 @@
 <!-- Sidebar Component -->
 <div class="sidebar">
+    <!-- Layout Toggle -->
+    <div class="layout-toggle">
+        <button id="layout-toggle-btn" class="layout-toggle-btn" title="Switch Layout">
+            <i class="fas fa-exchange-alt"></i>
+            <span class="toggle-text">Layout</span>
+        </button>
+    </div>
+
+    <!-- Main Navigation -->
     <a href="#" class="nav-item active" onclick="showPage('dashboard')">
         <i class="fas fa-tachometer-alt"></i>
         <span>Dashboard</span>
@@ -53,20 +62,30 @@
         <i class="fas fa-chart-bar"></i>
         <span>Reports</span>
     </a>
-    <a href="#" class="nav-item" onclick="showPage('upload')">
-        <i class="fas fa-upload"></i>
-        <span>Data Upload</span>
-    </a>
-    <a href="/google-drive" class="nav-item">
-        <i class="fab fa-google-drive"></i>
-        <span>Google Drive Sync</span>
-    </a>
-    <a href="#" class="nav-item" onclick="showPage('error-monitoring')">
-        <i class="fas fa-shield-alt"></i>
-        <span>Error Monitoring</span>
-    </a>
-    <a href="#" class="nav-item" onclick="showPage('settings')">
-        <i class="fas fa-cog"></i>
-        <span>Settings</span>
-    </a>
+
+    <!-- Settings Section -->
+    <div class="nav-section">
+        <div class="nav-section-header">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </div>
+        <div class="nav-submenu">
+            <a href="#" class="nav-item nav-subitem" onclick="showPage('settings')">
+                <i class="fas fa-sliders-h"></i>
+                <span>General Settings</span>
+            </a>
+            <a href="#" class="nav-item nav-subitem" onclick="showPage('upload')">
+                <i class="fas fa-upload"></i>
+                <span>Data Upload</span>
+            </a>
+            <a href="/google-drive" class="nav-item nav-subitem">
+                <i class="fab fa-google-drive"></i>
+                <span>Google Drive Sync</span>
+            </a>
+            <a href="#" class="nav-item nav-subitem" onclick="showPage('error-monitoring')">
+                <i class="fas fa-shield-alt"></i>
+                <span>Error Monitoring</span>
+            </a>
+        </div>
+    </div>
 </div>

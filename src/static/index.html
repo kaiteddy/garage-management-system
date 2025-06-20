@@ -12,9 +12,14 @@
 
     <!-- External CSS Files -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/design-system.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/components.css">
+    
+    <!-- Professional UI Design System -->
+    <link rel="stylesheet" href="css/professional-ui.css">
+    
+    <!-- Legacy CSS Files (for compatibility) -->
+    <link rel="stylesheet" href="css/design-system.css?v=7">
+    <link rel="stylesheet" href="css/layout.css?v=7">
+    <link rel="stylesheet" href="css/components.css?v=7">
     <link rel="stylesheet" href="css/garage-ui-consolidated.css">
     <link rel="stylesheet" href="css/kanban-board.css">
     <link rel="stylesheet" href="css/workshop-diary.css">
@@ -23,159 +28,756 @@
 
     <!-- Emergency crash prevention -->
     <script src="js/emergency-protection.js"></script>
+
+    <!-- Immediate showPage function definition for Safari -->
+    <script>
+        // Define showPage function immediately to prevent ReferenceError
+        window.showPage = window.showPage || function(pageId) {
+            console.log('🔄 Early showPage called for:', pageId);
+
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+                page.style.display = 'none';
+            });
+
+            // Remove active from nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Show selected page
+            const page = document.getElementById(pageId);
+            if (page) {
+                page.classList.add('active');
+                page.style.display = 'block';
+                page.style.opacity = '1';
+                page.style.visibility = 'visible';
+                console.log('✅ Page activated:', pageId);
+            }
+
+            // Activate nav item
+            const navItem = document.querySelector(`[onclick*="${pageId}"]`);
+            if (navItem) {
+                navItem.classList.add('active');
+            }
+        };
+
+        console.log('✅ Emergency showPage function defined');
+    </script>
 </head>
 <body>
-    <!-- Header Component -->
-    <div id="header-container"></div>
+    <!-- Professional Layout -->
+    <div class="professional-layout">
+        <!-- Professional Header -->
+        <header class="professional-header">
+            <div class="professional-logo">
+                <div class="professional-logo-icon">
+                    <i class="fas fa-car"></i>
+                </div>
+                <span class="professional-logo-text">GarageManager Pro</span>
+            </div>
+            
+            <div class="professional-header-actions">
+                <button class="professional-header-btn" onclick="refreshData()" title="Refresh Data">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>Refresh</span>
+                </button>
+                
+                <button class="professional-header-btn" onclick="exportData()" title="Export Data">
+                    <i class="fas fa-download"></i>
+                    <span>Export</span>
+                </button>
+                
+                <button class="professional-header-btn" onclick="printPage()" title="Print Page">
+                    <i class="fas fa-print"></i>
+                    <span>Print</span>
+                </button>
+                
+                <button class="professional-header-btn" onclick="showHelp()" title="Help">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help</span>
+                </button>
+                
+                <button class="professional-header-btn" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                    <span class="notification-badge">3</span>
+                </button>
+                
+                <button class="professional-header-btn" onclick="showAdminMenu()" title="Admin Menu">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Admin</span>
+                </button>
+            </div>
+        </header>
 
-    <!-- Layout -->
-    <div class="layout">
-        <!-- Sidebar Component -->
-        <div id="sidebar-container"></div>
+        <!-- Professional Sidebar -->
+        <aside class="professional-sidebar">
+            <!-- Main Navigation -->
+            <div class="professional-nav-section">
+                <div class="professional-nav-section-header">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Main</span>
+                </div>
+                
+                <a href="#" class="professional-nav-item active" onclick="showPage('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="professional-nav-item" onclick="showPage('customers')">
+                    <i class="fas fa-users"></i>
+                    <span>Customers</span>
+                </a>
+                <a href="#" class="professional-nav-item" onclick="showPage('vehicles')">
+                    <i class="fas fa-car"></i>
+                    <span>Vehicles</span>
+                </a>
+                <a href="#" class="professional-nav-item" onclick="showPage('jobs')">
+                    <i class="fas fa-wrench"></i>
+                    <span>Jobs</span>
+                </a>
+            </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
+            <div class="professional-nav-section">
+                <div class="professional-nav-section-header">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operations</span>
+                </div>
+                
+                <a href="#" class="professional-nav-item" onclick="showPage('workshop-diary')">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Workshop Diary</span>
+                </a>
+                <a href="#" class="professional-nav-item" onclick="showPage('job-sheets')">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Job Sheets</span>
+                </a>
+                <a href="#" class="professional-nav-item" onclick="showPage('quotes')">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span>Quotes</span>
+                </a>
+                <a href="#" class="professional-nav-item" onclick="showPage('online-booking')">
+                    <i class="fas fa-globe"></i>
+                    <span>Online Booking</span>
+                </a>
+            </div>
+
+            <div class="professional-nav-section">
+                <div class="professional-nav-section-header">
+                    <i class="fas fa-cogs"></i>
+                    <span>Management</span>
+                </div>
+                
+                <a href="#" class="professional-nav-item" onclick="showPage('customer-portal')">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Customer Portal</span>
+                </a>
+                <a href="#" class="professional-nav-item" onclick="showPage('mot-reminders')">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>MOT Reminders</span>
+                    <span class="nav-badge" id="mot-urgent-count">0</span>
+                </a>
+                <a href="#" class="professional-nav-item" onclick="showPage('parts')">
+                    <i class="fas fa-cogs"></i>
+                    <span>Parts</span>
+                </a>
+                <a href="#" class="professional-nav-item" onclick="showPage('invoices')">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Invoices</span>
+                </a>
+                <a href="#" class="professional-nav-item" onclick="showPage('reports')">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+            </div>
+
+            <!-- Settings Section -->
+            <div class="professional-nav-section">
+                <div class="professional-nav-section-header">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </div>
+                <a href="#" class="professional-nav-item" onclick="showPage('settings')">
+                    <i class="fas fa-sliders-h"></i>
+                    <span>General Settings</span>
+                </a>
+                <a href="#" class="professional-nav-item" onclick="showPage('upload')">
+                    <i class="fas fa-upload"></i>
+                    <span>Data Import</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Professional Main Content -->
+        <main class="professional-main-content">
             <!-- Dashboard Page -->
-            <div id="dashboard" class="page active">
-                <div id="dashboard-content"></div>
+            <div id="dashboard" class="professional-page active">
+                <div class="professional-page-header">
+                    <div>
+                        <h1 class="professional-page-title">
+                            <i class="fas fa-chart-line"></i>
+                            Dashboard
+                        </h1>
+                        <p class="professional-page-subtitle">Overview of your garage management system</p>
+                    </div>
+                    <div class="professional-page-actions">
+                        <button class="professional-btn professional-btn-secondary" onclick="refreshData()">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                        <button class="professional-btn professional-btn-primary" onclick="exportData()">
+                            <i class="fas fa-download"></i>
+                            Export
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dashboard Stats -->
+                <div class="professional-stats-grid">
+                    <div class="professional-stat-card">
+                        <div class="professional-stat-icon" style="background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="professional-stat-header">
+                            <h3 class="professional-stat-value" id="total-customers">0</h3>
+                            <p class="professional-stat-label">Customers</p>
+                        </div>
+                        <p class="professional-stat-description">Total registered</p>
+                    </div>
+
+                    <div class="professional-stat-card">
+                        <div class="professional-stat-icon" style="background: linear-gradient(135deg, var(--success-500) 0%, var(--success-600) 100%);">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <div class="professional-stat-header">
+                            <h3 class="professional-stat-value" id="total-vehicles">0</h3>
+                            <p class="professional-stat-label">Vehicles</p>
+                        </div>
+                        <p class="professional-stat-description">In database</p>
+                    </div>
+
+                    <div class="professional-stat-card">
+                        <div class="professional-stat-icon" style="background: linear-gradient(135deg, var(--warning-500) 0%, var(--warning-600) 100%);">
+                            <i class="fas fa-pound-sign"></i>
+                        </div>
+                        <div class="professional-stat-header">
+                            <h3 class="professional-stat-value" id="total-revenue">£0.00</h3>
+                            <p class="professional-stat-label">Total Revenue</p>
+                        </div>
+                        <p class="professional-stat-description">All time</p>
+                    </div>
+
+                    <div class="professional-stat-card">
+                        <div class="professional-stat-icon" style="background: linear-gradient(135deg, var(--error-500) 0%, var(--error-600) 100%);">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <div class="professional-stat-header">
+                            <h3 class="professional-stat-value" id="total-jobs">0</h3>
+                            <p class="professional-stat-label">Jobs</p>
+                        </div>
+                        <p class="professional-stat-description">Completed</p>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="professional-card">
+                    <div class="professional-card-header">
+                        <h3 class="professional-card-title">
+                            <i class="fas fa-bolt"></i>
+                            Quick Actions
+                        </h3>
+                    </div>
+                    <div class="professional-card-content">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-4);">
+                            <button class="professional-btn professional-btn-secondary" onclick="showPage('customers')">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Add Customer</span>
+                            </button>
+                            <button class="professional-btn professional-btn-secondary" onclick="showPage('vehicles')">
+                                <i class="fas fa-car"></i>
+                                <span>Add Vehicle</span>
+                            </button>
+                            <button class="professional-btn professional-btn-secondary" onclick="showPage('jobs')">
+                                <i class="fas fa-plus"></i>
+                                <span>New Job</span>
+                            </button>
+                            <button class="professional-btn professional-btn-secondary" onclick="showPage('invoices')">
+                                <i class="fas fa-file-invoice"></i>
+                                <span>Create Invoice</span>
+                            </button>
+                            <button class="professional-btn professional-btn-secondary" onclick="showPage('mot-reminders')">
+                                <i class="fas fa-car-crash"></i>
+                                <span>MOT Reminders</span>
+                            </button>
+                            <button class="professional-btn professional-btn-secondary" onclick="showPage('workshop-diary')">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>Workshop Diary</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="professional-card">
+                    <div class="professional-card-header">
+                        <h3 class="professional-card-title">
+                            <i class="fas fa-clock"></i>
+                            Recent Activity
+                        </h3>
+                    </div>
+                    <div class="professional-card-content">
+                        <p id="recent-activity-content">Loading recent activity...</p>
+                    </div>
+                </div>
             </div>
 
             <!-- Customers Page -->
-            <div id="customers" class="page">
+            <div id="customers" class="professional-page">
                 <div id="customers-content"></div>
             </div>
 
             <!-- Vehicles Page -->
-            <div id="vehicles" class="page">
+            <div id="vehicles" class="professional-page">
                 <div id="vehicles-content"></div>
             </div>
 
             <!-- Jobs Page -->
-            <div id="jobs" class="page">
+            <div id="jobs" class="professional-page">
                 <div id="jobs-content"></div>
             </div>
 
             <!-- Workshop Diary Page -->
-            <div id="workshop-diary" class="page">
+            <div id="workshop-diary" class="professional-page">
                 <div id="workshop-diary-container"></div>
             </div>
 
             <!-- Job Sheets Page -->
-            <div id="job-sheets" class="page">
+            <div id="job-sheets" class="professional-page">
                 <div id="job-sheets-container"></div>
             </div>
 
             <!-- Quotes Page -->
-            <div id="quotes" class="page">
+            <div id="quotes" class="professional-page">
                 <div id="quotes-container"></div>
             </div>
 
             <!-- Online Booking Page -->
-            <div id="online-booking" class="page">
+            <div id="online-booking" class="professional-page">
                 <div id="online-booking-container"></div>
             </div>
 
             <!-- Customer Portal Page -->
-            <div id="customer-portal" class="page">
+            <div id="customer-portal" class="professional-page">
                 <div id="customer-portal-container"></div>
             </div>
 
             <!-- MOT Reminders Page -->
-            <div id="mot-reminders" class="page">
-                <div id="mot-reminders-content"></div>
+            <div id="mot-reminders" class="professional-page">
+                <div class="professional-page-header">
+                    <div>
+                        <h1 class="professional-page-title">
+                            <i class="fas fa-calendar-check"></i>
+                            MOT Reminders
+                        </h1>
+                        <p class="professional-page-subtitle">Monitor vehicle MOT expiry dates and send reminders</p>
+                    </div>
+                    <div class="professional-page-actions">
+                        <button id="refresh-mot-data" class="professional-btn professional-btn-secondary">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh Data
+                        </button>
+                        <button id="bulk-upload-mot" class="professional-btn professional-btn-primary" onclick="showPage('settings'); setTimeout(() => document.querySelector('[data-tab=data-upload]').click(), 100)">
+                            <i class="fas fa-upload"></i>
+                            Bulk Upload
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MOT Stats Cards -->
+                <div class="professional-stats-grid">
+                    <div class="professional-stat-card">
+                        <div class="professional-stat-icon" style="background: linear-gradient(135deg, var(--error-500) 0%, var(--error-600) 100%);">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="professional-stat-header">
+                            <h3 class="professional-stat-value" id="expired-count">0</h3>
+                            <p class="professional-stat-label">Expired MOTs</p>
+                        </div>
+                        <p class="professional-stat-description">Immediate attention</p>
+                    </div>
+
+                    <div class="professional-stat-card">
+                        <div class="professional-stat-icon" style="background: linear-gradient(135deg, var(--warning-500) 0%, var(--warning-600) 100%);">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="professional-stat-header">
+                            <h3 class="professional-stat-value" id="expiring-soon-count">0</h3>
+                            <p class="professional-stat-label">Expiring Soon</p>
+                        </div>
+                        <p class="professional-stat-description">Next 30 days</p>
+                    </div>
+
+                    <div class="professional-stat-card">
+                        <div class="professional-stat-icon" style="background: linear-gradient(135deg, var(--info-500) 0%, var(--info-600) 100%);">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div class="professional-stat-header">
+                            <h3 class="professional-stat-value" id="due-month-count">0</h3>
+                            <p class="professional-stat-label">Due This Month</p>
+                        </div>
+                        <p class="professional-stat-description">8-30 days</p>
+                    </div>
+
+                    <div class="professional-stat-card">
+                        <div class="professional-stat-icon" style="background: linear-gradient(135deg, var(--success-500) 0%, var(--success-600) 100%);">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="professional-stat-header">
+                            <h3 class="professional-stat-value" id="valid-count">0</h3>
+                            <p class="professional-stat-label">Valid MOTs</p>
+                        </div>
+                        <p class="professional-stat-description">Over 30 days</p>
+                    </div>
+                </div>
+
+                <!-- Filter Buttons -->
+                <div class="filter-section">
+                    <h3>Vehicle MOT Status</h3>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">
+                            All Vehicles
+                            <span class="filter-count" id="all-count">0</span>
+                        </button>
+                        <button class="filter-btn" data-filter="expired">
+                            Expired
+                            <span class="filter-count" id="expired-filter-count">0</span>
+                        </button>
+                        <button class="filter-btn" data-filter="critical">
+                            Critical
+                            <span class="filter-count" id="critical-count">0</span>
+                        </button>
+                        <button class="filter-btn" data-filter="warning">
+                            Warning
+                            <span class="filter-count" id="warning-count">0</span>
+                        </button>
+                        <button class="filter-btn" data-filter="valid">
+                            Valid
+                            <span class="filter-count" id="valid-filter-count">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MOT Vehicles Table -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h4>Vehicle MOT Status</h4>
+                        <div class="table-actions">
+                            <input type="text" class="search-input" placeholder="Search vehicles..." id="mot-search">
+                            <button class="btn btn-primary" id="send-reminders-btn" disabled>
+                                <i class="fas fa-envelope"></i>
+                                Send Reminders
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="data-table" id="mot-vehicles-table">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="select-all-mot"></th>
+                                    <th>Registration</th>
+                                    <th>Make/Model</th>
+                                    <th>MOT Expiry</th>
+                                    <th>Days Remaining</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mot-vehicles-tbody">
+                                <tr>
+                                    <td colspan="7" class="empty-state">
+                                        <div class="empty-state-content">
+                                            <i class="fas fa-car"></i>
+                                            <h4>No vehicles found</h4>
+                                            <p>Add vehicles to start monitoring MOT expiry dates</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <!-- Parts Page -->
-            <div id="parts" class="page">
-                <div id="parts-content">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">
-                                <i class="fas fa-cogs"></i>
-                                Parts Management
-                            </h1>
-                            <p class="page-subtitle">Manage inventory and parts catalog</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fas fa-info-circle"></i>
-                            Parts System
-                        </div>
-                        <div class="card-content">
-                            <p>Parts management system is being developed. This will include:</p>
-                            <ul>
-                                <li>Parts inventory tracking</li>
-                                <li>Supplier management</li>
-                                <li>Stock level monitoring</li>
-                                <li>Automatic reordering</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+            <div id="parts" class="professional-page">
+                <div id="parts-container"></div>
             </div>
 
             <!-- Invoices Page -->
-            <div id="invoices" class="page">
-                <div id="invoices-content"></div>
+            <div id="invoices" class="professional-page">
+                <div id="invoices-container"></div>
             </div>
 
             <!-- Reports Page -->
-            <div id="reports" class="page">
-                <div id="reports-content">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">
-                                <i class="fas fa-chart-bar"></i>
-                                Reports & Analytics
-                            </h1>
-                            <p class="page-subtitle">Business intelligence and reporting</p>
-                        </div>
+            <div id="reports" class="professional-page">
+                <div id="reports-container"></div>
+            </div>
+
+            <!-- Upload Page -->
+            <div id="upload" class="professional-page">
+                <div id="upload-container"></div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settings" class="professional-page">
+                <div class="professional-page-header">
+                    <h1 class="professional-page-title">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                    </h1>
+                    <p class="professional-page-subtitle">Configure your garage management system</p>
+                </div>
+
+                <div class="settings-container">
+                    <div class="settings-tabs">
+                        <button class="settings-tab-btn active" data-tab="general">
+                            <i class="fas fa-sliders-h"></i>
+                            General
+                        </button>
+                        <button class="settings-tab-btn" data-tab="data-upload">
+                            <i class="fas fa-upload"></i>
+                            Data Upload
+                        </button>
+                        <button class="settings-tab-btn" data-tab="google-drive">
+                            <i class="fab fa-google-drive"></i>
+                            Google Drive
+                        </button>
+                        <button class="settings-tab-btn" data-tab="error-monitoring">
+                            <i class="fas fa-shield-alt"></i>
+                            Error Monitoring
+                        </button>
+                        <button class="settings-tab-btn" data-tab="garage-info">
+                            <i class="fas fa-building"></i>
+                            Garage Info
+                        </button>
+                        <button class="settings-tab-btn" data-tab="system">
+                            <i class="fas fa-cogs"></i>
+                            System
+                        </button>
                     </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fas fa-chart-line"></i>
-                            Available Reports
+
+                    <div class="settings-content">
+                        <!-- General Settings Tab -->
+                        <div id="general-tab" class="settings-tab-content active">
+                            <div class="settings-section">
+                                <h3 class="settings-section-title">
+                                    <i class="fas fa-sliders-h"></i>
+                                    General Settings
+                                </h3>
+                                <div class="settings-form">
+                                    <div class="form-group">
+                                        <label for="company-name">Company Name</label>
+                                        <input type="text" id="company-name" class="form-control" placeholder="Your Garage Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="default-currency">Default Currency</label>
+                                        <select id="default-currency" class="form-control">
+                                            <option value="GBP" selected>GBP (£)</option>
+                                            <option value="EUR">EUR (€)</option>
+                                            <option value="USD">USD ($)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="timezone">Timezone</label>
+                                        <select id="timezone" class="form-control">
+                                            <option value="Europe/London" selected>Europe/London</option>
+                                            <option value="UTC">UTC</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Save Settings
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-content">
-                            <p>Comprehensive reporting system includes:</p>
-                            <ul>
-                                <li>Revenue and financial reports</li>
-                                <li>Job completion analytics</li>
-                                <li>Customer activity reports</li>
-                                <li>Vehicle service history</li>
-                            </ul>
+
+                        <!-- Data Upload Tab -->
+                        <div id="data-upload-tab" class="settings-tab-content">
+                            <div class="settings-section">
+                                <h3 class="settings-section-title">
+                                    <i class="fas fa-upload"></i>
+                                    Data Upload
+                                </h3>
+                                <p class="settings-section-description">Upload customer and vehicle data from CSV or Excel files</p>
+                                
+                                <div class="upload-card">
+                                    <div class="upload-card-header">
+                                        <h4>Upload MOT Vehicles</h4>
+                                        <p>Upload a CSV or Excel file with vehicle registration numbers</p>
+                                    </div>
+                                    <div class="upload-card-body">
+                                        <div class="drop-zone" id="mot-drop-zone">
+                                            <div class="drop-zone-content">
+                                                <i class="fas fa-cloud-upload-alt"></i>
+                                                <p>Drag and drop your file here</p>
+                                                <p class="text-muted">or click to browse</p>
+                                            </div>
+                                            <input type="file" id="mot-file-input" accept=".csv,.xlsx,.xls" style="display: none;">
+                                        </div>
+                                        <div class="upload-actions">
+                                            <button class="btn btn-primary" id="mot-upload-btn" disabled>
+                                                <i class="fas fa-upload"></i> Upload MOT Data
+                                            </button>
+                                            <a href="/mot_vehicles_template.csv" class="btn btn-secondary" download>
+                                                <i class="fas fa-download"></i> Download Template
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="upload-card">
+                                    <div class="upload-card-header">
+                                        <h4>Upload Customer Data</h4>
+                                        <p>Upload a CSV or Excel file with customer information</p>
+                                    </div>
+                                    <div class="upload-card-body">
+                                        <div class="drop-zone" id="customer-drop-zone">
+                                            <div class="drop-zone-content">
+                                                <i class="fas fa-cloud-upload-alt"></i>
+                                                <p>Drag and drop your file here</p>
+                                                <p class="text-muted">or click to browse</p>
+                                            </div>
+                                            <input type="file" id="customer-file-input" accept=".csv,.xlsx,.xls" style="display: none;">
+                                        </div>
+                                        <div class="upload-actions">
+                                            <button class="btn btn-primary" id="customer-upload-btn" disabled>
+                                                <i class="fas fa-upload"></i> Upload Customer Data
+                                            </button>
+                                            <a href="/customer_template.csv" class="btn btn-secondary" download>
+                                                <i class="fas fa-download"></i> Download Template
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Google Drive Tab -->
+                        <div id="google-drive-tab" class="settings-tab-content">
+                            <div class="settings-section">
+                                <h3 class="settings-section-title">
+                                    <i class="fab fa-google-drive"></i>
+                                    Google Drive Integration
+                                </h3>
+                                <p class="settings-section-description">Connect your Google Drive for automatic file synchronization</p>
+                                
+                                <div class="status-card">
+                                    <div class="status-header">
+                                        <h4>Connection Status</h4>
+                                    </div>
+                                    <div class="status-body">
+                                        <div class="status-indicator status-disconnected">
+                                            <i class="fas fa-times-circle"></i>
+                                            <span>Not Connected</span>
+                                        </div>
+                                        <p class="status-description">Connect your Google Drive account to enable automatic file synchronization</p>
+                                        <button class="btn btn-primary">
+                                            <i class="fab fa-google"></i> Connect Google Drive
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Error Monitoring Tab -->
+                        <div id="error-monitoring-tab" class="settings-tab-content">
+                            <div class="settings-section">
+                                <h3 class="settings-section-title">
+                                    <i class="fas fa-shield-alt"></i>
+                                    Error Monitoring
+                                </h3>
+                                <p class="settings-section-description">Monitor system errors and performance issues</p>
+                                <div id="error-monitoring-content">
+                                    <!-- Error monitoring content will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Garage Info Tab -->
+                        <div id="garage-info-tab" class="settings-tab-content">
+                            <div class="settings-section">
+                                <h3 class="settings-section-title">
+                                    <i class="fas fa-building"></i>
+                                    Garage Information
+                                </h3>
+                                <div class="settings-form">
+                                    <div class="form-group">
+                                        <label for="garage-name">Garage Name</label>
+                                        <input type="text" id="garage-name" class="form-control" placeholder="Eli Motors">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="garage-phone">Phone Number</label>
+                                        <input type="tel" id="garage-phone" class="form-control" placeholder="0208 203 6449">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="garage-address">Address</label>
+                                        <textarea id="garage-address" class="form-control" rows="3" placeholder="Enter garage address"></textarea>
+                                    </div>
+                                    <button class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Save Garage Info
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- System Tab -->
+                        <div id="system-tab" class="settings-tab-content">
+                            <div class="settings-section">
+                                <h3 class="settings-section-title">
+                                    <i class="fas fa-cogs"></i>
+                                    System Preferences
+                                </h3>
+                                <div class="settings-form">
+                                    <div class="form-group">
+                                        <label for="date-format">Date Format</label>
+                                        <select id="date-format" class="form-control">
+                                            <option value="DD-MM-YYYY">DD-MM-YYYY</option>
+                                            <option value="MM-DD-YYYY">MM-DD-YYYY</option>
+                                            <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="items-per-page">Items Per Page</label>
+                                        <select id="items-per-page" class="form-control">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Save System Settings
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Data Upload Page -->
-            <div id="upload" class="page">
-                <div id="upload-content"></div>
-            </div>
-
-            <!-- Error Monitoring Page -->
-            <div id="error-monitoring" class="page">
-                <div id="error-monitoring-content"></div>
-            </div>
-
-            <!-- Settings Page -->
-            <div id="settings" class="page">
-                <div id="settings-content"></div>
-            </div>
-        </div>
+        </main>
     </div>
 
     <!-- Modal Container -->
     <div id="modal-container"></div>
 
     <!-- Core JavaScript Modules -->
-    <script src="js/utils.js?v=2"></script>
-    <script src="js/api.js?v=2"></script>
-    <script src="js/intelligent-search.js?v=2"></script>
-    <script src="js/navigation.js?v=2"></script>
-    <script src="js/app.js?v=2"></script>
+    <script src="js/utils.js?v=9"></script>
+    <script src="js/api.js?v=9"></script>
+    <script src="js/intelligent-search.js?v=9"></script>
+    <script src="js/navigation.js?v=9"></script>
+    <script src="js/layout-manager.js?v=9"></script>
+    <script src="js/app.js?v=9"></script>
     
     <!-- Feature-specific JavaScript -->
     <script src="js/kanban-board.js"></script>
@@ -188,23 +790,130 @@
 
     <!-- Component Loader -->
     <script>
-        // Load components dynamically
+        // Load components dynamically with cache busting
         async function loadComponent(containerId, componentPath) {
             try {
-                const response = await fetch(componentPath);
-                const html = await response.text();
-                document.getElementById(containerId).innerHTML = html;
+                const timestamp = Date.now();
+                const response = await fetch(`${componentPath}?v=${timestamp}`);
+                if (response.ok) {
+                    const html = await response.text();
+                    document.getElementById(containerId).innerHTML = html;
+                    console.log(`✅ Loaded component: ${componentPath}`);
+                } else {
+                    console.warn(`⚠️ Component not found: ${componentPath}, using fallback`);
+                }
             } catch (error) {
-                console.error(`Failed to load component ${componentPath}:`, error);
+                console.warn(`⚠️ Failed to load component ${componentPath}, using fallback:`, error);
             }
         }
 
+        // Enhanced showPage function that loads content
+        window.showPage = function(pageId) {
+            console.log('🔧 Navigation to:', pageId);
+
+            try {
+                // Save current page to localStorage for refresh persistence
+                currentActivePage = pageId;
+                localStorage.setItem('currentActivePage', pageId);
+
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                    page.style.display = 'none';
+                });
+
+                // Remove active class from all nav items
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                // Show selected page
+                const pageElement = document.getElementById(pageId);
+                if (pageElement) {
+                    pageElement.classList.add('active');
+                    pageElement.style.display = 'block';
+                    pageElement.style.opacity = '1';
+                    pageElement.style.visibility = 'visible';
+                    console.log('✅ Page shown successfully:', pageId);
+                } else {
+                    console.error('❌ Page element not found:', pageId);
+                    return;
+                }
+
+                // Add active class to selected nav item
+                const navItem = document.querySelector(`.nav-item[onclick*="'${pageId}'"]`);
+                if (navItem) {
+                    navItem.classList.add('active');
+                }
+
+                // Load data for the page if needed
+                loadPageData(pageId);
+
+            } catch (error) {
+                console.error('💥 Error in navigation:', error);
+            }
+        };
+
         // Load all components on page load
         document.addEventListener('DOMContentLoaded', async function() {
-            console.log('🔧 Loading components...');
+            console.log('🔧 Loading components with cache busting...');
+            
+            // Load components with fallback handling
             await loadComponent('header-container', 'components/header.html');
             await loadComponent('sidebar-container', 'components/sidebar.html');
+            
             console.log('✅ Components loaded');
+
+            // Initialize navigation system
+            if (typeof initializeNavigation === 'function') {
+                initializeNavigation();
+            }
+
+            // Load dashboard content immediately
+            if (typeof loadDashboardContent === 'function') {
+                loadDashboardContent();
+            }
+
+            // Safari-specific initialization
+            if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+                console.log('🍎 Safari detected - applying immediate fixes');
+
+                // Force immediate visibility for Safari
+                setTimeout(() => {
+                    const dashboard = document.getElementById('dashboard');
+                    const dashboardContent = document.getElementById('dashboard-content');
+                    const mainContent = document.querySelector('.main-content');
+
+                    if (dashboard) {
+                        dashboard.style.display = 'block';
+                        dashboard.style.opacity = '1';
+                        dashboard.style.visibility = 'visible';
+                        dashboard.classList.add('active');
+                    }
+
+                    if (dashboardContent) {
+                        dashboardContent.style.display = 'block';
+                        dashboardContent.style.opacity = '1';
+                        dashboardContent.style.visibility = 'visible';
+                    }
+
+                    if (mainContent) {
+                        mainContent.style.display = 'block';
+                        mainContent.style.opacity = '1';
+                        mainContent.style.visibility = 'visible';
+                    }
+
+                    console.log('🍎 Safari immediate fixes applied');
+                }, 100);
+
+                // Force re-initialization if needed
+                setTimeout(() => {
+                    if (typeof window.initializeApplication === 'function') {
+                        console.log('🍎 Safari force re-initialization');
+                        window.initializeApplication();
+                    }
+                }, 1500);
+            }
 
             // Debug: Check if dashboard content exists
             setTimeout(() => {
@@ -214,6 +923,11 @@
                 console.log('🔍 Dashboard content element:', dashboardContent);
                 console.log('🔍 Dashboard classes:', dashboard ? dashboard.className : 'not found');
                 console.log('🔍 Dashboard content HTML length:', dashboardContent ? dashboardContent.innerHTML.length : 'not found');
+
+                // Safari debug if available
+                if (typeof window.safariDebug === 'function') {
+                    window.safariDebug();
+                }
             }, 2000);
 
             // The application will be initialized by app.js DOMContentLoaded listener

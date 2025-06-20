@@ -1,0 +1,44 @@
+# Docker-optimized requirements for Garage Management System
+# Minimal dependencies for production Docker deployment
+
+# Core Flask Web Framework
+Flask>=3.1.0
+Flask-SQLAlchemy>=3.1.1
+Flask-CORS>=6.0.0
+Werkzeug>=3.1.3
+Jinja2>=3.1.6
+MarkupSafe>=3.0.2
+itsdangerous>=2.2.0
+click>=8.2.1
+
+# Database
+SQLAlchemy>=2.0.40
+
+# Core Dependencies
+requests>=2.31.0
+python-dotenv>=1.0.0
+python-dateutil>=2.8.2
+
+# Data Processing & File Handling
+pandas>=2.0.3
+openpyxl>=3.1.2
+
+# MOT Reminder System
+phonenumbers>=8.13.19
+twilio>=8.5.0
+schedule>=1.2.0
+
+# Google Drive Integration
+google-api-python-client>=2.108.0
+google-auth-httplib2>=0.1.1
+google-auth-oauthlib>=1.1.0
+google-auth>=2.23.4
+
+# Production Server
+gunicorn>=21.2.0
+psutil>=5.9.5
+
+# System Dependencies
+blinker>=1.9.0
+cryptography>=36.0.2
+typing_extensions>=4.14.0

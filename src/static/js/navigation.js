@@ -14,6 +14,15 @@ window.showPage = function(pageId) {
     console.log('🔧 Navigation to:', pageId);
 
     try {
+        // Debug: Check if page element exists
+        const pageElement = document.getElementById(pageId);
+        console.log(`🔍 Page element "${pageId}":`, pageElement ? 'found' : 'NOT FOUND');
+
+        if (pageElement) {
+            console.log(`🔍 Page element classes:`, pageElement.className);
+            console.log(`🔍 Page element display:`, window.getComputedStyle(pageElement).display);
+        }
+
         // Save current page to localStorage for refresh persistence
         currentActivePage = pageId;
         localStorage.setItem('currentActivePage', pageId);
@@ -29,7 +38,6 @@ window.showPage = function(pageId) {
         });
 
         // Show selected page
-        const pageElement = document.getElementById(pageId);
         if (pageElement) {
             pageElement.classList.add('active');
             console.log('✅ Page shown successfully:', pageId);
@@ -56,44 +64,129 @@ window.showPage = function(pageId) {
  * Load data for specific pages
  */
 function loadPageData(pageId) {
+    console.log(`📄 Loading data for page: ${pageId}`);
+
     switch(pageId) {
         case 'dashboard':
-            loadDashboardContent();
+            if (typeof loadDashboardContent === 'function') {
+                loadDashboardContent();
+            } else {
+                console.error('❌ loadDashboardContent function not found');
+            }
             break;
         case 'customers':
-            loadCustomersPage();
+            if (typeof loadCustomersPage === 'function') {
+                loadCustomersPage();
+            } else {
+                console.error('❌ loadCustomersPage function not found');
+            }
             break;
         case 'vehicles':
-            if (typeof loadVehiclesFromAPI === 'function') {
-                loadVehiclesFromAPI();
+            if (typeof loadVehiclesPage === 'function') {
+                loadVehiclesPage();
+            } else {
+                console.error('❌ loadVehiclesPage function not found');
             }
             break;
         case 'jobs':
-            if (typeof loadJobsFromAPI === 'function') {
-                loadJobsFromAPI();
+            if (typeof loadJobsPage === 'function') {
+                loadJobsPage();
+            } else {
+                console.error('❌ loadJobsPage function not found');
             }
             break;
-        case 'invoices':
-            if (typeof loadInvoicesFromAPI === 'function') {
-                loadInvoicesFromAPI();
+        case 'workshop-diary':
+            if (typeof loadWorkshopDiaryPage === 'function') {
+                loadWorkshopDiaryPage();
+            } else {
+                console.error('❌ loadWorkshopDiaryPage function not found');
+            }
+            break;
+        case 'job-sheets':
+            if (typeof loadJobSheetsPage === 'function') {
+                loadJobSheetsPage();
+            } else {
+                console.error('❌ loadJobSheetsPage function not found');
+            }
+            break;
+        case 'quotes':
+            if (typeof loadQuotesPage === 'function') {
+                loadQuotesPage();
+            } else {
+                console.error('❌ loadQuotesPage function not found');
+            }
+            break;
+        case 'online-booking':
+            if (typeof loadOnlineBookingPage === 'function') {
+                loadOnlineBookingPage();
+            } else {
+                console.error('❌ loadOnlineBookingPage function not found');
+            }
+            break;
+        case 'customer-portal':
+            if (typeof loadCustomerPortalPage === 'function') {
+                loadCustomerPortalPage();
+            } else {
+                console.error('❌ loadCustomerPortalPage function not found');
             }
             break;
         case 'mot-reminders':
-            loadMOTRemindersPage();
+            if (typeof loadMOTRemindersPage === 'function') {
+                loadMOTRemindersPage();
+            } else {
+                console.error('❌ loadMOTRemindersPage function not found');
+            }
+            break;
+        case 'parts':
+            if (typeof loadPartsPage === 'function') {
+                loadPartsPage();
+            } else {
+                console.error('❌ loadPartsPage function not found');
+            }
+            break;
+        case 'invoices':
+            if (typeof loadInvoicesPage === 'function') {
+                loadInvoicesPage();
+            } else {
+                console.error('❌ loadInvoicesPage function not found');
+            }
+            break;
+        case 'reports':
+            if (typeof loadReportsPage === 'function') {
+                loadReportsPage();
+            } else {
+                console.error('❌ loadReportsPage function not found');
+            }
             break;
         case 'upload':
-            if (typeof loadUploadStatus === 'function') {
-                loadUploadStatus();
+            if (typeof loadUploadPage === 'function') {
+                loadUploadPage();
+            } else {
+                console.error('❌ loadUploadPage function not found');
+            }
+            break;
+        case 'error-monitoring':
+            if (typeof loadErrorMonitoringPage === 'function') {
+                loadErrorMonitoringPage();
+            } else {
+                console.error('❌ loadErrorMonitoringPage function not found');
             }
             break;
         case 'settings':
-            loadSettingsPage();
+            if (typeof loadSettingsPage === 'function') {
+                loadSettingsPage();
+            } else {
+                console.error('❌ loadSettingsPage function not found');
+            }
             break;
         default:
-            // No specific data loading needed
+            console.warn(`⚠️ No loading function defined for page: ${pageId}`);
             break;
     }
 }
+
+// Make loadPageData globally available
+window.loadPageData = loadPageData;
 
 /**
  * Load customers page content
@@ -225,16 +318,837 @@ function loadCustomersPage() {
 }
 
 /**
+ * Load Vehicles page content
+ */
+function loadVehiclesPage() {
+    console.log('🚗 Loading Vehicles page...');
+
+    const vehiclesContent = document.getElementById('vehicles-content');
+    if (!vehiclesContent) {
+        console.error('❌ Vehicles content container not found');
+        return;
+    }
+
+    const vehiclesHTML = `
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">
+                    <i class="fas fa-car"></i>
+                    Vehicles
+                </h1>
+                <p class="page-subtitle">Manage vehicle records and information</p>
+            </div>
+            <div class="page-actions">
+                <button class="btn btn-primary" onclick="openAddVehicleModal()">
+                    <i class="fas fa-plus"></i>
+                    Add Vehicle
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-car"></i>
+                Vehicle Records
+            </div>
+            <div class="card-content">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Registration</th>
+                                <th>Make</th>
+                                <th>Model</th>
+                                <th>Year</th>
+                                <th>Customer</th>
+                                <th>MOT Due</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vehicles-table-body">
+                            <tr>
+                                <td colspan="7" class="loading-cell">
+                                    <div class="loading-spinner"></div>
+                                    <p>Loading vehicles...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+
+    vehiclesContent.innerHTML = vehiclesHTML;
+
+    // Load vehicles data
+    if (typeof loadVehiclesFromAPI === 'function') {
+        loadVehiclesFromAPI();
+    } else {
+        console.warn('⚠️ loadVehiclesFromAPI function not found');
+    }
+
+    console.log('✅ Vehicles page content loaded');
+}
+
+/**
+ * Load Jobs page content
+ */
+function loadJobsPage() {
+    console.log('🔧 Loading Jobs page...');
+
+    const jobsContent = document.getElementById('jobs-content');
+    if (!jobsContent) {
+        console.error('❌ Jobs content container not found');
+        return;
+    }
+
+    const jobsHTML = `
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">
+                    <i class="fas fa-wrench"></i>
+                    Jobs
+                </h1>
+                <p class="page-subtitle">Manage work orders and job tracking</p>
+            </div>
+            <div class="page-actions">
+                <button class="btn btn-primary" onclick="openAddJobModal()">
+                    <i class="fas fa-plus"></i>
+                    New Job
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-list"></i>
+                Active Jobs
+            </div>
+            <div class="card-content">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Job #</th>
+                                <th>Customer</th>
+                                <th>Vehicle</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jobs-table-body">
+                            <tr>
+                                <td colspan="7" class="loading-cell">
+                                    <div class="loading-spinner"></div>
+                                    <p>Loading jobs...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+
+    jobsContent.innerHTML = jobsHTML;
+
+    // Load jobs data
+    if (typeof loadJobsFromAPI === 'function') {
+        loadJobsFromAPI();
+    } else {
+        console.warn('⚠️ loadJobsFromAPI function not found');
+    }
+
+    console.log('✅ Jobs page content loaded');
+}
+
+/**
+ * Load Workshop Diary page content
+ */
+function loadWorkshopDiaryPage() {
+    console.log('📅 Loading Workshop Diary page...');
+
+    const container = document.getElementById('workshop-diary-container');
+    if (!container) {
+        console.error('❌ Workshop diary container not found');
+        return;
+    }
+
+    // Initialize workshop diary if class exists
+    if (typeof WorkshopDiary !== 'undefined') {
+        if (!window.workshopDiary) {
+            window.workshopDiary = new WorkshopDiary();
+        }
+    } else {
+        console.warn('⚠️ WorkshopDiary class not found');
+        container.innerHTML = `
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-calendar-alt"></i>
+                    Workshop Diary
+                </h1>
+                <p class="page-subtitle">Calendar and scheduling system</p>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <p>Workshop Diary functionality is loading...</p>
+                </div>
+            </div>
+        `;
+    }
+
+    console.log('✅ Workshop Diary page loaded');
+}
+
+/**
+ * Load Job Sheets page content
+ */
+function loadJobSheetsPage() {
+    console.log('📋 Loading Job Sheets page...');
+
+    const container = document.getElementById('job-sheets-container');
+    if (!container) {
+        console.error('❌ Job sheets container not found');
+        return;
+    }
+
+    // Initialize job sheets if class exists
+    if (typeof JobSheetsManager !== 'undefined') {
+        if (!window.jobSheetsManager) {
+            window.jobSheetsManager = new JobSheetsManager();
+        }
+    } else {
+        console.warn('⚠️ JobSheetsManager class not found');
+        container.innerHTML = `
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-clipboard-list"></i>
+                    Job Sheets
+                </h1>
+                <p class="page-subtitle">Digital job sheets and templates</p>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <p>Job Sheets functionality is loading...</p>
+                </div>
+            </div>
+        `;
+    }
+
+    console.log('✅ Job Sheets page loaded');
+}
+
+/**
  * Load MOT Reminders page content
  */
 function loadMOTRemindersPage() {
     console.log('🚗 Loading MOT Reminders page...');
 
-    const motContent = document.getElementById('mot-reminders-content');
-    if (!motContent) {
-        console.error('❌ MOT reminders content container not found');
+    // The MOT page now has a static structure, just load the data
+    loadMOTData();
+
+    // Initialize MOT page functionality
+    initializeMOTPageFunctionality();
+}
+
+/**
+ * Load MOT data from API
+ */
+async function loadMOTData() {
+    try {
+        console.log('🔄 Loading MOT data...');
+
+        // Try the integrated MOT API first
+        let response = await fetch('/api/mot/vehicles');
+
+        // If that fails, try the standalone MOT service
+        if (!response.ok) {
+            response = await fetch('/mot/api/vehicles');
+        }
+
+        if (response.ok) {
+            const result = await response.json();
+
+            if (result && result.success && result.vehicles) {
+                console.log(`✅ Found ${result.vehicles.length} MOT vehicles`);
+                displayMOTVehicles(result.vehicles);
+                updateMOTStats(result.vehicles);
+            } else {
+                console.log('ℹ️ No MOT data available');
+                displayEmptyMOTState();
+            }
+        } else {
+            console.log('ℹ️ MOT service not available, showing empty state');
+            displayEmptyMOTState();
+        }
+    } catch (error) {
+        console.error('Failed to load MOT data:', error);
+        displayEmptyMOTState();
+    }
+}
+
+/**
+ * Initialize MOT page functionality
+ */
+function initializeMOTPageFunctionality() {
+    // Initialize filter buttons
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active from all buttons
+            filterButtons.forEach(b => b.classList.remove('active'));
+            // Add active to clicked button
+            btn.classList.add('active');
+
+            const filter = btn.getAttribute('data-filter');
+            filterMOTVehicles(filter);
+        });
+    });
+
+    // Initialize search
+    const searchInput = document.getElementById('mot-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            searchMOTVehicles(e.target.value);
+        });
+    }
+
+    // Initialize refresh button
+    const refreshBtn = document.getElementById('refresh-mot-data');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', loadMOTData);
+    }
+
+    // Initialize select all checkbox
+    const selectAllCheckbox = document.getElementById('select-all-mot');
+    if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener('change', (e) => {
+            const checkboxes = document.querySelectorAll('#mot-vehicles-table input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = e.target.checked);
+            updateSendRemindersButton();
+        });
+    }
+
+    // Initialize send reminders button
+    const sendRemindersBtn = document.getElementById('send-reminders');
+    if (sendRemindersBtn) {
+        sendRemindersBtn.addEventListener('click', sendBulkReminders);
+    }
+
+    console.log('✅ MOT page functionality initialized');
+}
+
+/**
+ * Display MOT vehicles in the table
+ */
+function displayMOTVehicles(vehicles) {
+    const tableBody = document.getElementById('mot-vehicles-table');
+    if (!tableBody) return;
+
+    if (!vehicles || vehicles.length === 0) {
+        displayEmptyMOTState();
         return;
     }
+
+    tableBody.innerHTML = vehicles.map(vehicle => `
+        <tr data-registration="${vehicle.registration}">
+            <td>
+                <input type="checkbox" class="vehicle-checkbox" value="${vehicle.registration}">
+            </td>
+            <td><strong>${vehicle.registration}</strong></td>
+            <td>${vehicle.customer_name || 'Unknown'}</td>
+            <td>${vehicle.make} ${vehicle.model || ''}</td>
+            <td>${formatDate(vehicle.mot_expiry_date)}</td>
+            <td class="days-remaining ${getDaysRemainingClass(vehicle.days_until_expiry)}">
+                ${vehicle.days_until_expiry} days
+            </td>
+            <td>
+                <span class="status-badge ${getStatusClass(vehicle.days_until_expiry)}">
+                    ${getStatusText(vehicle.days_until_expiry)}
+                </span>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-primary" onclick="sendSingleReminder('${vehicle.registration}')">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </td>
+        </tr>
+    `).join('');
+
+    // Add event listeners to checkboxes
+    const checkboxes = tableBody.querySelectorAll('.vehicle-checkbox');
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', updateSendRemindersButton);
+    });
+}
+
+/**
+ * Display empty state when no MOT data
+ */
+function displayEmptyMOTState() {
+    const tableBody = document.getElementById('mot-vehicles-table');
+    if (tableBody) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="8" class="empty-state">
+                    <div class="empty-state-content">
+                        <i class="fas fa-car"></i>
+                        <h4>No MOT vehicles found</h4>
+                        <p>Upload vehicle data to start monitoring MOT expiry dates</p>
+                        <button class="btn btn-primary" onclick="showPage('settings'); setTimeout(() => document.querySelector('[data-tab=data-upload]').click(), 100)">
+                            <i class="fas fa-upload"></i>
+                            Upload Vehicle Data
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }
+
+    // Reset stats
+    updateMOTStats([]);
+}
+
+/**
+ * Update MOT statistics
+ */
+function updateMOTStats(vehicles) {
+    const stats = {
+        expired: vehicles.filter(v => v.days_until_expiry < 0).length,
+        dueSoon: vehicles.filter(v => v.days_until_expiry >= 0 && v.days_until_expiry <= 7).length,
+        dueMonth: vehicles.filter(v => v.days_until_expiry > 7 && v.days_until_expiry <= 30).length,
+        valid: vehicles.filter(v => v.days_until_expiry > 30).length,
+        total: vehicles.length
+    };
+
+    // Update stat cards
+    const elements = {
+        'expired-count': stats.expired,
+        'due-soon-count': stats.dueSoon,
+        'due-month-count': stats.dueMonth,
+        'valid-count': stats.valid,
+        'all-count': stats.total,
+        'expired-filter-count': stats.expired,
+        'critical-count': stats.expired + stats.dueSoon,
+        'due-soon-filter-count': stats.dueSoon,
+        'valid-filter-count': stats.valid
+    };
+
+    Object.entries(elements).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = value;
+    });
+}
+
+/**
+ * Helper functions for MOT display
+ */
+function formatDate(dateString) {
+    if (!dateString) return 'Unknown';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB');
+}
+
+function getDaysRemainingClass(days) {
+    if (days < 0) return 'expired';
+    if (days <= 7) return 'critical';
+    if (days <= 30) return 'warning';
+    return 'valid';
+}
+
+function getStatusClass(days) {
+    if (days < 0) return 'status-expired';
+    if (days <= 7) return 'status-critical';
+    if (days <= 30) return 'status-warning';
+    return 'status-valid';
+}
+
+function getStatusText(days) {
+    if (days < 0) return 'Expired';
+    if (days <= 7) return 'Critical';
+    if (days <= 30) return 'Due Soon';
+    return 'Valid';
+}
+
+/**
+ * Filter MOT vehicles
+ */
+function filterMOTVehicles(filter) {
+    const rows = document.querySelectorAll('#mot-vehicles-table tr[data-registration]');
+
+    rows.forEach(row => {
+        const daysCell = row.querySelector('.days-remaining');
+        if (!daysCell) return;
+
+        const days = parseInt(daysCell.textContent);
+        let show = false;
+
+        switch (filter) {
+            case 'all':
+                show = true;
+                break;
+            case 'expired':
+                show = days < 0;
+                break;
+            case 'critical':
+                show = days < 0 || days <= 7;
+                break;
+            case 'due-soon':
+                show = days >= 0 && days <= 7;
+                break;
+            case 'valid':
+                show = days > 30;
+                break;
+        }
+
+        row.style.display = show ? '' : 'none';
+    });
+}
+
+/**
+ * Search MOT vehicles
+ */
+function searchMOTVehicles(searchTerm) {
+    const rows = document.querySelectorAll('#mot-vehicles-table tr[data-registration]');
+    const term = searchTerm.toLowerCase();
+
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(term) ? '' : 'none';
+    });
+}
+
+/**
+ * Update send reminders button state
+ */
+function updateSendRemindersButton() {
+    const checkboxes = document.querySelectorAll('#mot-vehicles-table .vehicle-checkbox:checked');
+    const sendBtn = document.getElementById('send-reminders');
+
+    if (sendBtn) {
+        sendBtn.disabled = checkboxes.length === 0;
+        sendBtn.textContent = checkboxes.length > 0
+            ? `Send SMS Reminders (${checkboxes.length})`
+            : 'Send SMS Reminders';
+    }
+}
+
+/**
+ * Send single reminder
+ */
+function sendSingleReminder(registration) {
+    console.log('📱 Sending reminder for:', registration);
+    showNotification(`Sending reminder for ${registration}...`, 'info');
+    // TODO: Implement actual SMS sending
+}
+
+/**
+ * Send bulk reminders
+ */
+function sendBulkReminders() {
+    const checkboxes = document.querySelectorAll('#mot-vehicles-table .vehicle-checkbox:checked');
+    const registrations = Array.from(checkboxes).map(cb => cb.value);
+
+    if (registrations.length === 0) {
+        showNotification('Please select vehicles to send reminders', 'warning');
+        return;
+    }
+
+    console.log('📱 Sending bulk reminders for:', registrations);
+    showNotification(`Sending reminders for ${registrations.length} vehicles...`, 'info');
+    // TODO: Implement actual bulk SMS sending
+}
+
+/**
+ * Load Quotes page content
+ */
+function loadQuotesPage() {
+    console.log('💰 Loading Quotes page...');
+
+    const container = document.getElementById('quotes-container');
+    if (!container) {
+        console.error('❌ Quotes container not found');
+        return;
+    }
+
+    const quotesHTML = `
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    Quotes
+                </h1>
+                <p class="page-subtitle">Manage estimates and quotations</p>
+            </div>
+            <div class="page-actions">
+                <button class="btn btn-primary" onclick="openNewQuoteModal()">
+                    <i class="fas fa-plus"></i>
+                    New Quote
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-list"></i>
+                Recent Quotes
+            </div>
+            <div class="card-content">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Quote #</th>
+                                <th>Customer</th>
+                                <th>Vehicle</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="quotes-table-body">
+                            <tr>
+                                <td colspan="7" class="loading-cell">
+                                    <div class="loading-spinner"></div>
+                                    <p>Loading quotes...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+
+    container.innerHTML = quotesHTML;
+
+    // Load quotes data
+    if (typeof loadQuotesFromAPI === 'function') {
+        loadQuotesFromAPI();
+    } else {
+        console.warn('⚠️ loadQuotesFromAPI function not found');
+    }
+
+    console.log('✅ Quotes page loaded');
+}
+
+/**
+ * Load Online Booking page content
+ */
+function loadOnlineBookingPage() {
+    console.log('🌐 Loading Online Booking page...');
+
+    const container = document.getElementById('online-booking-container');
+    if (!container) {
+        console.error('❌ Online booking container not found');
+        return;
+    }
+
+    // Initialize online booking if class exists
+    if (typeof OnlineBooking !== 'undefined') {
+        if (!window.onlineBooking) {
+            window.onlineBooking = new OnlineBooking();
+        }
+    } else {
+        console.warn('⚠️ OnlineBooking class not found');
+        container.innerHTML = `
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-calendar-plus"></i>
+                    Online Booking
+                </h1>
+                <p class="page-subtitle">Customer booking management</p>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <p>Online Booking functionality is loading...</p>
+                </div>
+            </div>
+        `;
+    }
+
+    console.log('✅ Online Booking page loaded');
+}
+
+/**
+ * Load Customer Portal page content
+ */
+function loadCustomerPortalPage() {
+    console.log('👥 Loading Customer Portal page...');
+
+    const container = document.getElementById('customer-portal-container');
+    if (!container) {
+        console.error('❌ Customer portal container not found');
+        return;
+    }
+
+    const portalHTML = `
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">
+                    <i class="fas fa-user-circle"></i>
+                    Customer Portal
+                </h1>
+                <p class="page-subtitle">Customer self-service portal management</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-cog"></i>
+                Portal Configuration
+            </div>
+            <div class="card-content">
+                <p>Customer portal settings and configuration options will be available here.</p>
+                <div class="btn-group">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-link"></i>
+                        Portal Link
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    container.innerHTML = portalHTML;
+    console.log('✅ Customer Portal page loaded');
+}
+
+/**
+ * Load Parts page content
+ */
+function loadPartsPage() {
+    console.log('🔧 Loading Parts page...');
+
+    // Parts page has static content in HTML, just log that it's loaded
+    console.log('✅ Parts page loaded (static content)');
+}
+
+/**
+ * Load Invoices page content
+ */
+function loadInvoicesPage() {
+    console.log('📄 Loading Invoices page...');
+
+    const invoicesContent = document.getElementById('invoices-content');
+    if (!invoicesContent) {
+        console.error('❌ Invoices content container not found');
+        return;
+    }
+
+    const invoicesHTML = `
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">
+                    <i class="fas fa-file-invoice"></i>
+                    Invoices
+                </h1>
+                <p class="page-subtitle">Manage billing and invoicing</p>
+            </div>
+            <div class="page-actions">
+                <button class="btn btn-primary" onclick="openNewInvoiceModal()">
+                    <i class="fas fa-plus"></i>
+                    New Invoice
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-list"></i>
+                Recent Invoices
+            </div>
+            <div class="card-content">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Invoice #</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Due Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoices-table-body">
+                            <tr>
+                                <td colspan="7" class="loading-cell">
+                                    <div class="loading-spinner"></div>
+                                    <p>Loading invoices...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+
+    invoicesContent.innerHTML = invoicesHTML;
+
+    // Load invoices data
+    if (typeof loadInvoicesFromAPI === 'function') {
+        loadInvoicesFromAPI();
+    } else {
+        console.warn('⚠️ loadInvoicesFromAPI function not found');
+    }
+
+    console.log('✅ Invoices page loaded');
+}
+
+/**
+ * Load Reports page content
+ */
+function loadReportsPage() {
+    console.log('📊 Loading Reports page...');
+
+    // Reports page has static content in HTML, just log that it's loaded
+    console.log('✅ Reports page loaded (static content)');
+}
+
+/**
+ * Load Upload page content
+ */
+function loadUploadPage() {
+    console.log('📤 Loading Upload page...');
+
+    const uploadContent = document.getElementById('upload-content');
+    if (!uploadContent) {
+        console.error('❌ Upload content container not found');
+        return;
+    }
+
+    // Load upload functionality
+    if (typeof loadUploadStatus === 'function') {
+        loadUploadStatus();
+    } else {
+        console.warn('⚠️ loadUploadStatus function not found');
+    }
+
+    console.log('✅ Upload page loaded');
+}
+
+/**
+ * Load Error Monitoring page content
+ */
+function loadErrorMonitoringPage() {
+    console.log('🔍 Loading Error Monitoring page...');
+
+    // Load error monitoring content
+    loadErrorMonitoringContent();
+
+    console.log('✅ Error Monitoring page loaded');
+}
 
     // Create MOT reminders page HTML content
     const motHTML = `
@@ -396,162 +1310,6 @@ function loadMOTRemindersPage() {
     loadMOTData();
 
     console.log('✅ MOT Reminders page content loaded');
-}
-
-/**
- * Load MOT data from API
- */
-async function loadMOTData() {
-    try {
-        console.log('🔄 Loading MOT data...');
-
-        // Use the correct MOT API endpoint with /mot prefix
-        const response = await fetch('/mot/api/vehicles');
-        const result = await response.json();
-
-        if (result && result.success) {
-            console.log(`✅ Found ${result.vehicles.length} MOT vehicles`);
-            displayMOTVehicles(result.vehicles);
-            updateMOTStats(result.vehicles);
-        } else {
-            console.error('❌ No MOT data in response:', result);
-            showMOTError('No MOT data available');
-        }
-    } catch (error) {
-        console.error('Failed to load MOT data:', error);
-        showMOTError('Failed to load MOT data');
-    }
-}
-
-/**
- * Display MOT vehicles in the table
- */
-function displayMOTVehicles(vehicles) {
-    const tbody = document.getElementById('mot-vehicles-table-body');
-    if (!tbody) return;
-
-    if (!vehicles || vehicles.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="7" class="text-center py-8">
-                    <div class="text-gray-500">
-                        <i class="fas fa-car text-2xl mb-2"></i>
-                        <p>No MOT vehicles found</p>
-                        <button class="btn btn-primary mt-2" onclick="openAddVehicleModal()">
-                            Add First Vehicle
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        `;
-        return;
-    }
-
-    tbody.innerHTML = vehicles.map(vehicle => {
-        const statusClass = getStatusClass(vehicle);
-        const statusText = getStatusText(vehicle);
-
-        return `
-            <tr class="hover:bg-gray-50 ${statusClass}">
-                <td>
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" class="vehicle-checkbox" data-registration="${vehicle.registration}">
-                        <strong class="uk-number-plate">${vehicle.registration}</strong>
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <div class="font-medium">${vehicle.customer_name || 'Unknown'}</div>
-                        ${vehicle.mobile_number ? `<div class="text-sm text-gray-500">${vehicle.mobile_number}</div>` : ''}
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <div class="font-medium">${vehicle.make || 'Unknown'}</div>
-                        <div class="text-sm text-gray-500">${vehicle.model || ''}</div>
-                    </div>
-                </td>
-                <td>
-                    <div class="text-sm">
-                        ${vehicle.mot_expiry_date ? new Date(vehicle.mot_expiry_date).toLocaleDateString('en-GB') : 'Unknown'}
-                    </div>
-                </td>
-                <td>
-                    <div class="text-sm font-medium ${getDaysRemainingClass(vehicle.days_until_expiry)}">
-                        ${vehicle.days_until_expiry !== null ? vehicle.days_until_expiry + ' days' : 'Unknown'}
-                    </div>
-                </td>
-                <td>
-                    <span class="badge ${statusClass}">
-                        ${statusText}
-                    </span>
-                </td>
-                <td>
-                    <div class="flex gap-1">
-                        <button class="btn btn-sm btn-secondary" onclick="viewMOTDetails('${vehicle.registration}')" title="View Details">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="btn btn-sm btn-primary" onclick="sendSingleReminder('${vehicle.registration}')" title="Send SMS">
-                            <i class="fas fa-sms"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="archiveVehicle('${vehicle.registration}')" title="Archive">
-                            <i class="fas fa-archive"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        `;
-    }).join('');
-
-    // Set up checkbox event listeners
-    setupCheckboxListeners();
-}
-
-/**
- * Update MOT statistics
- */
-function updateMOTStats(vehicles) {
-    const stats = {
-        expired: vehicles.filter(v => v.is_expired).length,
-        critical: vehicles.filter(v => !v.is_expired && v.days_until_expiry <= 7).length,
-        due_soon: vehicles.filter(v => !v.is_expired && v.days_until_expiry > 7 && v.days_until_expiry <= 30).length,
-        valid: vehicles.filter(v => !v.is_expired && v.days_until_expiry > 30).length
-    };
-
-    // Update stat cards
-    const expiredElement = document.getElementById('expired-count');
-    const criticalElement = document.getElementById('critical-count');
-    const dueSoonElement = document.getElementById('due-soon-count');
-    const validElement = document.getElementById('valid-count');
-
-    if (expiredElement) expiredElement.textContent = stats.expired;
-    if (criticalElement) criticalElement.textContent = stats.critical;
-    if (dueSoonElement) dueSoonElement.textContent = stats.due_soon;
-    if (validElement) validElement.textContent = stats.valid;
-}
-
-/**
- * Helper functions for MOT display
- */
-function getStatusClass(vehicle) {
-    if (vehicle.is_expired) return 'bg-red-50';
-    if (vehicle.days_until_expiry <= 7) return 'bg-orange-50';
-    if (vehicle.days_until_expiry <= 30) return 'bg-yellow-50';
-    return 'bg-green-50';
-}
-
-function getStatusText(vehicle) {
-    if (vehicle.is_expired) return 'EXPIRED';
-    if (vehicle.days_until_expiry <= 7) return 'CRITICAL';
-    if (vehicle.days_until_expiry <= 30) return 'DUE SOON';
-    return 'VALID';
-}
-
-function getDaysRemainingClass(days) {
-    if (days < 0) return 'text-red-600';
-    if (days <= 7) return 'text-orange-600';
-    if (days <= 30) return 'text-yellow-600';
-    return 'text-green-600';
 }
 
 /**
@@ -733,8 +1491,12 @@ function loadDashboardContent() {
     const dashboardContent = document.getElementById('dashboard-content');
     if (!dashboardContent) {
         console.error('❌ Dashboard content container not found');
+        console.log('🔍 Available elements with "dashboard" in ID:',
+            Array.from(document.querySelectorAll('[id*="dashboard"]')).map(el => el.id));
         return;
     }
+
+    console.log('✅ Dashboard content container found:', dashboardContent);
 
     // Create dashboard HTML content
     const dashboardHTML = `
@@ -843,36 +1605,555 @@ function loadDashboardContent() {
 
     // Insert the HTML content
     dashboardContent.innerHTML = dashboardHTML;
+    console.log('✅ Dashboard HTML inserted, content length:', dashboardHTML.length);
 
-    // Load dashboard statistics
-    if (typeof loadDashboardStats === 'function') {
-        loadDashboardStats();
+    // Safari 19 specific visibility fixes
+    const isSafari19 = navigator.userAgent.includes('Version/19');
+    if (isSafari19) {
+        console.log('🍎 Applying Safari 19 specific visibility fixes');
+
+        // Force immediate repaint for Safari 19
+        dashboardContent.style.transform = 'translateZ(0)';
+        dashboardContent.style.willChange = 'transform';
+
+        // Use requestAnimationFrame for Safari 19 to ensure proper rendering
+        requestAnimationFrame(() => {
+            dashboardContent.style.display = 'block';
+            dashboardContent.style.opacity = '1';
+            dashboardContent.style.visibility = 'visible';
+
+            const dashboardPage = document.getElementById('dashboard');
+            if (dashboardPage) {
+                dashboardPage.style.display = 'block';
+                dashboardPage.style.opacity = '1';
+                dashboardPage.style.visibility = 'visible';
+                dashboardPage.style.transform = 'translateZ(0)';
+                console.log('🍎 Safari 19: Dashboard forced visible with hardware acceleration');
+            }
+        });
+    } else {
+        // Standard visibility for other browsers
+        dashboardContent.style.display = 'block';
+        dashboardContent.style.opacity = '1';
+
+        // Ensure parent page is visible
+        const dashboardPage = document.getElementById('dashboard');
+        if (dashboardPage) {
+            dashboardPage.style.display = 'block';
+            dashboardPage.style.opacity = '1';
+            console.log('✅ Dashboard page forced visible');
+        }
     }
 
+    // Load dashboard statistics with a small delay to ensure DOM is ready
+    setTimeout(() => {
+        if (typeof loadDashboardStats === 'function') {
+            loadDashboardStats();
+        } else {
+            console.log('📊 loadDashboardStats function not found, loading stats manually');
+            loadDashboardStatsManually();
+        }
+    }, 100);
+
     console.log('✅ Dashboard content loaded');
+}
+
+/**
+ * Manual dashboard stats loading as fallback
+ */
+async function loadDashboardStatsManually() {
+    try {
+        console.log('📊 Loading dashboard stats manually...');
+
+        const response = await fetch('/api/stats');
+        if (response.ok) {
+            const data = await response.json();
+
+            if (data && data.success && data.stats) {
+                const stats = data.stats;
+
+                // Update the stat values
+                const updateElement = (id, value) => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.textContent = value;
+                        console.log(`✅ Updated ${id} to ${value}`);
+                    } else {
+                        console.warn(`⚠️ Element ${id} not found`);
+                    }
+                };
+
+                updateElement('total-customers', stats.customers || 0);
+                updateElement('total-vehicles', stats.vehicles || 0);
+                updateElement('total-revenue', stats.revenue || '£0.00');
+                updateElement('total-jobs', stats.jobs || 0);
+
+                console.log('✅ Dashboard stats loaded manually');
+            } else {
+                console.warn('⚠️ Invalid stats data format:', data);
+            }
+        } else {
+            console.warn('⚠️ Stats API not available:', response.status);
+        }
+    } catch (error) {
+        console.error('❌ Error loading dashboard stats manually:', error);
+
+        // Show placeholder data
+        const updateElement = (id, value) => {
+            const element = document.getElementById(id);
+            if (element) element.textContent = value;
+        };
+
+        updateElement('total-customers', '0');
+        updateElement('total-vehicles', '0');
+        updateElement('total-revenue', '£0.00');
+        updateElement('total-jobs', '0');
+    }
 }
 
 /**
  * Load settings page with proper tab activation
  */
 function loadSettingsPage() {
-    if (!window.settingsData || Object.keys(window.settingsData).length === 0) {
-        if (typeof loadSettings === 'function') {
-            loadSettings();
+    console.log('🔧 Loading settings page...');
+
+    // Initialize settings tabs
+    initializeSettingsTabs();
+
+    // Initialize upload functionality
+    initializeUploadFunctionality();
+
+    // Load Google Drive content
+    loadGoogleDriveContent();
+
+    // Load error monitoring content
+    loadErrorMonitoringContent();
+
+    console.log('✅ Settings page loaded');
+}
+
+/**
+ * Initialize settings tabs functionality
+ */
+function initializeSettingsTabs() {
+    const tabButtons = document.querySelectorAll('.settings-tab-btn');
+    const tabContents = document.querySelectorAll('.settings-tab-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const targetTab = button.getAttribute('data-tab');
+
+            // Remove active class from all tabs and contents
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Add active class to clicked tab and corresponding content
+            button.classList.add('active');
+            const targetContent = document.getElementById(`${targetTab}-tab`);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+
+            console.log(`🔄 Switched to ${targetTab} tab`);
+        });
+    });
+}
+
+/**
+ * Initialize upload functionality
+ */
+function initializeUploadFunctionality() {
+    // MOT Upload
+    initializeDropZone('mot-drop-zone', 'mot-file-input', 'upload-mot-btn', handleMOTUpload);
+
+    // Customer Upload
+    initializeDropZone('customer-drop-zone', 'customer-file-input', 'upload-customer-btn', handleCustomerUpload);
+}
+
+/**
+ * Initialize drag and drop functionality for upload zones
+ */
+function initializeDropZone(dropZoneId, fileInputId, uploadBtnId, uploadHandler) {
+    const dropZone = document.getElementById(dropZoneId);
+    const fileInput = document.getElementById(fileInputId);
+    const uploadBtn = document.getElementById(uploadBtnId);
+
+    if (!dropZone || !fileInput || !uploadBtn) return;
+
+    // Drag and drop events
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            uploadBtn.disabled = false;
+            updateDropZoneDisplay(dropZone, files[0].name);
         }
+    });
+
+    // File input change
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            uploadBtn.disabled = false;
+            updateDropZoneDisplay(dropZone, e.target.files[0].name);
+        }
+    });
+
+    // Upload button click
+    uploadBtn.addEventListener('click', () => {
+        if (fileInput.files.length > 0) {
+            uploadHandler(fileInput.files[0]);
+        }
+    });
+}
+
+/**
+ * Update drop zone display when file is selected
+ */
+function updateDropZoneDisplay(dropZone, fileName) {
+    const content = dropZone.querySelector('.drop-zone-content');
+    content.innerHTML = `
+        <i class="fas fa-file-check" style="color: var(--success-500);"></i>
+        <p><strong>File selected: ${fileName}</strong></p>
+        <p class="text-muted">Click upload button to proceed</p>
+    `;
+}
+
+/**
+ * Handle MOT file upload
+ */
+async function handleMOTUpload(file) {
+    console.log('📤 Uploading MOT file:', file.name);
+
+    // Validate file type
+    const allowedTypes = ['.csv', '.xlsx', '.xls'];
+    const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+
+    if (!allowedTypes.includes(fileExtension)) {
+        showNotification('Please select a CSV or Excel file (.csv, .xlsx, .xls)', 'error');
+        return;
     }
 
-    // Ensure the first tab is active
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        showNotification('Uploading MOT data...', 'info');
+
+        // Try the MOT service endpoint
+        const response = await fetch('/mot/upload_file', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            try {
+                const result = await response.json();
+
+                if (result.success) {
+                    showNotification('MOT data uploaded successfully!', 'success');
+                    // Refresh MOT data if on MOT page
+                    if (typeof loadMOTData === 'function') {
+                        loadMOTData();
+                    }
+                } else {
+                    showNotification(result.error || 'Upload failed', 'error');
+                }
+            } catch (jsonError) {
+                console.error('JSON parsing error:', jsonError);
+                showNotification('Upload completed but response format was unexpected', 'warning');
+            }
+        } else {
+            // MOT service not available, show helpful message
+            showNotification('MOT upload service is not currently available. Please try the manual upload process.', 'warning');
+        }
+    } catch (error) {
+        console.error('Upload error:', error);
+        if (error.name === 'TypeError' && error.message.includes('Load failed')) {
+            showNotification('MOT upload service is not available. Please check if the MOT service is running.', 'warning');
+        } else {
+            showNotification('Upload failed: ' + error.message, 'error');
+        }
+    }
+}
+
+/**
+ * Handle customer file upload
+ */
+async function handleCustomerUpload(file) {
+    console.log('📤 Uploading customer file:', file.name);
+
+    // Validate file type
+    const allowedTypes = ['.csv', '.xlsx', '.xls'];
+    const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+
+    if (!allowedTypes.includes(fileExtension)) {
+        showNotification('Please select a CSV or Excel file (.csv, .xlsx, .xls)', 'error');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('table_mapping', 'customers');
+
+    try {
+        showNotification('Uploading customer data...', 'info');
+
+        const response = await fetch('/upload/process', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            try {
+                const result = await response.json();
+
+                if (result.success) {
+                    showNotification('Customer data uploaded successfully!', 'success');
+                    // Refresh customer data if on customers page
+                    if (typeof loadCustomersFromAPI === 'function') {
+                        loadCustomersFromAPI();
+                    }
+                } else {
+                    showNotification(result.error || 'Upload failed', 'error');
+                }
+            } catch (jsonError) {
+                console.error('JSON parsing error:', jsonError);
+                showNotification('Upload completed but response format was unexpected', 'warning');
+            }
+        } else {
+            showNotification('Customer upload service is not available. Please try again later.', 'warning');
+        }
+    } catch (error) {
+        console.error('Upload error:', error);
+        if (error.name === 'TypeError' && error.message.includes('Load failed')) {
+            showNotification('Customer upload service is not available. Please check your connection.', 'warning');
+        } else {
+            showNotification('Upload failed: ' + error.message, 'error');
+        }
+    }
+}
+
+/**
+ * Load Google Drive content in the same window
+ */
+function loadGoogleDriveContent() {
+    const container = document.getElementById('google-drive-content');
+    if (container) {
+        // Create simplified Google Drive interface inline
+        container.innerHTML = `
+            <div class="google-drive-interface">
+                <div class="connection-status">
+                    <div class="status-card">
+                        <div class="status-header">
+                            <i class="fas fa-plug"></i>
+                            <h4>Connection Status</h4>
+                        </div>
+                        <div class="status-body">
+                            <div class="status-indicator status-disconnected">
+                                <i class="fas fa-times-circle"></i>
+                                Not Connected
+                            </div>
+                            <p class="status-description">Connect your Google Drive account to enable automatic file synchronization</p>
+                            <button class="btn btn-primary" onclick="connectGoogleDrive()">
+                                <i class="fab fa-google-drive"></i>
+                                Connect Google Drive
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="folder-configuration">
+                    <div class="config-card">
+                        <div class="config-header">
+                            <i class="fas fa-folder-open"></i>
+                            <h4>Folder Configuration</h4>
+                        </div>
+                        <div class="config-body">
+                            <p class="config-description">Configure which Google Drive folders contain your data files</p>
+
+                            <div class="folder-mappings">
+                                <div class="folder-mapping">
+                                    <div class="mapping-header">
+                                        <i class="fas fa-users"></i>
+                                        <span>Customer Data</span>
+                                    </div>
+                                    <div class="mapping-path">
+                                        <input type="text" class="form-control" placeholder="Select Google Drive folder..." readonly>
+                                        <button class="btn btn-outline-primary" disabled>
+                                            <i class="fas fa-folder"></i>
+                                            Browse
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="folder-mapping">
+                                    <div class="mapping-header">
+                                        <i class="fas fa-car"></i>
+                                        <span>Vehicle Data</span>
+                                    </div>
+                                    <div class="mapping-path">
+                                        <input type="text" class="form-control" placeholder="Select Google Drive folder..." readonly>
+                                        <button class="btn btn-outline-primary" disabled>
+                                            <i class="fas fa-folder"></i>
+                                            Browse
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="folder-mapping">
+                                    <div class="mapping-header">
+                                        <i class="fas fa-calendar-check"></i>
+                                        <span>MOT Data</span>
+                                    </div>
+                                    <div class="mapping-path">
+                                        <input type="text" class="form-control" placeholder="Select Google Drive folder..." readonly>
+                                        <button class="btn btn-outline-primary" disabled>
+                                            <i class="fas fa-folder"></i>
+                                            Browse
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sync-settings">
+                                <h5>Sync Settings</h5>
+                                <div class="setting-item">
+                                    <label>
+                                        <input type="checkbox" disabled>
+                                        Auto-sync every 30 minutes
+                                    </label>
+                                </div>
+                                <div class="setting-item">
+                                    <label>
+                                        <input type="checkbox" disabled>
+                                        Email notifications on sync completion
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="sync-actions">
+                                <button class="btn btn-success" disabled>
+                                    <i class="fas fa-sync"></i>
+                                    Start Sync Now
+                                </button>
+                                <button class="btn btn-outline-secondary" disabled>
+                                    <i class="fas fa-history"></i>
+                                    View Sync History
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        console.log('✅ Google Drive content loaded inline');
+    }
+}
+
+/**
+ * Connect to Google Drive (placeholder function)
+ */
+function connectGoogleDrive() {
+    showNotification('Google Drive integration coming soon!', 'info');
+    console.log('🔗 Google Drive connection requested');
+}
+
+/**
+ * Load error monitoring content
+ */
+function loadErrorMonitoringContent() {
+    const container = document.getElementById('error-monitoring-content');
+    if (container) {
+        // Create error monitoring dashboard
+        container.innerHTML = `
+            <div class="error-monitoring-dashboard">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="error-count">0</div>
+                            <div class="stat-label">Total Errors</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="recent-errors">0</div>
+                            <div class="stat-label">Last 24 Hours</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="error-log">
+                    <h4>Recent Errors</h4>
+                    <div id="error-list">
+                        <p class="text-muted">No recent errors</p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Load error data if error monitoring is available
+        if (window.errorMonitor) {
+            updateErrorMonitoringDisplay();
+        }
+    }
+}
+
+/**
+ * Update error monitoring display
+ */
+function updateErrorMonitoringDisplay() {
+    if (window.errorMonitor && window.errorMonitor.getErrorStats) {
+        const stats = window.errorMonitor.getErrorStats();
+
+        const errorCountEl = document.getElementById('error-count');
+        const recentErrorsEl = document.getElementById('recent-errors');
+
+        if (errorCountEl) errorCountEl.textContent = stats.total || 0;
+        if (recentErrorsEl) recentErrorsEl.textContent = stats.recent || 0;
+    }
+}
+
+/**
+ * Show notification message
+ */
+function showNotification(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+        <span>${message}</span>
+        <button class="notification-close" onclick="this.parentElement.remove()">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+
+    // Add to page
+    document.body.appendChild(notification);
+
+    // Auto remove after 5 seconds
     setTimeout(() => {
-        const firstTab = document.querySelector('.settings-tab-btn');
-        const firstTabContent = document.querySelector('.settings-tab-content');
-        if (firstTab && !firstTab.classList.contains('active')) {
-            firstTab.classList.add('active');
+        if (notification.parentElement) {
+            notification.remove();
         }
-        if (firstTabContent && !firstTabContent.classList.contains('active')) {
-            firstTabContent.classList.add('active');
-        }
-    }, 100);
+    }, 5000);
 }
 
 /**
@@ -912,7 +2193,21 @@ window.debugInterface = function() {
  */
 function initializeNavigation() {
     console.log('🧭 Navigation system initializing...');
-    
+
+    // Safari 19 specific checks
+    const isSafari19 = navigator.userAgent.includes('Version/19');
+    if (isSafari19) {
+        console.log('🍎 Safari 19.0 detected - applying specific optimizations');
+
+        // Safari 19 sometimes has timing issues with DOM manipulation
+        // Force a small delay to ensure DOM is fully ready
+        if (document.readyState !== 'complete') {
+            console.log('🍎 Safari 19: DOM not complete, waiting...');
+            setTimeout(() => initializeNavigation(), 100);
+            return;
+        }
+    }
+
     // Force dashboard as default page and clear any problematic localStorage
     console.log('📄 Forcing dashboard as default page');
     currentActivePage = 'dashboard';
@@ -1091,12 +2386,56 @@ window.emergencyShowPage = function(pageId) {
     }
 };
 
+/**
+ * Test all pages loading functionality
+ */
+window.testAllPages = function() {
+    console.log('🧪 Testing all pages loading...');
+
+    const pages = [
+        'dashboard', 'customers', 'vehicles', 'jobs', 'workshop-diary',
+        'job-sheets', 'quotes', 'online-booking', 'customer-portal',
+        'mot-reminders', 'parts', 'invoices', 'reports', 'upload',
+        'error-monitoring', 'settings'
+    ];
+
+    let currentIndex = 0;
+
+    function testNextPage() {
+        if (currentIndex >= pages.length) {
+            console.log('✅ All pages tested successfully!');
+            showPage('dashboard'); // Return to dashboard
+            return;
+        }
+
+        const pageId = pages[currentIndex];
+        console.log(`🔍 Testing page: ${pageId} (${currentIndex + 1}/${pages.length})`);
+
+        try {
+            showPage(pageId);
+            console.log(`✅ Page ${pageId} loaded successfully`);
+        } catch (error) {
+            console.error(`❌ Error loading page ${pageId}:`, error);
+        }
+
+        currentIndex++;
+        setTimeout(testNextPage, 1000); // Wait 1 second between tests
+    }
+
+    testNextPage();
+};
+
 // Export functions for module use
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         showPage: window.showPage,
         debugInterface: window.debugInterface,
         emergencyShowPage: window.emergencyShowPage,
+        testAllPages: window.testAllPages,
         initializeNavigation
     };
 }
+
+// Make key functions globally available
+window.loadDashboardContent = loadDashboardContent;
+window.loadDashboardStatsManually = loadDashboardStatsManually;

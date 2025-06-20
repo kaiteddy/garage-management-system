@@ -7,7 +7,7 @@ Clean, organized structure with separated concerns
 import os
 import sys
 from datetime import datetime
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, jsonify, request
 
 # Add the src directory to Python path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -135,6 +135,323 @@ def register_core_routes(app):
     def serve_components(filename):
         """Serve component files from static/components directory"""
         return send_from_directory('static/components', filename)
+
+    @app.route('/safari-test.html')
+    def safari_test():
+        """Safari compatibility test page"""
+        return send_from_directory('static', 'safari-test.html')
+
+    @app.route('/minimal-test.html')
+    def minimal_test():
+        """Minimal Safari test page"""
+        return send_from_directory('static', 'minimal-test.html')
+
+    @app.route('/simple-dashboard.html')
+    def simple_dashboard():
+        """Simple dashboard test page"""
+        return send_from_directory('static', 'simple-dashboard.html')
+
+    @app.route('/garage-app-rebuilt.html')
+    def garage_app_rebuilt():
+        """Rebuilt garage management application"""
+        return send_from_directory('static', 'garage-app-rebuilt.html')
+
+    @app.route('/rebuilt')
+    def rebuilt_app():
+        """Rebuilt garage management application (short URL)"""
+        return send_from_directory('static', 'garage-app-rebuilt.html')
+
+    @app.route('/<path:filename>')
+    def serve_static_files(filename):
+        """Serve static HTML files from static directory"""
+        if filename.endswith('.html'):
+            return send_from_directory('static', filename)
+        else:
+            return "File not found", 404
+
+    @app.route('/health')
+    def health_check():
+        """Health check endpoint for Docker and monitoring"""
+        return {
+            'status': 'healthy',
+            'timestamp': datetime.now().isoformat(),
+            'service': 'garage-management-system',
+            'version': '1.0.0'
+        }, 200
+
+    # Enhanced API endpoints for customer profiles and documents
+    @app.route('/api/customer/<int:customer_id>')
+    def get_customer_profile(customer_id):
+        """Get comprehensive customer profile with all related data"""
+        try:
+            import sqlite3
+            db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+            conn = sqlite3.connect(db_path)
+            cursor = conn.cursor()
+
+            # Get customer details
+            cursor.execute('''
+                SELECT id, account_number, name, company, address, postcode,
+                       phone, mobile, email, created_date
+                FROM customers WHERE id = ?
+            ''', (customer_id,))
+
+            customer_row = cursor.fetchone()
+            if not customer_row:
+                return jsonify({'success': False, 'error': 'Customer not found'}), 404
+
+            customer = {
+                'id': customer_row[0],
+                'account_number': customer_row[1],
+                'name': customer_row[2],
+                'company': customer_row[3],
+                'address': customer_row[4],
+                'postcode': customer_row[5],
+                'phone': customer_row[6],
+                'mobile': customer_row[7],
+                'email': customer_row[8],
+                'created_date': customer_row[9]
+            }
+
+            # Get customer's vehicles
+            cursor.execute('''
+                SELECT id, registration, make, model, year, color, engine_size,
+                       fuel_type, mot_due, tax_due
+                FROM vehicles WHERE customer_id = ?
+                ORDER BY registration
+            ''', (customer_id,))
+
+            vehicles = []
+            for row in cursor.fetchall():
+                vehicles.append({
+                    'id': row[0],
+                    'registration': row[1],
+                    'make': row[2],
+                    'model': row[3],
+                    'year': row[4],
+                    'color': row[5],
+                    'engine_size': row[6],
+                    'fuel_type': row[7],
+                    'mot_due': row[8],
+                    'tax_due': row[9]
+                })
+
+            # Get customer's jobs
+            cursor.execute('''
+                SELECT j.id, j.job_number, j.description, j.status, j.labour_cost,
+                       j.parts_cost, j.total_amount, j.created_date, j.completed_date,
+                       v.registration as vehicle_registration
+                FROM jobs j
+                LEFT JOIN vehicles v ON j.vehicle_id = v.id
+                WHERE j.customer_id = ?
+                ORDER BY j.created_date DESC
+            ''', (customer_id,))
+
+            jobs = []
+            for row in cursor.fetchall():
+                jobs.append({
+                    'id': row[0],
+                    'job_number': row[1],
+                    'description': row[2],
+                    'status': row[3],
+                    'labour_cost': row[4],
+                    'parts_cost': row[5],
+                    'total_amount': row[6],
+                    'created_date': row[7],
+                    'completed_date': row[8],
+                    'vehicle_registration': row[9]
+                })
+
+            # Get customer's invoices
+            cursor.execute('''
+                SELECT id, invoice_number, invoice_date, due_date, total_amount,
+                       status, payment_status
+                FROM invoices WHERE customer_id = ?
+                ORDER BY invoice_date DESC
+            ''', (customer_id,))
+
+            invoices = []
+            for row in cursor.fetchall():
+                invoices.append({
+                    'id': row[0],
+                    'invoice_number': row[1],
+                    'invoice_date': row[2],
+                    'due_date': row[3],
+                    'total_amount': row[4],
+                    'status': row[5],
+                    'payment_status': row[6]
+                })
+
+            conn.close()
+
+            return jsonify({
+                'success': True,
+                'customer': customer,
+                'vehicles': vehicles,
+                'jobs': jobs,
+                'invoices': invoices
+            })
+
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    @app.route('/api/customer/<int:customer_id>/documents')
+    def get_customer_documents(customer_id):
+        """Get all documents for a specific customer"""
+        try:
+            import sqlite3
+            db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+            conn = sqlite3.connect(db_path)
+            cursor = conn.cursor()
+
+            # Check if documents table exists, create if not
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS documents (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    customer_id INTEGER,
+                    vehicle_id INTEGER,
+                    job_id INTEGER,
+                    name TEXT NOT NULL,
+                    type TEXT,
+                    category TEXT,
+                    file_path TEXT,
+                    size INTEGER,
+                    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (customer_id) REFERENCES customers (id),
+                    FOREIGN KEY (vehicle_id) REFERENCES vehicles (id),
+                    FOREIGN KEY (job_id) REFERENCES jobs (id)
+                )
+            ''')
+
+            cursor.execute('''
+                SELECT id, name, type, category, file_path, size, created_date
+                FROM documents
+                WHERE customer_id = ?
+                ORDER BY created_date DESC
+            ''', (customer_id,))
+
+            documents = []
+            for row in cursor.fetchall():
+                documents.append({
+                    'id': row[0],
+                    'name': row[1],
+                    'type': row[2],
+                    'category': row[3],
+                    'file_path': row[4],
+                    'size': row[5],
+                    'created_date': row[6]
+                })
+
+            conn.close()
+
+            return jsonify({
+                'success': True,
+                'documents': documents
+            })
+
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    @app.route('/api/vehicles/<registration>')
+    def get_vehicle_profile(registration):
+        """Get comprehensive vehicle profile with all related data"""
+        try:
+            import sqlite3
+            db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+            conn = sqlite3.connect(db_path)
+            cursor = conn.cursor()
+
+            # Get vehicle details
+            cursor.execute('''
+                SELECT v.id, v.registration, v.make, v.model, v.year, v.color,
+                       v.engine_size, v.fuel_type, v.mot_due, v.tax_due, v.customer_id,
+                       c.name as customer_name, c.phone, c.email
+                FROM vehicles v
+                LEFT JOIN customers c ON v.customer_id = c.id
+                WHERE v.registration = ?
+            ''', (registration,))
+
+            vehicle_row = cursor.fetchone()
+            if not vehicle_row:
+                return jsonify({'success': False, 'error': 'Vehicle not found'}), 404
+
+            vehicle = {
+                'id': vehicle_row[0],
+                'registration': vehicle_row[1],
+                'make': vehicle_row[2],
+                'model': vehicle_row[3],
+                'year': vehicle_row[4],
+                'color': vehicle_row[5],
+                'engine_size': vehicle_row[6],
+                'fuel_type': vehicle_row[7],
+                'mot_due': vehicle_row[8],
+                'tax_due': vehicle_row[9],
+                'customer_id': vehicle_row[10]
+            }
+
+            customer = {
+                'id': vehicle_row[10],
+                'name': vehicle_row[11],
+                'phone': vehicle_row[12],
+                'email': vehicle_row[13]
+            }
+
+            # Get vehicle's jobs
+            cursor.execute('''
+                SELECT id, job_number, description, status, labour_cost,
+                       parts_cost, total_amount, created_date, completed_date
+                FROM jobs
+                WHERE vehicle_id = ?
+                ORDER BY created_date DESC
+            ''', (vehicle['id'],))
+
+            jobs = []
+            for row in cursor.fetchall():
+                jobs.append({
+                    'id': row[0],
+                    'job_number': row[1],
+                    'description': row[2],
+                    'status': row[3],
+                    'labour_cost': row[4],
+                    'parts_cost': row[5],
+                    'total_amount': row[6],
+                    'created_date': row[7],
+                    'completed_date': row[8]
+                })
+
+            # Get vehicle's invoices
+            cursor.execute('''
+                SELECT id, invoice_number, invoice_date, due_date, total_amount,
+                       status, payment_status
+                FROM invoices
+                WHERE vehicle_id = ?
+                ORDER BY invoice_date DESC
+            ''', (vehicle['id'],))
+
+            invoices = []
+            for row in cursor.fetchall():
+                invoices.append({
+                    'id': row[0],
+                    'invoice_number': row[1],
+                    'invoice_date': row[2],
+                    'due_date': row[3],
+                    'total_amount': row[4],
+                    'status': row[5],
+                    'payment_status': row[6]
+                })
+
+            conn.close()
+
+            return jsonify({
+                'success': True,
+                'vehicle': vehicle,
+                'customer': customer,
+                'jobs': jobs,
+                'invoices': invoices
+            })
+
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
 
 def initialize_services(app):
     """Initialize application services"""

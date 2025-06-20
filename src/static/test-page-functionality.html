@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Functionality Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        button { margin: 5px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Page Functionality Test</h1>
+    
+    <div class="test-section info">
+        <h3>Test Navigation Functions</h3>
+        <button onclick="testShowPage('dashboard')">Test Dashboard</button>
+        <button onclick="testShowPage('customers')">Test Customers</button>
+        <button onclick="testShowPage('vehicles')">Test Vehicles</button>
+        <button onclick="testShowPage('jobs')">Test Jobs</button>
+        <button onclick="testShowPage('mot-reminders')">Test MOT Reminders</button>
+    </div>
+
+    <div class="test-section info">
+        <h3>Test API Functions</h3>
+        <button onclick="testAPI('/api/stats')">Test Stats API</button>
+        <button onclick="testAPI('/api/customers')">Test Customers API</button>
+        <button onclick="testAPI('/mot/api/vehicles')">Test MOT API</button>
+    </div>
+
+    <div id="results" class="test-section">
+        <h3>Test Results</h3>
+        <div id="test-output"></div>
+    </div>
+
+    <script>
+        function testShowPage(pageId) {
+            console.log('Testing showPage for:', pageId);
+            
+            if (typeof window.showPage === 'function') {
+                window.showPage(pageId);
+                addResult('success', `showPage('${pageId}') function exists and called`);
+            } else {
+                addResult('error', `showPage function not found`);
+            }
+        }
+
+        function testAPI(endpoint) {
+            console.log('Testing API:', endpoint);
+            
+            fetch(endpoint)
+                .then(response => response.json())
+                .then(data => {
+                    addResult('success', `API ${endpoint} working: ${JSON.stringify(data).substring(0, 100)}...`);
+                })
+                .catch(error => {
+                    addResult('error', `API ${endpoint} failed: ${error.message}`);
+                });
+        }
+
+        function addResult(type, message) {
+            const output = document.getElementById('test-output');
+            const div = document.createElement('div');
+            div.className = type;
+            div.innerHTML = `<strong>${type.toUpperCase()}:</strong> ${message}`;
+            output.appendChild(div);
+        }
+
+        // Test on page load
+        window.addEventListener('load', function() {
+            addResult('info', 'Page loaded, testing functions...');
+            
+            // Test if functions exist
+            const functions = ['showPage', 'loadPageData', 'loadDashboardContent', 'loadCustomersPage'];
+            functions.forEach(func => {
+                if (typeof window[func] === 'function') {
+                    addResult('success', `Function ${func} exists`);
+                } else {
+                    addResult('error', `Function ${func} missing`);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

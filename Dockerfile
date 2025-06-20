@@ -21,11 +21,11 @@ COPY . .
 RUN mkdir -p logs
 
 # Expose port
-EXPOSE 5002
+EXPOSE 5001
 
 # Set environment variables
 ENV FLASK_ENV=production
-ENV PORT=5002
+ENV PORT=5001
 
 # Create non-root user
 RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
