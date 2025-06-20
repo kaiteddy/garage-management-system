@@ -2703,6 +2703,106 @@ def create_missing_static_file(url):
     except Exception as e:
         print(f"❌ Error creating static file: {e}")
 
+# DeepSource Fix Management API Endpoints
+try:
+    from deepsource_fix_manager import DeepSourceFixManager
+    deepsource_manager = DeepSourceFixManager()
+    print("✅ DeepSource Fix Manager initialized successfully")
+except Exception as e:
+    print(f"❌ Failed to initialize DeepSource Fix Manager: {e}")
+    deepsource_manager = None
+
+@app.route('/deepsource-dashboard')
+def deepsource_dashboard():
+    """DeepSource fix management dashboard"""
+    return send_from_directory('static/templates', 'deepsource_dashboard.html')
+
+@app.route('/api/deepsource/stats')
+def get_deepsource_stats():
+    """Get DeepSource fix statistics"""
+    try:
+        if not deepsource_manager:
+            return jsonify({'error': 'DeepSource manager not available'}), 500
+
+        stats = deepsource_manager.get_fix_statistics()
+        return jsonify(stats)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/deepsource/fixes')
+def get_deepsource_fixes():
+    """Get recent DeepSource fixes"""
+    try:
+        if not deepsource_manager:
+            return jsonify({'error': 'DeepSource manager not available'}), 500
+
+        days = request.args.get('days', 30, type=int)
+        file_path = request.args.get('file_path')
+        issue_type = request.args.get('issue_type')
+
+        fixes = deepsource_manager.get_fix_history(
+            file_path=file_path,
+            issue_type=issue_type,
+            days=days
+        )
+        return jsonify(fixes)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/deepsource/trigger-analysis', methods=['POST'])
+def trigger_deepsource_analysis():
+    """Trigger DeepSource analysis (placeholder)"""
+    try:
+        # In a real implementation, this would trigger DeepSource analysis
+        # For now, just return success
+        return jsonify({
+            'success': True,
+            'message': 'Analysis trigger request sent to DeepSource'
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/deepsource/cleanup', methods=['POST'])
+def cleanup_deepsource_records():
+    """Clean up old DeepSource fix records"""
+    try:
+        if not deepsource_manager:
+            return jsonify({'error': 'DeepSource manager not available'}), 500
+
+        days = request.json.get('days', 90) if request.json else 90
+        deleted_count = deepsource_manager.cleanup_old_records(days)
+
+        return jsonify({
+            'success': True,
+            'deleted_count': deleted_count,
+            'message': f'Cleaned up {deleted_count} records older than {days} days'
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/deepsource/export')
+def export_deepsource_data():
+    """Export DeepSource fix data"""
+    try:
+        if not deepsource_manager:
+            return jsonify({'error': 'DeepSource manager not available'}), 500
+
+        # Get all fix history
+        fixes = deepsource_manager.get_fix_history(days=365)  # Last year
+        stats = deepsource_manager.get_fix_statistics()
+
+        export_data = {
+            'export_timestamp': datetime.now().isoformat(),
+            'statistics': stats,
+            'fixes': fixes
+        }
+
+        response = jsonify(export_data)
+        response.headers['Content-Disposition'] = f'attachment; filename=deepsource_fixes_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
+        return response
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 def create_tables():
     """Create database tables"""
     with app.app_context():
@@ -2719,6 +2819,7 @@ if __name__ == '__main__':
     print("📤 Upload interface: http://127.0.0.1:5001/upload")
     print("☁️  Google Drive Sync: http://127.0.0.1:5001/google-drive")
     print("🚗 MOT Reminders: http://127.0.0.1:8080")
+    print("🔍 DeepSource Dashboard: http://127.0.0.1:5001/deepsource-dashboard")
     print("🛡️  Error Monitoring: Active")
 
     app.run(debug=True, host='0.0.0.0', port=5001)

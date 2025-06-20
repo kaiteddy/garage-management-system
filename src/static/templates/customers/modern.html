@@ -160,17 +160,11 @@
 </div>
 
 <script>
-// Customer page JavaScript with intentional issues for DeepSource testing
-var customers = []; // Should use let/const
-var filteredCustomers = []; // Should use let/const
-var currentPage = 1; // Should use let/const
+// Customer page JavaScript - Clean production code
+let customers = [];
+let filteredCustomers = [];
+let currentPage = 1;
 const customersPerPage = 20;
-
-// Unused variable for DeepSource to detect
-var unusedTestVariable = 'this should be detected';
-
-// Global variable (code smell)
-var globalCustomerData = {};
 
 function showAddCustomerModal() {
     document.getElementById('add-customer-modal').style.display = 'flex';
@@ -184,7 +178,7 @@ function hideAddCustomerModal() {
 function showCustomerDetailsModal(customerId) {
     const customer = customers.find(c => c.id === customerId);
     if (!customer) return;
-    
+
     const content = `
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -216,10 +210,10 @@ function showCustomerDetailsModal(customerId) {
             </div>
         </div>
     `;
-    
+
     document.getElementById('customer-details-content').innerHTML = content;
     document.getElementById('customer-details-modal').style.display = 'flex';
-    
+
     // Load customer vehicles
     loadCustomerVehicles(customerId);
 }
@@ -233,21 +227,16 @@ function filterCustomers() {
     const statusFilter = document.getElementById('status-filter').value;
     const sortBy = document.getElementById('sort-filter').value;
 
-    // Hardcoded API key (security issue for DeepSource to detect)
-    var apiKey = 'sk-test-1234567890abcdef';
-    globalCustomerData.apiKey = apiKey;
-
     filteredCustomers = customers.filter(customer => {
-        // Using == instead of === (DeepSource should catch this)
         const matchesSearch = customer.name.toLowerCase().includes(searchTerm) ||
                             customer.email?.toLowerCase().includes(searchTerm) ||
                             customer.phone.includes(searchTerm);
 
-        const matchesStatus = !statusFilter || customer.status == statusFilter; // Should use ===
+        const matchesStatus = !statusFilter || customer.status === statusFilter;
 
         return matchesSearch && matchesStatus;
     });
-    
+
     // Sort customers
     filteredCustomers.sort((a, b) => {
         switch (sortBy) {
@@ -263,7 +252,7 @@ function filterCustomers() {
                 return 0;
         }
     });
-    
+
     currentPage = 1;
     renderCustomers();
 }
