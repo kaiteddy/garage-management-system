@@ -1,860 +1,1030 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Google Drive Integration - ELI MOTORS</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-            color: #333;
-            min-height: 100vh;
-            font-weight: 500;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        
-        .page-header {
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            margin-bottom: 2rem;
-            border: 1px solid rgba(99, 102, 241, 0.1);
-        }
-        
-        .page-title {
-            font-size: 2.25rem;
-            font-weight: 700;
-            color: #1e293b;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-variant: small-caps;
-            letter-spacing: -0.025em;
-        }
-        
-        .page-subtitle {
-            color: #64748b;
-            font-size: 1.1rem;
-            margin-top: 0.25rem;
-            font-weight: 500;
-        }
-        
-        .card {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            border: 1px solid rgba(99, 102, 241, 0.1);
-            margin-bottom: 2rem;
-        }
-        
-        .card-header {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            color: white;
-            padding: 1.5rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-variant: small-caps;
-            letter-spacing: 0.05em;
-            font-size: 1.1rem;
-            border-radius: 1rem 1rem 0 0;
-        }
-        
-        .card-body {
-            padding: 2rem;
-        }
-        
-        .status-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        
-        .status-connected {
-            background: #d1fae5;
-            color: #065f46;
-        }
-        
-        .status-disconnected {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-        
-        .btn {
-            padding: 0.875rem 1.75rem;
-            border: none;
-            border-radius: 0.75rem;
-            cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            letter-spacing: 0.025em;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
-            color: white;
-        }
-        
-        .btn-success {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-        }
-        
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
-            color: white;
-        }
-        
-        .btn-outline-primary {
-            background: transparent;
-            color: #6366f1;
-            border: 2px solid #6366f1;
-        }
-        
-        .btn-outline-primary:hover {
-            background: #6366f1;
-            color: white;
-            transform: translateY(-2px);
-        }
-        
-        .folder-mapping {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .folder-mapping h6 {
-            color: #1e293b;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        
-        .folder-path {
-            color: #64748b;
-            font-size: 0.9rem;
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
-        }
-        
-        .sync-status {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 2rem;
-        }
-        
-        .spinner {
-            border: 3px solid #f3f4f6;
-            border-top: 3px solid #6366f1;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .alert {
-            padding: 1rem 1.5rem;
-            border-radius: 0.75rem;
-            margin-bottom: 1rem;
-            border: none;
-        }
-        
-        .alert-success {
-            background: #d1fae5;
-            color: #065f46;
-        }
-        
-        .alert-danger {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-        
-        .alert-info {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-        
-        .form-control, .form-select {
-            border: 2px solid #e2e8f0;
-            border-radius: 0.75rem;
-            padding: 0.875rem 1rem;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-        
-        .data-type-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #6366f1;
-            text-decoration: none;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            transition: all 0.3s ease;
-        }
-        
-        .back-link:hover {
-            color: #4f46e5;
-            transform: translateX(-4px);
-        }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+          system-ui, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #0f172a 0%,
+          #1e293b 50%,
+          #334155 100%
+        );
+        color: #333;
+        min-height: 100vh;
+        font-weight: 500;
+      }
 
-        .setup-steps {
-            counter-reset: step-counter;
-            list-style: none;
-            padding-left: 0;
-        }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
 
-        .setup-steps li {
-            counter-increment: step-counter;
-            margin-bottom: 1.5rem;
-            padding-left: 3rem;
-            position: relative;
-        }
+      .page-header {
+        background: white;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        margin-bottom: 2rem;
+        border: 1px solid rgba(99, 102, 241, 0.1);
+      }
 
-        .setup-steps li::before {
-            content: counter(step-counter);
-            position: absolute;
-            left: 0;
-            top: 0;
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            color: white;
-            width: 2rem;
-            height: 2rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
+      .page-title {
+        font-size: 2.25rem;
+        font-weight: 700;
+        color: #1e293b;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-variant: small-caps;
+        letter-spacing: -0.025em;
+      }
 
-        .folder-browser {
-            max-height: 400px;
-            overflow-y: auto;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.75rem;
-            background: #f8fafc;
-        }
+      .page-subtitle {
+        color: #64748b;
+        font-size: 1.1rem;
+        margin-top: 0.25rem;
+        font-weight: 500;
+      }
 
-        .folder-item {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid #e2e8f0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+      .card {
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(99, 102, 241, 0.1);
+        margin-bottom: 2rem;
+      }
 
-        .folder-item:hover {
-            background: #e2e8f0;
-        }
+      .card-header {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+        padding: 1.5rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-variant: small-caps;
+        letter-spacing: 0.05em;
+        font-size: 1.1rem;
+        border-radius: 1rem 1rem 0 0;
+      }
 
-        .folder-item:last-child {
-            border-bottom: none;
-        }
+      .card-body {
+        padding: 2rem;
+      }
 
-        .folder-item i {
-            margin-right: 0.75rem;
-            color: #6366f1;
-            font-size: 1.1rem;
-        }
+      .status-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
 
-        .folder-item .folder-name {
-            flex: 1;
-            font-weight: 500;
-        }
+      .status-connected {
+        background: #d1fae5;
+        color: #065f46;
+      }
 
-        .folder-item .folder-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
+      .status-disconnected {
+        background: #fee2e2;
+        color: #991b1b;
+      }
 
-        .folder-breadcrumb {
-            background: #f1f5f9;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
+      .btn {
+        padding: 0.875rem 1.75rem;
+        border: none;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        letter-spacing: 0.025em;
+      }
 
-        .breadcrumb-item {
-            color: #64748b;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
+      .btn-primary {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+      }
 
-        .breadcrumb-item:hover {
-            color: #6366f1;
-        }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        color: white;
+      }
 
-        .breadcrumb-item.active {
-            color: #1e293b;
-            font-weight: 600;
-        }
+      .btn-success {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+      }
 
-        .selected-folder {
-            background: #f0f9ff;
-            border: 1px solid #0ea5e9;
-            border-radius: 0.75rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
+      .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        color: white;
+      }
 
-        .folder-info .folder-name {
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 0.25rem;
-        }
+      .btn-outline-primary {
+        background: transparent;
+        color: #6366f1;
+        border: 2px solid #6366f1;
+      }
 
-        .folder-info .folder-path {
-            font-size: 0.85rem;
-            color: #64748b;
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
-        }
+      .btn-outline-primary:hover {
+        background: #6366f1;
+        color: white;
+        transform: translateY(-2px);
+      }
 
-        .folder-tips {
-            background: #fefce8;
-            border: 1px solid #facc15;
-            border-radius: 0.75rem;
-            padding: 1rem;
-            margin-top: 1rem;
-        }
+      .folder-mapping {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+      }
 
-        .folder-tips h6 {
-            color: #a16207;
-            margin-bottom: 0.5rem;
-        }
+      .folder-mapping h6 {
+        color: #1e293b;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
 
-        .folder-tips ul {
-            margin-bottom: 0;
-            color: #a16207;
-        }
+      .folder-path {
+        color: #64748b;
+        font-size: 0.9rem;
+        font-family: "SF Mono", Monaco, "Cascadia Code", monospace;
+      }
 
-        .folder-browser-mini {
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.75rem;
-            background: #f8fafc;
-        }
+      .sync-status {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+      }
 
-        .file-category {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            padding: 0.75rem;
-            margin-bottom: 0.75rem;
-        }
+      .loading {
+        display: none;
+        text-align: center;
+        padding: 2rem;
+      }
 
-        .file-category h6 {
-            color: #1e293b;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+      .spinner {
+        border: 3px solid #f3f4f6;
+        border-top: 3px solid #6366f1;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+      }
 
-        .file-category .file-list {
-            font-size: 0.9rem;
-            color: #64748b;
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
         }
-
-        .file-category .file-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.25rem 0;
+        100% {
+          transform: rotate(360deg);
         }
+      }
 
-        .file-category .file-item i {
-            color: #10b981;
-        }
+      .alert {
+        padding: 1rem 1.5rem;
+        border-radius: 0.75rem;
+        margin-bottom: 1rem;
+        border: none;
+      }
 
-        .category-customers { border-left: 4px solid #6366f1; }
-        .category-vehicles { border-left: 4px solid #f59e0b; }
-        .category-jobs { border-left: 4px solid #10b981; }
-        .category-invoices { border-left: 4px solid #3b82f6; }
-        .category-documents { border-left: 4px solid #8b5cf6; }
-        .category-receipts { border-left: 4px solid #06b6d4; }
-        .category-parts { border-left: 4px solid #84cc16; }
-        .category-suppliers { border-left: 4px solid #f97316; }
-        .category-expenses { border-left: 4px solid #ef4444; }
-        .category-unknown { border-left: 4px solid #6b7280; }
+      .alert-success {
+        background: #d1fae5;
+        color: #065f46;
+      }
+
+      .alert-danger {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
+      .alert-info {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+
+      .form-control,
+      .form-select {
+        border: 2px solid #e2e8f0;
+        border-radius: 0.75rem;
+        padding: 0.875rem 1rem;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+      }
+
+      .form-control:focus,
+      .form-select:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      }
+
+      .data-type-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #6366f1;
+        text-decoration: none;
+        font-weight: 600;
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+      }
+
+      .back-link:hover {
+        color: #4f46e5;
+        transform: translateX(-4px);
+      }
+
+      .setup-steps {
+        counter-reset: step-counter;
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .setup-steps li {
+        counter-increment: step-counter;
+        margin-bottom: 1.5rem;
+        padding-left: 3rem;
+        position: relative;
+      }
+
+      .setup-steps li::before {
+        content: counter(step-counter);
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        color: white;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+
+      .folder-browser {
+        max-height: 400px;
+        overflow-y: auto;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        background: #f8fafc;
+      }
+
+      .folder-item {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #e2e8f0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .folder-item:hover {
+        background: #e2e8f0;
+      }
+
+      .folder-item:last-child {
+        border-bottom: none;
+      }
+
+      .folder-item i {
+        margin-right: 0.75rem;
+        color: #6366f1;
+        font-size: 1.1rem;
+      }
+
+      .folder-item .folder-name {
+        flex: 1;
+        font-weight: 500;
+      }
+
+      .folder-item .folder-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .folder-breadcrumb {
+        background: #f1f5f9;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+      }
+
+      .breadcrumb-item {
+        color: #64748b;
+        cursor: pointer;
+        transition: color 0.3s ease;
+      }
+
+      .breadcrumb-item:hover {
+        color: #6366f1;
+      }
+
+      .breadcrumb-item.active {
+        color: #1e293b;
+        font-weight: 600;
+      }
+
+      .selected-folder {
+        background: #f0f9ff;
+        border: 1px solid #0ea5e9;
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .folder-info .folder-name {
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 0.25rem;
+      }
+
+      .folder-info .folder-path {
+        font-size: 0.85rem;
+        color: #64748b;
+        font-family: "SF Mono", Monaco, "Cascadia Code", monospace;
+      }
+
+      .folder-tips {
+        background: #fefce8;
+        border: 1px solid #facc15;
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-top: 1rem;
+      }
+
+      .folder-tips h6 {
+        color: #a16207;
+        margin-bottom: 0.5rem;
+      }
+
+      .folder-tips ul {
+        margin-bottom: 0;
+        color: #a16207;
+      }
+
+      .folder-browser-mini {
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        background: #f8fafc;
+      }
+
+      .file-category {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .file-category h6 {
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .file-category .file-list {
+        font-size: 0.9rem;
+        color: #64748b;
+      }
+
+      .file-category .file-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.25rem 0;
+      }
+
+      .file-category .file-item i {
+        color: #10b981;
+      }
+
+      .category-customers {
+        border-left: 4px solid #6366f1;
+      }
+      .category-vehicles {
+        border-left: 4px solid #f59e0b;
+      }
+      .category-jobs {
+        border-left: 4px solid #10b981;
+      }
+      .category-invoices {
+        border-left: 4px solid #3b82f6;
+      }
+      .category-documents {
+        border-left: 4px solid #8b5cf6;
+      }
+      .category-receipts {
+        border-left: 4px solid #06b6d4;
+      }
+      .category-parts {
+        border-left: 4px solid #84cc16;
+      }
+      .category-suppliers {
+        border-left: 4px solid #f97316;
+      }
+      .category-expenses {
+        border-left: 4px solid #ef4444;
+      }
+      .category-unknown {
+        border-left: 4px solid #6b7280;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <!-- Back Link -->
-        <a href="/" class="back-link">
-            <i class="fas fa-arrow-left"></i>
-            Back to Dashboard
-        </a>
-        
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1 class="page-title">
-                <i class="fab fa-google-drive"></i>
-                Google Drive Integration
-            </h1>
-            <p class="page-subtitle">Automatic synchronization with Google Drive folders for real-time data updates</p>
+      <!-- Back Link -->
+      <a href="/" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        Back to Dashboard
+      </a>
 
-            <div class="alert alert-info mt-3">
-                <h6><i class="fas fa-lightbulb"></i> How it works:</h6>
-                <p class="mb-2">
-                    <strong>1. One-time setup:</strong> Connect your Google Drive account (like signing into Gmail)<br>
-                    <strong>2. Choose folders:</strong> Tell us which Google Drive folders contain your data files<br>
-                    <strong>3. Automatic sync:</strong> We'll check for updates every 30 minutes and import new data
-                </p>
-                <p class="mb-0">
-                    <i class="fas fa-shield-alt text-success"></i> <strong>Secure:</strong> We only read your files, never modify or delete them.
-                </p>
-            </div>
-        </div>
-        
-        <!-- Connection Status -->
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-plug"></i>
-                Connection Status
-            </div>
-            <div class="card-body">
-                <div id="connectionStatus">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        <p>Checking Google Drive connection...</p>
-                    </div>
-                </div>
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1 class="page-title">
+          <i class="fab fa-google-drive"></i>
+          Google Drive Integration
+        </h1>
+        <p class="page-subtitle">
+          Automatic synchronization with Google Drive folders for real-time data
+          updates
+        </p>
 
-                <div class="mt-3" id="connectionButtons">
-                    <!-- Connection buttons will be dynamically added here -->
-                </div>
-            </div>
+        <div class="alert alert-info mt-3">
+          <h6><i class="fas fa-lightbulb"></i> How it works:</h6>
+          <p class="mb-2">
+            <strong>1. One-time setup:</strong> Connect your Google Drive
+            account (like signing into Gmail)<br />
+            <strong>2. Choose folders:</strong> Tell us which Google Drive
+            folders contain your data files<br />
+            <strong>3. Automatic sync:</strong> We'll check for updates every 30
+            minutes and import new data
+          </p>
+          <p class="mb-0">
+            <i class="fas fa-shield-alt text-success"></i>
+            <strong>Secure:</strong> We only read your files, never modify or
+            delete them.
+          </p>
         </div>
-        
-        <!-- Folder Configuration -->
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-folder-open"></i>
-                Folder Configuration
-            </div>
-            <div class="card-body">
-                <p class="text-muted mb-3">Configure which Google Drive folders contain your data files. The system will automatically sync when files are updated.</p>
-                
-                <div id="folderMappings">
-                    <!-- Folder mappings will be loaded here -->
-                </div>
-                
-                <div class="mt-3">
-                    <button class="btn btn-primary" onclick="showSmartFolderSetup()">
-                        <i class="fas fa-magic"></i> Smart Setup - Select Main Folder
-                    </button>
-                    <button class="btn btn-outline-primary ms-2" onclick="showFolderBrowser()">
-                        <i class="fas fa-folder-open"></i> Browse Individual Folders
-                    </button>
-                    <button class="btn btn-outline-primary ms-2" onclick="showFolderSearch()">
-                        <i class="fas fa-search"></i> Search Folders
-                    </button>
-                </div>
-            </div>
+      </div>
+
+      <!-- Connection Status -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-plug"></i>
+          Connection Status
         </div>
-        
-        <!-- Synchronization Controls -->
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-sync-alt"></i>
-                Synchronization
+        <div class="card-body">
+          <div id="connectionStatus">
+            <div class="loading">
+              <div class="spinner"></div>
+              <p>Checking Google Drive connection...</p>
             </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h6>Manual Sync</h6>
-                        <p class="text-muted">Manually trigger synchronization for all configured folders</p>
-                        <button class="btn btn-success" onclick="syncAllFolders()">
-                            <i class="fas fa-sync"></i> Sync All Now
-                        </button>
-                        <button class="btn btn-outline-primary ms-2" onclick="syncAllFolders(true)">
-                            <i class="fas fa-sync"></i> Force Sync
-                        </button>
-                    </div>
-                    <div class="col-md-6">
-                        <h6>Auto Sync</h6>
-                        <p class="text-muted">Automatically check for updates every 30 minutes</p>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="autoSyncToggle" onchange="toggleAutoSync()">
-                            <label class="form-check-label" for="autoSyncToggle">
-                                Enable automatic synchronization
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="syncResults" class="mt-3" style="display: none;">
-                    <!-- Sync results will be shown here -->
-                </div>
-            </div>
+          </div>
+
+          <div class="mt-3" id="connectionButtons">
+            <!-- Connection buttons will be dynamically added here -->
+          </div>
         </div>
-        
-        <!-- Sync History -->
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-history"></i>
-                Sync History
-            </div>
-            <div class="card-body">
-                <div id="syncHistory">
-                    <!-- Sync history will be loaded here -->
-                </div>
-            </div>
+      </div>
+
+      <!-- Folder Configuration -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-folder-open"></i>
+          Folder Configuration
         </div>
+        <div class="card-body">
+          <p class="text-muted mb-3">
+            Configure which Google Drive folders contain your data files. The
+            system will automatically sync when files are updated.
+          </p>
+
+          <div id="folderMappings">
+            <!-- Folder mappings will be loaded here -->
+          </div>
+
+          <div class="mt-3">
+            <button class="btn btn-primary" onclick="showSmartFolderSetup()">
+              <i class="fas fa-magic"></i> Smart Setup - Select Main Folder
+            </button>
+            <button
+              class="btn btn-outline-primary ms-2"
+              onclick="showFolderBrowser()"
+            >
+              <i class="fas fa-folder-open"></i> Browse Individual Folders
+            </button>
+            <button
+              class="btn btn-outline-primary ms-2"
+              onclick="showFolderSearch()"
+            >
+              <i class="fas fa-search"></i> Search Folders
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Synchronization Controls -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-sync-alt"></i>
+          Synchronization
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h6>Manual Sync</h6>
+              <p class="text-muted">
+                Manually trigger synchronization for all configured folders
+              </p>
+              <button class="btn btn-success" onclick="syncAllFolders()">
+                <i class="fas fa-sync"></i> Sync All Now
+              </button>
+              <button
+                class="btn btn-outline-primary ms-2"
+                onclick="syncAllFolders(true)"
+              >
+                <i class="fas fa-sync"></i> Force Sync
+              </button>
+            </div>
+            <div class="col-md-6">
+              <h6>Auto Sync</h6>
+              <p class="text-muted">
+                Automatically check for updates every 30 minutes
+              </p>
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="autoSyncToggle"
+                  onchange="toggleAutoSync()"
+                />
+                <label class="form-check-label" for="autoSyncToggle">
+                  Enable automatic synchronization
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div id="syncResults" class="mt-3" style="display: none">
+            <!-- Sync results will be shown here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Sync History -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-history"></i>
+          Sync History
+        </div>
+        <div class="card-body">
+          <div id="syncHistory">
+            <!-- Sync history will be loaded here -->
+          </div>
+        </div>
+      </div>
     </div>
-    
+
     <!-- Setup Instructions Modal -->
     <div class="modal fade" id="setupModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fab fa-google"></i> Google Cloud Setup Required
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle"></i>
-                        <strong>One-time setup required:</strong> You need to create Google Cloud credentials to connect to Google Drive.
-                    </div>
-
-                    <h6><i class="fas fa-step-forward"></i> Quick Setup Steps:</h6>
-                    <ol class="setup-steps">
-                        <li>
-                            <strong>Go to Google Cloud Console:</strong>
-                            <br><a href="https://console.cloud.google.com/" target="_blank" class="btn btn-sm btn-outline-primary mt-1">
-                                <i class="fas fa-external-link-alt"></i> Open Google Cloud Console
-                            </a>
-                        </li>
-                        <li>
-                            <strong>Create a new project:</strong>
-                            <br><small class="text-muted">Name it "ELI Motors Garage System" or similar</small>
-                        </li>
-                        <li>
-                            <strong>Enable Google Drive API:</strong>
-                            <br><small class="text-muted">Go to "APIs & Services" → "Library" → Search "Google Drive API" → Enable</small>
-                        </li>
-                        <li>
-                            <strong>Create OAuth 2.0 credentials:</strong>
-                            <br><small class="text-muted">Go to "APIs & Services" → "Credentials" → "Create Credentials" → "OAuth 2.0 Client IDs"</small>
-                            <br><small class="text-muted">Choose "Desktop application" as the application type</small>
-                        </li>
-                        <li>
-                            <strong>Download the credentials:</strong>
-                            <br><small class="text-muted">Click the download button and save the JSON file</small>
-                        </li>
-                        <li>
-                            <strong>Upload credentials file:</strong>
-                            <br><input type="file" class="form-control mt-1" id="credentialsFile" accept=".json" onchange="uploadCredentials()">
-                            <small class="text-muted">Select the downloaded JSON file</small>
-                        </li>
-                    </ol>
-
-                    <div class="alert alert-success" id="uploadSuccess" style="display: none;">
-                        <i class="fas fa-check-circle"></i>
-                        Credentials uploaded successfully! You can now connect to Google Drive.
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <a href="https://console.cloud.google.com/" target="_blank" class="btn btn-primary">
-                        <i class="fab fa-google"></i> Go to Google Cloud
-                    </a>
-                </div>
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="fab fa-google"></i> Google Cloud Setup Required
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-info">
+              <i class="fas fa-info-circle"></i>
+              <strong>One-time setup required:</strong> You need to create
+              Google Cloud credentials to connect to Google Drive.
             </div>
+
+            <h6><i class="fas fa-step-forward"></i> Quick Setup Steps:</h6>
+            <ol class="setup-steps">
+              <li>
+                <strong>Go to Google Cloud Console:</strong>
+                <br /><a
+                  href="https://console.cloud.google.com/"
+                  target="_blank"
+                  class="btn btn-sm btn-outline-primary mt-1"
+                >
+                  <i class="fas fa-external-link-alt"></i> Open Google Cloud
+                  Console
+                </a>
+              </li>
+              <li>
+                <strong>Create a new project:</strong>
+                <br /><small class="text-muted"
+                  >Name it "ELI Motors Garage System" or similar</small
+                >
+              </li>
+              <li>
+                <strong>Enable Google Drive API:</strong>
+                <br /><small class="text-muted"
+                  >Go to "APIs & Services" → "Library" → Search "Google Drive
+                  API" → Enable</small
+                >
+              </li>
+              <li>
+                <strong>Create OAuth 2.0 credentials:</strong>
+                <br /><small class="text-muted"
+                  >Go to "APIs & Services" → "Credentials" → "Create
+                  Credentials" → "OAuth 2.0 Client IDs"</small
+                >
+                <br /><small class="text-muted"
+                  >Choose "Desktop application" as the application type</small
+                >
+              </li>
+              <li>
+                <strong>Download the credentials:</strong>
+                <br /><small class="text-muted"
+                  >Click the download button and save the JSON file</small
+                >
+              </li>
+              <li>
+                <strong>Upload credentials file:</strong>
+                <br /><input
+                  type="file"
+                  class="form-control mt-1"
+                  id="credentialsFile"
+                  accept=".json"
+                  onchange="uploadCredentials()"
+                />
+                <small class="text-muted"
+                  >Select the downloaded JSON file</small
+                >
+              </li>
+            </ol>
+
+            <div
+              class="alert alert-success"
+              id="uploadSuccess"
+              style="display: none"
+            >
+              <i class="fas fa-check-circle"></i>
+              Credentials uploaded successfully! You can now connect to Google
+              Drive.
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <a
+              href="https://console.cloud.google.com/"
+              target="_blank"
+              class="btn btn-primary"
+            >
+              <i class="fab fa-google"></i> Go to Google Cloud
+            </a>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Smart Folder Setup Modal -->
     <div class="modal fade" id="smartFolderModal" tabindex="-1">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fas fa-magic"></i> Smart Folder Setup
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="alert alert-info">
-                        <i class="fas fa-lightbulb"></i>
-                        <strong>Smart Setup:</strong> Select the main folder containing all your CSV files.
-                        We'll automatically detect and categorize them based on their names.
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6>1. Select Your Main Data Folder:</h6>
-                            <div class="folder-browser-mini" id="smartFolderBrowser">
-                                <div class="loading">
-                                    <div class="spinner"></div>
-                                    <p>Loading folders...</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <h6>2. Detected Files:</h6>
-                            <div id="detectedFiles" style="display: none;">
-                                <div class="alert alert-success">
-                                    <i class="fas fa-check-circle"></i>
-                                    <strong>Files detected!</strong> Review the automatic categorization below.
-                                </div>
-                                <div id="fileCategorization">
-                                    <!-- File categorization will be shown here -->
-                                </div>
-                                <button class="btn btn-success mt-3" onclick="confirmSmartSetup()">
-                                    <i class="fas fa-check"></i> Confirm & Setup All Mappings
-                                </button>
-                            </div>
-
-                            <div id="noFilesDetected" style="display: none;">
-                                <div class="alert alert-warning">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                    No CSV files found in this folder. Please select a folder containing your data files.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-outline-primary" onclick="refreshSmartBrowser()">
-                        <i class="fas fa-refresh"></i> Refresh
-                    </button>
-                </div>
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="fas fa-magic"></i> Smart Folder Setup
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-info">
+              <i class="fas fa-lightbulb"></i>
+              <strong>Smart Setup:</strong> Select the main folder containing
+              all your CSV files. We'll automatically detect and categorize them
+              based on their names.
             </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <h6>1. Select Your Main Data Folder:</h6>
+                <div class="folder-browser-mini" id="smartFolderBrowser">
+                  <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading folders...</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <h6>2. Detected Files:</h6>
+                <div id="detectedFiles" style="display: none">
+                  <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    <strong>Files detected!</strong> Review the automatic
+                    categorization below.
+                  </div>
+                  <div id="fileCategorization">
+                    <!-- File categorization will be shown here -->
+                  </div>
+                  <button
+                    class="btn btn-success mt-3"
+                    onclick="confirmSmartSetup()"
+                  >
+                    <i class="fas fa-check"></i> Confirm & Setup All Mappings
+                  </button>
+                </div>
+
+                <div id="noFilesDetected" style="display: none">
+                  <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    No CSV files found in this folder. Please select a folder
+                    containing your data files.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              onclick="refreshSmartBrowser()"
+            >
+              <i class="fas fa-refresh"></i> Refresh
+            </button>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Folder Browser Modal -->
     <div class="modal fade" id="folderBrowserModal" tabindex="-1">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fas fa-folder-open"></i> Browse Google Drive Folders
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="fas fa-folder-open"></i> Browse Google Drive Folders
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="mb-3">
+                  <label class="form-label">Navigate your Google Drive:</label>
+                  <div class="folder-breadcrumb" id="folderBreadcrumb">
+                    <span class="breadcrumb-item active">
+                      <i class="fab fa-google-drive"></i> My Drive
+                    </span>
+                  </div>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="mb-3">
-                                <label class="form-label">Navigate your Google Drive:</label>
-                                <div class="folder-breadcrumb" id="folderBreadcrumb">
-                                    <span class="breadcrumb-item active">
-                                        <i class="fab fa-google-drive"></i> My Drive
-                                    </span>
-                                </div>
-                            </div>
 
-                            <div class="folder-browser" id="folderBrowser">
-                                <div class="loading">
-                                    <div class="spinner"></div>
-                                    <p>Loading folders...</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label class="form-label">Data Type:</label>
-                                <select class="form-select" id="browserDataTypeSelect">
-                                    <option value="customers">Customers</option>
-                                    <option value="vehicles">Vehicles</option>
-                                    <option value="jobs">Jobs/Work Orders</option>
-                                    <option value="invoices">Invoices</option>
-                                    <option value="documents">Documents</option>
-                                    <option value="receipts">Receipts/Payments</option>
-                                    <option value="parts">Parts/Stock</option>
-                                    <option value="suppliers">Suppliers</option>
-                                    <option value="expenses">Expenses</option>
-                                </select>
-                            </div>
-
-                            <div class="selected-folder" id="selectedFolder" style="display: none;">
-                                <h6>Selected Folder:</h6>
-                                <div class="folder-info">
-                                    <div class="folder-name" id="selectedFolderName"></div>
-                                    <div class="folder-path" id="selectedFolderPath"></div>
-                                </div>
-                                <button class="btn btn-success mt-2" onclick="confirmFolderSelection()">
-                                    <i class="fas fa-check"></i> Use This Folder
-                                </button>
-                            </div>
-
-                            <div class="folder-tips">
-                                <h6><i class="fas fa-lightbulb"></i> Tips:</h6>
-                                <ul class="small">
-                                    <li>Click folders to navigate deeper</li>
-                                    <li>Click "Select" to choose a folder</li>
-                                    <li>Look for folders containing CSV or Excel files</li>
-                                    <li>You can organize files in subfolders</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                <div class="folder-browser" id="folderBrowser">
+                  <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading folders...</p>
+                  </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-outline-primary" onclick="refreshFolderBrowser()">
-                        <i class="fas fa-refresh"></i> Refresh
-                    </button>
+              </div>
+
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label class="form-label">Data Type:</label>
+                  <select class="form-select" id="browserDataTypeSelect">
+                    <option value="customers">Customers</option>
+                    <option value="vehicles">Vehicles</option>
+                    <option value="jobs">Jobs/Work Orders</option>
+                    <option value="invoices">Invoices</option>
+                    <option value="documents">Documents</option>
+                    <option value="receipts">Receipts/Payments</option>
+                    <option value="parts">Parts/Stock</option>
+                    <option value="suppliers">Suppliers</option>
+                    <option value="expenses">Expenses</option>
+                  </select>
                 </div>
+
+                <div
+                  class="selected-folder"
+                  id="selectedFolder"
+                  style="display: none"
+                >
+                  <h6>Selected Folder:</h6>
+                  <div class="folder-info">
+                    <div class="folder-name" id="selectedFolderName"></div>
+                    <div class="folder-path" id="selectedFolderPath"></div>
+                  </div>
+                  <button
+                    class="btn btn-success mt-2"
+                    onclick="confirmFolderSelection()"
+                  >
+                    <i class="fas fa-check"></i> Use This Folder
+                  </button>
+                </div>
+
+                <div class="folder-tips">
+                  <h6><i class="fas fa-lightbulb"></i> Tips:</h6>
+                  <ul class="small">
+                    <li>Click folders to navigate deeper</li>
+                    <li>Click "Select" to choose a folder</li>
+                    <li>Look for folders containing CSV or Excel files</li>
+                    <li>You can organize files in subfolders</li>
+                  </ul>
+                </div>
+              </div>
             </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              onclick="refreshFolderBrowser()"
+            >
+              <i class="fas fa-refresh"></i> Refresh
+            </button>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Folder Search Modal -->
     <div class="modal fade" id="folderSearchModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Search Google Drive Folders</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Search for folders:</label>
-                        <input type="text" class="form-control" id="folderSearchInput" placeholder="Enter folder name..." onkeyup="searchFolders()">
-                        <small class="text-muted">Try searching for "ELI", "MOTORS", "customers", "vehicles", etc.</small>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Data Type:</label>
-                        <select class="form-select" id="dataTypeSelect">
-                            <option value="customers">Customers</option>
-                            <option value="vehicles">Vehicles</option>
-                            <option value="jobs">Jobs/Work Orders</option>
-                            <option value="invoices">Invoices</option>
-                            <option value="documents">Documents</option>
-                            <option value="receipts">Receipts/Payments</option>
-                            <option value="parts">Parts/Stock</option>
-                            <option value="suppliers">Suppliers</option>
-                            <option value="expenses">Expenses</option>
-                        </select>
-                    </div>
-
-                    <div id="folderSearchResults">
-                        <!-- Search results will be shown here -->
-                    </div>
-                </div>
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Search Google Drive Folders</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Search for folders:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="folderSearchInput"
+                placeholder="Enter folder name..."
+                onkeyup="searchFolders()"
+              />
+              <small class="text-muted"
+                >Try searching for "ELI", "MOTORS", "customers", "vehicles",
+                etc.</small
+              >
             </div>
+
+            <div class="mb-3">
+              <label class="form-label">Data Type:</label>
+              <select class="form-select" id="dataTypeSelect">
+                <option value="customers">Customers</option>
+                <option value="vehicles">Vehicles</option>
+                <option value="jobs">Jobs/Work Orders</option>
+                <option value="invoices">Invoices</option>
+                <option value="documents">Documents</option>
+                <option value="receipts">Receipts/Payments</option>
+                <option value="parts">Parts/Stock</option>
+                <option value="suppliers">Suppliers</option>
+                <option value="expenses">Expenses</option>
+              </select>
+            </div>
+
+            <div id="folderSearchResults">
+              <!-- Search results will be shown here -->
+            </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Global variables
-        let currentStatus = null;
-        let folderSearchModal = null;
-        
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
-            folderSearchModal = new bootstrap.Modal(document.getElementById('folderSearchModal'));
-            loadStatus();
-            loadSyncHistory();
-        });
-        
-        // Load connection status
-        async function loadStatus() {
-            try {
-                const response = await fetch('/google-drive/status');
-                const result = await response.json();
-                
-                if (result.success) {
-                    currentStatus = result.status;
-                    displayConnectionStatus(result.status);
-                    loadFolderMappings(result.status.folder_mappings || {});
-                    
-                    // Update auto-sync toggle
-                    document.getElementById('autoSyncToggle').checked = result.status.auto_sync_enabled || false;
-                } else {
-                    displayConnectionError(result.error);
-                }
-            } catch (error) {
-                displayConnectionError('Failed to load status: ' + error.message);
-            }
+      // Global variables
+      let currentStatus = null;
+      let folderSearchModal = null;
+
+      // Initialize page
+      document.addEventListener("DOMContentLoaded", function () {
+        folderSearchModal = new bootstrap.Modal(
+          document.getElementById("folderSearchModal"),
+        );
+        loadStatus();
+        loadSyncHistory();
+      });
+
+      // Load connection status
+      async function loadStatus() {
+        try {
+          const response = await fetch("/google-drive/status");
+          const result = await response.json();
+
+          if (result.success) {
+            currentStatus = result.status;
+            displayConnectionStatus(result.status);
+            loadFolderMappings(result.status.folder_mappings || {});
+
+            // Update auto-sync toggle
+            document.getElementById("autoSyncToggle").checked =
+              result.status.auto_sync_enabled || false;
+          } else {
+            displayConnectionError(result.error);
+          }
+        } catch (error) {
+          displayConnectionError("Failed to load status: " + error.message);
         }
+      }
 
-        // Display connection status
-        function displayConnectionStatus(status) {
-            const container = document.getElementById('connectionStatus');
-            const buttonsContainer = document.getElementById('connectionButtons');
+      // Display connection status
+      function displayConnectionStatus(status) {
+        const container = document.getElementById("connectionStatus");
+        const buttonsContainer = document.getElementById("connectionButtons");
 
-            if (status.connected) {
-                container.innerHTML = `
+        if (status.connected) {
+          container.innerHTML = `
                     <div class="status-indicator status-connected">
                         <i class="fas fa-check-circle"></i>
                         Connected to Google Drive
                     </div>
                     <div class="mt-2">
-                        <strong>Account:</strong> ${status.user_email || 'Unknown'}<br>
-                        <strong>Last Sync:</strong> ${status.last_sync ? new Date(status.last_sync).toLocaleString() : 'Never'}
+                        <strong>Account:</strong> ${status.user_email || "Unknown"}<br>
+                        <strong>Last Sync:</strong> ${status.last_sync ? new Date(status.last_sync).toLocaleString() : "Never"}
                     </div>
                 `;
 
-                buttonsContainer.innerHTML = `
+          buttonsContainer.innerHTML = `
                     <button class="btn btn-outline-primary" onclick="testConnection()">
                         <i class="fas fa-sync"></i> Test Connection
                     </button>
@@ -865,16 +1035,16 @@
                         <i class="fas fa-unlink"></i> Disconnect
                     </button>
                 `;
-            } else {
-                // Check if it's a credentials issue or authentication issue
-                const isCredentialsIssue = status.error && (
-                    status.error.includes('credentials') ||
-                    status.error.includes('not found') ||
-                    status.error.includes('not initialized')
-                );
+        } else {
+          // Check if it's a credentials issue or authentication issue
+          const isCredentialsIssue =
+            status.error &&
+            (status.error.includes("credentials") ||
+              status.error.includes("not found") ||
+              status.error.includes("not initialized"));
 
-                if (isCredentialsIssue) {
-                    container.innerHTML = `
+          if (isCredentialsIssue) {
+            container.innerHTML = `
                         <div class="status-indicator status-disconnected">
                             <i class="fas fa-exclamation-triangle"></i>
                             Setup Required
@@ -887,7 +1057,7 @@
                         </div>
                     `;
 
-                    buttonsContainer.innerHTML = `
+            buttonsContainer.innerHTML = `
                         <button class="btn btn-primary" onclick="showSetupInstructions()">
                             <i class="fas fa-cog"></i> Setup Google Cloud Credentials
                         </button>
@@ -895,8 +1065,8 @@
                             <i class="fas fa-refresh"></i> Check Again
                         </button>
                     `;
-                } else {
-                    container.innerHTML = `
+          } else {
+            container.innerHTML = `
                         <div class="status-indicator status-disconnected">
                             <i class="fas fa-times-circle"></i>
                             Not Connected
@@ -908,7 +1078,7 @@
                         </div>
                     `;
 
-                    buttonsContainer.innerHTML = `
+            buttonsContainer.innerHTML = `
                         <button class="btn btn-success btn-lg" onclick="connectToGoogleDrive()">
                             <i class="fab fa-google-drive"></i> Connect to Google Drive
                         </button>
@@ -916,14 +1086,14 @@
                             <i class="fas fa-refresh"></i> Refresh Status
                         </button>
                     `;
-                }
-            }
+          }
         }
+      }
 
-        // Display connection error
-        function displayConnectionError(error) {
-            const container = document.getElementById('connectionStatus');
-            container.innerHTML = `
+      // Display connection error
+      function displayConnectionError(error) {
+        const container = document.getElementById("connectionStatus");
+        container.innerHTML = `
                 <div class="status-indicator status-disconnected">
                     <i class="fas fa-exclamation-triangle"></i>
                     Connection Error
@@ -934,28 +1104,30 @@
                     </div>
                 </div>
             `;
-        }
+      }
 
-        // Load folder mappings
-        function loadFolderMappings(mappings) {
-            const container = document.getElementById('folderMappings');
+      // Load folder mappings
+      function loadFolderMappings(mappings) {
+        const container = document.getElementById("folderMappings");
 
-            if (Object.keys(mappings).length === 0) {
-                container.innerHTML = `
+        if (Object.keys(mappings).length === 0) {
+          container.innerHTML = `
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle"></i>
                         No folder mappings configured. Click "Configure Folders" to set up automatic synchronization.
                     </div>
                 `;
-                return;
-            }
+          return;
+        }
 
-            let html = '<div class="data-type-grid">';
+        let html = '<div class="data-type-grid">';
 
-            for (const [dataType, mapping] of Object.entries(mappings)) {
-                const lastModified = mapping.last_modified ? new Date(mapping.last_modified).toLocaleString() : 'Never';
+        for (const [dataType, mapping] of Object.entries(mappings)) {
+          const lastModified = mapping.last_modified
+            ? new Date(mapping.last_modified).toLocaleString()
+            : "Never";
 
-                html += `
+          html += `
                     <div class="folder-mapping">
                         <h6><i class="fas fa-folder"></i> ${dataType.charAt(0).toUpperCase() + dataType.slice(1)}</h6>
                         <div class="folder-path">${mapping.folder_name}</div>
@@ -967,181 +1139,201 @@
                         </div>
                     </div>
                 `;
-            }
-
-            html += '</div>';
-            container.innerHTML = html;
         }
 
-        // Connect to Google Drive
-        async function connectToGoogleDrive() {
-            try {
-                showAlert('info', 'Initiating Google Drive connection...');
+        html += "</div>";
+        container.innerHTML = html;
+      }
 
-                // This will trigger the OAuth flow
-                const response = await fetch('/google-drive/connect', {
-                    method: 'POST'
-                });
+      // Connect to Google Drive
+      async function connectToGoogleDrive() {
+        try {
+          showAlert("info", "Initiating Google Drive connection...");
 
-                const result = await response.json();
+          // This will trigger the OAuth flow
+          const response = await fetch("/google-drive/connect", {
+            method: "POST",
+          });
 
-                if (result.success) {
-                    if (result.auth_url) {
-                        // Open the authorization URL in a new window with proper positioning
-                        showAlert('info', 'Opening Google authorization page...');
+          const result = await response.json();
 
-                        const authWindow = Utils.openCenteredWindow(result.auth_url, 'google_auth', 600, 600);
+          if (result.success) {
+            if (result.auth_url) {
+              // Open the authorization URL in a new window with proper positioning
+              showAlert("info", "Opening Google authorization page...");
 
-                        // Poll for completion
-                        pollForAuthCompletion();
-                    } else {
-                        showAlert('success', 'Connected to Google Drive successfully!');
-                        loadStatus();
-                    }
-                } else {
-                    showAlert('danger', result.error || 'Failed to connect to Google Drive');
-                }
-            } catch (error) {
-                showAlert('danger', 'Connection failed: ' + error.message);
+              const authWindow = Utils.openCenteredWindow(
+                result.auth_url,
+                "google_auth",
+                600,
+                600,
+              );
+
+              // Poll for completion
+              pollForAuthCompletion();
+            } else {
+              showAlert("success", "Connected to Google Drive successfully!");
+              loadStatus();
             }
+          } else {
+            showAlert(
+              "danger",
+              result.error || "Failed to connect to Google Drive",
+            );
+          }
+        } catch (error) {
+          showAlert("danger", "Connection failed: " + error.message);
+        }
+      }
+
+      // Poll for authentication completion
+      function pollForAuthCompletion() {
+        const pollInterval = setInterval(async () => {
+          try {
+            const response = await fetch("/google-drive/auth-status");
+            const result = await response.json();
+
+            if (result.success && result.authenticated) {
+              clearInterval(pollInterval);
+              showAlert("success", "Successfully connected to Google Drive!");
+              loadStatus();
+            } else if (result.error) {
+              clearInterval(pollInterval);
+              showAlert("danger", result.error);
+            }
+          } catch (error) {
+            // Continue polling
+          }
+        }, 2000); // Check every 2 seconds
+
+        // Stop polling after 2 minutes
+        setTimeout(() => {
+          clearInterval(pollInterval);
+        }, 120000);
+      }
+
+      // Disconnect from Google Drive
+      async function disconnectGoogleDrive() {
+        if (
+          !confirm(
+            "Are you sure you want to disconnect from Google Drive? This will stop automatic synchronization.",
+          )
+        ) {
+          return;
         }
 
-        // Poll for authentication completion
-        function pollForAuthCompletion() {
-            const pollInterval = setInterval(async () => {
-                try {
-                    const response = await fetch('/google-drive/auth-status');
-                    const result = await response.json();
+        try {
+          const response = await fetch("/google-drive/disconnect", {
+            method: "POST",
+          });
 
-                    if (result.success && result.authenticated) {
-                        clearInterval(pollInterval);
-                        showAlert('success', 'Successfully connected to Google Drive!');
-                        loadStatus();
-                    } else if (result.error) {
-                        clearInterval(pollInterval);
-                        showAlert('danger', result.error);
-                    }
-                } catch (error) {
-                    // Continue polling
-                }
-            }, 2000); // Check every 2 seconds
+          const result = await response.json();
 
-            // Stop polling after 2 minutes
+          if (result.success) {
+            showAlert("success", "Disconnected from Google Drive");
+            loadStatus();
+          } else {
+            showAlert("danger", result.error || "Failed to disconnect");
+          }
+        } catch (error) {
+          showAlert("danger", "Disconnect failed: " + error.message);
+        }
+      }
+
+      // Show setup instructions
+      function showSetupInstructions() {
+        const modal = new bootstrap.Modal(
+          document.getElementById("setupModal"),
+        );
+        modal.show();
+      }
+
+      // Upload credentials file
+      async function uploadCredentials() {
+        const fileInput = document.getElementById("credentialsFile");
+        const file = fileInput.files[0];
+
+        if (!file) {
+          return;
+        }
+
+        if (!file.name.endsWith(".json")) {
+          showAlert("danger", "Please select a JSON file");
+          return;
+        }
+
+        try {
+          const formData = new FormData();
+          formData.append("credentials", file);
+
+          const response = await fetch("/google-drive/upload-credentials", {
+            method: "POST",
+            body: formData,
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            document.getElementById("uploadSuccess").style.display = "block";
+            showAlert("success", "Credentials uploaded successfully!");
+
+            // Refresh status after a short delay
             setTimeout(() => {
-                clearInterval(pollInterval);
-            }, 120000);
+              loadStatus();
+              bootstrap.Modal.getInstance(
+                document.getElementById("setupModal"),
+              ).hide();
+            }, 2000);
+          } else {
+            showAlert("danger", result.error || "Failed to upload credentials");
+          }
+        } catch (error) {
+          showAlert("danger", "Upload failed: " + error.message);
+        }
+      }
+
+      // Global variables for folder browser
+      let currentFolderId = "root";
+      let folderPath = [];
+      let selectedFolderInfo = null;
+
+      // Load folder browser
+      async function loadFolderBrowser(folderId = "root") {
+        const container = document.getElementById("folderBrowser");
+        container.innerHTML =
+          '<div class="loading"><div class="spinner"></div><p>Loading folders...</p></div>';
+
+        try {
+          const response = await fetch(
+            `/google-drive/browse-folders/${folderId}`,
+          );
+          const result = await response.json();
+
+          if (result.success) {
+            displayFolderBrowser(result.folders);
+            updateBreadcrumb(result.path || []);
+          } else {
+            container.innerHTML = `<div class="alert alert-danger">${result.error}</div>`;
+          }
+        } catch (error) {
+          container.innerHTML = `<div class="alert alert-danger">Failed to load folders: ${error.message}</div>`;
+        }
+      }
+
+      // Display folder browser
+      function displayFolderBrowser(folders) {
+        const container = document.getElementById("folderBrowser");
+
+        if (folders.length === 0) {
+          container.innerHTML =
+            '<div class="alert alert-info">No folders found in this location</div>';
+          return;
         }
 
-        // Disconnect from Google Drive
-        async function disconnectGoogleDrive() {
-            if (!confirm('Are you sure you want to disconnect from Google Drive? This will stop automatic synchronization.')) {
-                return;
-            }
+        let html = "";
 
-            try {
-                const response = await fetch('/google-drive/disconnect', {
-                    method: 'POST'
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    showAlert('success', 'Disconnected from Google Drive');
-                    loadStatus();
-                } else {
-                    showAlert('danger', result.error || 'Failed to disconnect');
-                }
-            } catch (error) {
-                showAlert('danger', 'Disconnect failed: ' + error.message);
-            }
-        }
-
-        // Show setup instructions
-        function showSetupInstructions() {
-            const modal = new bootstrap.Modal(document.getElementById('setupModal'));
-            modal.show();
-        }
-
-        // Upload credentials file
-        async function uploadCredentials() {
-            const fileInput = document.getElementById('credentialsFile');
-            const file = fileInput.files[0];
-
-            if (!file) {
-                return;
-            }
-
-            if (!file.name.endsWith('.json')) {
-                showAlert('danger', 'Please select a JSON file');
-                return;
-            }
-
-            try {
-                const formData = new FormData();
-                formData.append('credentials', file);
-
-                const response = await fetch('/google-drive/upload-credentials', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    document.getElementById('uploadSuccess').style.display = 'block';
-                    showAlert('success', 'Credentials uploaded successfully!');
-
-                    // Refresh status after a short delay
-                    setTimeout(() => {
-                        loadStatus();
-                        bootstrap.Modal.getInstance(document.getElementById('setupModal')).hide();
-                    }, 2000);
-                } else {
-                    showAlert('danger', result.error || 'Failed to upload credentials');
-                }
-            } catch (error) {
-                showAlert('danger', 'Upload failed: ' + error.message);
-            }
-        }
-
-        // Global variables for folder browser
-        let currentFolderId = 'root';
-        let folderPath = [];
-        let selectedFolderInfo = null;
-
-        // Load folder browser
-        async function loadFolderBrowser(folderId = 'root') {
-            const container = document.getElementById('folderBrowser');
-            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading folders...</p></div>';
-
-            try {
-                const response = await fetch(`/google-drive/browse-folders/${folderId}`);
-                const result = await response.json();
-
-                if (result.success) {
-                    displayFolderBrowser(result.folders);
-                    updateBreadcrumb(result.path || []);
-                } else {
-                    container.innerHTML = `<div class="alert alert-danger">${result.error}</div>`;
-                }
-            } catch (error) {
-                container.innerHTML = `<div class="alert alert-danger">Failed to load folders: ${error.message}</div>`;
-            }
-        }
-
-        // Display folder browser
-        function displayFolderBrowser(folders) {
-            const container = document.getElementById('folderBrowser');
-
-            if (folders.length === 0) {
-                container.innerHTML = '<div class="alert alert-info">No folders found in this location</div>';
-                return;
-            }
-
-            let html = '';
-
-            folders.forEach(folder => {
-                html += `
+        folders.forEach((folder) => {
+          html += `
                     <div class="folder-item">
                         <i class="fas fa-folder"></i>
                         <div class="folder-name">${folder.name}</div>
@@ -1155,155 +1347,164 @@
                         </div>
                     </div>
                 `;
-            });
+        });
 
-            container.innerHTML = html;
+        container.innerHTML = html;
+      }
+
+      // Navigate to folder
+      async function navigateToFolder(folderId, folderName) {
+        currentFolderId = folderId;
+        folderPath.push({ id: folderId, name: folderName });
+        await loadFolderBrowser(folderId);
+      }
+
+      // Navigate to parent folder
+      async function navigateToParent() {
+        if (folderPath.length > 0) {
+          folderPath.pop();
+          const parentFolder =
+            folderPath.length > 0
+              ? folderPath[folderPath.length - 1]
+              : { id: "root", name: "My Drive" };
+          currentFolderId = parentFolder.id;
+          await loadFolderBrowser(currentFolderId);
         }
+      }
 
-        // Navigate to folder
-        async function navigateToFolder(folderId, folderName) {
-            currentFolderId = folderId;
-            folderPath.push({ id: folderId, name: folderName });
-            await loadFolderBrowser(folderId);
-        }
+      // Update breadcrumb
+      function updateBreadcrumb(path) {
+        const container = document.getElementById("folderBreadcrumb");
 
-        // Navigate to parent folder
-        async function navigateToParent() {
-            if (folderPath.length > 0) {
-                folderPath.pop();
-                const parentFolder = folderPath.length > 0 ? folderPath[folderPath.length - 1] : { id: 'root', name: 'My Drive' };
-                currentFolderId = parentFolder.id;
-                await loadFolderBrowser(currentFolderId);
-            }
-        }
-
-        // Update breadcrumb
-        function updateBreadcrumb(path) {
-            const container = document.getElementById('folderBreadcrumb');
-
-            let html = `
-                <span class="breadcrumb-item ${currentFolderId === 'root' ? 'active' : ''}" onclick="navigateToRoot()">
+        let html = `
+                <span class="breadcrumb-item ${currentFolderId === "root" ? "active" : ""}" onclick="navigateToRoot()">
                     <i class="fab fa-google-drive"></i> My Drive
                 </span>
             `;
 
-            if (path && path.length > 0) {
-                path.forEach((folder, index) => {
-                    const isLast = index === path.length - 1;
-                    html += ` / <span class="breadcrumb-item ${isLast ? 'active' : ''}" onclick="navigateToBreadcrumb(${index})">
+        if (path && path.length > 0) {
+          path.forEach((folder, index) => {
+            const isLast = index === path.length - 1;
+            html += ` / <span class="breadcrumb-item ${isLast ? "active" : ""}" onclick="navigateToBreadcrumb(${index})">
                         ${folder.name}
                     </span>`;
-                });
-            }
-
-            container.innerHTML = html;
+          });
         }
 
-        // Navigate to root
-        async function navigateToRoot() {
-            currentFolderId = 'root';
-            folderPath = [];
-            await loadFolderBrowser('root');
+        container.innerHTML = html;
+      }
+
+      // Navigate to root
+      async function navigateToRoot() {
+        currentFolderId = "root";
+        folderPath = [];
+        await loadFolderBrowser("root");
+      }
+
+      // Navigate via breadcrumb
+      async function navigateToBreadcrumb(index) {
+        folderPath = folderPath.slice(0, index + 1);
+        const targetFolder = folderPath[index];
+        currentFolderId = targetFolder.id;
+        await loadFolderBrowser(currentFolderId);
+      }
+
+      // Select folder
+      function selectFolder(folderId, folderName, folderPath) {
+        selectedFolderInfo = {
+          id: folderId,
+          name: folderName,
+          path: folderPath,
+        };
+
+        document.getElementById("selectedFolderName").textContent = folderName;
+        document.getElementById("selectedFolderPath").textContent = folderPath;
+        document.getElementById("selectedFolder").style.display = "block";
+      }
+
+      // Confirm folder selection
+      async function confirmFolderSelection() {
+        if (!selectedFolderInfo) {
+          showAlert("danger", "No folder selected");
+          return;
         }
 
-        // Navigate via breadcrumb
-        async function navigateToBreadcrumb(index) {
-            folderPath = folderPath.slice(0, index + 1);
-            const targetFolder = folderPath[index];
-            currentFolderId = targetFolder.id;
-            await loadFolderBrowser(currentFolderId);
+        const dataType = document.getElementById("browserDataTypeSelect").value;
+
+        try {
+          const response = await fetch("/google-drive/configure-mapping", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              data_type: dataType,
+              folder_id: selectedFolderInfo.id,
+              folder_name: selectedFolderInfo.name,
+            }),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            showAlert("success", result.message);
+            bootstrap.Modal.getInstance(
+              document.getElementById("folderBrowserModal"),
+            ).hide();
+            loadStatus(); // Refresh the page
+          } else {
+            showAlert("danger", result.error);
+          }
+        } catch (error) {
+          showAlert("danger", "Failed to configure mapping: " + error.message);
+        }
+      }
+
+      // Refresh folder browser
+      function refreshFolderBrowser() {
+        loadFolderBrowser(currentFolderId);
+      }
+
+      // Smart folder setup variables
+      let smartSelectedFolder = null;
+      let detectedFileCategories = {};
+
+      // Load smart folder browser
+      async function loadSmartFolderBrowser(folderId = "root") {
+        const container = document.getElementById("smartFolderBrowser");
+        container.innerHTML =
+          '<div class="loading"><div class="spinner"></div><p>Loading folders...</p></div>';
+
+        try {
+          const response = await fetch(
+            `/google-drive/browse-folders/${folderId}`,
+          );
+          const result = await response.json();
+
+          if (result.success) {
+            displaySmartFolderBrowser(result.folders);
+          } else {
+            container.innerHTML = `<div class="alert alert-danger">${result.error}</div>`;
+          }
+        } catch (error) {
+          container.innerHTML = `<div class="alert alert-danger">Failed to load folders: ${error.message}</div>`;
+        }
+      }
+
+      // Display smart folder browser
+      function displaySmartFolderBrowser(folders) {
+        const container = document.getElementById("smartFolderBrowser");
+
+        if (folders.length === 0) {
+          container.innerHTML =
+            '<div class="alert alert-info">No folders found in this location</div>';
+          return;
         }
 
-        // Select folder
-        function selectFolder(folderId, folderName, folderPath) {
-            selectedFolderInfo = {
-                id: folderId,
-                name: folderName,
-                path: folderPath
-            };
+        let html = "";
 
-            document.getElementById('selectedFolderName').textContent = folderName;
-            document.getElementById('selectedFolderPath').textContent = folderPath;
-            document.getElementById('selectedFolder').style.display = 'block';
-        }
-
-        // Confirm folder selection
-        async function confirmFolderSelection() {
-            if (!selectedFolderInfo) {
-                showAlert('danger', 'No folder selected');
-                return;
-            }
-
-            const dataType = document.getElementById('browserDataTypeSelect').value;
-
-            try {
-                const response = await fetch('/google-drive/configure-mapping', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        data_type: dataType,
-                        folder_id: selectedFolderInfo.id,
-                        folder_name: selectedFolderInfo.name
-                    })
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    showAlert('success', result.message);
-                    bootstrap.Modal.getInstance(document.getElementById('folderBrowserModal')).hide();
-                    loadStatus(); // Refresh the page
-                } else {
-                    showAlert('danger', result.error);
-                }
-            } catch (error) {
-                showAlert('danger', 'Failed to configure mapping: ' + error.message);
-            }
-        }
-
-        // Refresh folder browser
-        function refreshFolderBrowser() {
-            loadFolderBrowser(currentFolderId);
-        }
-
-        // Smart folder setup variables
-        let smartSelectedFolder = null;
-        let detectedFileCategories = {};
-
-        // Load smart folder browser
-        async function loadSmartFolderBrowser(folderId = 'root') {
-            const container = document.getElementById('smartFolderBrowser');
-            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading folders...</p></div>';
-
-            try {
-                const response = await fetch(`/google-drive/browse-folders/${folderId}`);
-                const result = await response.json();
-
-                if (result.success) {
-                    displaySmartFolderBrowser(result.folders);
-                } else {
-                    container.innerHTML = `<div class="alert alert-danger">${result.error}</div>`;
-                }
-            } catch (error) {
-                container.innerHTML = `<div class="alert alert-danger">Failed to load folders: ${error.message}</div>`;
-            }
-        }
-
-        // Display smart folder browser
-        function displaySmartFolderBrowser(folders) {
-            const container = document.getElementById('smartFolderBrowser');
-
-            if (folders.length === 0) {
-                container.innerHTML = '<div class="alert alert-info">No folders found in this location</div>';
-                return;
-            }
-
-            let html = '';
-
-            folders.forEach(folder => {
-                html += `
+        folders.forEach((folder) => {
+          html += `
                     <div class="folder-item">
                         <i class="fas fa-folder"></i>
                         <div class="folder-name">${folder.name}</div>
@@ -1317,199 +1518,249 @@
                         </div>
                     </div>
                 `;
-            });
+        });
 
-            container.innerHTML = html;
+        container.innerHTML = html;
+      }
+
+      // Navigate smart folder
+      async function navigateSmartFolder(folderId, folderName) {
+        await loadSmartFolderBrowser(folderId);
+      }
+
+      // Analyze folder for CSV files
+      async function analyzeFolder(folderId, folderName) {
+        smartSelectedFolder = { id: folderId, name: folderName };
+
+        try {
+          showAlert("info", `Analyzing folder: ${folderName}...`);
+
+          const response = await fetch(
+            `/google-drive/analyze-folder/${folderId}`,
+          );
+          const result = await response.json();
+
+          if (result.success) {
+            detectedFileCategories = result.categorization;
+            displayFileAnalysis(result.categorization, result.files);
+          } else {
+            showAlert("danger", result.error);
+          }
+        } catch (error) {
+          showAlert("danger", "Failed to analyze folder: " + error.message);
+        }
+      }
+
+      // Display file analysis results
+      function displayFileAnalysis(categorization, allFiles) {
+        const detectedContainer = document.getElementById("detectedFiles");
+        const noFilesContainer = document.getElementById("noFilesDetected");
+        const categorizationContainer =
+          document.getElementById("fileCategorization");
+
+        if (Object.keys(categorization).length === 0) {
+          detectedContainer.style.display = "none";
+          noFilesContainer.style.display = "block";
+          return;
         }
 
-        // Navigate smart folder
-        async function navigateSmartFolder(folderId, folderName) {
-            await loadSmartFolderBrowser(folderId);
-        }
+        noFilesContainer.style.display = "none";
+        detectedContainer.style.display = "block";
 
-        // Analyze folder for CSV files
-        async function analyzeFolder(folderId, folderName) {
-            smartSelectedFolder = { id: folderId, name: folderName };
+        let html = "";
 
-            try {
-                showAlert('info', `Analyzing folder: ${folderName}...`);
+        // Define category info
+        const categoryInfo = {
+          customers: {
+            icon: "fas fa-users",
+            name: "Customers",
+            color: "customers",
+          },
+          vehicles: { icon: "fas fa-car", name: "Vehicles", color: "vehicles" },
+          jobs: {
+            icon: "fas fa-wrench",
+            name: "Jobs/Work Orders",
+            color: "jobs",
+          },
+          invoices: {
+            icon: "fas fa-file-invoice",
+            name: "Invoices",
+            color: "invoices",
+          },
+          documents: {
+            icon: "fas fa-file-alt",
+            name: "Documents",
+            color: "documents",
+          },
+          receipts: {
+            icon: "fas fa-receipt",
+            name: "Receipts/Payments",
+            color: "receipts",
+          },
+          parts: { icon: "fas fa-cogs", name: "Parts/Stock", color: "parts" },
+          suppliers: {
+            icon: "fas fa-truck",
+            name: "Suppliers",
+            color: "suppliers",
+          },
+          expenses: {
+            icon: "fas fa-money-bill",
+            name: "Expenses",
+            color: "expenses",
+          },
+          unknown: {
+            icon: "fas fa-question",
+            name: "Unknown/Other",
+            color: "unknown",
+          },
+        };
 
-                const response = await fetch(`/google-drive/analyze-folder/${folderId}`);
-                const result = await response.json();
+        for (const [category, files] of Object.entries(categorization)) {
+          const info = categoryInfo[category] || categoryInfo.unknown;
 
-                if (result.success) {
-                    detectedFileCategories = result.categorization;
-                    displayFileAnalysis(result.categorization, result.files);
-                } else {
-                    showAlert('danger', result.error);
-                }
-            } catch (error) {
-                showAlert('danger', 'Failed to analyze folder: ' + error.message);
-            }
-        }
-
-        // Display file analysis results
-        function displayFileAnalysis(categorization, allFiles) {
-            const detectedContainer = document.getElementById('detectedFiles');
-            const noFilesContainer = document.getElementById('noFilesDetected');
-            const categorizationContainer = document.getElementById('fileCategorization');
-
-            if (Object.keys(categorization).length === 0) {
-                detectedContainer.style.display = 'none';
-                noFilesContainer.style.display = 'block';
-                return;
-            }
-
-            noFilesContainer.style.display = 'none';
-            detectedContainer.style.display = 'block';
-
-            let html = '';
-
-            // Define category info
-            const categoryInfo = {
-                customers: { icon: 'fas fa-users', name: 'Customers', color: 'customers' },
-                vehicles: { icon: 'fas fa-car', name: 'Vehicles', color: 'vehicles' },
-                jobs: { icon: 'fas fa-wrench', name: 'Jobs/Work Orders', color: 'jobs' },
-                invoices: { icon: 'fas fa-file-invoice', name: 'Invoices', color: 'invoices' },
-                documents: { icon: 'fas fa-file-alt', name: 'Documents', color: 'documents' },
-                receipts: { icon: 'fas fa-receipt', name: 'Receipts/Payments', color: 'receipts' },
-                parts: { icon: 'fas fa-cogs', name: 'Parts/Stock', color: 'parts' },
-                suppliers: { icon: 'fas fa-truck', name: 'Suppliers', color: 'suppliers' },
-                expenses: { icon: 'fas fa-money-bill', name: 'Expenses', color: 'expenses' },
-                unknown: { icon: 'fas fa-question', name: 'Unknown/Other', color: 'unknown' }
-            };
-
-            for (const [category, files] of Object.entries(categorization)) {
-                const info = categoryInfo[category] || categoryInfo.unknown;
-
-                html += `
+          html += `
                     <div class="file-category category-${info.color}">
                         <h6>
                             <i class="${info.icon}"></i>
                             ${info.name}
-                            <span class="badge bg-secondary">${files.length} file${files.length !== 1 ? 's' : ''}</span>
+                            <span class="badge bg-secondary">${files.length} file${files.length !== 1 ? "s" : ""}</span>
                         </h6>
                         <div class="file-list">
                 `;
 
-                files.forEach(file => {
-                    html += `
+          files.forEach((file) => {
+            html += `
                         <div class="file-item">
                             <i class="fas fa-file-csv"></i>
                             <span>${file.name}</span>
                             <small class="text-muted ms-auto">${new Date(file.modifiedTime).toLocaleDateString()}</small>
                         </div>
                     `;
-                });
+          });
 
-                html += `
+          html += `
                         </div>
                     </div>
                 `;
-            }
-
-            categorizationContainer.innerHTML = html;
         }
 
-        // Confirm smart setup
-        async function confirmSmartSetup() {
-            if (!smartSelectedFolder || Object.keys(detectedFileCategories).length === 0) {
-                showAlert('danger', 'No folder selected or no files detected');
-                return;
-            }
+        categorizationContainer.innerHTML = html;
+      }
 
-            try {
-                showAlert('info', 'Setting up folder mappings...');
-
-                const response = await fetch('/google-drive/setup-smart-mapping', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        folder_id: smartSelectedFolder.id,
-                        folder_name: smartSelectedFolder.name,
-                        categorization: detectedFileCategories
-                    })
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    showAlert('success', `Smart setup complete! Configured ${result.mappings_created} data type mappings.`);
-                    bootstrap.Modal.getInstance(document.getElementById('smartFolderModal')).hide();
-                    loadStatus(); // Refresh the page
-                } else {
-                    showAlert('danger', result.error);
-                }
-            } catch (error) {
-                showAlert('danger', 'Failed to setup mappings: ' + error.message);
-            }
+      // Confirm smart setup
+      async function confirmSmartSetup() {
+        if (
+          !smartSelectedFolder ||
+          Object.keys(detectedFileCategories).length === 0
+        ) {
+          showAlert("danger", "No folder selected or no files detected");
+          return;
         }
 
-        // Refresh smart browser
-        function refreshSmartBrowser() {
-            loadSmartFolderBrowser();
+        try {
+          showAlert("info", "Setting up folder mappings...");
+
+          const response = await fetch("/google-drive/setup-smart-mapping", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              folder_id: smartSelectedFolder.id,
+              folder_name: smartSelectedFolder.name,
+              categorization: detectedFileCategories,
+            }),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            showAlert(
+              "success",
+              `Smart setup complete! Configured ${result.mappings_created} data type mappings.`,
+            );
+            bootstrap.Modal.getInstance(
+              document.getElementById("smartFolderModal"),
+            ).hide();
+            loadStatus(); // Refresh the page
+          } else {
+            showAlert("danger", result.error);
+          }
+        } catch (error) {
+          showAlert("danger", "Failed to setup mappings: " + error.message);
+        }
+      }
+
+      // Refresh smart browser
+      function refreshSmartBrowser() {
+        loadSmartFolderBrowser();
+      }
+
+      // Test connection
+      async function testConnection() {
+        try {
+          const response = await fetch("/google-drive/test-connection");
+          const result = await response.json();
+
+          if (result.success) {
+            showAlert(
+              "success",
+              `Connection successful! Connected as ${result.user_email}`,
+            );
+          } else {
+            showAlert("danger", `Connection failed: ${result.error}`);
+          }
+        } catch (error) {
+          showAlert("danger", "Failed to test connection: " + error.message);
+        }
+      }
+
+      // Show smart folder setup modal
+      function showSmartFolderSetup() {
+        if (!currentStatus || !currentStatus.connected) {
+          showAlert("danger", "Please connect to Google Drive first");
+          return;
         }
 
-        // Test connection
-        async function testConnection() {
-            try {
-                const response = await fetch('/google-drive/test-connection');
-                const result = await response.json();
+        const modal = new bootstrap.Modal(
+          document.getElementById("smartFolderModal"),
+        );
+        modal.show();
+        loadSmartFolderBrowser(); // Load root folders
+      }
 
-                if (result.success) {
-                    showAlert('success', `Connection successful! Connected as ${result.user_email}`);
-                } else {
-                    showAlert('danger', `Connection failed: ${result.error}`);
-                }
-            } catch (error) {
-                showAlert('danger', 'Failed to test connection: ' + error.message);
-            }
+      // Show folder browser modal
+      function showFolderBrowser() {
+        if (!currentStatus || !currentStatus.connected) {
+          showAlert("danger", "Please connect to Google Drive first");
+          return;
         }
 
-        // Show smart folder setup modal
-        function showSmartFolderSetup() {
-            if (!currentStatus || !currentStatus.connected) {
-                showAlert('danger', 'Please connect to Google Drive first');
-                return;
-            }
+        const modal = new bootstrap.Modal(
+          document.getElementById("folderBrowserModal"),
+        );
+        modal.show();
+        loadFolderBrowser(); // Load root folders
+      }
 
-            const modal = new bootstrap.Modal(document.getElementById('smartFolderModal'));
-            modal.show();
-            loadSmartFolderBrowser(); // Load root folders
+      // Show folder search modal
+      function showFolderSearch() {
+        if (!currentStatus || !currentStatus.connected) {
+          showAlert("danger", "Please connect to Google Drive first");
+          return;
         }
 
-        // Show folder browser modal
-        function showFolderBrowser() {
-            if (!currentStatus || !currentStatus.connected) {
-                showAlert('danger', 'Please connect to Google Drive first');
-                return;
-            }
+        folderSearchModal.show();
+        searchFolders(); // Load initial results
+      }
 
-            const modal = new bootstrap.Modal(document.getElementById('folderBrowserModal'));
-            modal.show();
-            loadFolderBrowser(); // Load root folders
-        }
+      // Search folders
+      async function searchFolders() {
+        const query = document.getElementById("folderSearchInput").value.trim();
+        const resultsContainer = document.getElementById("folderSearchResults");
 
-        // Show folder search modal
-        function showFolderSearch() {
-            if (!currentStatus || !currentStatus.connected) {
-                showAlert('danger', 'Please connect to Google Drive first');
-                return;
-            }
-
-            folderSearchModal.show();
-            searchFolders(); // Load initial results
-        }
-
-        // Search folders
-        async function searchFolders() {
-            const query = document.getElementById('folderSearchInput').value.trim();
-            const resultsContainer = document.getElementById('folderSearchResults');
-
-            if (query.length < 2) {
-                resultsContainer.innerHTML = `
+        if (query.length < 2) {
+          resultsContainer.innerHTML = `
                     <div class="alert alert-info">
                         <i class="fas fa-search"></i> Enter at least 2 characters to search
                     </div>
@@ -1524,60 +1775,63 @@
                         </div>
                     </div>
                 `;
-                return;
-            }
-
-            resultsContainer.innerHTML = '<div class="loading"><div class="spinner"></div><p>Searching folders...</p></div>';
-
-            try {
-                const response = await fetch(`/google-drive/search-folders?query=${encodeURIComponent(query)}`);
-                const result = await response.json();
-
-                if (result.success) {
-                    displayFolderSearchResults(result.folders, query);
-                } else {
-                    resultsContainer.innerHTML = `<div class="alert alert-danger">${result.error}</div>`;
-                }
-            } catch (error) {
-                resultsContainer.innerHTML = `<div class="alert alert-danger">Search failed: ${error.message}</div>`;
-            }
+          return;
         }
 
-        // Search for specific term
-        function searchForTerm(term) {
-            document.getElementById('folderSearchInput').value = term;
-            searchFolders();
+        resultsContainer.innerHTML =
+          '<div class="loading"><div class="spinner"></div><p>Searching folders...</p></div>';
+
+        try {
+          const response = await fetch(
+            `/google-drive/search-folders?query=${encodeURIComponent(query)}`,
+          );
+          const result = await response.json();
+
+          if (result.success) {
+            displayFolderSearchResults(result.folders, query);
+          } else {
+            resultsContainer.innerHTML = `<div class="alert alert-danger">${result.error}</div>`;
+          }
+        } catch (error) {
+          resultsContainer.innerHTML = `<div class="alert alert-danger">Search failed: ${error.message}</div>`;
         }
+      }
 
-        // Display folder search results
-        function displayFolderSearchResults(folders, query = '') {
-            const container = document.getElementById('folderSearchResults');
+      // Search for specific term
+      function searchForTerm(term) {
+        document.getElementById("folderSearchInput").value = term;
+        searchFolders();
+      }
 
-            if (folders.length === 0) {
-                container.innerHTML = `
+      // Display folder search results
+      function displayFolderSearchResults(folders, query = "") {
+        const container = document.getElementById("folderSearchResults");
+
+        if (folders.length === 0) {
+          container.innerHTML = `
                     <div class="alert alert-warning">
                         <i class="fas fa-search"></i> No folders found matching "${query}"
                         <br><small>Try searching for "ELI", "MOTORS", "customers", "vehicles", or other keywords</small>
                     </div>
                 `;
-                return;
-            }
+          return;
+        }
 
-            let html = `
+        let html = `
                 <div class="mb-2">
-                    <small class="text-muted">Found ${folders.length} folder${folders.length !== 1 ? 's' : ''} matching "${query}"</small>
+                    <small class="text-muted">Found ${folders.length} folder${folders.length !== 1 ? "s" : ""} matching "${query}"</small>
                 </div>
                 <div class="list-group">
             `;
 
-            folders.forEach(folder => {
-                // Highlight search term in folder name
-                const highlightedName = folder.name.replace(
-                    new RegExp(`(${query})`, 'gi'),
-                    '<mark>$1</mark>'
-                );
+        folders.forEach((folder) => {
+          // Highlight search term in folder name
+          const highlightedName = folder.name.replace(
+            new RegExp(`(${query})`, "gi"),
+            "<mark>$1</mark>",
+          );
 
-                html += `
+          html += `
                     <div class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="flex-grow-1">
                             <div class="d-flex align-items-center mb-1">
@@ -1592,200 +1846,212 @@
                         </button>
                     </div>
                 `;
-            });
+        });
 
-            html += '</div>';
-            container.innerHTML = html;
+        html += "</div>";
+        container.innerHTML = html;
+      }
+
+      // Configure folder mapping
+      async function configureMapping(folderId, folderName) {
+        const dataType = document.getElementById("dataTypeSelect").value;
+
+        try {
+          const response = await fetch("/google-drive/configure-mapping", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              data_type: dataType,
+              folder_id: folderId,
+              folder_name: folderName,
+            }),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            showAlert("success", result.message);
+            folderSearchModal.hide();
+            loadStatus(); // Refresh the page
+          } else {
+            showAlert("danger", result.error);
+          }
+        } catch (error) {
+          showAlert("danger", "Failed to configure mapping: " + error.message);
         }
+      }
 
-        // Configure folder mapping
-        async function configureMapping(folderId, folderName) {
-            const dataType = document.getElementById('dataTypeSelect').value;
+      // Sync specific folder
+      async function syncFolder(dataType) {
+        try {
+          showAlert("info", `Syncing ${dataType}...`);
 
-            try {
-                const response = await fetch('/google-drive/configure-mapping', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        data_type: dataType,
-                        folder_id: folderId,
-                        folder_name: folderName
-                    })
-                });
+          const response = await fetch(`/google-drive/sync/${dataType}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ force: false }),
+          });
 
-                const result = await response.json();
+          const result = await response.json();
 
-                if (result.success) {
-                    showAlert('success', result.message);
-                    folderSearchModal.hide();
-                    loadStatus(); // Refresh the page
-                } else {
-                    showAlert('danger', result.error);
-                }
-            } catch (error) {
-                showAlert('danger', 'Failed to configure mapping: ' + error.message);
-            }
+          if (result.success) {
+            const message = result.message || `${dataType} synced successfully`;
+            showAlert("success", message);
+            loadStatus(); // Refresh status
+          } else {
+            showAlert("danger", result.error);
+          }
+        } catch (error) {
+          showAlert("danger", `Failed to sync ${dataType}: ` + error.message);
         }
+      }
 
-        // Sync specific folder
-        async function syncFolder(dataType) {
-            try {
-                showAlert('info', `Syncing ${dataType}...`);
+      // Sync all folders
+      async function syncAllFolders(force = false) {
+        try {
+          showAlert("info", "Syncing all folders...");
 
-                const response = await fetch(`/google-drive/sync/${dataType}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ force: false })
-                });
+          const response = await fetch("/google-drive/sync-all", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ force: force }),
+          });
 
-                const result = await response.json();
+          const result = await response.json();
 
-                if (result.success) {
-                    const message = result.message || `${dataType} synced successfully`;
-                    showAlert('success', message);
-                    loadStatus(); // Refresh status
-                } else {
-                    showAlert('danger', result.error);
-                }
-            } catch (error) {
-                showAlert('danger', `Failed to sync ${dataType}: ` + error.message);
-            }
+          if (result.success) {
+            showAlert(
+              "success",
+              `Sync completed! Imported ${result.total_imported} records`,
+            );
+            displaySyncResults(result.results);
+            loadStatus(); // Refresh status
+          } else {
+            showAlert("danger", result.error);
+          }
+        } catch (error) {
+          showAlert("danger", "Failed to sync folders: " + error.message);
         }
+      }
 
-        // Sync all folders
-        async function syncAllFolders(force = false) {
-            try {
-                showAlert('info', 'Syncing all folders...');
+      // Display sync results
+      function displaySyncResults(results) {
+        const container = document.getElementById("syncResults");
 
-                const response = await fetch('/google-drive/sync-all', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ force: force })
-                });
+        let html = '<h6>Sync Results:</h6><div class="row">';
 
-                const result = await response.json();
+        for (const [dataType, result] of Object.entries(results)) {
+          const statusClass = result.success ? "text-success" : "text-danger";
+          const icon = result.success ? "fa-check-circle" : "fa-times-circle";
 
-                if (result.success) {
-                    showAlert('success', `Sync completed! Imported ${result.total_imported} records`);
-                    displaySyncResults(result.results);
-                    loadStatus(); // Refresh status
-                } else {
-                    showAlert('danger', result.error);
-                }
-            } catch (error) {
-                showAlert('danger', 'Failed to sync folders: ' + error.message);
-            }
-        }
-
-        // Display sync results
-        function displaySyncResults(results) {
-            const container = document.getElementById('syncResults');
-
-            let html = '<h6>Sync Results:</h6><div class="row">';
-
-            for (const [dataType, result] of Object.entries(results)) {
-                const statusClass = result.success ? 'text-success' : 'text-danger';
-                const icon = result.success ? 'fa-check-circle' : 'fa-times-circle';
-
-                html += `
+          html += `
                     <div class="col-md-6 mb-2">
                         <div class="d-flex align-items-center">
                             <i class="fas ${icon} ${statusClass} me-2"></i>
                             <strong>${dataType}:</strong>
                             <span class="ms-2">
-                                ${result.success ?
-                                    `${result.imported || 0} imported` :
-                                    result.error
+                                ${
+                                  result.success
+                                    ? `${result.imported || 0} imported`
+                                    : result.error
                                 }
                             </span>
                         </div>
                     </div>
                 `;
-            }
-
-            html += '</div>';
-            container.innerHTML = html;
-            container.style.display = 'block';
         }
 
-        // Toggle auto sync
-        async function toggleAutoSync() {
-            const enabled = document.getElementById('autoSyncToggle').checked;
+        html += "</div>";
+        container.innerHTML = html;
+        container.style.display = "block";
+      }
 
-            try {
-                const response = await fetch('/google-drive/auto-sync', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        enabled: enabled,
-                        interval_minutes: 30
-                    })
-                });
+      // Toggle auto sync
+      async function toggleAutoSync() {
+        const enabled = document.getElementById("autoSyncToggle").checked;
 
-                const result = await response.json();
+        try {
+          const response = await fetch("/google-drive/auto-sync", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              enabled: enabled,
+              interval_minutes: 30,
+            }),
+          });
 
-                if (result.success) {
-                    showAlert('success', result.message);
-                } else {
-                    showAlert('danger', result.error);
-                    // Revert toggle
-                    document.getElementById('autoSyncToggle').checked = !enabled;
-                }
-            } catch (error) {
-                showAlert('danger', 'Failed to configure auto-sync: ' + error.message);
-                // Revert toggle
-                document.getElementById('autoSyncToggle').checked = !enabled;
-            }
+          const result = await response.json();
+
+          if (result.success) {
+            showAlert("success", result.message);
+          } else {
+            showAlert("danger", result.error);
+            // Revert toggle
+            document.getElementById("autoSyncToggle").checked = !enabled;
+          }
+        } catch (error) {
+          showAlert(
+            "danger",
+            "Failed to configure auto-sync: " + error.message,
+          );
+          // Revert toggle
+          document.getElementById("autoSyncToggle").checked = !enabled;
+        }
+      }
+
+      // Load sync history
+      async function loadSyncHistory() {
+        try {
+          const response = await fetch("/google-drive/sync-history");
+          const result = await response.json();
+
+          if (result.success) {
+            displaySyncHistory(result.history);
+          } else {
+            document.getElementById("syncHistory").innerHTML =
+              `<div class="alert alert-danger">${result.error}</div>`;
+          }
+        } catch (error) {
+          document.getElementById("syncHistory").innerHTML =
+            `<div class="alert alert-danger">Failed to load sync history: ${error.message}</div>`;
+        }
+      }
+
+      // Display sync history
+      function displaySyncHistory(history) {
+        const container = document.getElementById("syncHistory");
+
+        if (history.length === 0) {
+          container.innerHTML =
+            '<div class="alert alert-info">No sync history available</div>';
+          return;
         }
 
-        // Load sync history
-        async function loadSyncHistory() {
-            try {
-                const response = await fetch('/google-drive/sync-history');
-                const result = await response.json();
+        let html = '<div class="list-group">';
 
-                if (result.success) {
-                    displaySyncHistory(result.history);
-                } else {
-                    document.getElementById('syncHistory').innerHTML =
-                        `<div class="alert alert-danger">${result.error}</div>`;
-                }
-            } catch (error) {
-                document.getElementById('syncHistory').innerHTML =
-                    `<div class="alert alert-danger">Failed to load sync history: ${error.message}</div>`;
-            }
-        }
+        history.forEach((entry) => {
+          const timestamp = new Date(entry.timestamp).toLocaleString();
+          const statusClass =
+            entry.status === "completed" ? "text-success" : "text-danger";
+          const icon =
+            entry.status === "completed"
+              ? "fa-check-circle"
+              : "fa-times-circle";
 
-        // Display sync history
-        function displaySyncHistory(history) {
-            const container = document.getElementById('syncHistory');
-
-            if (history.length === 0) {
-                container.innerHTML = '<div class="alert alert-info">No sync history available</div>';
-                return;
-            }
-
-            let html = '<div class="list-group">';
-
-            history.forEach(entry => {
-                const timestamp = new Date(entry.timestamp).toLocaleString();
-                const statusClass = entry.status === 'completed' ? 'text-success' : 'text-danger';
-                const icon = entry.status === 'completed' ? 'fa-check-circle' : 'fa-times-circle';
-
-                html += `
+          html += `
                     <div class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
                             <div class="d-flex align-items-center">
                                 <i class="fas ${icon} ${statusClass} me-2"></i>
-                                <strong>${entry.type.replace('_', ' ').toUpperCase()}</strong>
+                                <strong>${entry.type.replace("_", " ").toUpperCase()}</strong>
                             </div>
                             <small class="text-muted">${timestamp}</small>
                         </div>
@@ -1794,22 +2060,22 @@
                         </div>
                     </div>
                 `;
-            });
+        });
 
-            html += '</div>';
-            container.innerHTML = html;
-        }
+        html += "</div>";
+        container.innerHTML = html;
+      }
 
-        // Show alert
-        function showAlert(type, message) {
-            // Remove existing alerts
-            const existingAlerts = document.querySelectorAll('.alert-floating');
-            existingAlerts.forEach(alert => alert.remove());
+      // Show alert
+      function showAlert(type, message) {
+        // Remove existing alerts
+        const existingAlerts = document.querySelectorAll(".alert-floating");
+        existingAlerts.forEach((alert) => alert.remove());
 
-            // Create new alert
-            const alert = document.createElement('div');
-            alert.className = `alert alert-${type} alert-floating`;
-            alert.style.cssText = `
+        // Create new alert
+        const alert = document.createElement("div");
+        alert.className = `alert alert-${type} alert-floating`;
+        alert.style.cssText = `
                 position: fixed;
                 top: 20px;
                 right: 20px;
@@ -1817,23 +2083,23 @@
                 min-width: 300px;
                 box-shadow: 0 4px 20px rgba(0,0,0,0.15);
             `;
-            alert.innerHTML = `
+        alert.innerHTML = `
                 <div class="d-flex align-items-center">
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'danger' ? 'times-circle' : 'info-circle'} me-2"></i>
+                    <i class="fas fa-${type === "success" ? "check-circle" : type === "danger" ? "times-circle" : "info-circle"} me-2"></i>
                     ${message}
                     <button type="button" class="btn-close ms-auto" onclick="this.parentElement.parentElement.remove()"></button>
                 </div>
             `;
 
-            document.body.appendChild(alert);
+        document.body.appendChild(alert);
 
-            // Auto remove after 5 seconds
-            setTimeout(() => {
-                if (alert.parentElement) {
-                    alert.remove();
-                }
-            }, 5000);
-        }
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+          if (alert.parentElement) {
+            alert.remove();
+          }
+        }, 5000);
+      }
     </script>
-</body>
+  </body>
 </html>

@@ -1,12 +1,14 @@
 import os
-import requests
-from datetime import datetime, timedelta
-import schedule
 import time
+from datetime import datetime, timedelta
+
+import requests
+import schedule
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
+
 
 def format_date_for_display(date_string):
     """Convert date from various formats to DD-MM-YYYY format for display"""
@@ -62,7 +64,8 @@ def format_date_for_display(date_string):
                 if len(parts[0]) == 4:
                     # YYYY-MM-DD format
                     try:
-                        date_obj = datetime.strptime(str(date_string), '%Y-%m-%d')
+                        date_obj = datetime.strptime(
+                            str(date_string), '%Y-%m-%d')
                     except ValueError:
                         pass
                 elif len(parts[2]) == 4:
@@ -80,7 +83,8 @@ def format_date_for_display(date_string):
                 except ValueError:
                     try:
                         # Try YYYY/MM/DD format
-                        date_obj = datetime.strptime(str(date_string), '%Y/%m/%d')
+                        date_obj = datetime.strptime(
+                            str(date_string), '%Y/%m/%d')
                     except ValueError:
                         pass
         else:
@@ -101,10 +105,12 @@ def format_date_for_display(date_string):
         print(f"Error formatting date '{date_string}': {e}")
         return str(date_string)  # Return original if parsing fails
 
+
 class MOTReminder:
     def __init__(self):
         self.client_id = os.getenv('DVSA_CLIENT_ID') or os.getenv('CLIENT_ID')
-        self.client_secret = os.getenv('DVSA_CLIENT_SECRET') or os.getenv('CLIENT_SECRET')
+        self.client_secret = os.getenv(
+            'DVSA_CLIENT_SECRET') or os.getenv('CLIENT_SECRET')
         self.api_key = os.getenv('DVSA_API_KEY') or os.getenv('API_KEY')
         self.token_url = os.getenv('DVSA_TOKEN_URL') or os.getenv('TOKEN_URL')
         self.scope = "https://tapi.dvsa.gov.uk/.default"
@@ -128,9 +134,9 @@ class MOTReminder:
                 'client_secret': self.client_secret,
                 'scope': self.scope
             }
-            
+
             response = requests.post(self.token_url, data=payload)
-            
+
             if response.status_code == 200:
                 token_data = response.json()
                 self.access_token = token_data['access_token']
@@ -138,9 +144,10 @@ class MOTReminder:
                 self.token_expiry = datetime.now() + timedelta(minutes=55)
                 return self.access_token
             else:
-                print(f"Error getting access token: {response.status_code} - {response.text}")
+                print(
+                    f"Error getting access token: {response.status_code} - {response.text}")
                 return None
-                
+
         except Exception as e:
             print(f"Error in authentication: {str(e)}")
             return None
@@ -158,16 +165,16 @@ class MOTReminder:
                 'Authorization': f'Bearer {token}',
                 'X-API-Key': self.api_key
             }
-            
+
             url = f"{self.base_url}/registration/{registration_number.replace(' ', '')}"
             response = requests.get(url, headers=headers)
-            
+
             if response.status_code == 200:
                 return response.json()
             else:
                 print(f"Error: {response.status_code} - {response.text}")
                 return None
-                
+
         except Exception as e:
             print(f"Error fetching vehicle details: {str(e)}")
             return None
@@ -177,10 +184,10 @@ class MOTReminder:
         Check MOT status and return days until expiry
         """
         vehicle_data = self.get_vehicle_details(registration_number)
-        
+
         if not vehicle_data:
             return None
-            
+
         try:
             # Get the most recent MOT test
             mot_tests = vehicle_data.get('motTests', [])
@@ -198,21 +205,26 @@ class MOTReminder:
             except ValueError:
                 try:
                     # Try alternative format
-                    expiry_date = datetime.strptime(expiry_date_str, '%Y-%m-%d')
+                    expiry_date = datetime.strptime(
+                        expiry_date_str, '%Y-%m-%d')
                 except ValueError:
                     try:
                         # If both fail, try ISO format
-                        expiry_date = datetime.fromisoformat(expiry_date_str.replace('Z', '+00:00'))
+                        expiry_date = datetime.fromisoformat(
+                            expiry_date_str.replace('Z', '+00:00'))
                     except ValueError:
-                        print(f"ERROR: Could not parse expiry date format: '{expiry_date_str}'")
+                        print(
+                            f"ERROR: Could not parse expiry date format: '{expiry_date_str}'")
                         return None
 
             today = datetime.now()
             days_until_expiry = (expiry_date - today).days
 
             # Format dates for display
-            formatted_expiry = format_date_for_display(latest_test['expiryDate'])
-            formatted_completed = format_date_for_display(latest_test.get('completedDate', 'Unknown'))
+            formatted_expiry = format_date_for_display(
+                latest_test['expiryDate'])
+            formatted_completed = format_date_for_display(
+                latest_test.get('completedDate', 'Unknown'))
 
             return {
                 'registration': registration_number,
@@ -248,6 +260,7 @@ class MOTReminder:
             print(f"Last test result: {vehicle_info['test_result']}")
             print("Please book your MOT test immediately!\n")
 
+
 def main():
     # Create .env file if it doesn't exist
     if not os.path.exists('.env'):
@@ -260,12 +273,12 @@ TOKEN_URL=your_token_url_here''')
         return
 
     reminder = MOTReminder()
-    
+
     # Example usage
     def check_vehicles():
         # Add your vehicle registration numbers here
         vehicles = ['AB12CDE']  # Replace with actual registration numbers
-        
+
         for reg in vehicles:
             vehicle_info = reminder.check_mot_status(reg)
             if vehicle_info:
@@ -273,13 +286,14 @@ TOKEN_URL=your_token_url_here''')
 
     # Schedule daily checks
     schedule.every().day.at("09:00").do(check_vehicles)
-    
+
     print("MOT Reminder Service Started")
     print("Checking vehicles daily at 09:00")
-    
+
     while True:
         schedule.run_pending()
         time.sleep(60)
 
+
 if __name__ == "__main__":
-    main() 
+    main()

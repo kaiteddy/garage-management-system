@@ -5,110 +5,109 @@
  */
 
 // Global navigation state
-let currentActivePage = 'dashboard';
+let currentActivePage = 'dashboard'
 
 /**
  * Primary navigation function - defined immediately and globally
  */
-window.showPage = function(pageId) {
-    console.log('🔧 Navigation to:', pageId);
+window.showPage = function (pageId) {
+  console.log('🔧 Navigation to:', pageId)
 
-    try {
-        // Save current page to localStorage for refresh persistence
-        currentActivePage = pageId;
-        localStorage.setItem('currentActivePage', pageId);
+  try {
+    // Save current page to localStorage for refresh persistence
+    currentActivePage = pageId
+    localStorage.setItem('currentActivePage', pageId)
 
-        // Hide all pages
-        document.querySelectorAll('.page').forEach(page => {
-            page.classList.remove('active');
-        });
+    // Hide all pages
+    document.querySelectorAll('.page').forEach((page) => {
+      page.classList.remove('active')
+    })
 
-        // Remove active class from all nav items
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.remove('active');
-        });
+    // Remove active class from all nav items
+    document.querySelectorAll('.nav-item').forEach((item) => {
+      item.classList.remove('active')
+    })
 
-        // Show selected page
-        const pageElement = document.getElementById(pageId);
-        if (pageElement) {
-            pageElement.classList.add('active');
-            console.log('✅ Page shown successfully:', pageId);
-        } else {
-            console.error('❌ Page element not found:', pageId);
-            return;
-        }
-
-        // Add active class to selected nav item
-        const navItem = document.querySelector(`.nav-item[onclick*="'${pageId}'"]`);
-        if (navItem) {
-            navItem.classList.add('active');
-        }
-
-        // Load data for the page if needed
-        loadPageData(pageId);
-
-    } catch (error) {
-        console.error('💥 Error in navigation:', error);
+    // Show selected page
+    const pageElement = document.getElementById(pageId)
+    if (pageElement) {
+      pageElement.classList.add('active')
+      console.log('✅ Page shown successfully:', pageId)
+    } else {
+      console.error('❌ Page element not found:', pageId)
+      return
     }
-};
+
+    // Add active class to selected nav item
+    const navItem = document.querySelector(`.nav-item[onclick*="'${pageId}'"]`)
+    if (navItem) {
+      navItem.classList.add('active')
+    }
+
+    // Load data for the page if needed
+    loadPageData(pageId)
+  } catch (error) {
+    console.error('💥 Error in navigation:', error)
+  }
+}
 
 /**
  * Load data for specific pages
  */
-function loadPageData(pageId) {
-    switch(pageId) {
-        case 'dashboard':
-            loadDashboardContent();
-            break;
-        case 'customers':
-            loadCustomersPage();
-            break;
-        case 'vehicles':
-            if (typeof loadVehiclesFromAPI === 'function') {
-                loadVehiclesFromAPI();
-            }
-            break;
-        case 'jobs':
-            if (typeof loadJobsFromAPI === 'function') {
-                loadJobsFromAPI();
-            }
-            break;
-        case 'invoices':
-            if (typeof loadInvoicesFromAPI === 'function') {
-                loadInvoicesFromAPI();
-            }
-            break;
-        case 'mot-reminders':
-            loadMOTRemindersPage();
-            break;
-        case 'upload':
-            if (typeof loadUploadStatus === 'function') {
-                loadUploadStatus();
-            }
-            break;
-        case 'settings':
-            loadSettingsPage();
-            break;
-        default:
-            // No specific data loading needed
-            break;
-    }
+function loadPageData (pageId) {
+  switch (pageId) {
+    case 'dashboard':
+      loadDashboardContent()
+      break
+    case 'customers':
+      loadCustomersPage()
+      break
+    case 'vehicles':
+      if (typeof loadVehiclesFromAPI === 'function') {
+        loadVehiclesFromAPI()
+      }
+      break
+    case 'jobs':
+      if (typeof loadJobsFromAPI === 'function') {
+        loadJobsFromAPI()
+      }
+      break
+    case 'invoices':
+      if (typeof loadInvoicesFromAPI === 'function') {
+        loadInvoicesFromAPI()
+      }
+      break
+    case 'mot-reminders':
+      loadMOTRemindersPage()
+      break
+    case 'upload':
+      if (typeof loadUploadStatus === 'function') {
+        loadUploadStatus()
+      }
+      break
+    case 'settings':
+      loadSettingsPage()
+      break
+    default:
+      // No specific data loading needed
+      break
+  }
 }
 
 /**
  * Load customers page content
  */
-function loadCustomersPage() {
-    console.log('👥 Loading customers page...');
+function loadCustomersPage () {
+  console.log('👥 Loading customers page...')
 
-    const customersContent = document.getElementById('customers-content');
-    if (!customersContent) {
-        console.error('❌ Customers content container not found');
-        return;
-    }
+  const customersContent = document.getElementById('customers-content')
+  if (!customersContent) {
+    console.error('❌ Customers content container not found')
+    return
+  }
 
-    // Create customers page HTML content
-    const customersHTML = `
+  // Create customers page HTML content
+  const customersHTML = `
         <div class="page-header">
             <div>
                 <h1 class="page-title">
@@ -213,31 +212,31 @@ function loadCustomersPage() {
                 <div id="customers-pagination" class="pagination-container"></div>
             </div>
         </div>
-    `;
+    `
 
-    // Insert the HTML content
-    customersContent.innerHTML = customersHTML;
+  // Insert the HTML content
+  customersContent.innerHTML = customersHTML
 
-    // Load customer data
-    loadCustomersData();
+  // Load customer data
+  loadCustomersData()
 
-    console.log('✅ Customers page content loaded');
+  console.log('✅ Customers page content loaded')
 }
 
 /**
  * Load MOT Reminders page content
  */
-function loadMOTRemindersPage() {
-    console.log('🚗 Loading MOT Reminders page...');
+function loadMOTRemindersPage () {
+  console.log('🚗 Loading MOT Reminders page...')
 
-    const motContent = document.getElementById('mot-reminders-content');
-    if (!motContent) {
-        console.error('❌ MOT reminders content container not found');
-        return;
-    }
+  const motContent = document.getElementById('mot-reminders-content')
+  if (!motContent) {
+    console.error('❌ MOT reminders content container not found')
+    return
+  }
 
-    // Create MOT reminders page HTML content
-    const motHTML = `
+  // Create MOT reminders page HTML content
+  const motHTML = `
         <div class="page-header">
             <div>
                 <h1 class="page-title">
@@ -387,51 +386,51 @@ function loadMOTRemindersPage() {
                 </div>
             </div>
         </div>
-    `;
+    `
 
-    // Insert the HTML content
-    motContent.innerHTML = motHTML;
+  // Insert the HTML content
+  motContent.innerHTML = motHTML
 
-    // Load MOT data
-    loadMOTData();
+  // Load MOT data
+  loadMOTData()
 
-    console.log('✅ MOT Reminders page content loaded');
+  console.log('✅ MOT Reminders page content loaded')
 }
 
 /**
  * Load MOT data from API
  */
-async function loadMOTData() {
-    try {
-        console.log('🔄 Loading MOT data...');
+async function loadMOTData () {
+  try {
+    console.log('🔄 Loading MOT data...')
 
-        // Use the correct MOT API endpoint with /mot prefix
-        const response = await fetch('/mot/api/vehicles');
-        const result = await response.json();
+    // Use the correct MOT API endpoint with /mot prefix
+    const response = await fetch('/mot/api/vehicles')
+    const result = await response.json()
 
-        if (result && result.success) {
-            console.log(`✅ Found ${result.vehicles.length} MOT vehicles`);
-            displayMOTVehicles(result.vehicles);
-            updateMOTStats(result.vehicles);
-        } else {
-            console.error('❌ No MOT data in response:', result);
-            showMOTError('No MOT data available');
-        }
-    } catch (error) {
-        console.error('Failed to load MOT data:', error);
-        showMOTError('Failed to load MOT data');
+    if (result && result.success) {
+      console.log(`✅ Found ${result.vehicles.length} MOT vehicles`)
+      displayMOTVehicles(result.vehicles)
+      updateMOTStats(result.vehicles)
+    } else {
+      console.error('❌ No MOT data in response:', result)
+      showMOTError('No MOT data available')
     }
+  } catch (error) {
+    console.error('Failed to load MOT data:', error)
+    showMOTError('Failed to load MOT data')
+  }
 }
 
 /**
  * Display MOT vehicles in the table
  */
-function displayMOTVehicles(vehicles) {
-    const tbody = document.getElementById('mot-vehicles-table-body');
-    if (!tbody) return;
+function displayMOTVehicles (vehicles) {
+  const tbody = document.getElementById('mot-vehicles-table-body')
+  if (!tbody) return
 
-    if (!vehicles || vehicles.length === 0) {
-        tbody.innerHTML = `
+  if (!vehicles || vehicles.length === 0) {
+    tbody.innerHTML = `
             <tr>
                 <td colspan="7" class="text-center py-8">
                     <div class="text-gray-500">
@@ -443,15 +442,16 @@ function displayMOTVehicles(vehicles) {
                     </div>
                 </td>
             </tr>
-        `;
-        return;
-    }
+        `
+    return
+  }
 
-    tbody.innerHTML = vehicles.map(vehicle => {
-        const statusClass = getStatusClass(vehicle);
-        const statusText = getStatusText(vehicle);
+  tbody.innerHTML = vehicles
+    .map((vehicle) => {
+      const statusClass = getStatusClass(vehicle)
+      const statusText = getStatusText(vehicle)
 
-        return `
+      return `
             <tr class="hover:bg-gray-50 ${statusClass}">
                 <td>
                     <div class="flex items-center gap-2">
@@ -500,67 +500,73 @@ function displayMOTVehicles(vehicles) {
                     </div>
                 </td>
             </tr>
-        `;
-    }).join('');
+        `
+    })
+    .join('')
 
-    // Set up checkbox event listeners
-    setupCheckboxListeners();
+  // Set up checkbox event listeners
+  setupCheckboxListeners()
 }
 
 /**
  * Update MOT statistics
  */
-function updateMOTStats(vehicles) {
-    const stats = {
-        expired: vehicles.filter(v => v.is_expired).length,
-        critical: vehicles.filter(v => !v.is_expired && v.days_until_expiry <= 7).length,
-        due_soon: vehicles.filter(v => !v.is_expired && v.days_until_expiry > 7 && v.days_until_expiry <= 30).length,
-        valid: vehicles.filter(v => !v.is_expired && v.days_until_expiry > 30).length
-    };
+function updateMOTStats (vehicles) {
+  const stats = {
+    expired: vehicles.filter((v) => v.is_expired).length,
+    critical: vehicles.filter((v) => !v.is_expired && v.days_until_expiry <= 7)
+      .length,
+    due_soon: vehicles.filter(
+      (v) =>
+        !v.is_expired && v.days_until_expiry > 7 && v.days_until_expiry <= 30
+    ).length,
+    valid: vehicles.filter((v) => !v.is_expired && v.days_until_expiry > 30)
+      .length
+  }
 
-    // Update stat cards
-    const expiredElement = document.getElementById('expired-count');
-    const criticalElement = document.getElementById('critical-count');
-    const dueSoonElement = document.getElementById('due-soon-count');
-    const validElement = document.getElementById('valid-count');
+  // Update stat cards
+  const expiredElement = document.getElementById('expired-count')
+  const criticalElement = document.getElementById('critical-count')
+  const dueSoonElement = document.getElementById('due-soon-count')
+  const validElement = document.getElementById('valid-count')
 
-    if (expiredElement) expiredElement.textContent = stats.expired;
-    if (criticalElement) criticalElement.textContent = stats.critical;
-    if (dueSoonElement) dueSoonElement.textContent = stats.due_soon;
-    if (validElement) validElement.textContent = stats.valid;
+  if (expiredElement) expiredElement.textContent = stats.expired
+  if (criticalElement) criticalElement.textContent = stats.critical
+  if (dueSoonElement) dueSoonElement.textContent = stats.due_soon
+  if (validElement) validElement.textContent = stats.valid
 }
 
 /**
  * Helper functions for MOT display
  */
-function getStatusClass(vehicle) {
-    if (vehicle.is_expired) return 'bg-red-50';
-    if (vehicle.days_until_expiry <= 7) return 'bg-orange-50';
-    if (vehicle.days_until_expiry <= 30) return 'bg-yellow-50';
-    return 'bg-green-50';
+function getStatusClass (vehicle) {
+  if (vehicle.is_expired) return 'bg-red-50'
+  if (vehicle.days_until_expiry <= 7) return 'bg-orange-50'
+  if (vehicle.days_until_expiry <= 30) return 'bg-yellow-50'
+  return 'bg-green-50'
 }
 
-function getStatusText(vehicle) {
-    if (vehicle.is_expired) return 'EXPIRED';
-    if (vehicle.days_until_expiry <= 7) return 'CRITICAL';
-    if (vehicle.days_until_expiry <= 30) return 'DUE SOON';
-    return 'VALID';
+function getStatusText (vehicle) {
+  if (vehicle.is_expired) return 'EXPIRED'
+  if (vehicle.days_until_expiry <= 7) return 'CRITICAL'
+  if (vehicle.days_until_expiry <= 30) return 'DUE SOON'
+  return 'VALID'
 }
 
-function getDaysRemainingClass(days) {
-    if (days < 0) return 'text-red-600';
-    if (days <= 7) return 'text-orange-600';
-    if (days <= 30) return 'text-yellow-600';
-    return 'text-green-600';
+function getDaysRemainingClass (days) {
+  if (days < 0) return 'text-red-600'
+  if (days <= 7) return 'text-orange-600'
+  if (days <= 30) return 'text-yellow-600'
+  return 'text-green-600'
 }
 
 /**
  * Show MOT error
  */
-function showMOTError(message) {
-    const tbody = document.getElementById('mot-vehicles-table-body');
-    if (tbody) {
-        tbody.innerHTML = `
+function showMOTError (message) {
+  const tbody = document.getElementById('mot-vehicles-table-body')
+  if (tbody) {
+    tbody.innerHTML = `
             <tr>
                 <td colspan="7" class="text-center py-8">
                     <div class="text-red-500">
@@ -572,43 +578,43 @@ function showMOTError(message) {
                     </div>
                 </td>
             </tr>
-        `;
-    }
+        `
+  }
 }
 
 /**
  * Load customers data from API
  */
-async function loadCustomersData() {
-    try {
-        console.log('🔄 Loading customers data...');
+async function loadCustomersData () {
+  try {
+    console.log('🔄 Loading customers data...')
 
-        const response = await fetch('/api/customers');
-        const result = await response.json();
+    const response = await fetch('/api/customers')
+    const result = await response.json()
 
-        if (result && result.customers) {
-            console.log(`✅ Found ${result.customers.length} customers`);
-            displayCustomersInTable(result.customers);
-            updateCustomerStats(result.customers);
-        } else {
-            console.error('❌ No customers data in response:', result);
-            showCustomersError('No customer data available');
-        }
-    } catch (error) {
-        console.error('Failed to load customers:', error);
-        showCustomersError('Failed to load customer data');
+    if (result && result.customers) {
+      console.log(`✅ Found ${result.customers.length} customers`)
+      displayCustomersInTable(result.customers)
+      updateCustomerStats(result.customers)
+    } else {
+      console.error('❌ No customers data in response:', result)
+      showCustomersError('No customer data available')
     }
+  } catch (error) {
+    console.error('Failed to load customers:', error)
+    showCustomersError('Failed to load customer data')
+  }
 }
 
 /**
  * Display customers in the table
  */
-function displayCustomersInTable(customers) {
-    const tbody = document.getElementById('customers-table-body');
-    if (!tbody) return;
+function displayCustomersInTable (customers) {
+  const tbody = document.getElementById('customers-table-body')
+  if (!tbody) return
 
-    if (!customers || customers.length === 0) {
-        tbody.innerHTML = `
+  if (!customers || customers.length === 0) {
+    tbody.innerHTML = `
             <tr>
                 <td colspan="6" class="text-center py-8">
                     <div class="text-gray-500">
@@ -620,11 +626,14 @@ function displayCustomersInTable(customers) {
                     </div>
                 </td>
             </tr>
-        `;
-        return;
-    }
+        `
+    return
+  }
 
-    tbody.innerHTML = customers.slice(0, 50).map(customer => `
+  tbody.innerHTML = customers
+    .slice(0, 50)
+    .map(
+      (customer) => `
         <tr class="hover:bg-gray-50">
             <td><strong>${customer.account_number || 'N/A'}</strong></td>
             <td>
@@ -666,49 +675,61 @@ function displayCustomersInTable(customers) {
                 </div>
             </td>
         </tr>
-    `).join('');
+    `
+    )
+    .join('')
 
-    // Show pagination info if there are more than 50 customers
-    if (customers.length > 50) {
-        const paginationContainer = document.getElementById('customers-pagination');
-        if (paginationContainer) {
-            paginationContainer.innerHTML = `
+  // Show pagination info if there are more than 50 customers
+  if (customers.length > 50) {
+    const paginationContainer = document.getElementById('customers-pagination')
+    if (paginationContainer) {
+      paginationContainer.innerHTML = `
                 <p class="text-sm text-gray-500 text-center mt-4">
                     Showing 50 of ${customers.length} customers
                     <button class="btn btn-sm btn-secondary ml-2" onclick="loadAllCustomers()">
                         Load All
                     </button>
                 </p>
-            `;
-        }
+            `
     }
+  }
 }
 
 /**
  * Update customer statistics
  */
-function updateCustomerStats(customers) {
-    const totalCount = customers.length;
-    const activeCount = customers.filter(c => c.created_date && new Date(c.created_date) > new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)).length;
-    const newCount = customers.filter(c => c.created_date && new Date(c.created_date) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)).length;
+function updateCustomerStats (customers) {
+  const totalCount = customers.length
+  const activeCount = customers.filter(
+    (c) =>
+      c.created_date &&
+      new Date(c.created_date) >
+        new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)
+  ).length
+  const newCount = customers.filter(
+    (c) =>
+      c.created_date &&
+      new Date(c.created_date) >
+        new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+  ).length
 
-    // Update stat cards
-    const totalElement = document.getElementById('total-customers-count');
-    const activeElement = document.getElementById('active-customers-count');
-    const newElement = document.getElementById('new-customers-count');
+  // Update stat cards
+  const totalElement = document.getElementById('total-customers-count')
+  const activeElement = document.getElementById('active-customers-count')
+  const newElement = document.getElementById('new-customers-count')
 
-    if (totalElement) totalElement.textContent = totalCount.toLocaleString();
-    if (activeElement) activeElement.textContent = activeCount.toLocaleString();
-    if (newElement) newElement.textContent = newCount.toLocaleString();
+  if (totalElement) totalElement.textContent = totalCount.toLocaleString()
+  if (activeElement) activeElement.textContent = activeCount.toLocaleString()
+  if (newElement) newElement.textContent = newCount.toLocaleString()
 }
 
 /**
  * Show customers error
  */
-function showCustomersError(message) {
-    const tbody = document.getElementById('customers-table-body');
-    if (tbody) {
-        tbody.innerHTML = `
+function showCustomersError (message) {
+  const tbody = document.getElementById('customers-table-body')
+  if (tbody) {
+    tbody.innerHTML = `
             <tr>
                 <td colspan="6" class="text-center py-8">
                     <div class="text-red-500">
@@ -720,24 +741,24 @@ function showCustomersError(message) {
                     </div>
                 </td>
             </tr>
-        `;
-    }
+        `
+  }
 }
 
 /**
  * Load dashboard content
  */
-function loadDashboardContent() {
-    console.log('📊 Loading dashboard content...');
+function loadDashboardContent () {
+  console.log('📊 Loading dashboard content...')
 
-    const dashboardContent = document.getElementById('dashboard-content');
-    if (!dashboardContent) {
-        console.error('❌ Dashboard content container not found');
-        return;
-    }
+  const dashboardContent = document.getElementById('dashboard-content')
+  if (!dashboardContent) {
+    console.error('❌ Dashboard content container not found')
+    return
+  }
 
-    // Create dashboard HTML content
-    const dashboardHTML = `
+  // Create dashboard HTML content
+  const dashboardHTML = `
         <div class="page-header">
             <div>
                 <h1 class="page-title">
@@ -839,264 +860,274 @@ function loadDashboardContent() {
                 <p id="recent-activity-content">Loading recent activity...</p>
             </div>
         </div>
-    `;
+    `
 
-    // Insert the HTML content
-    dashboardContent.innerHTML = dashboardHTML;
+  // Insert the HTML content
+  dashboardContent.innerHTML = dashboardHTML
 
-    // Load dashboard statistics
-    if (typeof loadDashboardStats === 'function') {
-        loadDashboardStats();
-    }
+  // Load dashboard statistics
+  if (typeof loadDashboardStats === 'function') {
+    loadDashboardStats()
+  }
 
-    console.log('✅ Dashboard content loaded');
+  console.log('✅ Dashboard content loaded')
 }
 
 /**
  * Load settings page with proper tab activation
  */
-function loadSettingsPage() {
-    if (!window.settingsData || Object.keys(window.settingsData).length === 0) {
-        if (typeof loadSettings === 'function') {
-            loadSettings();
-        }
+function loadSettingsPage () {
+  if (!window.settingsData || Object.keys(window.settingsData).length === 0) {
+    if (typeof loadSettings === 'function') {
+      loadSettings()
     }
+  }
 
-    // Ensure the first tab is active
-    setTimeout(() => {
-        const firstTab = document.querySelector('.settings-tab-btn');
-        const firstTabContent = document.querySelector('.settings-tab-content');
-        if (firstTab && !firstTab.classList.contains('active')) {
-            firstTab.classList.add('active');
-        }
-        if (firstTabContent && !firstTabContent.classList.contains('active')) {
-            firstTabContent.classList.add('active');
-        }
-    }, 100);
+  // Ensure the first tab is active
+  setTimeout(() => {
+    const firstTab = document.querySelector('.settings-tab-btn')
+    const firstTabContent = document.querySelector('.settings-tab-content')
+    if (firstTab && !firstTab.classList.contains('active')) {
+      firstTab.classList.add('active')
+    }
+    if (firstTabContent && !firstTabContent.classList.contains('active')) {
+      firstTabContent.classList.add('active')
+    }
+  }, 100)
 }
 
 /**
  * Debug function to check interface status
  */
-window.debugInterface = function() {
-    console.log('🔍 INTERFACE DEBUG REPORT');
-    console.log('========================');
+window.debugInterface = function () {
+  console.log('🔍 INTERFACE DEBUG REPORT')
+  console.log('========================')
 
-    // Check all pages
-    const pages = document.querySelectorAll('.page');
-    console.log(`📄 Total pages found: ${pages.length}`);
-    pages.forEach(page => {
-        const isActive = page.classList.contains('active');
-        console.log(`  - ${page.id}: ${isActive ? '✅ ACTIVE' : '⚪ inactive'}`);
-    });
+  // Check all pages
+  const pages = document.querySelectorAll('.page')
+  console.log(`📄 Total pages found: ${pages.length}`)
+  pages.forEach((page) => {
+    const isActive = page.classList.contains('active')
+    console.log(`  - ${page.id}: ${isActive ? '✅ ACTIVE' : '⚪ inactive'}`)
+  })
 
-    // Check navigation items
-    const navItems = document.querySelectorAll('.nav-item');
-    console.log(`🧭 Total nav items found: ${navItems.length}`);
-    navItems.forEach(navItem => {
-        const isActive = navItem.classList.contains('active');
-        const onclick = navItem.getAttribute('onclick');
-        const pageId = onclick ? onclick.match(/showPage\('([^']+)'\)/)?.[1] : 'unknown';
-        console.log(`  - ${pageId}: ${isActive ? '✅ ACTIVE' : '⚪ inactive'}`);
-    });
+  // Check navigation items
+  const navItems = document.querySelectorAll('.nav-item')
+  console.log(`🧭 Total nav items found: ${navItems.length}`)
+  navItems.forEach((navItem) => {
+    const isActive = navItem.classList.contains('active')
+    const onclick = navItem.getAttribute('onclick')
+    const pageId = onclick
+      ? onclick.match(/showPage\('([^']+)'\)/)?.[1]
+      : 'unknown'
+    console.log(`  - ${pageId}: ${isActive ? '✅ ACTIVE' : '⚪ inactive'}`)
+  })
 
-    // Check current state
-    console.log(`📍 Current active page: ${currentActivePage}`);
-    console.log(`💾 localStorage page: ${localStorage.getItem('currentActivePage')}`);
+  // Check current state
+  console.log(`📍 Current active page: ${currentActivePage}`)
+  console.log(
+    `💾 localStorage page: ${localStorage.getItem('currentActivePage')}`
+  )
 
-    return 'Debug complete - check console for details';
-};
+  return 'Debug complete - check console for details'
+}
 
 /**
  * Initialize navigation system
  */
-function initializeNavigation() {
-    console.log('🧭 Navigation system initializing...');
-    
-    // Force dashboard as default page and clear any problematic localStorage
-    console.log('📄 Forcing dashboard as default page');
-    currentActivePage = 'dashboard';
-    localStorage.setItem('currentActivePage', 'dashboard');
+function initializeNavigation () {
+  console.log('🧭 Navigation system initializing...')
 
-    // Ensure dashboard page is visible and active
-    const dashboardPage = document.getElementById('dashboard');
-    if (dashboardPage) {
-        // Hide all pages first
-        document.querySelectorAll('.page').forEach(page => {
-            page.classList.remove('active');
-        });
-        // Show dashboard
-        dashboardPage.classList.add('active');
-        console.log('✅ Dashboard page activated');
-    } else {
-        console.error('❌ Dashboard page not found');
-    }
+  // Force dashboard as default page and clear any problematic localStorage
+  console.log('📄 Forcing dashboard as default page')
+  currentActivePage = 'dashboard'
+  localStorage.setItem('currentActivePage', 'dashboard')
 
-    // Ensure dashboard nav item is active
-    const dashboardNav = document.querySelector('.nav-item[onclick*="dashboard"]');
-    if (dashboardNav) {
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.remove('active');
-        });
-        dashboardNav.classList.add('active');
-        console.log('✅ Dashboard navigation activated');
-    }
+  // Ensure dashboard page is visible and active
+  const dashboardPage = document.getElementById('dashboard')
+  if (dashboardPage) {
+    // Hide all pages first
+    document.querySelectorAll('.page').forEach((page) => {
+      page.classList.remove('active')
+    })
+    // Show dashboard
+    dashboardPage.classList.add('active')
+    console.log('✅ Dashboard page activated')
+  } else {
+    console.error('❌ Dashboard page not found')
+  }
 
-    console.log('🧭 Navigation system ready');
+  // Ensure dashboard nav item is active
+  const dashboardNav = document.querySelector(
+    '.nav-item[onclick*="dashboard"]'
+  )
+  if (dashboardNav) {
+    document.querySelectorAll('.nav-item').forEach((item) => {
+      item.classList.remove('active')
+    })
+    dashboardNav.classList.add('active')
+    console.log('✅ Dashboard navigation activated')
+  }
+
+  console.log('🧭 Navigation system ready')
 }
 
 /**
  * Customer action functions
  */
-function openAddCustomerModal() {
-    console.log('📝 Opening add customer modal...');
-    // TODO: Implement add customer modal
-    alert('Add customer functionality coming soon!');
+function openAddCustomerModal () {
+  console.log('📝 Opening add customer modal...')
+  // TODO: Implement add customer modal
+  alert('Add customer functionality coming soon!')
 }
 
-function viewCustomer(customerId) {
-    console.log('👁️ Viewing customer:', customerId);
-    // TODO: Implement customer detail view
-    alert(`View customer ${customerId} - functionality coming soon!`);
+function viewCustomer (customerId) {
+  console.log('👁️ Viewing customer:', customerId)
+  // TODO: Implement customer detail view
+  alert(`View customer ${customerId} - functionality coming soon!`)
 }
 
-function editCustomer(customerId) {
-    console.log('✏️ Editing customer:', customerId);
-    // TODO: Implement customer editing
-    alert(`Edit customer ${customerId} - functionality coming soon!`);
+function editCustomer (customerId) {
+  console.log('✏️ Editing customer:', customerId)
+  // TODO: Implement customer editing
+  alert(`Edit customer ${customerId} - functionality coming soon!`)
 }
 
-function deleteCustomer(customerId) {
-    if (confirm('Are you sure you want to delete this customer?')) {
-        console.log('🗑️ Deleting customer:', customerId);
-        // TODO: Implement customer deletion
-        alert(`Delete customer ${customerId} - functionality coming soon!`);
-    }
+function deleteCustomer (customerId) {
+  if (confirm('Are you sure you want to delete this customer?')) {
+    console.log('🗑️ Deleting customer:', customerId)
+    // TODO: Implement customer deletion
+    alert(`Delete customer ${customerId} - functionality coming soon!`)
+  }
 }
 
-function loadAllCustomers() {
-    console.log('📄 Loading all customers...');
-    // TODO: Implement pagination
-    alert('Load all customers - functionality coming soon!');
+function loadAllCustomers () {
+  console.log('📄 Loading all customers...')
+  // TODO: Implement pagination
+  alert('Load all customers - functionality coming soon!')
 }
 
 /**
  * MOT action functions
  */
-function openAddVehicleModal() {
-    console.log('🚗 Opening add vehicle modal...');
-    alert('Add vehicle functionality coming soon!');
+function openAddVehicleModal () {
+  console.log('🚗 Opening add vehicle modal...')
+  alert('Add vehicle functionality coming soon!')
 }
 
-function refreshMOTData() {
-    console.log('🔄 Refreshing MOT data...');
-    loadMOTData();
+function refreshMOTData () {
+  console.log('🔄 Refreshing MOT data...')
+  loadMOTData()
 }
 
-function filterMOTVehicles(filter) {
-    console.log('🔍 Filtering MOT vehicles:', filter);
-    // Update active filter button
-    document.querySelectorAll('[data-filter]').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+function filterMOTVehicles (filter) {
+  console.log('🔍 Filtering MOT vehicles:', filter)
+  // Update active filter button
+  document.querySelectorAll('[data-filter]').forEach((btn) => {
+    btn.classList.remove('active')
+  })
+  document.querySelector(`[data-filter="${filter}"]`).classList.add('active')
 
-    // TODO: Implement filtering logic
-    alert(`Filter by ${filter} - functionality coming soon!`);
+  // TODO: Implement filtering logic
+  alert(`Filter by ${filter} - functionality coming soon!`)
 }
 
-function setupCheckboxListeners() {
-    const checkboxes = document.querySelectorAll('.vehicle-checkbox');
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', updateSelectedVehicles);
-    });
+function setupCheckboxListeners () {
+  const checkboxes = document.querySelectorAll('.vehicle-checkbox')
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', updateSelectedVehicles)
+  })
 }
 
-function updateSelectedVehicles() {
-    const selected = document.querySelectorAll('.vehicle-checkbox:checked');
-    const count = selected.length;
-    const info = document.getElementById('selected-vehicles-info');
-    const sendBtn = document.getElementById('send-reminders-btn');
+function updateSelectedVehicles () {
+  const selected = document.querySelectorAll('.vehicle-checkbox:checked')
+  const count = selected.length
+  const info = document.getElementById('selected-vehicles-info')
+  const sendBtn = document.getElementById('send-reminders-btn')
 
-    if (count > 0) {
-        info.textContent = `${count} vehicle${count > 1 ? 's' : ''} selected`;
-        sendBtn.disabled = false;
-    } else {
-        info.textContent = 'No vehicles selected';
-        sendBtn.disabled = true;
-    }
+  if (count > 0) {
+    info.textContent = `${count} vehicle${count > 1 ? 's' : ''} selected`
+    sendBtn.disabled = false
+  } else {
+    info.textContent = 'No vehicles selected'
+    sendBtn.disabled = true
+  }
 }
 
-function selectAllExpired() {
-    console.log('🔴 Selecting all expired vehicles...');
-    // TODO: Implement select all expired
-    alert('Select all expired - functionality coming soon!');
+function selectAllExpired () {
+  console.log('🔴 Selecting all expired vehicles...')
+  // TODO: Implement select all expired
+  alert('Select all expired - functionality coming soon!')
 }
 
-function sendSelectedReminders() {
-    const selected = document.querySelectorAll('.vehicle-checkbox:checked');
-    const registrations = Array.from(selected).map(cb => cb.dataset.registration);
-    console.log('📱 Sending reminders to:', registrations);
-    alert(`Send reminders to ${registrations.length} vehicles - functionality coming soon!`);
+function sendSelectedReminders () {
+  const selected = document.querySelectorAll('.vehicle-checkbox:checked')
+  const registrations = Array.from(selected).map(
+    (cb) => cb.dataset.registration
+  )
+  console.log('📱 Sending reminders to:', registrations)
+  alert(
+    `Send reminders to ${registrations.length} vehicles - functionality coming soon!`
+  )
 }
 
-function viewMOTDetails(registration) {
-    console.log('👁️ Viewing MOT details for:', registration);
-    alert(`View MOT details for ${registration} - functionality coming soon!`);
+function viewMOTDetails (registration) {
+  console.log('👁️ Viewing MOT details for:', registration)
+  alert(`View MOT details for ${registration} - functionality coming soon!`)
 }
 
-function sendSingleReminder(registration) {
-    console.log('📱 Sending single reminder to:', registration);
-    alert(`Send reminder to ${registration} - functionality coming soon!`);
+function sendSingleReminder (registration) {
+  console.log('📱 Sending single reminder to:', registration)
+  alert(`Send reminder to ${registration} - functionality coming soon!`)
 }
 
-function archiveVehicle(registration) {
-    if (confirm(`Are you sure you want to archive ${registration}?`)) {
-        console.log('🗄️ Archiving vehicle:', registration);
-        alert(`Archive ${registration} - functionality coming soon!`);
-    }
+function archiveVehicle (registration) {
+  if (confirm(`Are you sure you want to archive ${registration}?`)) {
+    console.log('🗄️ Archiving vehicle:', registration)
+    alert(`Archive ${registration} - functionality coming soon!`)
+  }
 }
 
 /**
  * Emergency navigation function for error recovery
  */
-window.emergencyShowPage = function(pageId) {
-    console.log('🚨 Emergency navigation to:', pageId);
+window.emergencyShowPage = function (pageId) {
+  console.log('🚨 Emergency navigation to:', pageId)
 
-    // Hide all pages
-    document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-    });
+  // Hide all pages
+  document.querySelectorAll('.page').forEach((page) => {
+    page.classList.remove('active')
+  })
 
-    // Show target page
-    const targetPage = document.getElementById(pageId);
-    if (targetPage) {
-        targetPage.classList.add('active');
-        console.log('✅ Emergency navigation successful');
+  // Show target page
+  const targetPage = document.getElementById(pageId)
+  if (targetPage) {
+    targetPage.classList.add('active')
+    console.log('✅ Emergency navigation successful')
 
-        // Activate first settings tab if it's settings page
-        if (pageId === 'settings') {
-            setTimeout(() => {
-                const firstTab = document.querySelector('.settings-tab-btn');
-                const firstTabContent = document.querySelector('.settings-tab-content');
-                if (firstTab) firstTab.classList.add('active');
-                if (firstTabContent) firstTabContent.classList.add('active');
-            }, 100);
-        }
-
-        return true;
-    } else {
-        console.error('❌ Emergency navigation failed - page not found');
-        return false;
+    // Activate first settings tab if it's settings page
+    if (pageId === 'settings') {
+      setTimeout(() => {
+        const firstTab = document.querySelector('.settings-tab-btn')
+        const firstTabContent = document.querySelector('.settings-tab-content')
+        if (firstTab) firstTab.classList.add('active')
+        if (firstTabContent) firstTabContent.classList.add('active')
+      }, 100)
     }
-};
+
+    return true
+  } else {
+    console.error('❌ Emergency navigation failed - page not found')
+    return false
+  }
+}
 
 // Export functions for module use
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        showPage: window.showPage,
-        debugInterface: window.debugInterface,
-        emergencyShowPage: window.emergencyShowPage,
-        initializeNavigation
-    };
+  module.exports = {
+    showPage: window.showPage,
+    debugInterface: window.debugInterface,
+    emergencyShowPage: window.emergencyShowPage,
+    initializeNavigation
+  }
 }

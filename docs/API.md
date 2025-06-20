@@ -1,17 +1,21 @@
 # Garage Management System - API Documentation
 
 ## Base URL
+
 ```
 http://localhost:5000/api
 ```
 
 ## Authentication
+
 Currently, no authentication is required. Future versions will include API key authentication.
 
 ## Response Format
+
 All API responses are in JSON format with the following structure:
 
 ### Success Response
+
 ```json
 {
   "data": {...},
@@ -20,6 +24,7 @@ All API responses are in JSON format with the following structure:
 ```
 
 ### Error Response
+
 ```json
 {
   "error": "Error message",
@@ -32,11 +37,13 @@ All API responses are in JSON format with the following structure:
 ### Dashboard
 
 #### Get Dashboard Statistics
+
 ```http
 GET /api/dashboard
 ```
 
 **Response:**
+
 ```json
 {
   "customers": 7037,
@@ -49,16 +56,19 @@ GET /api/dashboard
 ### Customers
 
 #### Get Customer List
+
 ```http
 GET /api/customers
 ```
 
 **Parameters:**
+
 - `page` (optional): Page number (default: 1)
 - `per_page` (optional): Items per page (default: 50)
 - `search` (optional): Search term for name, company, or account number
 
 **Response:**
+
 ```json
 {
   "customers": [
@@ -84,11 +94,13 @@ GET /api/customers
 ```
 
 #### Get Customer Details
+
 ```http
 GET /api/customers/{customer_id}
 ```
 
 **Response:**
+
 ```json
 {
   "customer": {
@@ -120,7 +132,7 @@ GET /api/customers/{customer_id}
       "registration": "EY20VBO",
       "description": "Carry Out Mot Repairs",
       "status": "COMPLETED",
-      "total_amount": 678.00,
+      "total_amount": 678.0,
       "created_date": "2025-01-16"
     }
   ],
@@ -130,7 +142,7 @@ GET /api/customers/{customer_id}
       "invoice_number": "88187",
       "registration": "EY20VBO",
       "job_description": "Carry Out Mot Repairs",
-      "amount": 678.00,
+      "amount": 678.0,
       "status": "PARTIAL",
       "created_date": "2025-01-16"
     }
@@ -141,16 +153,19 @@ GET /api/customers/{customer_id}
 ### Vehicles
 
 #### Get Vehicle List
+
 ```http
 GET /api/vehicles
 ```
 
 **Parameters:**
+
 - `page` (optional): Page number (default: 1)
 - `per_page` (optional): Items per page (default: 50)
 - `search` (optional): Search term for registration, make, or model
 
 **Response:**
+
 ```json
 {
   "vehicles": [
@@ -176,11 +191,13 @@ GET /api/vehicles
 ```
 
 #### Get Vehicle Details
+
 ```http
 GET /api/vehicles/{vehicle_id}
 ```
 
 **Response:**
+
 ```json
 {
   "vehicle": {
@@ -203,7 +220,7 @@ GET /api/vehicles/{vehicle_id}
       "customer_name": "A.c.m Autos Limited",
       "description": "Carry Out Mot Repairs",
       "status": "COMPLETED",
-      "total_amount": 678.00,
+      "total_amount": 678.0,
       "created_date": "2025-01-16"
     }
   ],
@@ -212,7 +229,7 @@ GET /api/vehicles/{vehicle_id}
       "id": 1,
       "invoice_number": "88187",
       "job_description": "Carry Out Mot Repairs",
-      "amount": 678.00,
+      "amount": 678.0,
       "status": "PARTIAL",
       "created_date": "2025-01-16"
     }
@@ -223,11 +240,13 @@ GET /api/vehicles/{vehicle_id}
 ### Jobs
 
 #### Get Job List
+
 ```http
 GET /api/jobs
 ```
 
 **Response:**
+
 ```json
 {
   "jobs": [
@@ -239,7 +258,7 @@ GET /api/jobs
       "customer_company": "A.c.m Autos Limited",
       "description": "Carry Out Mot Repairs - Remove Rear Offside Seat Assembly",
       "status": "COMPLETED",
-      "total_amount": 678.00,
+      "total_amount": 678.0,
       "created_date": "2025-01-16"
     }
   ]
@@ -249,11 +268,13 @@ GET /api/jobs
 ### Invoices
 
 #### Get Invoice List
+
 ```http
 GET /api/invoices
 ```
 
 **Response:**
+
 ```json
 {
   "invoices": [
@@ -264,7 +285,7 @@ GET /api/invoices
       "customer_name": "A.c.m Autos Limited",
       "customer_company": "A.c.m Autos Limited",
       "job_description": "Carry Out Mot Repairs",
-      "amount": 678.00,
+      "amount": 678.0,
       "status": "PARTIAL",
       "created_date": "2025-01-16"
     }
@@ -275,11 +296,13 @@ GET /api/invoices
 ### Health Check
 
 #### System Health Check
+
 ```http
 GET /api/health
 ```
 
 **Response:**
+
 ```json
 {
   "status": "healthy",
@@ -310,6 +333,7 @@ All endpoints include comprehensive error handling:
 ## Rate Limiting
 
 Currently no rate limiting is implemented. Future versions will include:
+
 - 100 requests per minute per IP
 - 1000 requests per hour per IP
 
@@ -341,28 +365,29 @@ curl -X GET http://localhost:5000/api/health
 
 ```javascript
 // Get dashboard data
-fetch('/api/dashboard')
-  .then(response => response.json())
-  .then(data => console.log(data));
+fetch("/api/dashboard")
+  .then((response) => response.json())
+  .then((data) => console.log(data));
 
 // Search customers
-fetch('/api/customers?search=acm&page=1')
-  .then(response => response.json())
-  .then(data => console.log(data.customers));
+fetch("/api/customers?search=acm&page=1")
+  .then((response) => response.json())
+  .then((data) => console.log(data.customers));
 
 // Get customer details
-fetch('/api/customers/ACM001')
-  .then(response => response.json())
-  .then(data => {
-    console.log('Customer:', data.customer);
-    console.log('Vehicles:', data.vehicles);
-    console.log('Jobs:', data.jobs);
+fetch("/api/customers/ACM001")
+  .then((response) => response.json())
+  .then((data) => {
+    console.log("Customer:", data.customer);
+    console.log("Vehicles:", data.vehicles);
+    console.log("Jobs:", data.jobs);
   });
 ```
 
 ## Future API Features
 
 ### Planned Endpoints
+
 - `POST /api/customers` - Create new customer
 - `PUT /api/customers/{id}` - Update customer
 - `DELETE /api/customers/{id}` - Delete customer
@@ -373,11 +398,13 @@ fetch('/api/customers/ACM001')
 - `POST /api/invoices` - Generate invoice
 
 ### Authentication
+
 - API key authentication
 - JWT token support
 - Role-based access control
 
 ### Advanced Features
+
 - Webhook support
 - Bulk operations
 - Data export endpoints
@@ -386,4 +413,3 @@ fetch('/api/customers/ACM001')
 ---
 
 **For more information, see the main README.md file.**
-

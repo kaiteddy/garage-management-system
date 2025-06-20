@@ -5,15 +5,19 @@ Handles all job-related API endpoints
 
 import os
 import sqlite3
+
 from flask import Blueprint, jsonify, request
 
 job_api_bp = Blueprint('job_api', __name__)
 
+
 def get_db_path():
     """Get database path"""
     # Get the project root directory (3 levels up from src/routes/api/)
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    project_root = os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.dirname(__file__))))
     return os.path.join(project_root, 'instance', 'garage.db')
+
 
 @job_api_bp.route('/api/jobs')
 def get_jobs():
@@ -81,6 +85,7 @@ def get_jobs():
             'success': False,
             'error': str(e)
         }), 500
+
 
 @job_api_bp.route('/api/job/<int:job_id>')
 def get_job(job_id):

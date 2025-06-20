@@ -5,16 +5,21 @@ Handles all customer-related API endpoints
 
 import os
 import sqlite3
+
 from flask import Blueprint, jsonify, request
-from models import Customer, Vehicle, Job, Invoice
+
+from models import Customer, Invoice, Job, Vehicle
 
 customer_api_bp = Blueprint('customer_api', __name__)
+
 
 def get_db_path():
     """Get database path"""
     # Get the project root directory (3 levels up from src/routes/api/)
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    project_root = os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.dirname(__file__))))
     return os.path.join(project_root, 'instance', 'garage.db')
+
 
 @customer_api_bp.route('/api/customers')
 def get_customers():
@@ -30,6 +35,7 @@ def get_customers():
             'success': False,
             'error': str(e)
         }), 500
+
 
 @customer_api_bp.route('/api/customer/<int:customer_id>')
 def get_customer(customer_id):
@@ -59,6 +65,7 @@ def get_customer(customer_id):
             'error': str(e)
         }), 500
 
+
 @customer_api_bp.route('/api/customers/<customer_identifier>')
 def get_customer_by_identifier(customer_identifier):
     """Get specific customer details by ID or account number"""
@@ -69,7 +76,8 @@ def get_customer_by_identifier(customer_identifier):
             customer = Customer.query.get(customer_id)
         except ValueError:
             # If not an integer, search by account number
-            customer = Customer.query.filter_by(account_number=customer_identifier).first()
+            customer = Customer.query.filter_by(
+                account_number=customer_identifier).first()
 
         if not customer:
             return jsonify({

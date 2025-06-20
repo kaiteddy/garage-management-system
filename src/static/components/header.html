@@ -1,50 +1,50 @@
 <!-- Header Component -->
 <div class="header">
-    <div class="logo">
-        <i class="fas fa-car"></i>
-        <span>GarageManager Pro</span>
+  <div class="logo">
+    <i class="fas fa-car"></i>
+    <span>GarageManager Pro</span>
+  </div>
+
+  <div class="header-actions">
+    <div class="spacing-control">
+      <label for="spacing-select">Layout:</label>
+      <select id="spacing-select" onchange="changeSpacing(this.value)">
+        <option value="compact">Compact</option>
+        <option value="normal" selected>Normal</option>
+        <option value="wide">Wide</option>
+        <option value="extra-wide">Extra Wide</option>
+      </select>
     </div>
-    
-    <div class="header-actions">
-        <div class="spacing-control">
-            <label for="spacing-select">Layout:</label>
-            <select id="spacing-select" onchange="changeSpacing(this.value)">
-                <option value="compact">Compact</option>
-                <option value="normal" selected>Normal</option>
-                <option value="wide">Wide</option>
-                <option value="extra-wide">Extra Wide</option>
-            </select>
-        </div>
-        
-        <button class="header-btn" onclick="refreshData()" title="Refresh Data">
-            <i class="fas fa-sync-alt"></i>
-            <span>Refresh</span>
-        </button>
-        
-        <button class="header-btn" onclick="exportData()" title="Export Data">
-            <i class="fas fa-download"></i>
-            <span>Export</span>
-        </button>
-        
-        <button class="header-btn" onclick="printPage()" title="Print Page">
-            <i class="fas fa-print"></i>
-            <span>Print</span>
-        </button>
-        
-        <button class="header-btn" onclick="showHelp()" title="Help">
-            <i class="fas fa-question-circle"></i>
-            <span>Help</span>
-        </button>
-        
-        <button class="header-btn" title="Notifications">
-            <i class="fas fa-bell"></i>
-            <span>Notifications</span>
-            <span class="notification-badge">3</span>
-        </button>
-        
-        <button class="header-btn" onclick="showAdminMenu()" title="Admin Menu">
-            <i class="fas fa-user-circle"></i>
-            <span>Admin</span>
-        </button>
-    </div>
+
+    <button class="header-btn" onclick="refreshData()" title="Refresh Data">
+      <i class="fas fa-sync-alt"></i>
+      <span>Refresh</span>
+    </button>
+
+    <button class="header-btn" onclick="exportData()" title="Export Data">
+      <i class="fas fa-download"></i>
+      <span>Export</span>
+    </button>
+
+    <button class="header-btn" onclick="printPage()" title="Print Page">
+      <i class="fas fa-print"></i>
+      <span>Print</span>
+    </button>
+
+    <button class="header-btn" onclick="showHelp()" title="Help">
+      <i class="fas fa-question-circle"></i>
+      <span>Help</span>
+    </button>
+
+    <button class="header-btn" title="Notifications">
+      <i class="fas fa-bell"></i>
+      <span>Notifications</span>
+      <span class="notification-badge">3</span>
+    </button>
+
+    <button class="header-btn" onclick="showAdminMenu()" title="Admin Menu">
+      <i class="fas fa-user-circle"></i>
+      <span>Admin</span>
+    </button>
+  </div>
 </div>

@@ -391,7 +391,7 @@
 }
 
 .tooltip-content::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 100%;
   left: 50%;
@@ -598,16 +598,16 @@
     grid-template-columns: 1fr;
     gap: var(--space-4);
   }
-  
+
   .modal {
     margin: var(--space-4);
     max-width: none;
   }
-  
+
   .table-container {
     overflow-x: auto;
   }
-  
+
   .table {
     min-width: 600px;
   }

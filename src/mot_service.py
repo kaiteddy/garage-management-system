@@ -4,23 +4,25 @@ MOT Reminder Service for Garage Management System
 Integrates DVSA API and SMS functionality into the main application
 """
 
-import os
-import sys
 import json
-import requests
+import os
 import sqlite3
+import sys
 from datetime import datetime, timedelta
-from flask import Flask, request, jsonify, render_template
-from flask_cors import CORS
+
 import phonenumbers
+import requests
+from flask import Flask, jsonify, render_template, request
+from flask_cors import CORS
 from phonenumbers import NumberParseException
 
 # Add the mot_reminder directory to the path to import existing modules
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'mot_reminder'))
 
 try:
-    from mot_reminder import MOTReminder
     from sms_service import SMSService
+
+    from mot_reminder import MOTReminder
 except ImportError:
     print("Warning: MOT reminder modules not found. Some functionality may be limited.")
     MOTReminder = None
@@ -29,23 +31,25 @@ except ImportError:
 app = Flask(__name__)
 CORS(app)
 
+
 class IntegratedMOTService:
     def __init__(self):
         """Initialize the integrated MOT service"""
-        self.db_path = os.path.join(os.path.dirname(__file__), 'garage_management.db')
+        self.db_path = os.path.join(
+            os.path.dirname(__file__), 'garage_management.db')
         self.init_database()
-        
+
         # Initialize MOT reminder and SMS services
         if MOTReminder:
             self.mot_reminder = MOTReminder()
         else:
             self.mot_reminder = None
-            
+
         if SMSService:
             self.sms_service = SMSService()
         else:
             self.sms_service = None
-    
+
     def init_database(self):
         """Initialize database tables for MOT tracking"""
         conn = sqlite3.connect(self.db_path)
@@ -99,7 +103,7 @@ class IntegratedMOTService:
                 FOREIGN KEY (customer_id) REFERENCES customers (id)
             )
         ''')
-        
+
         # Create MOT reminders log table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS mot_reminders_log (
@@ -123,22 +127,26 @@ class IntegratedMOTService:
 
         # Add delivery status columns to existing table if they don't exist
         try:
-            cursor.execute('ALTER TABLE mot_reminders_log ADD COLUMN delivery_status TEXT')
+            cursor.execute(
+                'ALTER TABLE mot_reminders_log ADD COLUMN delivery_status TEXT')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         try:
-            cursor.execute('ALTER TABLE mot_reminders_log ADD COLUMN delivery_error_code TEXT')
+            cursor.execute(
+                'ALTER TABLE mot_reminders_log ADD COLUMN delivery_error_code TEXT')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         try:
-            cursor.execute('ALTER TABLE mot_reminders_log ADD COLUMN delivery_error_message TEXT')
+            cursor.execute(
+                'ALTER TABLE mot_reminders_log ADD COLUMN delivery_error_message TEXT')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         try:
-            cursor.execute('ALTER TABLE mot_reminders_log ADD COLUMN delivery_updated_at TIMESTAMP')
+            cursor.execute(
+                'ALTER TABLE mot_reminders_log ADD COLUMN delivery_updated_at TIMESTAMP')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
@@ -174,81 +182,96 @@ class IntegratedMOTService:
 
         # Add archive columns if they don't exist (for existing databases)
         try:
-            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN is_archived BOOLEAN DEFAULT FALSE')
+            cursor.execute(
+                'ALTER TABLE mot_vehicles ADD COLUMN is_archived BOOLEAN DEFAULT FALSE')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         try:
-            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN archived_at TIMESTAMP')
+            cursor.execute(
+                'ALTER TABLE mot_vehicles ADD COLUMN archived_at TIMESTAMP')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         try:
-            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN archive_reason TEXT')
+            cursor.execute(
+                'ALTER TABLE mot_vehicles ADD COLUMN archive_reason TEXT')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         # Add booked_in column if it doesn't exist (for existing databases)
         try:
-            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN is_booked_in BOOLEAN DEFAULT FALSE')
+            cursor.execute(
+                'ALTER TABLE mot_vehicles ADD COLUMN is_booked_in BOOLEAN DEFAULT FALSE')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         try:
-            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN booked_in_date TIMESTAMP')
+            cursor.execute(
+                'ALTER TABLE mot_vehicles ADD COLUMN booked_in_date TIMESTAMP')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         try:
-            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN booked_in_notes TEXT')
+            cursor.execute(
+                'ALTER TABLE mot_vehicles ADD COLUMN booked_in_notes TEXT')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         try:
-            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN archived_at TIMESTAMP')
+            cursor.execute(
+                'ALTER TABLE mot_vehicles ADD COLUMN archived_at TIMESTAMP')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         try:
-            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN archive_reason TEXT')
+            cursor.execute(
+                'ALTER TABLE mot_vehicles ADD COLUMN archive_reason TEXT')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         # Add upload tracking columns
         try:
-            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN uploaded_at TIMESTAMP')
+            cursor.execute(
+                'ALTER TABLE mot_vehicles ADD COLUMN uploaded_at TIMESTAMP')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         try:
-            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN upload_batch_id TEXT')
+            cursor.execute(
+                'ALTER TABLE mot_vehicles ADD COLUMN upload_batch_id TEXT')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         try:
-            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN sms_sent_at TIMESTAMP')
+            cursor.execute(
+                'ALTER TABLE mot_vehicles ADD COLUMN sms_sent_at TIMESTAMP')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         # Add customer integration columns
         try:
-            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN main_customer_id INTEGER')
+            cursor.execute(
+                'ALTER TABLE mot_vehicles ADD COLUMN main_customer_id INTEGER')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         try:
-            cursor.execute('ALTER TABLE mot_vehicles ADD COLUMN main_vehicle_id INTEGER')
+            cursor.execute(
+                'ALTER TABLE mot_vehicles ADD COLUMN main_vehicle_id INTEGER')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         # Add missing columns to SMS history table if they don't exist
         try:
-            cursor.execute('ALTER TABLE mot_reminders_log ADD COLUMN days_until_expiry INTEGER')
+            cursor.execute(
+                'ALTER TABLE mot_reminders_log ADD COLUMN days_until_expiry INTEGER')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
         try:
-            cursor.execute('ALTER TABLE mot_reminders_log ADD COLUMN mot_expiry_date TEXT')
+            cursor.execute(
+                'ALTER TABLE mot_reminders_log ADD COLUMN mot_expiry_date TEXT')
         except sqlite3.OperationalError:
             pass  # Column already exists
 
@@ -369,7 +392,7 @@ class IntegratedMOTService:
         """Get customer information by vehicle registration"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
-        
+
         # Try to find customer by vehicle registration in the main vehicles table
         cursor.execute('''
             SELECT c.id, c.name, c.mobile, c.email, c.address, c.postcode
@@ -377,10 +400,10 @@ class IntegratedMOTService:
             JOIN vehicles v ON c.id = v.customer_id
             WHERE v.registration = ?
         ''', (registration,))
-        
+
         result = cursor.fetchone()
         conn.close()
-        
+
         if result:
             return {
                 'id': result[0],
@@ -391,7 +414,7 @@ class IntegratedMOTService:
                 'postcode': result[5]
             }
         return None
-    
+
     def add_mot_vehicle(self, registration, customer_name=None, mobile_number=None, upload_batch_id=None):
         """Add a vehicle to MOT monitoring"""
         try:
@@ -410,7 +433,7 @@ class IntegratedMOTService:
                     return {'success': False, 'error': 'Could not retrieve MOT data from DVLA. Registration added to manual review queue.'}
             else:
                 return {'success': False, 'error': 'DVLA API service not available. Cannot add vehicle without real MOT data.'}
-            
+
             # Try to get customer info from existing database
             existing_customer = self.get_customer_by_registration(registration)
             if existing_customer and not customer_name:
@@ -421,7 +444,8 @@ class IntegratedMOTService:
             main_customer_id = None
             main_vehicle_id = None
 
-            customer_link = self.link_mot_vehicle_to_customer(registration, customer_name, mobile_number)
+            customer_link = self.link_mot_vehicle_to_customer(
+                registration, customer_name, mobile_number)
             if customer_link:
                 main_customer_id = customer_link['customer_id']
                 main_vehicle_id = customer_link.get('vehicle_id')
@@ -464,7 +488,8 @@ class IntegratedMOTService:
 
             # If no existing customer found, create one in main database if we have enough info
             if not customer_link and customer_name and mobile_number:
-                new_customer = self.create_customer_in_main_db(customer_name, mobile_number)
+                new_customer = self.create_customer_in_main_db(
+                    customer_name, mobile_number)
                 if new_customer:
                     main_customer_id = new_customer['customer_id']
 
@@ -493,12 +518,12 @@ class IntegratedMOTService:
                     f'MOT reminder created for {registration}. Expires: {mot_data.get("mot_expiry_date", "Unknown")}',
                     registration
                 )
-            
+
             conn.commit()
             conn.close()
-            
+
             return {'success': True, 'data': mot_data}
-            
+
         except Exception as e:
             return {'success': False, 'error': str(e)}
 
@@ -710,7 +735,8 @@ class IntegratedMOTService:
 
             vehicle['has_mobile'] = has_mobile
             vehicle['has_complete_data'] = has_complete_data
-            vehicle['can_send_sms'] = has_mobile and has_complete_data and not vehicle.get('is_booked_in', False)
+            vehicle['can_send_sms'] = has_mobile and has_complete_data and not vehicle.get(
+                'is_booked_in', False)
 
             # Determine if should be included based on filtering
             if not include_flagged and vehicle.get('flag_type'):
@@ -932,7 +958,7 @@ class IntegratedMOTService:
                     'error': 'No mobile number available'
                 })
                 continue
-            
+
             vehicle_info = {
                 'registration': vehicle_data[0],
                 'make': vehicle_data[1],
@@ -941,14 +967,14 @@ class IntegratedMOTService:
                 'days_until_expiry': vehicle_data[6],
                 'is_expired': bool(vehicle_data[7])
             }
-            
+
             # Send SMS
             sms_result = self.sms_service.send_mot_reminder(
-                vehicle_info, 
+                vehicle_info,
                 vehicle_data[4],  # mobile_number
                 vehicle_data[3]   # customer_name
             )
-            
+
             # Log the SMS attempt with enhanced data
             cursor.execute('''
                 INSERT INTO mot_reminders_log
@@ -967,7 +993,7 @@ class IntegratedMOTService:
                 vehicle_data[6],  # days_until_expiry
                 vehicle_data[5]   # mot_expiry_date
             ))
-            
+
             results.append({
                 'registration': registration,
                 'success': sms_result['success'],
@@ -988,7 +1014,8 @@ class IntegratedMOTService:
                 ''', (sms_sent_time, 'Auto-archived after SMS sent', sms_sent_time, registration))
 
                 # Log SMS activity to customer history if linked
-                if len(vehicle_data) >= 10 and vehicle_data[8] and vehicle_data[9]:  # main_customer_id and main_vehicle_id
+                # main_customer_id and main_vehicle_id
+                if len(vehicle_data) >= 10 and vehicle_data[8] and vehicle_data[9]:
                     template_type = sms_result.get('template_type', 'reminder')
                     self.log_mot_activity_to_customer_history(
                         vehicle_data[8],  # main_customer_id
@@ -1011,7 +1038,8 @@ class IntegratedMOTService:
     def get_main_garage_db_connection(self):
         """Get connection to main garage database"""
         try:
-            main_db_path = os.path.join(os.path.dirname(self.db_path), 'garage.db')
+            main_db_path = os.path.join(
+                os.path.dirname(self.db_path), 'garage.db')
             return sqlite3.connect(main_db_path)
         except Exception as e:
             print(f"Error connecting to main garage database: {e}")
@@ -1058,7 +1086,8 @@ class IntegratedMOTService:
                     # Clean mobile number for comparison
                     clean_mobile = ''.join(filter(str.isdigit, mobile_number))
                     if len(clean_mobile) >= 10:
-                        query_parts.append("REPLACE(REPLACE(c.phone, ' ', ''), '-', '') LIKE ?")
+                        query_parts.append(
+                            "REPLACE(REPLACE(c.phone, ' ', ''), '-', '') LIKE ?")
                         params.append(f"%{clean_mobile[-10:]}%")
 
                 if query_parts:
@@ -1174,16 +1203,22 @@ class IntegratedMOTService:
             print(f"Error logging MOT activity to customer history: {e}")
             return False
 
+
 # Initialize the service
 mot_service = IntegratedMOTService()
 
 # API Routes
+
+
 @app.route('/api/mot/vehicles', methods=['GET'])
 def get_mot_vehicles():
     """Get all MOT vehicles with smart filtering"""
-    include_flagged = request.args.get('include_flagged', 'true').lower() == 'true'
-    include_archived = request.args.get('include_archived', 'false').lower() == 'true'
-    vehicles = mot_service.get_all_mot_vehicles(include_flagged=include_flagged, include_archived=include_archived)
+    include_flagged = request.args.get(
+        'include_flagged', 'true').lower() == 'true'
+    include_archived = request.args.get(
+        'include_archived', 'false').lower() == 'true'
+    vehicles = mot_service.get_all_mot_vehicles(
+        include_flagged=include_flagged, include_archived=include_archived)
 
     # Group vehicles by status for easier frontend handling
     grouped = {
@@ -1206,6 +1241,7 @@ def get_mot_vehicles():
         'sendable_count': len([v for v in vehicles if v.get('can_send_sms') and v.get('send_by_default')])
     })
 
+
 @app.route('/api/mot/vehicles', methods=['POST'])
 def add_mot_vehicle():
     """Add a vehicle to MOT monitoring"""
@@ -1213,12 +1249,14 @@ def add_mot_vehicle():
     registration = data.get('registration', '').strip().upper()
     customer_name = data.get('customer_name', '').strip()
     mobile_number = data.get('mobile_number', '').strip()
-    
+
     if not registration:
         return jsonify({'success': False, 'error': 'Registration required'})
-    
-    result = mot_service.add_mot_vehicle(registration, customer_name, mobile_number)
+
+    result = mot_service.add_mot_vehicle(
+        registration, customer_name, mobile_number)
     return jsonify(result)
+
 
 @app.route('/api/mot/sms/send', methods=['POST'])
 def send_mot_sms():
@@ -1258,7 +1296,8 @@ def send_mot_sms():
 
         # Check if can send SMS
         if not vehicle.get('can_send_sms'):
-            reason = 'Missing mobile number' if not vehicle.get('has_mobile') else 'Incomplete vehicle data'
+            reason = 'Missing mobile number' if not vehicle.get(
+                'has_mobile') else 'Incomplete vehicle data'
             send_results['results'].append({
                 'registration': registration,
                 'success': False,
@@ -1298,13 +1337,16 @@ def send_mot_sms():
 
     # Create summary
     if send_results['sent'] > 0:
-        send_results['summary'].append(f"{send_results['sent']} SMS sent successfully")
+        send_results['summary'].append(
+            f"{send_results['sent']} SMS sent successfully")
     if send_results['failed'] > 0:
         send_results['summary'].append(f"{send_results['failed']} SMS failed")
     if send_results['skipped'] > 0:
-        send_results['summary'].append(f"{send_results['skipped']} vehicles skipped")
+        send_results['summary'].append(
+            f"{send_results['skipped']} vehicles skipped")
 
     return jsonify(send_results)
+
 
 @app.route('/api/mot/statistics', methods=['GET'])
 def get_mot_statistics():
@@ -1321,12 +1363,14 @@ def get_mot_statistics():
 
     return jsonify({'success': True, 'statistics': stats})
 
+
 @app.route('/api/mot/failed-registrations', methods=['GET'])
 def get_failed_registrations():
     """Get failed registrations for manual review"""
     status = request.args.get('status', 'pending')
     failed_regs = mot_service.get_failed_registrations(status)
     return jsonify({'success': True, 'failed_registrations': failed_regs})
+
 
 @app.route('/api/mot/sms/delivery-status', methods=['POST'])
 def sms_delivery_status():
@@ -1368,6 +1412,7 @@ def sms_delivery_status():
         print(f"❌ Error handling delivery status: {e}")
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/mot/sms/status', methods=['GET'])
 def get_sms_service_status():
     """Get SMS service configuration status"""
@@ -1401,6 +1446,7 @@ def get_sms_service_status():
             'status': 'Error checking SMS service'
         }), 500
 
+
 @app.route('/api/mot/sms/check-delivery-status', methods=['POST'])
 def check_delivery_status():
     """Manually check delivery status for recent SMS messages"""
@@ -1429,7 +1475,8 @@ def check_delivery_status():
         for msg_id, message_sid, registration, sent_at in messages:
             try:
                 # Fetch message status from Twilio
-                message = mot_service.sms_service.client.messages(message_sid).fetch()
+                message = mot_service.sms_service.client.messages(
+                    message_sid).fetch()
 
                 # Update database with current status
                 cursor.execute('''
@@ -1440,7 +1487,8 @@ def check_delivery_status():
                 ''', (message.status, message.error_code, message.error_message, msg_id))
 
                 updated_count += 1
-                print(f"📱 Updated delivery status for {registration}: {message.status}")
+                print(
+                    f"📱 Updated delivery status for {registration}: {message.status}")
 
             except Exception as e:
                 print(f"❌ Error checking status for {registration}: {e}")
@@ -1457,6 +1505,7 @@ def check_delivery_status():
 
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @app.route('/api/mot/sms/history', methods=['GET'])
 def get_sms_history():
@@ -1510,18 +1559,22 @@ def get_sms_history():
     conn.close()
     return jsonify({'success': True, 'history': history})
 
+
 @app.route('/api/mot/failed-registrations/<int:failed_id>', methods=['PUT'])
 def update_failed_registration(failed_id):
     """Update a failed registration"""
     data = request.get_json()
-    corrected_registration = data.get('corrected_registration', '').strip().upper()
+    corrected_registration = data.get(
+        'corrected_registration', '').strip().upper()
     action = data.get('action', 'retry')  # 'retry' or 'dismiss'
 
     if action == 'retry' and not corrected_registration:
         return jsonify({'success': False, 'error': 'Corrected registration required for retry'})
 
-    result = mot_service.update_failed_registration(failed_id, corrected_registration, action)
+    result = mot_service.update_failed_registration(
+        failed_id, corrected_registration, action)
     return jsonify(result)
+
 
 @app.route('/api/mot/failed-registrations/bulk', methods=['POST'])
 def bulk_update_failed_registrations():
@@ -1532,10 +1585,12 @@ def bulk_update_failed_registrations():
     results = []
     for update in updates:
         failed_id = update.get('id')
-        corrected_registration = update.get('corrected_registration', '').strip().upper()
+        corrected_registration = update.get(
+            'corrected_registration', '').strip().upper()
         action = update.get('action', 'retry')
 
-        result = mot_service.update_failed_registration(failed_id, corrected_registration, action)
+        result = mot_service.update_failed_registration(
+            failed_id, corrected_registration, action)
         results.append({
             'id': failed_id,
             'success': result['success'],
@@ -1551,6 +1606,7 @@ def bulk_update_failed_registrations():
         'failed': len([r for r in results if not r['success']])
     })
 
+
 @app.route('/api/mot/vehicles/<registration>/archive', methods=['POST'])
 def archive_vehicle(registration):
     """Archive a vehicle from active MOT monitoring"""
@@ -1560,11 +1616,13 @@ def archive_vehicle(registration):
     result = mot_service.archive_vehicle(registration, reason)
     return jsonify(result)
 
+
 @app.route('/api/mot/vehicles/<registration>/unarchive', methods=['POST'])
 def unarchive_vehicle(registration):
     """Unarchive a vehicle to return it to active MOT monitoring"""
     result = mot_service.unarchive_vehicle(registration)
     return jsonify(result)
+
 
 @app.route('/api/mot/vehicles/archive/bulk', methods=['POST'])
 def bulk_archive_vehicles():
@@ -1579,10 +1637,12 @@ def bulk_archive_vehicles():
     result = mot_service.archive_multiple_vehicles(registrations, reason)
     return jsonify(result)
 
+
 @app.route('/api/mot/vehicles/archived', methods=['GET'])
 def get_archived_vehicles():
     """Get all archived vehicles"""
-    vehicles = mot_service.get_all_mot_vehicles(include_flagged=True, include_archived=True)
+    vehicles = mot_service.get_all_mot_vehicles(
+        include_flagged=True, include_archived=True)
     archived_vehicles = [v for v in vehicles if v.get('is_archived')]
 
     return jsonify({
@@ -1590,6 +1650,7 @@ def get_archived_vehicles():
         'vehicles': archived_vehicles,
         'total_count': len(archived_vehicles)
     })
+
 
 @app.route('/api/mot/customer/<registration>', methods=['GET'])
 def get_customer_by_vehicle_registration(registration):
@@ -1653,6 +1714,7 @@ def get_customer_by_vehicle_registration(registration):
 
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @app.route('/api/mot/customer/history/<customer_id>', methods=['GET'])
 def get_customer_mot_history(customer_id):
@@ -1738,6 +1800,7 @@ def get_customer_mot_history(customer_id):
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/mot/link-existing-vehicles', methods=['POST'])
 def link_existing_vehicles():
     """Retroactively link existing MOT vehicles to customers in main database"""
@@ -1761,7 +1824,8 @@ def link_existing_vehicles():
 
         for registration, customer_name, mobile_number in unlinked_vehicles:
             # Try to link to existing customer
-            customer_link = mot_service.link_mot_vehicle_to_customer(registration, customer_name, mobile_number)
+            customer_link = mot_service.link_mot_vehicle_to_customer(
+                registration, customer_name, mobile_number)
 
             if customer_link:
                 # Update MOT vehicle with customer link
@@ -1787,7 +1851,8 @@ def link_existing_vehicles():
 
             elif customer_name and mobile_number:
                 # Create new customer if we have enough info
-                new_customer = mot_service.create_customer_in_main_db(customer_name, mobile_number)
+                new_customer = mot_service.create_customer_in_main_db(
+                    customer_name, mobile_number)
 
                 if new_customer:
                     # Create vehicle record in main database
@@ -1841,6 +1906,7 @@ def link_existing_vehicles():
 
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002, host='127.0.0.1')

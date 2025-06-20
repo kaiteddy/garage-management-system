@@ -5,15 +5,19 @@ Handles appointment management endpoints
 
 import os
 import sqlite3
+from datetime import date, datetime
+
 from flask import Blueprint, jsonify, request
-from datetime import datetime, date
 
 appointment_api_bp = Blueprint('appointment_api', __name__)
 
+
 def get_db_path():
     """Get database path"""
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    project_root = os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.dirname(__file__))))
     return os.path.join(project_root, 'instance', 'garage.db')
+
 
 @appointment_api_bp.route('/api/appointments')
 def get_appointments():
@@ -23,12 +27,12 @@ def get_appointments():
         start_date = request.args.get('start_date')
         end_date = request.args.get('end_date')
         customer_id = request.args.get('customer_id')
-        
+
         db_path = get_db_path()
         conn = sqlite3.connect(db_path)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
-        
+
         # Build query based on filters
         base_query = '''
             SELECT a.id, a.job_id, a.customer_id, a.vehicle_id, a.technician_id, a.bay_id,
@@ -45,10 +49,10 @@ def get_appointments():
             LEFT JOIN technicians t ON a.technician_id = t.id
             LEFT JOIN workshop_bays wb ON a.bay_id = wb.id
         '''
-        
+
         conditions = []
         params = []
-        
+
         if start_date and end_date:
             conditions.append('a.appointment_date BETWEEN ? AND ?')
             params.extend([start_date, end_date])
@@ -58,18 +62,18 @@ def get_appointments():
         elif end_date:
             conditions.append('a.appointment_date <= ?')
             params.append(end_date)
-        
+
         if customer_id:
             conditions.append('a.customer_id = ?')
             params.append(customer_id)
-        
+
         if conditions:
             base_query += ' WHERE ' + ' AND '.join(conditions)
-        
+
         base_query += ' ORDER BY a.appointment_date, a.start_time'
-        
+
         cursor.execute(base_query, params)
-        
+
         appointments = []
         for row in cursor.fetchall():
             appointment = {
@@ -109,9 +113,9 @@ def get_appointments():
                 } if row['bay_number'] else None
             }
             appointments.append(appointment)
-        
+
         conn.close()
-        
+
         return jsonify({
             'success': True,
             'appointments': appointments,
@@ -122,12 +126,13 @@ def get_appointments():
                 'customer_id': customer_id
             }
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
 
 @appointment_api_bp.route('/api/appointments/<int:appointment_id>')
 def get_appointment(appointment_id):
@@ -137,7 +142,7 @@ def get_appointment(appointment_id):
         conn = sqlite3.connect(db_path)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
-        
+
         cursor.execute('''
             SELECT a.id, a.job_id, a.customer_id, a.vehicle_id, a.technician_id, a.bay_id,
                    a.appointment_date, a.start_time, a.end_time, a.estimated_duration,
@@ -154,7 +159,7 @@ def get_appointment(appointment_id):
             LEFT JOIN workshop_bays wb ON a.bay_id = wb.id
             WHERE a.id = ?
         ''', (appointment_id,))
-        
+
         row = cursor.fetchone()
         if not row:
             conn.close()
@@ -162,7 +167,7 @@ def get_appointment(appointment_id):
                 'success': False,
                 'error': 'Appointment not found'
             }), 404
-        
+
         appointment = {
             'id': row['id'],
             'job_id': row['job_id'],
@@ -201,14 +206,14 @@ def get_appointment(appointment_id):
                 'bay_name': row['bay_name']
             } if row['bay_number'] else None
         }
-        
+
         conn.close()
-        
+
         return jsonify({
             'success': True,
             'appointment': appointment
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,

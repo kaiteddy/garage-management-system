@@ -5,15 +5,19 @@ Handles workshop bay management endpoints
 
 import os
 import sqlite3
+from datetime import date, datetime
+
 from flask import Blueprint, jsonify, request
-from datetime import datetime, date
 
 workshop_bay_api_bp = Blueprint('workshop_bay_api', __name__)
 
+
 def get_db_path():
     """Get database path"""
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    project_root = os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.dirname(__file__))))
     return os.path.join(project_root, 'instance', 'garage.db')
+
 
 @workshop_bay_api_bp.route('/api/workshop-bays')
 def get_workshop_bays():
@@ -23,7 +27,7 @@ def get_workshop_bays():
         conn = sqlite3.connect(db_path)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
-        
+
         # Get all workshop bays with current occupancy
         cursor.execute('''
             SELECT wb.id, wb.bay_number, wb.bay_name, wb.bay_type, 
@@ -44,7 +48,7 @@ def get_workshop_bays():
             LEFT JOIN vehicles v ON a.vehicle_id = v.id
             ORDER BY wb.bay_number
         ''', (date.today(),))
-        
+
         bays = []
         for row in cursor.fetchall():
             bay = {
@@ -65,9 +69,9 @@ def get_workshop_bays():
                 } if row['is_occupied'] else None
             }
             bays.append(bay)
-        
+
         conn.close()
-        
+
         return jsonify({
             'success': True,
             'workshop_bays': bays,
@@ -75,12 +79,13 @@ def get_workshop_bays():
             'available': len([b for b in bays if b['is_available'] and not b['is_occupied']]),
             'occupied': len([b for b in bays if b['is_occupied']])
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
 
 @workshop_bay_api_bp.route('/api/workshop-bays/<int:bay_id>')
 def get_workshop_bay(bay_id):
@@ -90,13 +95,13 @@ def get_workshop_bay(bay_id):
         conn = sqlite3.connect(db_path)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
-        
+
         cursor.execute('''
             SELECT id, bay_number, bay_name, bay_type, is_available, equipment, notes
             FROM workshop_bays 
             WHERE id = ?
         ''', (bay_id,))
-        
+
         row = cursor.fetchone()
         if not row:
             conn.close()
@@ -104,7 +109,7 @@ def get_workshop_bay(bay_id):
                 'success': False,
                 'error': 'Workshop bay not found'
             }), 404
-        
+
         bay = {
             'id': row['id'],
             'bay_number': row['bay_number'],
@@ -114,36 +119,37 @@ def get_workshop_bay(bay_id):
             'equipment': row['equipment'],
             'notes': row['notes']
         }
-        
+
         conn.close()
-        
+
         return jsonify({
             'success': True,
             'workshop_bay': bay
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
 
+
 @workshop_bay_api_bp.route('/api/workshop-bays', methods=['POST'])
 def create_workshop_bay():
     """Create a new workshop bay"""
     try:
         data = request.get_json()
-        
+
         if not data or not data.get('bay_number'):
             return jsonify({
                 'success': False,
                 'error': 'Bay number is required'
             }), 400
-        
+
         db_path = get_db_path()
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         cursor.execute('''
             INSERT INTO workshop_bays (bay_number, bay_name, bay_type, is_available, equipment, notes)
             VALUES (?, ?, ?, ?, ?, ?)
@@ -155,17 +161,17 @@ def create_workshop_bay():
             data.get('equipment'),
             data.get('notes')
         ))
-        
+
         bay_id = cursor.lastrowid
         conn.commit()
         conn.close()
-        
+
         return jsonify({
             'success': True,
             'bay_id': bay_id,
             'message': 'Workshop bay created successfully'
         }), 201
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
