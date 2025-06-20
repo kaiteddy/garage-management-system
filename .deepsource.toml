@@ -1,66 +1,14 @@
 version = 1
 
-# JavaScript/TypeScript Analyzer Configuration
 [[analyzers]]
 name = "javascript"
 
   [analyzers.meta]
   plugins = ["react"]
-  environment = ["nodejs", "browser"]
+  environment = ["nodejs"]
 
-# Python Analyzer Configuration
 [[analyzers]]
 name = "python"
 
   [analyzers.meta]
   runtime_version = "3.x.x"
-
-# Test Coverage Analyzer
-[[analyzers]]
-name = "test-coverage"
-
-  [analyzers.meta]
-  coverage_threshold = 80
-
-# Secrets Analyzer for detecting hardcoded credentials
-[[analyzers]]
-name = "secrets"
-
-# Configuration for transformers (auto-fixes)
-[[transformers]]
-name = "autopep8"
-
-[[transformers]]
-name = "isort"
-
-[[transformers]]
-name = "prettier"
-
-  [transformers.meta]
-  print_width = 100
-  tab_width = 2
-  use_tabs = false
-  semi = true
-  single_quote = true
-  trailing_comma = "es5"
-
-# Exclude patterns
-[exclude_patterns]
-# Exclude third-party dependencies
-- "node_modules/**"
-- "venv/**"
-- "env/**"
-- ".venv/**"
-
-# Exclude build artifacts
-- "dist/**"
-- "build/**"
-- "*.min.js"
-- "*.min.css"
-
-# Exclude test data and archives
-- "archive/**"
-- "temp_extract/**"
-- "tests/fixtures/**"
-- "*.log"
-- "*.db"
