@@ -40,12 +40,42 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const pr = context.payload.pull_request;
-            
-            // Validate this is a DeepSource autofix PR
-            if (pr.user.login !== 'deepsource-autofix[bot]') {
-              console.log('Not a DeepSource autofix PR');
-              return { shouldMerge: false, reason: 'Not DeepSource bot' };
+            let pr;
+
+            // Handle manual trigger vs automatic PR trigger
+            console.log(`Event name: ${context.eventName}`);
+            if (context.eventName === 'workflow_dispatch') {
+              // For manual trigger, find open DeepSource PRs
+              const { data: prs } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open'
+              });
+
+              // Find DeepSource autofix PR
+              console.log(`Found ${prs.length} open PRs`);
+              prs.forEach(p => console.log(`PR #${p.number}: ${p.title} by ${p.user && p.user.login ? p.user.login : 'unknown'}`));
+              pr = prs.find(p => p.user && p.user.login === 'deepsource-autofix[bot]');
+
+              if (!pr) {
+                console.log('No open DeepSource autofix PRs found');
+                const result = { shouldMerge: false, reason: 'No DeepSource PRs found' };
+                core.setOutput('result', JSON.stringify(result));
+                return result;
+              }
+
+              console.log(`Found DeepSource PR #${pr.number}: ${pr.title}`);
+            } else {
+              // Normal PR trigger
+              pr = context.payload.pull_request;
+
+              // Validate this is a DeepSource autofix PR
+              if (!pr || !pr.user || pr.user.login !== 'deepsource-autofix[bot]') {
+                console.log('Not a DeepSource autofix PR');
+                const result = { shouldMerge: false, reason: 'Not DeepSource bot' };
+                core.setOutput('result', JSON.stringify(result));
+                return result;
+              }
             }
             
             // Check PR title patterns
@@ -62,13 +92,17 @@ jobs:
             
             if (!isValidTitle) {
               console.log('Invalid PR title pattern');
-              return { shouldMerge: false, reason: 'Invalid title pattern' };
+              const result = { shouldMerge: false, reason: 'Invalid title pattern' };
+              core.setOutput('result', JSON.stringify(result));
+              return result;
             }
             
             // Check for conflicts
             if (pr.mergeable === false) {
               console.log('PR has merge conflicts');
-              return { shouldMerge: false, reason: 'Merge conflicts' };
+              const result = { shouldMerge: false, reason: 'Merge conflicts' };
+              core.setOutput('result', JSON.stringify(result));
+              return result;
             }
             
             // Check file changes are safe
@@ -77,6 +111,11 @@ jobs:
               repo: context.repo.repo,
               pull_number: pr.number
             });
+
+            // Store PR number for later steps
+            core.setOutput('pr_number', pr.number);
+            core.setOutput('pr_title', pr.title);
+            core.setOutput('pr_url', pr.html_url);
             
             // Only allow changes to source files, not config files
             const unsafeFiles = files.filter(file => 
@@ -89,10 +128,14 @@ jobs:
             
             if (unsafeFiles.length > 0) {
               console.log('PR contains unsafe file changes');
-              return { shouldMerge: false, reason: 'Unsafe file changes' };
+              const result = { shouldMerge: false, reason: 'Unsafe file changes' };
+              core.setOutput('result', JSON.stringify(result));
+              return result;
             }
-            
-            return { shouldMerge: true, reason: 'Validation passed' };
+
+            const result = { shouldMerge: true, reason: 'Validation passed' };
+            core.setOutput('result', JSON.stringify(result));
+            return result;
 
       - name: Log fix attempt
         run: |
@@ -115,13 +158,14 @@ jobs:
           # Add new log entry
           log_entry = {
               'timestamp': datetime.now().isoformat(),
-              'pr_number': ${{ github.event.pull_request.number }},
-              'pr_title': '${{ github.event.pull_request.title }}',
-              'pr_url': '${{ github.event.pull_request.html_url }}',
+              'pr_number': '${{ steps.validate.outputs.pr_number }}' or 'unknown',
+              'pr_title': '${{ steps.validate.outputs.pr_title }}' or 'unknown',
+              'pr_url': '${{ steps.validate.outputs.pr_url }}' or 'unknown',
               'validation_result': '${{ steps.validate.outputs.result }}',
               'action': 'auto_merge_attempt',
               'actor': '${{ github.actor }}',
-              'commit_sha': '${{ github.event.pull_request.head.sha }}'
+              'event_type': '${{ github.event_name }}',
+              'commit_sha': '${{ github.sha }}'
           }
           
           logs.append(log_entry)
@@ -142,7 +186,15 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const pr = context.payload.pull_request;
+            // Get PR details from validation step
+            const prNumber = parseInt('${{ steps.validate.outputs.pr_number }}');
+
+            // Fetch fresh PR data
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
             
             try {
               await github.rest.pulls.merge({
