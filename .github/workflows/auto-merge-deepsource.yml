@@ -1,0 +1,212 @@
+name: Auto Merge DeepSource Fixes
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+  workflow_dispatch:
+    inputs:
+      force_merge:
+        description: 'Force merge DeepSource PRs'
+        required: false
+        default: 'false'
+
+jobs:
+  auto-merge:
+    if: github.actor == 'deepsource-autofix[bot]' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests python-dateutil
+
+      - name: Validate DeepSource PR
+        id: validate
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+            
+            // Validate this is a DeepSource autofix PR
+            if (pr.user.login !== 'deepsource-autofix[bot]') {
+              console.log('Not a DeepSource autofix PR');
+              return { shouldMerge: false, reason: 'Not DeepSource bot' };
+            }
+            
+            // Check PR title patterns
+            const validTitlePatterns = [
+              /^style: format code with/i,
+              /^fix: auto-fix/i,
+              /^refactor: auto-fix/i,
+              /^chore: auto-fix/i
+            ];
+            
+            const isValidTitle = validTitlePatterns.some(pattern => 
+              pattern.test(pr.title)
+            );
+            
+            if (!isValidTitle) {
+              console.log('Invalid PR title pattern');
+              return { shouldMerge: false, reason: 'Invalid title pattern' };
+            }
+            
+            // Check for conflicts
+            if (pr.mergeable === false) {
+              console.log('PR has merge conflicts');
+              return { shouldMerge: false, reason: 'Merge conflicts' };
+            }
+            
+            // Check file changes are safe
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number
+            });
+            
+            // Only allow changes to source files, not config files
+            const unsafeFiles = files.filter(file => 
+              file.filename.includes('.github/') ||
+              file.filename.includes('package.json') ||
+              file.filename.includes('requirements.txt') ||
+              file.filename.includes('.deepsource.toml') ||
+              file.filename.includes('Dockerfile')
+            );
+            
+            if (unsafeFiles.length > 0) {
+              console.log('PR contains unsafe file changes');
+              return { shouldMerge: false, reason: 'Unsafe file changes' };
+            }
+            
+            return { shouldMerge: true, reason: 'Validation passed' };
+
+      - name: Log fix attempt
+        run: |
+          python3 -c "
+          import json
+          import os
+          from datetime import datetime
+          
+          # Create logs directory if it doesn't exist
+          os.makedirs('logs', exist_ok=True)
+          
+          # Load existing log
+          log_file = 'logs/deepsource_fixes.json'
+          try:
+              with open(log_file, 'r') as f:
+                  logs = json.load(f)
+          except:
+              logs = []
+          
+          # Add new log entry
+          log_entry = {
+              'timestamp': datetime.now().isoformat(),
+              'pr_number': ${{ github.event.pull_request.number }},
+              'pr_title': '${{ github.event.pull_request.title }}',
+              'pr_url': '${{ github.event.pull_request.html_url }}',
+              'validation_result': '${{ steps.validate.outputs.result }}',
+              'action': 'auto_merge_attempt',
+              'actor': '${{ github.actor }}',
+              'commit_sha': '${{ github.event.pull_request.head.sha }}'
+          }
+          
+          logs.append(log_entry)
+          
+          # Keep only last 500 entries
+          if len(logs) > 500:
+              logs = logs[-500:]
+          
+          with open(log_file, 'w') as f:
+              json.dump(logs, f, indent=2)
+          
+          print(f'Logged fix attempt for PR #{log_entry[\"pr_number\"]}')
+          "
+
+      - name: Merge DeepSource PR
+        if: fromJSON(steps.validate.outputs.result).shouldMerge
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+            
+            try {
+              await github.rest.pulls.merge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pr.number,
+                commit_title: `Auto-merge: ${pr.title}`,
+                commit_message: `Automatically merged DeepSource autofix PR #${pr.number}\n\nChanges:\n${pr.body || 'Style and formatting fixes'}\n\nMerged by: GitHub Actions\nTimestamp: ${new Date().toISOString()}`,
+                merge_method: 'squash'
+              });
+              
+              console.log(`Successfully merged PR #${pr.number}`);
+              
+              // Add success comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: '✅ **Auto-merged successfully!**\n\nThis DeepSource autofix has been automatically merged after validation.\n\n🔍 **Validation checks passed:**\n- ✅ Valid DeepSource bot PR\n- ✅ Safe file changes only\n- ✅ No merge conflicts\n- ✅ Valid title pattern\n\n📊 View fix history in `logs/deepsource_fixes.json`'
+              });
+              
+            } catch (error) {
+              console.error('Failed to merge PR:', error);
+              
+              // Add failure comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: `❌ **Auto-merge failed!**\n\nError: ${error.message}\n\nPlease review and merge manually if appropriate.`
+              });
+              
+              throw error;
+            }
+
+      - name: Update fix log with result
+        if: always()
+        run: |
+          python3 -c "
+          import json
+          import os
+          from datetime import datetime
+          
+          log_file = 'logs/deepsource_fixes.json'
+          try:
+              with open(log_file, 'r') as f:
+                  logs = json.load(f)
+          except:
+              logs = []
+          
+          # Update the last entry with result
+          if logs:
+              logs[-1]['merge_result'] = '${{ job.status }}'
+              logs[-1]['completed_at'] = datetime.now().isoformat()
+              
+              with open(log_file, 'w') as f:
+                  json.dump(logs, f, indent=2)
+          "
+
+      - name: Commit fix log
+        if: always()
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add logs/deepsource_fixes.json
+          git diff --staged --quiet || git commit -m "📊 Update DeepSource fix log [skip ci]"
+          git push || echo "No changes to push"
