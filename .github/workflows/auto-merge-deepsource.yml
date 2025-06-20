@@ -54,8 +54,8 @@ jobs:
 
               // Find DeepSource autofix PR
               console.log(`Found ${prs.length} open PRs`);
-              prs.forEach(p => console.log(`PR #${p.number}: ${p.title} by ${p.user?.login || 'unknown'}`));
-              pr = prs.find(p => p.user?.login === 'deepsource-autofix[bot]');
+              prs.forEach(p => console.log(`PR #${p.number}: ${p.title} by ${p.user && p.user.login ? p.user.login : 'unknown'}`));
+              pr = prs.find(p => p.user && p.user.login === 'deepsource-autofix[bot]');
 
               if (!pr) {
                 console.log('No open DeepSource autofix PRs found');
@@ -70,7 +70,7 @@ jobs:
               pr = context.payload.pull_request;
 
               // Validate this is a DeepSource autofix PR
-              if (!pr || pr.user?.login !== 'deepsource-autofix[bot]') {
+              if (!pr || !pr.user || pr.user.login !== 'deepsource-autofix[bot]') {
                 console.log('Not a DeepSource autofix PR');
                 const result = { shouldMerge: false, reason: 'Not DeepSource bot' };
                 core.setOutput('result', JSON.stringify(result));
