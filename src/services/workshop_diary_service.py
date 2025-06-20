@@ -4,12 +4,13 @@ Enhanced Workshop Diary Service
 Professional scheduling system with drag-and-drop, bay allocation, and technician management
 """
 
-import os
 import json
+import os
 import sqlite3
-from datetime import datetime, timedelta, time
-from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass
+from datetime import datetime, time, timedelta
+from typing import Dict, List, Optional, Tuple
+
 
 @dataclass
 class TimeSlot:
@@ -21,6 +22,7 @@ class TimeSlot:
     technician_id: Optional[int] = None
     bay_id: Optional[int] = None
 
+
 @dataclass
 class WorkshopResource:
     """Workshop resource (technician or bay)"""
@@ -31,19 +33,20 @@ class WorkshopResource:
     availability: Dict[str, List[TimeSlot]]
     active: bool
 
+
 class WorkshopDiaryService:
     """Enhanced workshop diary service"""
-    
+
     def __init__(self, db_path: str):
         self.db_path = db_path
         self._ensure_workshop_tables()
-    
+
     def _ensure_workshop_tables(self):
         """Create enhanced workshop tables if they don't exist"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             # Enhanced technicians table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS technicians (
@@ -61,7 +64,7 @@ class WorkshopDiaryService:
                     created_date DATE DEFAULT CURRENT_DATE
                 )
             ''')
-            
+
             # Enhanced workshop bays table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS workshop_bays (
@@ -76,7 +79,7 @@ class WorkshopDiaryService:
                     created_date DATE DEFAULT CURRENT_DATE
                 )
             ''')
-            
+
             # Technician availability table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS technician_availability (
@@ -91,7 +94,7 @@ class WorkshopDiaryService:
                     FOREIGN KEY (technician_id) REFERENCES technicians (id)
                 )
             ''')
-            
+
             # Bay availability table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS bay_availability (
@@ -106,7 +109,7 @@ class WorkshopDiaryService:
                     FOREIGN KEY (bay_id) REFERENCES workshop_bays (id)
                 )
             ''')
-            
+
             # Service templates table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS service_templates (
@@ -121,7 +124,7 @@ class WorkshopDiaryService:
                     created_date DATE DEFAULT CURRENT_DATE
                 )
             ''')
-            
+
             # Appointment conflicts table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS appointment_conflicts (
@@ -135,36 +138,36 @@ class WorkshopDiaryService:
                     FOREIGN KEY (appointment_id) REFERENCES appointments (id)
                 )
             ''')
-            
+
             conn.commit()
             conn.close()
-            
+
         except Exception as e:
             print(f"Error creating workshop tables: {str(e)}")
-    
+
     def get_technicians(self, active_only: bool = True) -> List[Dict]:
         """Get all technicians with their skills and availability"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             query = '''
                 SELECT id, name, email, phone, skills, hourly_rate,
                        start_time, end_time, lunch_start, lunch_end, active
                 FROM technicians
             '''
-            
+
             if active_only:
                 query += ' WHERE active = 1'
-            
+
             query += ' ORDER BY name'
-            
+
             cursor.execute(query)
-            
+
             technicians = []
             for row in cursor.fetchall():
                 skills = json.loads(row[4]) if row[4] else []
-                
+
                 technicians.append({
                     'id': row[0],
                     'name': row[1],
@@ -178,37 +181,37 @@ class WorkshopDiaryService:
                     'lunch_end': row[9],
                     'active': bool(row[10])
                 })
-            
+
             conn.close()
             return technicians
-            
+
         except Exception as e:
             print(f"Error getting technicians: {str(e)}")
             return []
-    
+
     def get_workshop_bays(self, active_only: bool = True) -> List[Dict]:
         """Get all workshop bays with their specifications"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             query = '''
                 SELECT id, bay_number, bay_name, bay_type, equipment,
                        max_vehicle_size, lift_capacity, active
                 FROM workshop_bays
             '''
-            
+
             if active_only:
                 query += ' WHERE active = 1'
-            
+
             query += ' ORDER BY bay_number'
-            
+
             cursor.execute(query)
-            
+
             bays = []
             for row in cursor.fetchall():
                 equipment = json.loads(row[4]) if row[4] else []
-                
+
                 bays.append({
                     'id': row[0],
                     'bay_number': row[1],
@@ -219,20 +222,20 @@ class WorkshopDiaryService:
                     'lift_capacity': row[6],
                     'active': bool(row[7])
                 })
-            
+
             conn.close()
             return bays
-            
+
         except Exception as e:
             print(f"Error getting workshop bays: {str(e)}")
             return []
-    
+
     def get_appointments_for_period(self, start_date: str, end_date: str) -> List[Dict]:
         """Get appointments for a specific period with full details"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             cursor.execute('''
                 SELECT a.id, a.job_id, a.customer_id, a.vehicle_id, a.technician_id, a.bay_id,
                        a.appointment_date, a.start_time, a.end_time, a.estimated_duration,
@@ -252,11 +255,11 @@ class WorkshopDiaryService:
                 WHERE a.appointment_date BETWEEN ? AND ?
                 ORDER BY a.appointment_date, a.start_time
             ''', (start_date, end_date))
-            
+
             appointments = []
             for row in cursor.fetchall():
                 technician_skills = json.loads(row[18]) if row[18] else []
-                
+
                 appointments.append({
                     'id': row[0],
                     'job_id': row[1],
@@ -302,23 +305,23 @@ class WorkshopDiaryService:
                         'total_amount': row[32]
                     }
                 })
-            
+
             conn.close()
             return appointments
-            
+
         except Exception as e:
             print(f"Error getting appointments: {str(e)}")
             return []
-    
+
     def check_availability(self, date: str, start_time: str, end_time: str,
-                          technician_id: int = None, bay_id: int = None) -> Dict:
+                           technician_id: int = None, bay_id: int = None) -> Dict:
         """Check availability for a specific time slot"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             conflicts = []
-            
+
             # Check for appointment conflicts
             cursor.execute('''
                 SELECT id, customer_id, technician_id, bay_id, start_time, end_time, service_type
@@ -327,7 +330,7 @@ class WorkshopDiaryService:
                 AND ((start_time < ? AND end_time > ?) OR (start_time < ? AND end_time > ?))
                 AND (technician_id = ? OR bay_id = ?)
             ''', (date, end_time, start_time, start_time, end_time, technician_id, bay_id))
-            
+
             for row in cursor.fetchall():
                 conflicts.append({
                     'type': 'appointment',
@@ -339,7 +342,7 @@ class WorkshopDiaryService:
                     'end_time': row[5],
                     'service_type': row[6]
                 })
-            
+
             # Check technician availability
             if technician_id:
                 cursor.execute('''
@@ -348,7 +351,7 @@ class WorkshopDiaryService:
                     WHERE technician_id = ? AND date = ?
                     AND ((start_time <= ? AND end_time >= ?) OR (start_time <= ? AND end_time >= ?))
                 ''', (technician_id, date, start_time, start_time, end_time, end_time))
-                
+
                 for row in cursor.fetchall():
                     if row[0] != 'AVAILABLE':
                         conflicts.append({
@@ -358,7 +361,7 @@ class WorkshopDiaryService:
                             'end_time': row[2],
                             'notes': row[3]
                         })
-            
+
             # Check bay availability
             if bay_id:
                 cursor.execute('''
@@ -367,7 +370,7 @@ class WorkshopDiaryService:
                     WHERE bay_id = ? AND date = ?
                     AND ((start_time <= ? AND end_time >= ?) OR (start_time <= ? AND end_time >= ?))
                 ''', (bay_id, date, start_time, start_time, end_time, end_time))
-                
+
                 for row in cursor.fetchall():
                     if row[0] != 'AVAILABLE':
                         conflicts.append({
@@ -377,14 +380,14 @@ class WorkshopDiaryService:
                             'end_time': row[2],
                             'maintenance_reason': row[3]
                         })
-            
+
             conn.close()
-            
+
             return {
                 'available': len(conflicts) == 0,
                 'conflicts': conflicts
             }
-            
+
         except Exception as e:
             return {
                 'available': False,
@@ -392,7 +395,7 @@ class WorkshopDiaryService:
             }
 
     def move_appointment(self, appointment_id: int, new_date: str, new_start_time: str,
-                        new_technician_id: int = None, new_bay_id: int = None) -> Dict:
+                         new_technician_id: int = None, new_bay_id: int = None) -> Dict:
         """Move an appointment to a new time slot (drag and drop functionality)"""
         try:
             conn = sqlite3.connect(self.db_path)
@@ -412,7 +415,8 @@ class WorkshopDiaryService:
             # Calculate new end time
             duration = appointment[3]  # estimated_duration
             new_start = datetime.strptime(new_start_time, '%H:%M').time()
-            new_end = (datetime.combine(datetime.today(), new_start) + timedelta(minutes=duration)).time()
+            new_end = (datetime.combine(datetime.today(), new_start) +
+                       timedelta(minutes=duration)).time()
             new_end_time = new_end.strftime('%H:%M')
 
             # Use existing resources if not specified
@@ -460,7 +464,7 @@ class WorkshopDiaryService:
             }
 
     def get_optimal_scheduling_suggestions(self, service_type: str, estimated_duration: int,
-                                         preferred_date: str = None) -> List[Dict]:
+                                           preferred_date: str = None) -> List[Dict]:
         """Get optimal scheduling suggestions based on workload and resources"""
         try:
             conn = sqlite3.connect(self.db_path)
@@ -474,8 +478,10 @@ class WorkshopDiaryService:
             ''', (service_type, f'%{service_type}%'))
 
             template = cursor.fetchone()
-            required_skills = json.loads(template[0]) if template and template[0] else []
-            bay_requirements = json.loads(template[1]) if template and template[1] else []
+            required_skills = json.loads(
+                template[0]) if template and template[0] else []
+            bay_requirements = json.loads(
+                template[1]) if template and template[1] else []
 
             # Get suitable technicians
             suitable_technicians = []
@@ -495,7 +501,8 @@ class WorkshopDiaryService:
 
             # Generate suggestions for next 7 days
             suggestions = []
-            start_date = datetime.strptime(preferred_date, '%Y-%m-%d') if preferred_date else datetime.now()
+            start_date = datetime.strptime(
+                preferred_date, '%Y-%m-%d') if preferred_date else datetime.now()
 
             for day_offset in range(7):
                 check_date = start_date + timedelta(days=day_offset)
@@ -519,7 +526,8 @@ class WorkshopDiaryService:
 
                             if availability['available']:
                                 # Calculate workload score (lower is better)
-                                workload_score = self._calculate_workload_score(date_str, tech_id, bay_id)
+                                workload_score = self._calculate_workload_score(
+                                    date_str, tech_id, bay_id)
 
                                 suggestions.append({
                                     'date': date_str,
@@ -580,8 +588,8 @@ class WorkshopDiaryService:
             return 1.0  # Return high score on error
 
     def create_service_template(self, name: str, description: str, estimated_duration: int,
-                               required_skills: List[str], bay_requirements: List[str],
-                               default_price: float = 0.0) -> Dict:
+                                required_skills: List[str], bay_requirements: List[str],
+                                default_price: float = 0.0) -> Dict:
         """Create a new service template"""
         try:
             conn = sqlite3.connect(self.db_path)
@@ -593,7 +601,8 @@ class WorkshopDiaryService:
                 VALUES (?, ?, ?, ?, ?, ?)
             ''', (
                 name, description, estimated_duration,
-                json.dumps(required_skills), json.dumps(bay_requirements), default_price
+                json.dumps(required_skills), json.dumps(
+                    bay_requirements), default_price
             ))
 
             template_id = cursor.lastrowid
@@ -649,7 +658,8 @@ class WorkshopDiaryService:
                     'name': row[0],
                     'appointments': row[1],
                     'total_minutes': row[2] or 0,
-                    'utilization_percent': round((row[2] or 0) / (480 * 7) * 100, 1)  # 7 days, 8 hours each
+                    # 7 days, 8 hours each
+                    'utilization_percent': round((row[2] or 0) / (480 * 7) * 100, 1)
                 })
 
             # Get bay utilization

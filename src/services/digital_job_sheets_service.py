@@ -4,14 +4,15 @@ Digital Job Sheets Service
 Enhanced job sheet system with templates, digital signatures, and printable cards
 """
 
-import os
-import json
-import sqlite3
 import base64
+import hashlib
+import json
+import os
+import sqlite3
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Dict, List, Optional
-from dataclasses import dataclass
-import hashlib
+
 
 @dataclass
 class JobSheetTemplate:
@@ -28,6 +29,7 @@ class JobSheetTemplate:
     estimated_time: int
     is_active: bool
 
+
 @dataclass
 class DigitalSignature:
     """Digital signature structure"""
@@ -37,19 +39,20 @@ class DigitalSignature:
     timestamp: datetime
     ip_address: str
 
+
 class DigitalJobSheetsService:
     """Service for digital job sheets with templates and signatures"""
-    
+
     def __init__(self, db_path: str):
         self.db_path = db_path
         self._ensure_job_sheet_tables()
-    
+
     def _ensure_job_sheet_tables(self):
         """Create enhanced job sheet tables if they don't exist"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             # Enhanced job sheet templates table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS job_sheet_templates (
@@ -68,7 +71,7 @@ class DigitalJobSheetsService:
                     updated_date DATE DEFAULT CURRENT_DATE
                 )
             ''')
-            
+
             # Enhanced job sheets table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS job_sheets (
@@ -93,7 +96,7 @@ class DigitalJobSheetsService:
                     FOREIGN KEY (template_id) REFERENCES job_sheet_templates (id)
                 )
             ''')
-            
+
             # Digital signatures table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS digital_signatures (
@@ -110,7 +113,7 @@ class DigitalJobSheetsService:
                     FOREIGN KEY (job_sheet_id) REFERENCES job_sheets (id)
                 )
             ''')
-            
+
             # Job sheet attachments table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS job_sheet_attachments (
@@ -125,7 +128,7 @@ class DigitalJobSheetsService:
                     FOREIGN KEY (job_sheet_id) REFERENCES job_sheets (id)
                 )
             ''')
-            
+
             # Quality control checklist table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS quality_control_items (
@@ -140,22 +143,22 @@ class DigitalJobSheetsService:
                     FOREIGN KEY (job_sheet_id) REFERENCES job_sheets (id)
                 )
             ''')
-            
+
             conn.commit()
             conn.close()
-            
+
         except Exception as e:
             print(f"Error creating job sheet tables: {str(e)}")
-    
+
     def create_job_sheet_template(self, name: str, service_type: str, description: str,
-                                 default_instructions: str = "", default_safety_notes: str = "",
-                                 default_parts: List[str] = None, default_tools: List[str] = None,
-                                 default_checks: List[str] = None, estimated_time: int = 60) -> Dict:
+                                  default_instructions: str = "", default_safety_notes: str = "",
+                                  default_parts: List[str] = None, default_tools: List[str] = None,
+                                  default_checks: List[str] = None, estimated_time: int = 60) -> Dict:
         """Create a new job sheet template"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             cursor.execute('''
                 INSERT INTO job_sheet_templates 
                 (name, service_type, description, default_instructions, default_safety_notes,
@@ -163,32 +166,33 @@ class DigitalJobSheetsService:
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (
                 name, service_type, description, default_instructions, default_safety_notes,
-                json.dumps(default_parts or []), json.dumps(default_tools or []),
+                json.dumps(default_parts or []), json.dumps(
+                    default_tools or []),
                 json.dumps(default_checks or []), estimated_time
             ))
-            
+
             template_id = cursor.lastrowid
             conn.commit()
             conn.close()
-            
+
             return {
                 'success': True,
                 'template_id': template_id,
                 'message': 'Job sheet template created successfully'
             }
-            
+
         except Exception as e:
             return {
                 'success': False,
                 'error': str(e)
             }
-    
+
     def get_job_sheet_templates(self, service_type: str = None, active_only: bool = True) -> List[Dict]:
         """Get job sheet templates with optional filtering"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             query = '''
                 SELECT id, name, service_type, description, default_instructions,
                        default_safety_notes, default_parts, default_tools, default_checks,
@@ -197,18 +201,18 @@ class DigitalJobSheetsService:
                 WHERE 1=1
             '''
             params = []
-            
+
             if active_only:
                 query += ' AND is_active = 1'
-            
+
             if service_type:
                 query += ' AND service_type = ?'
                 params.append(service_type)
-            
+
             query += ' ORDER BY name'
-            
+
             cursor.execute(query, params)
-            
+
             templates = []
             for row in cursor.fetchall():
                 templates.append({
@@ -225,38 +229,38 @@ class DigitalJobSheetsService:
                     'is_active': bool(row[10]),
                     'created_date': row[11]
                 })
-            
+
             conn.close()
             return templates
-            
+
         except Exception as e:
             print(f"Error getting job sheet templates: {str(e)}")
             return []
-    
+
     def create_job_sheet_from_template(self, job_id: int, template_id: int = None,
-                                     custom_instructions: str = None) -> Dict:
+                                       custom_instructions: str = None) -> Dict:
         """Create a new job sheet from a template"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             # Generate unique sheet number
             sheet_number = f"JS-{datetime.now().strftime('%Y%m%d')}-{job_id:04d}"
-            
+
             # Get template data if template_id provided
             work_instructions = custom_instructions or ""
             safety_notes = ""
             parts_required = "[]"
             tools_required = "[]"
             quality_checks = "[]"
-            
+
             if template_id:
                 cursor.execute('''
                     SELECT default_instructions, default_safety_notes, default_parts,
                            default_tools, default_checks
                     FROM job_sheet_templates WHERE id = ?
                 ''', (template_id,))
-                
+
                 template = cursor.fetchone()
                 if template:
                     work_instructions = custom_instructions or template[0] or ""
@@ -264,7 +268,7 @@ class DigitalJobSheetsService:
                     parts_required = template[2] or "[]"
                     tools_required = template[3] or "[]"
                     quality_checks = template[4] or "[]"
-            
+
             # Create job sheet
             cursor.execute('''
                 INSERT INTO job_sheets 
@@ -275,9 +279,9 @@ class DigitalJobSheetsService:
                 job_id, sheet_number, template_id, work_instructions, safety_notes,
                 parts_required, tools_required, quality_checks, 'DRAFT'
             ))
-            
+
             job_sheet_id = cursor.lastrowid
-            
+
             # Create quality control items from template
             if quality_checks != "[]":
                 try:
@@ -290,17 +294,17 @@ class DigitalJobSheetsService:
                         ''', (job_sheet_id, check, 'TEMPLATE'))
                 except json.JSONDecodeError:
                     pass
-            
+
             conn.commit()
             conn.close()
-            
+
             return {
                 'success': True,
                 'job_sheet_id': job_sheet_id,
                 'sheet_number': sheet_number,
                 'message': 'Job sheet created successfully'
             }
-            
+
         except Exception as e:
             return {
                 'success': False,
@@ -448,7 +452,7 @@ class DigitalJobSheetsService:
             }
 
     def update_quality_control_item(self, item_id: int, is_completed: bool,
-                                   completed_by: str = None, notes: str = None) -> Dict:
+                                    completed_by: str = None, notes: str = None) -> Dict:
         """Update a quality control item"""
         try:
             conn = sqlite3.connect(self.db_path)
@@ -666,10 +670,10 @@ class DigitalJobSheetsService:
         except Exception as e:
             print(f"Error getting job sheets: {str(e)}")
             return []
-    
+
     def add_digital_signature(self, job_sheet_id: int, signature_type: str,
-                             signature_data: str, signer_name: str, signer_role: str,
-                             signer_ip: str = None) -> Dict:
+                              signature_data: str, signer_name: str, signer_role: str,
+                              signer_ip: str = None) -> Dict:
         """Add a digital signature to a job sheet"""
         try:
             # Validate signature type
@@ -679,15 +683,15 @@ class DigitalJobSheetsService:
                     'success': False,
                     'error': f'Invalid signature type. Must be one of: {", ".join(valid_types)}'
                 }
-            
+
             # Generate signature hash for verification
             signature_hash = hashlib.sha256(
                 f"{signature_data}{signer_name}{datetime.now().isoformat()}".encode()
             ).hexdigest()
-            
+
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             # Store digital signature
             cursor.execute('''
                 INSERT INTO digital_signatures 
@@ -698,7 +702,7 @@ class DigitalJobSheetsService:
                 job_sheet_id, signature_type, signature_data, signer_name, signer_role,
                 signer_ip, signature_hash, True
             ))
-            
+
             # Update job sheet with signature
             signature_column = f"{signature_type.lower()}_signature"
             cursor.execute(f'''
@@ -706,13 +710,13 @@ class DigitalJobSheetsService:
                 SET {signature_column} = ?, signed_date = CURRENT_TIMESTAMP
                 WHERE id = ?
             ''', (signature_data, job_sheet_id))
-            
+
             # Check if all required signatures are complete
             cursor.execute('''
                 SELECT technician_signature, supervisor_signature, customer_signature
                 FROM job_sheets WHERE id = ?
             ''', (job_sheet_id,))
-            
+
             signatures = cursor.fetchone()
             if signatures and all(signatures):
                 cursor.execute('''
@@ -720,16 +724,16 @@ class DigitalJobSheetsService:
                     SET status = 'COMPLETED', completed_date = CURRENT_TIMESTAMP
                     WHERE id = ?
                 ''', (job_sheet_id,))
-            
+
             conn.commit()
             conn.close()
-            
+
             return {
                 'success': True,
                 'signature_hash': signature_hash,
                 'message': f'{signature_type.title()} signature added successfully'
             }
-            
+
         except Exception as e:
             return {
                 'success': False,

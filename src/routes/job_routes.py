@@ -5,17 +5,21 @@ Extracted from monolithic app.py
 
 import os
 import sqlite3
+
 from flask import Blueprint, jsonify, request
-from models import Job, Customer, Vehicle
+
+from models import Customer, Job, Vehicle
 
 job_bp = Blueprint('job', __name__)
+
 
 @job_bp.route('/api/jobs')
 def get_jobs():
     """Get all jobs"""
     try:
         # Use direct SQLite query for now
-        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.dirname(__file__))), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -77,11 +81,13 @@ def get_jobs():
             'error': str(e)
         }), 500
 
+
 @job_bp.route('/api/jobs/kanban')
 def get_jobs_kanban():
     """Get jobs in kanban format"""
     try:
-        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.dirname(__file__))), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -151,12 +157,14 @@ def get_jobs_kanban():
 
 # Appointments endpoint moved to src/routes/api/appointment_api.py
 
+
 @job_bp.route('/api/job-sheet-templates')
 def get_job_sheet_templates():
     """Get job sheet templates"""
     try:
         # Use direct SQLite query for now
-        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.dirname(__file__))), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -197,12 +205,14 @@ def get_job_sheet_templates():
             'error': str(e)
         }), 500
 
+
 @job_bp.route('/api/job-sheets')
 def get_job_sheets():
     """Get job sheets"""
     try:
         # Use direct SQLite query for now
-        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.dirname(__file__))), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -260,6 +270,7 @@ def get_job_sheets():
             'error': str(e)
         }), 500
 
+
 @job_bp.route('/api/job-sheets', methods=['POST'])
 def create_job_sheet():
     """Create a new job sheet"""
@@ -278,7 +289,8 @@ def create_job_sheet():
         sheet_number = f"JS-{int(time.time())}"
 
         # Use direct SQLite query for now
-        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.dirname(__file__))), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -318,6 +330,7 @@ def create_job_sheet():
 
 # Quotes endpoint moved to src/routes/api/quote_api.py
 
+
 @job_bp.route('/api/jobs/<int:job_id>/status', methods=['PUT'])
 def update_job_status(job_id):
     """Update job status for kanban board"""
@@ -332,7 +345,8 @@ def update_job_status(job_id):
             }), 400
 
         # Use direct SQLite update for now
-        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.dirname(__file__))), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 

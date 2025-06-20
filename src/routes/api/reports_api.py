@@ -6,15 +6,19 @@ Handles all reporting and analytics endpoints
 import os
 import sqlite3
 from datetime import datetime, timedelta
+
 from flask import Blueprint, jsonify
 
 reports_api_bp = Blueprint('reports_api', __name__)
 
+
 def get_db_path():
     """Get database path"""
     # Get the project root directory (3 levels up from src/routes/api/)
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    project_root = os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.dirname(__file__))))
     return os.path.join(project_root, 'instance', 'garage.db')
+
 
 @reports_api_bp.route('/api/reports')
 def get_reports():
@@ -48,6 +52,7 @@ def get_reports():
             }
         ]
     })
+
 
 @reports_api_bp.route('/api/reports/revenue')
 def get_revenue_report():
@@ -110,6 +115,7 @@ def get_revenue_report():
             'success': False,
             'error': str(e)
         }), 500
+
 
 @reports_api_bp.route('/api/reports/jobs')
 def get_jobs_report():
@@ -188,6 +194,7 @@ def get_jobs_report():
             'success': False,
             'error': str(e)
         }), 500
+
 
 @reports_api_bp.route('/api/reports/customers')
 def get_customers_report():

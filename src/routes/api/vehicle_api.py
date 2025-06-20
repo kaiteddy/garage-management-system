@@ -5,15 +5,19 @@ Handles all vehicle-related API endpoints
 
 import os
 import sqlite3
+
 from flask import Blueprint, jsonify, request
 
 vehicle_api_bp = Blueprint('vehicle_api', __name__)
 
+
 def get_db_path():
     """Get database path"""
     # Get the project root directory (3 levels up from src/routes/api/)
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    project_root = os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.dirname(__file__))))
     return os.path.join(project_root, 'instance', 'garage.db')
+
 
 @vehicle_api_bp.route('/api/vehicles')
 def get_vehicles():
@@ -64,6 +68,7 @@ def get_vehicles():
             'success': False,
             'error': str(e)
         }), 500
+
 
 @vehicle_api_bp.route('/api/vehicle/<int:vehicle_id>')
 def get_vehicle(vehicle_id):

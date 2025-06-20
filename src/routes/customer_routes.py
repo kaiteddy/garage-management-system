@@ -5,10 +5,13 @@ Extracted from monolithic app.py
 
 import os
 import sqlite3
+
 from flask import Blueprint, jsonify, request
-from models import Customer, Vehicle, Job, Invoice
+
+from models import Customer, Invoice, Job, Vehicle
 
 customer_bp = Blueprint('customer', __name__)
+
 
 @customer_bp.route('/api/customers')
 def get_customers():
@@ -24,6 +27,7 @@ def get_customers():
             'success': False,
             'error': str(e)
         }), 500
+
 
 @customer_bp.route('/api/customer/<int:customer_id>')
 def get_customer(customer_id):
@@ -53,6 +57,7 @@ def get_customer(customer_id):
             'error': str(e)
         }), 500
 
+
 @customer_bp.route('/api/customers/<customer_identifier>')
 def get_customer_by_identifier(customer_identifier):
     """Get specific customer details by ID or account number"""
@@ -63,7 +68,8 @@ def get_customer_by_identifier(customer_identifier):
             customer = Customer.query.get(customer_id)
         except ValueError:
             # If not an integer, search by account number
-            customer = Customer.query.filter_by(account_number=customer_identifier).first()
+            customer = Customer.query.filter_by(
+                account_number=customer_identifier).first()
 
         if not customer:
             return jsonify({
@@ -72,7 +78,8 @@ def get_customer_by_identifier(customer_identifier):
             }), 404
 
         # Get customer's vehicles using direct SQL for better performance
-        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.dirname(__file__))), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -162,12 +169,13 @@ def get_customer_by_identifier(customer_identifier):
             'error': str(e)
         }), 500
 
+
 @customer_bp.route('/api/customers', methods=['POST'])
 def create_customer():
     """Create a new customer"""
     try:
         data = request.get_json()
-        
+
         customer = Customer(
             name=data.get('name'),
             email=data.get('email'),
@@ -175,21 +183,22 @@ def create_customer():
             address=data.get('address'),
             account_number=data.get('account_number')
         )
-        
+
         from models import db
         db.session.add(customer)
         db.session.commit()
-        
+
         return jsonify({
             'success': True,
             'customer': customer.to_dict()
         }), 201
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
 
 @customer_bp.route('/api/customers/<int:customer_id>', methods=['PUT'])
 def update_customer(customer_id):
@@ -197,7 +206,7 @@ def update_customer(customer_id):
     try:
         customer = Customer.query.get_or_404(customer_id)
         data = request.get_json()
-        
+
         # Update fields if provided
         if 'name' in data:
             customer.name = data['name']
@@ -209,36 +218,37 @@ def update_customer(customer_id):
             customer.address = data['address']
         if 'account_number' in data:
             customer.account_number = data['account_number']
-        
+
         from models import db
         db.session.commit()
-        
+
         return jsonify({
             'success': True,
             'customer': customer.to_dict()
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
 
+
 @customer_bp.route('/api/customers/<int:customer_id>', methods=['DELETE'])
 def delete_customer(customer_id):
     """Delete a customer"""
     try:
         customer = Customer.query.get_or_404(customer_id)
-        
+
         from models import db
         db.session.delete(customer)
         db.session.commit()
-        
+
         return jsonify({
             'success': True,
             'message': 'Customer deleted successfully'
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
