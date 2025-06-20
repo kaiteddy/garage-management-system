@@ -6,15 +6,19 @@ Handles all invoice-related API endpoints
 import os
 import sqlite3
 from datetime import datetime
+
 from flask import Blueprint, jsonify
 
 invoice_api_bp = Blueprint('invoice_api', __name__)
 
+
 def get_db_path():
     """Get database path"""
     # Get the project root directory (3 levels up from src/routes/api/)
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    project_root = os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.dirname(__file__))))
     return os.path.join(project_root, 'instance', 'garage.db')
+
 
 @invoice_api_bp.route('/api/invoices')
 def get_invoices():
@@ -70,6 +74,7 @@ def get_invoices():
             'success': False,
             'error': str(e)
         }), 500
+
 
 @invoice_api_bp.route('/api/invoice/<int:invoice_id>')
 def get_invoice(invoice_id):
@@ -131,6 +136,7 @@ def get_invoice(invoice_id):
             'success': False,
             'error': str(e)
         }), 500
+
 
 @invoice_api_bp.route('/api/invoices/stats')
 def get_invoice_stats():

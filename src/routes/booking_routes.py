@@ -6,9 +6,11 @@ For appointment scheduling and availability
 import os
 import sqlite3
 from datetime import datetime, timedelta
+
 from flask import Blueprint, jsonify, request
 
 booking_bp = Blueprint('booking', __name__)
+
 
 @booking_bp.route('/api/booking/availability')
 def get_availability():
@@ -16,13 +18,13 @@ def get_availability():
     try:
         date = request.args.get('date')
         service_type = request.args.get('service_type', 'MOT')
-        
+
         if not date:
             return jsonify({
                 'success': False,
                 'error': 'Date parameter is required'
             }), 400
-        
+
         # Parse the date
         try:
             booking_date = datetime.strptime(date, '%Y-%m-%d')
@@ -31,23 +33,25 @@ def get_availability():
                 'success': False,
                 'error': 'Invalid date format. Use YYYY-MM-DD'
             }), 400
-        
+
         # Generate mock availability slots
         slots = []
         start_hour = 9  # 9 AM
         end_hour = 17   # 5 PM
         slot_duration = 60  # 60 minutes per slot
-        
+
         for hour in range(start_hour, end_hour):
             for minute in [0, 30]:  # 30-minute intervals
                 if hour == end_hour - 1 and minute == 30:
                     break  # Don't add 4:30 PM slot
-                
-                slot_time = booking_date.replace(hour=hour, minute=minute, second=0, microsecond=0)
-                
+
+                slot_time = booking_date.replace(
+                    hour=hour, minute=minute, second=0, microsecond=0)
+
                 # Mock availability - some slots are booked
-                is_available = not (hour == 10 and minute == 0) and not (hour == 14 and minute == 30)
-                
+                is_available = not (hour == 10 and minute == 0) and not (
+                    hour == 14 and minute == 30)
+
                 slots.append({
                     'time': slot_time.strftime('%H:%M'),
                     'datetime': slot_time.isoformat(),
@@ -55,42 +59,44 @@ def get_availability():
                     'service_type': service_type,
                     'duration': slot_duration
                 })
-        
+
         return jsonify({
             'success': True,
             'date': date,
             'service_type': service_type,
             'slots': slots
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
 
+
 @booking_bp.route('/api/booking/book', methods=['POST'])
 def book_appointment():
     """Book an appointment"""
     try:
         data = request.get_json()
-        
-        required_fields = ['date', 'time', 'service_type', 'customer_name', 'phone', 'registration']
+
+        required_fields = ['date', 'time', 'service_type',
+                           'customer_name', 'phone', 'registration']
         for field in required_fields:
             if not data.get(field):
                 return jsonify({
                     'success': False,
                     'error': f'{field} is required'
                 }), 400
-        
+
         # In a real implementation, you would:
         # 1. Check availability
         # 2. Save to database
         # 3. Send confirmation email/SMS
-        
+
         # Mock booking confirmation
         booking_id = f"BK{datetime.now().strftime('%Y%m%d%H%M%S')}"
-        
+
         return jsonify({
             'success': True,
             'booking_id': booking_id,
@@ -106,12 +112,13 @@ def book_appointment():
                 'estimated_duration': '60 minutes'
             }
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
 
 @booking_bp.route('/api/booking/services')
 def get_services():
@@ -154,17 +161,18 @@ def get_services():
                 'description': 'Free brake inspection and report'
             }
         ]
-        
+
         return jsonify({
             'success': True,
             'services': services
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
 
 @booking_bp.route('/api/booking/appointments')
 def get_appointments():
@@ -195,12 +203,12 @@ def get_appointments():
                 'status': 'confirmed'
             }
         ]
-        
+
         return jsonify({
             'success': True,
             'appointments': appointments
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,

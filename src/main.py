@@ -7,11 +7,12 @@ Imports and runs the modular Flask application
 import os
 import sys
 
+from app import app
+
 # Add the src directory to Python path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # Import the modular application
-from app import app
 
 if __name__ == '__main__':
     print("🚀 Starting Integrated Garage Management System...")

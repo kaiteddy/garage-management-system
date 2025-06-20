@@ -9,6 +9,7 @@ This guide explains how to import detailed parts, labour, and advisory informati
 The system now supports detailed breakdown of invoices with the following new tables:
 
 ### Parts Table
+
 - `part_number`: Part identification number
 - `description`: Part description
 - `quantity`: Number of parts used
@@ -17,6 +18,7 @@ The system now supports detailed breakdown of invoices with the following new ta
 - `supplier`: Parts supplier name
 
 ### Labour Table
+
 - `description`: Work description
 - `hours`: Time spent on work
 - `rate`: Hourly rate
@@ -24,6 +26,7 @@ The system now supports detailed breakdown of invoices with the following new ta
 - `technician`: Technician who performed the work
 
 ### Advisories Table
+
 - `description`: Advisory description
 - `severity`: Severity level (INFO, MINOR, MAJOR, CRITICAL)
 - `recommendation`: Recommended action
@@ -36,6 +39,7 @@ The system now supports detailed breakdown of invoices with the following new ta
 Export your existing garage data into CSV format with the following structures:
 
 #### Parts CSV Format
+
 ```csv
 invoice_number,job_number,part_number,description,quantity,unit_price,total_price,supplier
 90941,J-90941,BP001,Brake Pads - Front Set,1,45.50,45.50,Euro Car Parts
@@ -43,6 +47,7 @@ invoice_number,job_number,part_number,description,quantity,unit_price,total_pric
 ```
 
 #### Labour CSV Format
+
 ```csv
 invoice_number,job_number,description,hours,rate,total_price,technician
 90941,J-90941,Brake Pad Replacement,1.5,65.00,97.50,John Smith
@@ -50,6 +55,7 @@ invoice_number,job_number,description,hours,rate,total_price,technician
 ```
 
 #### Advisories CSV Format
+
 ```csv
 invoice_number,job_number,vehicle_registration,description,severity,recommendation
 90941,J-90941,LS18 ZZA,Rear brake discs showing wear,MINOR,Replace within 6 months
@@ -65,6 +71,7 @@ python3 import_detailed_data.py create_templates
 ```
 
 This creates:
+
 - `parts_template.csv`
 - `labour_template.csv`
 - `advisories_template.csv`
@@ -97,6 +104,7 @@ The import script automatically maps your data to existing invoices and jobs usi
 Based on the screenshot you provided, your current system contains detailed information that can be extracted:
 
 ### From Job Sheets
+
 - Parts used with quantities and prices
 - Labour hours and descriptions
 - Technician assignments

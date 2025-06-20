@@ -3,23 +3,24 @@
 Advanced linking strategy to achieve 80%+ linking rates
 """
 
-import sys
 import os
 import re
+import sys
+
 
 def create_comprehensive_customer_mapping():
     """Create comprehensive customer mapping with multiple ID formats"""
-    
+
     db_path = os.path.join(os.path.dirname(__file__), 'instance', 'garage.db')
-    
+
     try:
         import sqlite3
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         print('🗺️ CREATING COMPREHENSIVE CUSTOMER MAPPING')
         print('=' * 60)
-        
+
         # Create enhanced mapping table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS enhanced_customer_mapping (
@@ -34,9 +35,9 @@ def create_comprehensive_customer_mapping():
                 PRIMARY KEY (customer_db_id)
             )
         ''')
-        
+
         cursor.execute('DELETE FROM enhanced_customer_mapping')
-        
+
         # Get all customers with additional data for matching
         cursor.execute('''
             SELECT id, account_number, name, address, postcode, phone, mobile
@@ -44,24 +45,24 @@ def create_comprehensive_customer_mapping():
             WHERE account_number IS NOT NULL AND account_number != ""
         ''')
         customers = cursor.fetchall()
-        
+
         mapping_count = 0
-        
+
         for cust_id, account_number, name, address, postcode, phone, mobile in customers:
             # Extract numeric ID
             numeric_id = None
             alpha_prefix = None
-            
+
             # Extract numeric part
             numeric_match = re.search(r'(\d+)', account_number)
             if numeric_match:
                 numeric_id = int(numeric_match.group(1))
-            
+
             # Extract alpha prefix
             alpha_match = re.search(r'^([A-Z]+)', account_number)
             if alpha_match:
                 alpha_prefix = alpha_match.group(1)
-            
+
             # Create name hash for fuzzy matching
             name_hash = None
             if name:
@@ -69,12 +70,12 @@ def create_comprehensive_customer_mapping():
                 name_parts = name.split()
                 if name_parts:
                     name_hash = name_parts[-1][:3].upper()
-            
+
             # Clean postcode
             clean_postcode = None
             if postcode and postcode != 'nan':
                 clean_postcode = re.sub(r'[^A-Z0-9]', '', postcode.upper())
-            
+
             # Clean phone numbers
             clean_phone = None
             clean_mobile = None
@@ -82,20 +83,20 @@ def create_comprehensive_customer_mapping():
                 clean_phone = re.sub(r'[^0-9]', '', phone)
             if mobile and mobile != 'nan':
                 clean_mobile = re.sub(r'[^0-9]', '', mobile)
-            
+
             cursor.execute('''
                 INSERT INTO enhanced_customer_mapping 
                 (customer_db_id, account_number, numeric_id, alpha_prefix, 
                  name_hash, postcode, phone, mobile)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (cust_id, account_number, numeric_id, alpha_prefix, 
+            ''', (cust_id, account_number, numeric_id, alpha_prefix,
                   name_hash, clean_postcode, clean_phone, clean_mobile))
-            
+
             mapping_count += 1
-        
+
         conn.commit()
         print(f'   ✅ Created {mapping_count} enhanced customer mappings')
-        
+
         # Show distribution of numeric IDs
         cursor.execute('''
             SELECT 
@@ -112,34 +113,35 @@ def create_comprehensive_customer_mapping():
             ORDER BY count DESC
         ''')
         ranges = cursor.fetchall()
-        
+
         print('\n   Numeric ID distribution:')
         for range_name, count in ranges:
             print(f'     {range_name}: {count} customers')
-        
+
         conn.close()
-        
+
     except Exception as e:
         print(f'❌ Error creating enhanced mapping: {e}')
         import traceback
         traceback.print_exc()
 
+
 def advanced_vehicle_linking():
     """Advanced vehicle linking using multiple strategies"""
-    
+
     db_path = os.path.join(os.path.dirname(__file__), 'instance', 'garage.db')
-    
+
     try:
         import sqlite3
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         print('\n🚗 ADVANCED VEHICLE LINKING')
         print('=' * 60)
-        
+
         # Strategy 1: Geographic clustering (vehicles near customers)
         print('\n1️⃣ Geographic clustering strategy...')
-        
+
         # Link vehicles to customers in same postcode area
         cursor.execute('''
             UPDATE vehicles 
@@ -155,13 +157,13 @@ def advanced_vehicle_linking():
             WHERE customer_id IS NULL
             AND id % 10 = 0  -- Link every 10th vehicle for geographic spread
         ''')
-        
+
         geo_linked = cursor.rowcount
         print(f'   ✅ Linked {geo_linked} vehicles via geographic clustering')
-        
+
         # Strategy 2: Sequential numeric ID matching
         print('\n2️⃣ Sequential numeric ID matching...')
-        
+
         # Get unlinked vehicles and match to sequential customer IDs
         cursor.execute('''
             SELECT id, registration, make, model
@@ -170,7 +172,7 @@ def advanced_vehicle_linking():
             ORDER BY id
         ''')
         unlinked_vehicles = cursor.fetchall()
-        
+
         # Get customers with numeric IDs in order
         cursor.execute('''
             SELECT customer_db_id, numeric_id, account_number
@@ -179,28 +181,30 @@ def advanced_vehicle_linking():
             ORDER BY numeric_id
         ''')
         numeric_customers = cursor.fetchall()
-        
+
         sequential_linked = 0
         for i, (vehicle_id, registration, make, model) in enumerate(unlinked_vehicles):
             if i < len(numeric_customers) * 3:  # Allow multiple vehicles per customer
                 customer_idx = i % len(numeric_customers)
                 customer_db_id = numeric_customers[customer_idx][0]
-                
+
                 cursor.execute('''
                     UPDATE vehicles 
                     SET customer_id = ?
                     WHERE id = ?
                 ''', (customer_db_id, vehicle_id))
                 sequential_linked += 1
-        
-        print(f'   ✅ Linked {sequential_linked} vehicles via sequential matching')
-        
+
+        print(
+            f'   ✅ Linked {sequential_linked} vehicles via sequential matching')
+
         # Strategy 3: Brand-based customer matching
         print('\n3️⃣ Brand-based customer matching...')
-        
+
         # Link luxury brands to customers with higher numeric IDs (business customers)
-        luxury_brands = ['BMW', 'MERCEDES', 'AUDI', 'LEXUS', 'JAGUAR', 'PORSCHE']
-        
+        luxury_brands = ['BMW', 'MERCEDES',
+                         'AUDI', 'LEXUS', 'JAGUAR', 'PORSCHE']
+
         for brand in luxury_brands:
             cursor.execute('''
                 UPDATE vehicles 
@@ -214,45 +218,50 @@ def advanced_vehicle_linking():
                 WHERE customer_id IS NULL
                 AND UPPER(make) LIKE ?
             ''', (f'%{brand}%',))
-            
+
             brand_linked = cursor.rowcount
             if brand_linked > 0:
-                print(f'     ✅ Linked {brand_linked} {brand} vehicles to business customers')
-        
+                print(
+                    f'     ✅ Linked {brand_linked} {brand} vehicles to business customers')
+
         conn.commit()
-        
+
         # Check final results
-        cursor.execute('SELECT COUNT(*) FROM vehicles WHERE customer_id IS NOT NULL')
+        cursor.execute(
+            'SELECT COUNT(*) FROM vehicles WHERE customer_id IS NOT NULL')
         total_linked_vehicles = cursor.fetchone()[0]
         cursor.execute('SELECT COUNT(*) FROM vehicles')
         total_vehicles = cursor.fetchone()[0]
-        
-        link_rate = (total_linked_vehicles / total_vehicles * 100) if total_vehicles > 0 else 0
-        print(f'\n📊 Advanced vehicle linking results: {total_linked_vehicles}/{total_vehicles} ({link_rate:.1f}%)')
-        
+
+        link_rate = (total_linked_vehicles / total_vehicles *
+                     100) if total_vehicles > 0 else 0
+        print(
+            f'\n📊 Advanced vehicle linking results: {total_linked_vehicles}/{total_vehicles} ({link_rate:.1f}%)')
+
         conn.close()
-        
+
     except Exception as e:
         print(f'❌ Error in advanced vehicle linking: {e}')
         import traceback
         traceback.print_exc()
 
+
 def advanced_job_linking():
     """Advanced job linking using multiple strategies"""
-    
+
     db_path = os.path.join(os.path.dirname(__file__), 'instance', 'garage.db')
-    
+
     try:
         import sqlite3
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         print('\n🔧 ADVANCED JOB LINKING')
         print('=' * 60)
-        
+
         # Strategy 1: Service type based linking
         print('\n1️⃣ Service type based linking...')
-        
+
         # Link MOT jobs to customers with vehicles due for MOT
         cursor.execute('''
             UPDATE jobs 
@@ -267,13 +276,13 @@ def advanced_job_linking():
             WHERE customer_id IS NULL
             AND (UPPER(description) LIKE '%MOT%' OR UPPER(job_number) LIKE '%MOT%')
         ''')
-        
+
         mot_linked = cursor.rowcount
         print(f'   ✅ Linked {mot_linked} MOT jobs to customers')
-        
+
         # Strategy 2: Temporal clustering
         print('\n2️⃣ Temporal clustering strategy...')
-        
+
         # Link jobs created on same day to same customers
         cursor.execute('''
             SELECT created_date, COUNT(*) as job_count
@@ -284,7 +293,7 @@ def advanced_job_linking():
             ORDER BY created_date DESC
         ''')
         active_dates = cursor.fetchall()
-        
+
         temporal_linked = 0
         for date, _ in active_dates[:10]:  # Process top 10 active dates
             # Get customers active on this date
@@ -294,7 +303,7 @@ def advanced_job_linking():
                 WHERE created_date = ? AND customer_id IS NOT NULL
             ''', (date,))
             active_customers = [row[0] for row in cursor.fetchall()]
-            
+
             if active_customers:
                 # Link unlinked jobs from same date to these customers
                 cursor.execute('''
@@ -303,7 +312,7 @@ def advanced_job_linking():
                     LIMIT 50
                 ''', (date,))
                 unlinked_jobs = cursor.fetchall()
-                
+
                 for i, (job_id,) in enumerate(unlinked_jobs):
                     customer_id = active_customers[i % len(active_customers)]
                     cursor.execute('''
@@ -312,12 +321,12 @@ def advanced_job_linking():
                         WHERE id = ?
                     ''', (customer_id, job_id))
                     temporal_linked += 1
-        
+
         print(f'   ✅ Linked {temporal_linked} jobs via temporal clustering')
-        
+
         # Strategy 3: Bulk linking remaining jobs
         print('\n3️⃣ Bulk linking remaining jobs...')
-        
+
         # Get most active customers
         cursor.execute('''
             SELECT customer_id, COUNT(*) as job_count
@@ -328,47 +337,51 @@ def advanced_job_linking():
             LIMIT 100
         ''')
         top_customers = cursor.fetchall()
-        
+
         # Link remaining jobs proportionally
         cursor.execute('''
             SELECT id FROM jobs 
             WHERE customer_id IS NULL
         ''')
         remaining_jobs = cursor.fetchall()
-        
+
         bulk_linked = 0
         for i, (job_id,) in enumerate(remaining_jobs):
             if top_customers:
                 # Weight selection by existing job count
                 customer_idx = i % len(top_customers)
                 customer_id = top_customers[customer_idx][0]
-                
+
                 cursor.execute('''
                     UPDATE jobs 
                     SET customer_id = ?
                     WHERE id = ?
                 ''', (customer_id, job_id))
                 bulk_linked += 1
-        
+
         print(f'   ✅ Linked {bulk_linked} jobs via bulk assignment')
-        
+
         conn.commit()
-        
+
         # Check final results
-        cursor.execute('SELECT COUNT(*) FROM jobs WHERE customer_id IS NOT NULL')
+        cursor.execute(
+            'SELECT COUNT(*) FROM jobs WHERE customer_id IS NOT NULL')
         total_linked_jobs = cursor.fetchone()[0]
         cursor.execute('SELECT COUNT(*) FROM jobs')
         total_jobs = cursor.fetchone()[0]
-        
-        link_rate = (total_linked_jobs / total_jobs * 100) if total_jobs > 0 else 0
-        print(f'\n📊 Advanced job linking results: {total_linked_jobs}/{total_jobs} ({link_rate:.1f}%)')
-        
+
+        link_rate = (total_linked_jobs / total_jobs *
+                     100) if total_jobs > 0 else 0
+        print(
+            f'\n📊 Advanced job linking results: {total_linked_jobs}/{total_jobs} ({link_rate:.1f}%)')
+
         conn.close()
-        
+
     except Exception as e:
         print(f'❌ Error in advanced job linking: {e}')
         import traceback
         traceback.print_exc()
+
 
 if __name__ == "__main__":
     create_comprehensive_customer_mapping()

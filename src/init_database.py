@@ -5,34 +5,37 @@ Creates all necessary tables with proper relationships
 """
 
 import os
-import sys
 import sqlite3
+import sys
 from datetime import datetime
 
 # Add the src directory to the Python path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # Database path
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'instance', 'garage.db')
+DB_PATH = os.path.join(os.path.dirname(
+    os.path.abspath(__file__)), '..', 'instance', 'garage.db')
+
 
 def get_db_connection():
     """Get database connection"""
     # Ensure instance directory exists
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
-    
+
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
+
 
 def create_tables():
     """Create all database tables"""
     conn = get_db_connection()
     cursor = conn.cursor()
-    
+
     try:
         # Enable foreign key constraints
         cursor.execute('PRAGMA foreign_keys = ON')
-        
+
         # Customers table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS customers (
@@ -49,7 +52,7 @@ def create_tables():
                 updated_date DATE DEFAULT CURRENT_DATE
             )
         ''')
-        
+
         # Suppliers table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS suppliers (
@@ -66,7 +69,7 @@ def create_tables():
                 created_date DATE DEFAULT CURRENT_DATE
             )
         ''')
-        
+
         # Vehicles table (update existing if needed)
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS vehicles_new (
@@ -86,9 +89,10 @@ def create_tables():
                 FOREIGN KEY (customer_id) REFERENCES customers (id)
             )
         ''')
-        
+
         # Check if we need to migrate existing vehicles data
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='vehicles'")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='vehicles'")
         if cursor.fetchone():
             # Temporarily disable foreign keys for migration
             cursor.execute('PRAGMA foreign_keys = OFF')
@@ -109,7 +113,7 @@ def create_tables():
             cursor.execute('PRAGMA foreign_keys = ON')
         else:
             cursor.execute('ALTER TABLE vehicles_new RENAME TO vehicles')
-        
+
         # Jobs table - Enhanced for Kanban workflow
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS jobs (
@@ -262,7 +266,7 @@ def create_tables():
                 FOREIGN KEY (vehicle_id) REFERENCES vehicles (id)
             )
         ''')
-        
+
         # Parts table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS parts (
@@ -280,7 +284,7 @@ def create_tables():
                 FOREIGN KEY (supplier_id) REFERENCES suppliers (id)
             )
         ''')
-        
+
         # Job Parts junction table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS job_parts (
@@ -294,7 +298,7 @@ def create_tables():
                 FOREIGN KEY (part_id) REFERENCES parts (id)
             )
         ''')
-        
+
         # Expenses table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS expenses (
@@ -339,18 +343,27 @@ def create_tables():
                 FOREIGN KEY (customer_id) REFERENCES customers (id)
             )
         ''')
-        
+
         # Create indexes for better performance
-        cursor.execute('CREATE INDEX IF NOT EXISTS idx_vehicles_registration ON vehicles (registration)')
-        cursor.execute('CREATE INDEX IF NOT EXISTS idx_customers_account ON customers (account_number)')
-        cursor.execute('CREATE INDEX IF NOT EXISTS idx_jobs_customer ON jobs (customer_id)')
-        cursor.execute('CREATE INDEX IF NOT EXISTS idx_jobs_vehicle ON jobs (vehicle_id)')
-        cursor.execute('CREATE INDEX IF NOT EXISTS idx_invoices_customer ON invoices (customer_id)')
-        cursor.execute('CREATE INDEX IF NOT EXISTS idx_invoices_job ON invoices (job_id)')
-        cursor.execute('CREATE INDEX IF NOT EXISTS idx_parts_number ON parts (part_number)')
-        cursor.execute('CREATE INDEX IF NOT EXISTS idx_payments_invoice ON payments (invoice_id)')
-        cursor.execute('CREATE INDEX IF NOT EXISTS idx_payments_customer ON payments (customer_id)')
-        
+        cursor.execute(
+            'CREATE INDEX IF NOT EXISTS idx_vehicles_registration ON vehicles (registration)')
+        cursor.execute(
+            'CREATE INDEX IF NOT EXISTS idx_customers_account ON customers (account_number)')
+        cursor.execute(
+            'CREATE INDEX IF NOT EXISTS idx_jobs_customer ON jobs (customer_id)')
+        cursor.execute(
+            'CREATE INDEX IF NOT EXISTS idx_jobs_vehicle ON jobs (vehicle_id)')
+        cursor.execute(
+            'CREATE INDEX IF NOT EXISTS idx_invoices_customer ON invoices (customer_id)')
+        cursor.execute(
+            'CREATE INDEX IF NOT EXISTS idx_invoices_job ON invoices (job_id)')
+        cursor.execute(
+            'CREATE INDEX IF NOT EXISTS idx_parts_number ON parts (part_number)')
+        cursor.execute(
+            'CREATE INDEX IF NOT EXISTS idx_payments_invoice ON payments (invoice_id)')
+        cursor.execute(
+            'CREATE INDEX IF NOT EXISTS idx_payments_customer ON payments (customer_id)')
+
         # Create triggers to update timestamps
         cursor.execute('''
             CREATE TRIGGER IF NOT EXISTS update_customers_timestamp 
@@ -359,7 +372,7 @@ def create_tables():
                 UPDATE customers SET updated_date = CURRENT_DATE WHERE id = NEW.id;
             END
         ''')
-        
+
         cursor.execute('''
             CREATE TRIGGER IF NOT EXISTS update_vehicles_timestamp 
             AFTER UPDATE ON vehicles
@@ -367,18 +380,19 @@ def create_tables():
                 UPDATE vehicles SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
             END
         ''')
-        
+
         conn.commit()
         print("✅ Database tables created successfully!")
-        
+
         # Show table counts
-        tables = ['customers', 'vehicles', 'jobs', 'invoices', 'parts', 'suppliers', 'expenses', 'payments']
+        tables = ['customers', 'vehicles', 'jobs', 'invoices',
+                  'parts', 'suppliers', 'expenses', 'payments']
         print("\n📊 Current table counts:")
         for table in tables:
             cursor.execute(f"SELECT COUNT(*) FROM {table}")
             count = cursor.fetchone()[0]
             print(f"  {table}: {count}")
-        
+
     except Exception as e:
         print(f"❌ Error creating tables: {e}")
         conn.rollback()
@@ -386,18 +400,20 @@ def create_tables():
     finally:
         conn.close()
 
+
 def main():
     """Main function"""
     print("🚀 Initializing Garage Management System Database...")
     print(f"📁 Database location: {DB_PATH}")
-    
+
     create_tables()
-    
+
     print("\n🎉 Database initialization completed!")
     print("\nNext steps:")
     print("1. Use the CSV import system to load your ELI MOTORS data")
     print("2. Access the web interface to manage your garage data")
     print("3. Configure MOT reminders and SMS settings")
+
 
 if __name__ == "__main__":
     main()

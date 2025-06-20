@@ -3,19 +3,21 @@ Intelligent Data Linking Service
 Uses the intelligent search engine for improved data import and linking
 """
 
-import sqlite3
 import csv
-import pandas as pd
-from typing import Dict, List, Tuple, Any, Optional
-from services.intelligent_search import IntelligentSearchEngine
 import logging
+import sqlite3
+from typing import Any, Dict, List, Optional, Tuple
+
+import pandas as pd
+
+from services.intelligent_search import IntelligentSearchEngine
 
 
 class IntelligentDataLinker:
     """
     Enhanced data linking using intelligent search capabilities
     """
-    
+
     def __init__(self, db_path: str):
         self.db_path = db_path
         self.search_engine = IntelligentSearchEngine(db_path)
@@ -31,13 +33,13 @@ class IntelligentDataLinker:
             'jobs_created': 0,
             'linking_confidence_scores': []
         }
-        
+
         # Setup logging
         logging.basicConfig(level=logging.INFO)
         self.logger = logging.getLogger(__name__)
-    
-    def import_customers_with_linking(self, customer_data: List[Dict[str, Any]], 
-                                    confidence_threshold: float = 0.8) -> Dict[str, Any]:
+
+    def import_customers_with_linking(self, customer_data: List[Dict[str, Any]],
+                                      confidence_threshold: float = 0.8) -> Dict[str, Any]:
         """Import customers with intelligent linking to existing records"""
         results = {
             'success': True,
@@ -47,72 +49,79 @@ class IntelligentDataLinker:
             'errors': [],
             'linking_details': []
         }
-        
+
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
-        
+
         try:
             for customer in customer_data:
                 try:
                     self.linking_stats['customers_processed'] += 1
                     results['processed'] += 1
-                    
+
                     # Find potential matches
-                    matches = self.search_engine.find_customer_matches(customer, confidence_threshold)
-                    
+                    matches = self.search_engine.find_customer_matches(
+                        customer, confidence_threshold)
+
                     if matches:
                         # Link to existing customer
                         customer_id, confidence = matches[0]  # Best match
                         self.linking_stats['customers_linked'] += 1
-                        self.linking_stats['linking_confidence_scores'].append(confidence)
+                        self.linking_stats['linking_confidence_scores'].append(
+                            confidence)
                         results['linked'] += 1
-                        
+
                         # Update existing customer with new data
-                        self._update_customer_record(cursor, customer_id, customer)
-                        
+                        self._update_customer_record(
+                            cursor, customer_id, customer)
+
                         results['linking_details'].append({
                             'action': 'linked',
                             'customer_id': customer_id,
                             'confidence': confidence,
                             'data': customer
                         })
-                        
-                        self.logger.info(f"Linked customer {customer.get('name', 'Unknown')} to existing ID {customer_id} (confidence: {confidence:.3f})")
-                        
+
+                        self.logger.info(
+                            f"Linked customer {customer.get('name', 'Unknown')} to existing ID {customer_id} (confidence: {confidence:.3f})")
+
                     else:
                         # Create new customer
-                        customer_id = self._create_customer_record(cursor, customer)
+                        customer_id = self._create_customer_record(
+                            cursor, customer)
                         self.linking_stats['customers_created'] += 1
                         results['created'] += 1
-                        
+
                         results['linking_details'].append({
                             'action': 'created',
                             'customer_id': customer_id,
                             'confidence': 0.0,
                             'data': customer
                         })
-                        
-                        self.logger.info(f"Created new customer {customer.get('name', 'Unknown')} with ID {customer_id}")
-                
+
+                        self.logger.info(
+                            f"Created new customer {customer.get('name', 'Unknown')} with ID {customer_id}")
+
                 except Exception as e:
                     error_msg = f"Error processing customer {customer.get('name', 'Unknown')}: {str(e)}"
                     results['errors'].append(error_msg)
                     self.logger.error(error_msg)
-            
+
             conn.commit()
-            
+
         except Exception as e:
             conn.rollback()
             results['success'] = False
             results['errors'].append(f"Database error: {str(e)}")
-            self.logger.error(f"Database error during customer import: {str(e)}")
+            self.logger.error(
+                f"Database error during customer import: {str(e)}")
         finally:
             conn.close()
-        
+
         return results
-    
-    def import_vehicles_with_linking(self, vehicle_data: List[Dict[str, Any]], 
-                                   confidence_threshold: float = 0.9) -> Dict[str, Any]:
+
+    def import_vehicles_with_linking(self, vehicle_data: List[Dict[str, Any]],
+                                     confidence_threshold: float = 0.9) -> Dict[str, Any]:
         """Import vehicles with intelligent linking to existing records and customers"""
         results = {
             'success': True,
@@ -122,48 +131,55 @@ class IntelligentDataLinker:
             'errors': [],
             'linking_details': []
         }
-        
+
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
-        
+
         try:
             for vehicle in vehicle_data:
                 try:
                     self.linking_stats['vehicles_processed'] += 1
                     results['processed'] += 1
-                    
+
                     # Find potential vehicle matches
-                    vehicle_matches = self.search_engine.find_vehicle_matches(vehicle, confidence_threshold)
-                    
+                    vehicle_matches = self.search_engine.find_vehicle_matches(
+                        vehicle, confidence_threshold)
+
                     if vehicle_matches:
                         # Link to existing vehicle
-                        vehicle_id, confidence = vehicle_matches[0]  # Best match
+                        # Best match
+                        vehicle_id, confidence = vehicle_matches[0]
                         self.linking_stats['vehicles_linked'] += 1
-                        self.linking_stats['linking_confidence_scores'].append(confidence)
+                        self.linking_stats['linking_confidence_scores'].append(
+                            confidence)
                         results['linked'] += 1
-                        
+
                         # Update existing vehicle
-                        self._update_vehicle_record(cursor, vehicle_id, vehicle)
-                        
+                        self._update_vehicle_record(
+                            cursor, vehicle_id, vehicle)
+
                         results['linking_details'].append({
                             'action': 'linked',
                             'vehicle_id': vehicle_id,
                             'confidence': confidence,
                             'data': vehicle
                         })
-                        
-                        self.logger.info(f"Linked vehicle {vehicle.get('registration', 'Unknown')} to existing ID {vehicle_id} (confidence: {confidence:.3f})")
-                        
+
+                        self.logger.info(
+                            f"Linked vehicle {vehicle.get('registration', 'Unknown')} to existing ID {vehicle_id} (confidence: {confidence:.3f})")
+
                     else:
                         # Try to link to customer first
-                        customer_id = self._find_or_create_customer_for_vehicle(cursor, vehicle)
-                        
+                        customer_id = self._find_or_create_customer_for_vehicle(
+                            cursor, vehicle)
+
                         # Create new vehicle
                         vehicle['customer_id'] = customer_id
-                        vehicle_id = self._create_vehicle_record(cursor, vehicle)
+                        vehicle_id = self._create_vehicle_record(
+                            cursor, vehicle)
                         self.linking_stats['vehicles_created'] += 1
                         results['created'] += 1
-                        
+
                         results['linking_details'].append({
                             'action': 'created',
                             'vehicle_id': vehicle_id,
@@ -171,26 +187,28 @@ class IntelligentDataLinker:
                             'confidence': 0.0,
                             'data': vehicle
                         })
-                        
-                        self.logger.info(f"Created new vehicle {vehicle.get('registration', 'Unknown')} with ID {vehicle_id}")
-                
+
+                        self.logger.info(
+                            f"Created new vehicle {vehicle.get('registration', 'Unknown')} with ID {vehicle_id}")
+
                 except Exception as e:
                     error_msg = f"Error processing vehicle {vehicle.get('registration', 'Unknown')}: {str(e)}"
                     results['errors'].append(error_msg)
                     self.logger.error(error_msg)
-            
+
             conn.commit()
-            
+
         except Exception as e:
             conn.rollback()
             results['success'] = False
             results['errors'].append(f"Database error: {str(e)}")
-            self.logger.error(f"Database error during vehicle import: {str(e)}")
+            self.logger.error(
+                f"Database error during vehicle import: {str(e)}")
         finally:
             conn.close()
-        
+
         return results
-    
+
     def import_jobs_with_linking(self, job_data: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Import jobs with intelligent linking to customers and vehicles"""
         results = {
@@ -201,29 +219,29 @@ class IntelligentDataLinker:
             'errors': [],
             'linking_details': []
         }
-        
+
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
-        
+
         try:
             for job in job_data:
                 try:
                     self.linking_stats['jobs_processed'] += 1
                     results['processed'] += 1
-                    
+
                     # Find customer and vehicle for this job
                     customer_id = self._find_customer_for_job(job)
                     vehicle_id = self._find_vehicle_for_job(job, customer_id)
-                    
+
                     if customer_id or vehicle_id:
                         # Create job with links
                         job['customer_id'] = customer_id
                         job['vehicle_id'] = vehicle_id
                         job_id = self._create_job_record(cursor, job)
-                        
+
                         self.linking_stats['jobs_created'] += 1
                         results['created'] += 1
-                        
+
                         results['linking_details'].append({
                             'action': 'created',
                             'job_id': job_id,
@@ -231,21 +249,22 @@ class IntelligentDataLinker:
                             'vehicle_id': vehicle_id,
                             'data': job
                         })
-                        
-                        self.logger.info(f"Created job {job.get('job_number', 'Unknown')} with customer_id={customer_id}, vehicle_id={vehicle_id}")
-                    
+
+                        self.logger.info(
+                            f"Created job {job.get('job_number', 'Unknown')} with customer_id={customer_id}, vehicle_id={vehicle_id}")
+
                     else:
                         error_msg = f"Could not link job {job.get('job_number', 'Unknown')} to customer or vehicle"
                         results['errors'].append(error_msg)
                         self.logger.warning(error_msg)
-                
+
                 except Exception as e:
                     error_msg = f"Error processing job {job.get('job_number', 'Unknown')}: {str(e)}"
                     results['errors'].append(error_msg)
                     self.logger.error(error_msg)
-            
+
             conn.commit()
-            
+
         except Exception as e:
             conn.rollback()
             results['success'] = False
@@ -253,14 +272,14 @@ class IntelligentDataLinker:
             self.logger.error(f"Database error during job import: {str(e)}")
         finally:
             conn.close()
-        
+
         return results
-    
+
     def _find_customer_for_job(self, job: Dict[str, Any]) -> Optional[int]:
         """Find customer ID for a job using intelligent search"""
         # Try different customer identification methods
         search_data = {}
-        
+
         # Extract customer info from job data
         if job.get('customer_name'):
             search_data['name'] = job['customer_name']
@@ -272,18 +291,19 @@ class IntelligentDataLinker:
             search_data['email'] = job['customer_email']
         if job.get('customer_account'):
             search_data['account_number'] = job['customer_account']
-        
+
         if search_data:
-            matches = self.search_engine.find_customer_matches(search_data, threshold=0.7)
+            matches = self.search_engine.find_customer_matches(
+                search_data, threshold=0.7)
             if matches:
                 return matches[0][0]  # Return best match ID
-        
+
         return None
-    
+
     def _find_vehicle_for_job(self, job: Dict[str, Any], customer_id: Optional[int] = None) -> Optional[int]:
         """Find vehicle ID for a job using intelligent search"""
         search_data = {}
-        
+
         # Extract vehicle info from job data
         if job.get('vehicle_registration'):
             search_data['registration'] = job['vehicle_registration']
@@ -291,24 +311,26 @@ class IntelligentDataLinker:
             search_data['make'] = job['vehicle_make']
         if job.get('vehicle_model'):
             search_data['model'] = job['vehicle_model']
-        
+
         if search_data:
-            matches = self.search_engine.find_vehicle_matches(search_data, threshold=0.8)
+            matches = self.search_engine.find_vehicle_matches(
+                search_data, threshold=0.8)
             if matches:
                 # If we have a customer_id, prefer vehicles owned by that customer
                 if customer_id:
                     conn = sqlite3.connect(self.db_path)
                     cursor = conn.cursor()
                     for vehicle_id, score in matches:
-                        cursor.execute("SELECT customer_id FROM vehicles WHERE id = ?", (vehicle_id,))
+                        cursor.execute(
+                            "SELECT customer_id FROM vehicles WHERE id = ?", (vehicle_id,))
                         result = cursor.fetchone()
                         if result and result[0] == customer_id:
                             conn.close()
                             return vehicle_id
                     conn.close()
-                
+
                 return matches[0][0]  # Return best match ID
-        
+
         return None
 
     def _find_or_create_customer_for_vehicle(self, cursor, vehicle: Dict[str, Any]) -> Optional[int]:
@@ -325,7 +347,8 @@ class IntelligentDataLinker:
             customer_data['email'] = vehicle['customer_email']
 
         if customer_data:
-            matches = self.search_engine.find_customer_matches(customer_data, threshold=0.7)
+            matches = self.search_engine.find_customer_matches(
+                customer_data, threshold=0.7)
             if matches:
                 return matches[0][0]  # Return existing customer ID
 
@@ -395,18 +418,21 @@ class IntelligentDataLinker:
 
         # Calculate linking rates
         if stats['customers_processed'] > 0:
-            stats['customer_linking_rate'] = stats['customers_linked'] / stats['customers_processed']
+            stats['customer_linking_rate'] = stats['customers_linked'] / \
+                stats['customers_processed']
         else:
             stats['customer_linking_rate'] = 0
 
         if stats['vehicles_processed'] > 0:
-            stats['vehicle_linking_rate'] = stats['vehicles_linked'] / stats['vehicles_processed']
+            stats['vehicle_linking_rate'] = stats['vehicles_linked'] / \
+                stats['vehicles_processed']
         else:
             stats['vehicle_linking_rate'] = 0
 
         # Calculate average confidence
         if stats['linking_confidence_scores']:
-            stats['average_confidence'] = sum(stats['linking_confidence_scores']) / len(stats['linking_confidence_scores'])
+            stats['average_confidence'] = sum(
+                stats['linking_confidence_scores']) / len(stats['linking_confidence_scores'])
             stats['min_confidence'] = min(stats['linking_confidence_scores'])
             stats['max_confidence'] = max(stats['linking_confidence_scores'])
         else:

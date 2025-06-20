@@ -1,203 +1,214 @@
 <!-- Modern Dashboard Template -->
 <div class="page-header">
-    <div>
-        <h1 class="page-title">
-            <i class="fas fa-tachometer-alt"></i>
-            Dashboard
-        </h1>
-        <p class="page-subtitle">Welcome back! Here's what's happening with your garage today.</p>
-    </div>
-    <div class="flex gap-4">
-        <button class="btn btn-primary" onclick="refreshDashboard()">
-            <i class="fas fa-sync-alt"></i>
-            Refresh
-        </button>
-        <button class="btn btn-secondary" onclick="exportDashboard()">
-            <i class="fas fa-download"></i>
-            Export
-        </button>
-    </div>
+  <div>
+    <h1 class="page-title">
+      <i class="fas fa-tachometer-alt"></i>
+      Dashboard
+    </h1>
+    <p class="page-subtitle">
+      Welcome back! Here's what's happening with your garage today.
+    </p>
+  </div>
+  <div class="flex gap-4">
+    <button class="btn btn-primary" onclick="refreshDashboard()">
+      <i class="fas fa-sync-alt"></i>
+      Refresh
+    </button>
+    <button class="btn btn-secondary" onclick="exportDashboard()">
+      <i class="fas fa-download"></i>
+      Export
+    </button>
+  </div>
 </div>
 
 <!-- Stats Overview -->
 <div class="stats-grid">
-    <div class="stats-card">
-        <div class="stats-header">
-            <div class="stats-icon primary">
-                <i class="fas fa-users"></i>
-            </div>
-            <div class="stats-change positive">
-                <i class="fas fa-arrow-up"></i>
-                <span>+12%</span>
-            </div>
-        </div>
-        <div class="stats-value" id="total-customers">1,247</div>
-        <div class="stats-label">Total Customers</div>
+  <div class="stats-card">
+    <div class="stats-header">
+      <div class="stats-icon primary">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="stats-change positive">
+        <i class="fas fa-arrow-up"></i>
+        <span>+12%</span>
+      </div>
     </div>
+    <div class="stats-value" id="total-customers">1,247</div>
+    <div class="stats-label">Total Customers</div>
+  </div>
 
-    <div class="stats-card">
-        <div class="stats-header">
-            <div class="stats-icon success">
-                <i class="fas fa-car"></i>
-            </div>
-            <div class="stats-change positive">
-                <i class="fas fa-arrow-up"></i>
-                <span>+8%</span>
-            </div>
-        </div>
-        <div class="stats-value" id="total-vehicles">2,156</div>
-        <div class="stats-label">Vehicles in System</div>
+  <div class="stats-card">
+    <div class="stats-header">
+      <div class="stats-icon success">
+        <i class="fas fa-car"></i>
+      </div>
+      <div class="stats-change positive">
+        <i class="fas fa-arrow-up"></i>
+        <span>+8%</span>
+      </div>
     </div>
+    <div class="stats-value" id="total-vehicles">2,156</div>
+    <div class="stats-label">Vehicles in System</div>
+  </div>
 
-    <div class="stats-card">
-        <div class="stats-header">
-            <div class="stats-icon warning">
-                <i class="fas fa-wrench"></i>
-            </div>
-            <div class="stats-change negative">
-                <i class="fas fa-arrow-down"></i>
-                <span>-3%</span>
-            </div>
-        </div>
-        <div class="stats-value" id="active-jobs">23</div>
-        <div class="stats-label">Active Jobs</div>
+  <div class="stats-card">
+    <div class="stats-header">
+      <div class="stats-icon warning">
+        <i class="fas fa-wrench"></i>
+      </div>
+      <div class="stats-change negative">
+        <i class="fas fa-arrow-down"></i>
+        <span>-3%</span>
+      </div>
     </div>
+    <div class="stats-value" id="active-jobs">23</div>
+    <div class="stats-label">Active Jobs</div>
+  </div>
 
-    <div class="stats-card">
-        <div class="stats-header">
-            <div class="stats-icon error">
-                <i class="fas fa-calendar-check"></i>
-            </div>
-            <div class="stats-change positive">
-                <i class="fas fa-arrow-up"></i>
-                <span>+15%</span>
-            </div>
-        </div>
-        <div class="stats-value" id="mot-due">47</div>
-        <div class="stats-label">MOT Due This Month</div>
+  <div class="stats-card">
+    <div class="stats-header">
+      <div class="stats-icon error">
+        <i class="fas fa-calendar-check"></i>
+      </div>
+      <div class="stats-change positive">
+        <i class="fas fa-arrow-up"></i>
+        <span>+15%</span>
+      </div>
     </div>
+    <div class="stats-value" id="mot-due">47</div>
+    <div class="stats-label">MOT Due This Month</div>
+  </div>
 </div>
 
 <!-- Main Content Grid -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <!-- Recent Activity -->
-    <div class="lg:col-span-2">
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-clock"></i>
-                Recent Activity
-            </div>
-            <div class="card-content">
-                <div class="recent-activity-list" id="recent-activity-list">
-                    <!-- Activity items will be loaded here -->
-                    <div class="loading-spinner">Loading recent activity...</div>
-                </div>
-            </div>
+  <!-- Recent Activity -->
+  <div class="lg:col-span-2">
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-clock"></i>
+        Recent Activity
+      </div>
+      <div class="card-content">
+        <div class="recent-activity-list" id="recent-activity-list">
+          <!-- Activity items will be loaded here -->
+          <div class="loading-spinner">Loading recent activity...</div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="lg:col-span-1">
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-bolt"></i>
+        Quick Actions
+      </div>
+      <div class="card-content">
+        <div class="flex flex-col gap-3">
+          <button
+            class="btn btn-primary w-full"
+            onclick="showPage('customers')"
+          >
+            <i class="fas fa-user-plus"></i>
+            Add Customer
+          </button>
+          <button
+            class="btn btn-secondary w-full"
+            onclick="showPage('vehicles')"
+          >
+            <i class="fas fa-car"></i>
+            Add Vehicle
+          </button>
+          <button class="btn btn-secondary w-full" onclick="showPage('jobs')">
+            <i class="fas fa-tools"></i>
+            Create Job
+          </button>
+          <button
+            class="btn btn-secondary w-full"
+            onclick="showPage('online-booking')"
+          >
+            <i class="fas fa-calendar-plus"></i>
+            New Booking
+          </button>
+          <button class="btn btn-secondary w-full" onclick="showPage('quotes')">
+            <i class="fas fa-file-invoice-dollar"></i>
+            Create Quote
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Quick Actions -->
-    <div class="lg:col-span-1">
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-bolt"></i>
-                Quick Actions
-            </div>
-            <div class="card-content">
-                <div class="flex flex-col gap-3">
-                    <button class="btn btn-primary w-full" onclick="showPage('customers')">
-                        <i class="fas fa-user-plus"></i>
-                        Add Customer
-                    </button>
-                    <button class="btn btn-secondary w-full" onclick="showPage('vehicles')">
-                        <i class="fas fa-car"></i>
-                        Add Vehicle
-                    </button>
-                    <button class="btn btn-secondary w-full" onclick="showPage('jobs')">
-                        <i class="fas fa-tools"></i>
-                        Create Job
-                    </button>
-                    <button class="btn btn-secondary w-full" onclick="showPage('online-booking')">
-                        <i class="fas fa-calendar-plus"></i>
-                        New Booking
-                    </button>
-                    <button class="btn btn-secondary w-full" onclick="showPage('quotes')">
-                        <i class="fas fa-file-invoice-dollar"></i>
-                        Create Quote
-                    </button>
-                </div>
-            </div>
+    <!-- MOT Reminders -->
+    <div class="card mt-6">
+      <div class="card-header">
+        <i class="fas fa-exclamation-triangle"></i>
+        MOT Reminders
+      </div>
+      <div class="card-content">
+        <div id="mot-reminders-list">
+          <!-- MOT reminders will be loaded here -->
+          <div class="loading-spinner">Loading MOT reminders...</div>
         </div>
-
-        <!-- MOT Reminders -->
-        <div class="card mt-6">
-            <div class="card-header">
-                <i class="fas fa-exclamation-triangle"></i>
-                MOT Reminders
-            </div>
-            <div class="card-content">
-                <div id="mot-reminders-list">
-                    <!-- MOT reminders will be loaded here -->
-                    <div class="loading-spinner">Loading MOT reminders...</div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- Recent Jobs Table -->
 <div class="card mt-6">
-    <div class="card-header">
-        <i class="fas fa-clipboard-list"></i>
-        Recent Jobs
+  <div class="card-header">
+    <i class="fas fa-clipboard-list"></i>
+    Recent Jobs
+  </div>
+  <div class="card-content">
+    <div class="table-container">
+      <table class="table" id="recent-jobs-table">
+        <thead>
+          <tr>
+            <th>Job ID</th>
+            <th>Customer</th>
+            <th>Vehicle</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Jobs will be loaded here -->
+          <tr>
+            <td colspan="7" class="text-center py-8">
+              <div class="loading-spinner">Loading recent jobs...</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="card-content">
-        <div class="table-container">
-            <table class="table" id="recent-jobs-table">
-                <thead>
-                    <tr>
-                        <th>Job ID</th>
-                        <th>Customer</th>
-                        <th>Vehicle</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th>Created</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Jobs will be loaded here -->
-                    <tr>
-                        <td colspan="7" class="text-center py-8">
-                            <div class="loading-spinner">Loading recent jobs...</div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+  </div>
 </div>
 
 <script>
-// Dashboard-specific JavaScript
-function refreshDashboard() {
+  // Dashboard-specific JavaScript
+  function refreshDashboard() {
     // Reload all dashboard data
     loadDashboardStats();
     loadRecentActivity();
     loadRecentJobs();
     loadMOTReminders();
-}
+  }
 
-function exportDashboard() {
+  function exportDashboard() {
     // Export dashboard data
-    console.log('Exporting dashboard data...');
+    console.log("Exporting dashboard data...");
     // Implementation would go here
-}
+  }
 
-// Load dashboard data on page load
-document.addEventListener('DOMContentLoaded', function() {
-    if (document.getElementById('dashboard').classList.contains('active')) {
-        refreshDashboard();
+  // Load dashboard data on page load
+  document.addEventListener("DOMContentLoaded", function () {
+    if (document.getElementById("dashboard").classList.contains("active")) {
+      refreshDashboard();
     }
-});
-</script> 
+  });
+</script>

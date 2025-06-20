@@ -1,170 +1,179 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GarageManager Pro - Professional Garage Management System</title>
 
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- External CSS Files -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/design-system.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/garage-ui-consolidated.css">
-    <link rel="stylesheet" href="css/kanban-board.css">
-    <link rel="stylesheet" href="css/workshop-diary.css">
-    <link rel="stylesheet" href="css/job-sheets.css">
-    <link rel="stylesheet" href="css/online-booking.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/design-system.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/garage-ui-consolidated.css" />
+    <link rel="stylesheet" href="css/kanban-board.css" />
+    <link rel="stylesheet" href="css/workshop-diary.css" />
+    <link rel="stylesheet" href="css/job-sheets.css" />
+    <link rel="stylesheet" href="css/online-booking.css" />
 
     <!-- Emergency crash prevention -->
     <script src="js/emergency-protection.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Header Component -->
     <div id="header-container"></div>
 
     <!-- Layout -->
     <div class="layout">
-        <!-- Sidebar Component -->
-        <div id="sidebar-container"></div>
+      <!-- Sidebar Component -->
+      <div id="sidebar-container"></div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Dashboard Page -->
-            <div id="dashboard" class="page active">
-                <div id="dashboard-content"></div>
-            </div>
-
-            <!-- Customers Page -->
-            <div id="customers" class="page">
-                <div id="customers-content"></div>
-            </div>
-
-            <!-- Vehicles Page -->
-            <div id="vehicles" class="page">
-                <div id="vehicles-content"></div>
-            </div>
-
-            <!-- Jobs Page -->
-            <div id="jobs" class="page">
-                <div id="jobs-content"></div>
-            </div>
-
-            <!-- Workshop Diary Page -->
-            <div id="workshop-diary" class="page">
-                <div id="workshop-diary-container"></div>
-            </div>
-
-            <!-- Job Sheets Page -->
-            <div id="job-sheets" class="page">
-                <div id="job-sheets-container"></div>
-            </div>
-
-            <!-- Quotes Page -->
-            <div id="quotes" class="page">
-                <div id="quotes-container"></div>
-            </div>
-
-            <!-- Online Booking Page -->
-            <div id="online-booking" class="page">
-                <div id="online-booking-container"></div>
-            </div>
-
-            <!-- Customer Portal Page -->
-            <div id="customer-portal" class="page">
-                <div id="customer-portal-container"></div>
-            </div>
-
-            <!-- MOT Reminders Page -->
-            <div id="mot-reminders" class="page">
-                <div id="mot-reminders-content"></div>
-            </div>
-
-            <!-- Parts Page -->
-            <div id="parts" class="page">
-                <div id="parts-content">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">
-                                <i class="fas fa-cogs"></i>
-                                Parts Management
-                            </h1>
-                            <p class="page-subtitle">Manage inventory and parts catalog</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fas fa-info-circle"></i>
-                            Parts System
-                        </div>
-                        <div class="card-content">
-                            <p>Parts management system is being developed. This will include:</p>
-                            <ul>
-                                <li>Parts inventory tracking</li>
-                                <li>Supplier management</li>
-                                <li>Stock level monitoring</li>
-                                <li>Automatic reordering</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Invoices Page -->
-            <div id="invoices" class="page">
-                <div id="invoices-content"></div>
-            </div>
-
-            <!-- Reports Page -->
-            <div id="reports" class="page">
-                <div id="reports-content">
-                    <div class="page-header">
-                        <div>
-                            <h1 class="page-title">
-                                <i class="fas fa-chart-bar"></i>
-                                Reports & Analytics
-                            </h1>
-                            <p class="page-subtitle">Business intelligence and reporting</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fas fa-chart-line"></i>
-                            Available Reports
-                        </div>
-                        <div class="card-content">
-                            <p>Comprehensive reporting system includes:</p>
-                            <ul>
-                                <li>Revenue and financial reports</li>
-                                <li>Job completion analytics</li>
-                                <li>Customer activity reports</li>
-                                <li>Vehicle service history</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Data Upload Page -->
-            <div id="upload" class="page">
-                <div id="upload-content"></div>
-            </div>
-
-            <!-- Error Monitoring Page -->
-            <div id="error-monitoring" class="page">
-                <div id="error-monitoring-content"></div>
-            </div>
-
-            <!-- Settings Page -->
-            <div id="settings" class="page">
-                <div id="settings-content"></div>
-            </div>
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Dashboard Page -->
+        <div id="dashboard" class="page active">
+          <div id="dashboard-content"></div>
         </div>
+
+        <!-- Customers Page -->
+        <div id="customers" class="page">
+          <div id="customers-content"></div>
+        </div>
+
+        <!-- Vehicles Page -->
+        <div id="vehicles" class="page">
+          <div id="vehicles-content"></div>
+        </div>
+
+        <!-- Jobs Page -->
+        <div id="jobs" class="page">
+          <div id="jobs-content"></div>
+        </div>
+
+        <!-- Workshop Diary Page -->
+        <div id="workshop-diary" class="page">
+          <div id="workshop-diary-container"></div>
+        </div>
+
+        <!-- Job Sheets Page -->
+        <div id="job-sheets" class="page">
+          <div id="job-sheets-container"></div>
+        </div>
+
+        <!-- Quotes Page -->
+        <div id="quotes" class="page">
+          <div id="quotes-container"></div>
+        </div>
+
+        <!-- Online Booking Page -->
+        <div id="online-booking" class="page">
+          <div id="online-booking-container"></div>
+        </div>
+
+        <!-- Customer Portal Page -->
+        <div id="customer-portal" class="page">
+          <div id="customer-portal-container"></div>
+        </div>
+
+        <!-- MOT Reminders Page -->
+        <div id="mot-reminders" class="page">
+          <div id="mot-reminders-content"></div>
+        </div>
+
+        <!-- Parts Page -->
+        <div id="parts" class="page">
+          <div id="parts-content">
+            <div class="page-header">
+              <div>
+                <h1 class="page-title">
+                  <i class="fas fa-cogs"></i>
+                  Parts Management
+                </h1>
+                <p class="page-subtitle">Manage inventory and parts catalog</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <i class="fas fa-info-circle"></i>
+                Parts System
+              </div>
+              <div class="card-content">
+                <p>
+                  Parts management system is being developed. This will include:
+                </p>
+                <ul>
+                  <li>Parts inventory tracking</li>
+                  <li>Supplier management</li>
+                  <li>Stock level monitoring</li>
+                  <li>Automatic reordering</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Invoices Page -->
+        <div id="invoices" class="page">
+          <div id="invoices-content"></div>
+        </div>
+
+        <!-- Reports Page -->
+        <div id="reports" class="page">
+          <div id="reports-content">
+            <div class="page-header">
+              <div>
+                <h1 class="page-title">
+                  <i class="fas fa-chart-bar"></i>
+                  Reports & Analytics
+                </h1>
+                <p class="page-subtitle">Business intelligence and reporting</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <i class="fas fa-chart-line"></i>
+                Available Reports
+              </div>
+              <div class="card-content">
+                <p>Comprehensive reporting system includes:</p>
+                <ul>
+                  <li>Revenue and financial reports</li>
+                  <li>Job completion analytics</li>
+                  <li>Customer activity reports</li>
+                  <li>Vehicle service history</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Upload Page -->
+        <div id="upload" class="page">
+          <div id="upload-content"></div>
+        </div>
+
+        <!-- Error Monitoring Page -->
+        <div id="error-monitoring" class="page">
+          <div id="error-monitoring-content"></div>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="settings" class="page">
+          <div id="settings-content"></div>
+        </div>
+      </div>
     </div>
 
     <!-- Modal Container -->
@@ -176,7 +185,7 @@
     <script src="js/intelligent-search.js?v=2"></script>
     <script src="js/navigation.js?v=2"></script>
     <script src="js/app.js?v=2"></script>
-    
+
     <!-- Feature-specific JavaScript -->
     <script src="js/kanban-board.js"></script>
     <script src="js/workshop-diary.js"></script>
@@ -188,36 +197,42 @@
 
     <!-- Component Loader -->
     <script>
-        // Load components dynamically
-        async function loadComponent(containerId, componentPath) {
-            try {
-                const response = await fetch(componentPath);
-                const html = await response.text();
-                document.getElementById(containerId).innerHTML = html;
-            } catch (error) {
-                console.error(`Failed to load component ${componentPath}:`, error);
-            }
+      // Load components dynamically
+      async function loadComponent(containerId, componentPath) {
+        try {
+          const response = await fetch(componentPath);
+          const html = await response.text();
+          document.getElementById(containerId).innerHTML = html;
+        } catch (error) {
+          console.error(`Failed to load component ${componentPath}:`, error);
         }
+      }
 
-        // Load all components on page load
-        document.addEventListener('DOMContentLoaded', async function() {
-            console.log('🔧 Loading components...');
-            await loadComponent('header-container', 'components/header.html');
-            await loadComponent('sidebar-container', 'components/sidebar.html');
-            console.log('✅ Components loaded');
+      // Load all components on page load
+      document.addEventListener("DOMContentLoaded", async function () {
+        console.log("🔧 Loading components...");
+        await loadComponent("header-container", "components/header.html");
+        await loadComponent("sidebar-container", "components/sidebar.html");
+        console.log("✅ Components loaded");
 
-            // Debug: Check if dashboard content exists
-            setTimeout(() => {
-                const dashboard = document.getElementById('dashboard');
-                const dashboardContent = document.getElementById('dashboard-content');
-                console.log('🔍 Dashboard element:', dashboard);
-                console.log('🔍 Dashboard content element:', dashboardContent);
-                console.log('🔍 Dashboard classes:', dashboard ? dashboard.className : 'not found');
-                console.log('🔍 Dashboard content HTML length:', dashboardContent ? dashboardContent.innerHTML.length : 'not found');
-            }, 2000);
+        // Debug: Check if dashboard content exists
+        setTimeout(() => {
+          const dashboard = document.getElementById("dashboard");
+          const dashboardContent = document.getElementById("dashboard-content");
+          console.log("🔍 Dashboard element:", dashboard);
+          console.log("🔍 Dashboard content element:", dashboardContent);
+          console.log(
+            "🔍 Dashboard classes:",
+            dashboard ? dashboard.className : "not found",
+          );
+          console.log(
+            "🔍 Dashboard content HTML length:",
+            dashboardContent ? dashboardContent.innerHTML.length : "not found",
+          );
+        }, 2000);
 
-            // The application will be initialized by app.js DOMContentLoaded listener
-        });
+        // The application will be initialized by app.js DOMContentLoaded listener
+      });
     </script>
-</body>
+  </body>
 </html>

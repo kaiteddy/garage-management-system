@@ -3,41 +3,44 @@
 Main Flask application for the Garage Management System
 """
 
-import os
-import sys
 import json
+import os
 import sqlite3
+import sys
 from datetime import datetime
-from flask import Flask, render_template, request, jsonify, send_from_directory
+
+from flask import Flask, jsonify, render_template, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
+
+from models import Customer, Expense, Invoice, Job, Part, Supplier, db
+from models.vehicle import Vehicle
+from mot_service import IntegratedMOTService
+from routes.audit_routes import audit_bp
+from routes.customer_portal_routes import customer_portal_bp
+from routes.digital_job_sheets_routes import digital_job_sheets_bp
+from routes.enhanced_dvsa_routes import enhanced_dvsa_bp
+from routes.gdpr_routes import gdpr_bp
+from routes.google_drive_routes import google_drive_bp
+from routes.parts_supplier_routes import parts_supplier_bp
+from routes.upload_routes import upload_bp
+from routes.vat_routes import vat_bp
+from routes.workshop_diary_routes import workshop_diary_bp
+from services.csv_import_service import CSVImportService
 
 # Add the src directory to Python path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-# Import our models and services
-from models import db, Customer, Job, Invoice, Part, Supplier, Expense
-from models.vehicle import Vehicle
-from routes.upload_routes import upload_bp
-from routes.google_drive_routes import google_drive_bp
-from routes.vat_routes import vat_bp
-from routes.gdpr_routes import gdpr_bp
-from routes.enhanced_dvsa_routes import enhanced_dvsa_bp
-from routes.audit_routes import audit_bp
-from routes.workshop_diary_routes import workshop_diary_bp
-from routes.digital_job_sheets_routes import digital_job_sheets_bp
-from routes.parts_supplier_routes import parts_supplier_bp
-from routes.customer_portal_routes import customer_portal_bp
-from services.csv_import_service import CSVImportService
-
 # Import MOT service
-import sys
+
+# Import our models and services
+
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(__file__))))
-from mot_service import IntegratedMOTService
 
 app = Flask(__name__)
 
 # Configuration
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
+app.config['SECRET_KEY'] = os.environ.get(
+    'SECRET_KEY', 'dev-secret-key-change-in-production')
 app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -119,10 +122,12 @@ except Exception as e:
 
 # Register MOT blueprint
 try:
-    mot_reminder_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'mot_reminder')
+    mot_reminder_path = os.path.join(os.path.dirname(
+        os.path.dirname(__file__)), 'mot_reminder')
     sys.path.insert(0, mot_reminder_path)
     import importlib.util
-    spec = importlib.util.spec_from_file_location("mot_app", os.path.join(mot_reminder_path, "app.py"))
+    spec = importlib.util.spec_from_file_location(
+        "mot_app", os.path.join(mot_reminder_path, "app.py"))
     mot_app_module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mot_app_module)
 
@@ -132,20 +137,24 @@ try:
 except Exception as e:
     print(f"❌ Failed to register MOT blueprint: {e}")
 
+
 @app.route('/')
 def index():
     """Main garage management interface - Legacy Dashboard with MOT Integration"""
     return send_from_directory('static', 'index.html')
+
 
 @app.route('/modern-ui')
 def modern_dashboard():
     """Modern dashboard interface"""
     return render_template('dashboard/modern.html')
 
+
 @app.route('/css/<path:filename>')
 def serve_css(filename):
     """Serve CSS files from static/css directory"""
     return send_from_directory('static/css', filename)
+
 
 @app.route('/js/<path:filename>')
 def serve_js(filename):
@@ -153,11 +162,11 @@ def serve_js(filename):
     return send_from_directory('static/js', filename)
 
 
-
 @app.route('/booking')
 def online_booking():
     """Online booking interface for customers"""
     return render_template('online-booking.html')
+
 
 @app.route('/api/customers')
 def get_customers():
@@ -174,13 +183,15 @@ def get_customers():
             'error': str(e)
         }), 500
 
+
 @app.route('/api/vehicles')
 def get_vehicles():
     """Get all vehicles"""
     try:
         # Use direct SQLite query for now
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -225,13 +236,15 @@ def get_vehicles():
             'error': str(e)
         }), 500
 
+
 @app.route('/api/jobs')
 def get_jobs():
     """Get all jobs"""
     try:
         # Use direct SQLite query for now
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -293,13 +306,15 @@ def get_jobs():
             'error': str(e)
         }), 500
 
+
 @app.route('/api/invoices')
 def get_invoices():
     """Get all invoices"""
     try:
         # Use direct SQLite query for now
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -351,13 +366,15 @@ def get_invoices():
             'error': str(e)
         }), 500
 
+
 @app.route('/api/stats')
 def get_stats():
     """Get dashboard statistics"""
     try:
         # Use direct SQLite query for now
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -375,14 +392,17 @@ def get_stats():
         invoices_count = cursor.fetchone()[0]
 
         # Calculate revenue from paid invoices
-        cursor.execute('SELECT SUM(total_amount) FROM invoices WHERE status = "PAID"')
+        cursor.execute(
+            'SELECT SUM(total_amount) FROM invoices WHERE status = "PAID"')
         total_revenue = cursor.fetchone()[0] or 0
 
         # Get linking statistics
-        cursor.execute('SELECT COUNT(*) FROM vehicles WHERE customer_id IS NOT NULL')
+        cursor.execute(
+            'SELECT COUNT(*) FROM vehicles WHERE customer_id IS NOT NULL')
         linked_vehicles = cursor.fetchone()[0]
 
-        cursor.execute('SELECT COUNT(*) FROM jobs WHERE customer_id IS NOT NULL')
+        cursor.execute(
+            'SELECT COUNT(*) FROM jobs WHERE customer_id IS NOT NULL')
         linked_jobs = cursor.fetchone()[0]
 
         conn.close()
@@ -408,6 +428,7 @@ def get_stats():
             'success': False,
             'error': str(e)
         }), 500
+
 
 @app.route('/api/customer/<int:customer_id>')
 def get_customer(customer_id):
@@ -437,6 +458,7 @@ def get_customer(customer_id):
             'error': str(e)
         }), 500
 
+
 @app.route('/api/customers/<customer_identifier>')
 def get_customer_by_identifier(customer_identifier):
     """Get specific customer details by ID or account number"""
@@ -447,7 +469,8 @@ def get_customer_by_identifier(customer_identifier):
             customer = Customer.query.get(customer_id)
         except ValueError:
             # If not an integer, search by account number
-            customer = Customer.query.filter_by(account_number=customer_identifier).first()
+            customer = Customer.query.filter_by(
+                account_number=customer_identifier).first()
 
         if not customer:
             return jsonify({
@@ -457,7 +480,8 @@ def get_customer_by_identifier(customer_identifier):
 
         # Get customer's vehicles using direct SQL for better performance
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -547,6 +571,7 @@ def get_customer_by_identifier(customer_identifier):
             'error': str(e)
         }), 500
 
+
 @app.route('/api/vehicle/<int:vehicle_id>')
 def get_vehicle(vehicle_id):
     """Get specific vehicle details by integer ID"""
@@ -571,6 +596,7 @@ def get_vehicle(vehicle_id):
             'error': str(e)
         }), 500
 
+
 @app.route('/api/vehicles/<vehicle_identifier>')
 def get_vehicle_by_identifier(vehicle_identifier):
     """Get specific vehicle details by ID or registration"""
@@ -581,7 +607,8 @@ def get_vehicle_by_identifier(vehicle_identifier):
             vehicle = Vehicle.query.get(vehicle_id)
         except ValueError:
             # If not an integer, search by registration
-            vehicle = Vehicle.query.filter_by(registration=vehicle_identifier).first()
+            vehicle = Vehicle.query.filter_by(
+                registration=vehicle_identifier).first()
 
         if not vehicle:
             return jsonify({
@@ -591,7 +618,8 @@ def get_vehicle_by_identifier(vehicle_identifier):
 
         # Get vehicle data using direct SQL for better performance
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -685,12 +713,13 @@ def get_vehicle_by_identifier(vehicle_identifier):
             'error': str(e)
         }), 500
 
+
 @app.route('/api/customer', methods=['POST'])
 def create_customer():
     """Create a new customer"""
     try:
         data = request.get_json()
-        
+
         customer = Customer(
             account_number=data.get('account_number'),
             name=data.get('name'),
@@ -701,10 +730,10 @@ def create_customer():
             mobile=data.get('mobile'),
             email=data.get('email')
         )
-        
+
         db.session.add(customer)
         db.session.commit()
-        
+
         return jsonify({
             'success': True,
             'customer': customer.to_dict()
@@ -716,12 +745,13 @@ def create_customer():
             'error': str(e)
         }), 500
 
+
 @app.route('/api/vehicle', methods=['POST'])
 def create_vehicle():
     """Create a new vehicle"""
     try:
         data = request.get_json()
-        
+
         vehicle = Vehicle(
             registration=data.get('registration'),
             make=data.get('make'),
@@ -734,10 +764,10 @@ def create_vehicle():
             mileage=data.get('mileage'),
             customer_id=data.get('customer_id')
         )
-        
+
         db.session.add(vehicle)
         db.session.commit()
-        
+
         return jsonify({
             'success': True,
             'vehicle': vehicle.to_dict()
@@ -749,20 +779,21 @@ def create_vehicle():
             'error': str(e)
         }), 500
 
+
 @app.route('/api/customer/<int:customer_id>', methods=['PUT'])
 def update_customer(customer_id):
     """Update customer details"""
     try:
         customer = Customer.query.get_or_404(customer_id)
         data = request.get_json()
-        
+
         # Update fields
         for field in ['account_number', 'name', 'company', 'address', 'postcode', 'phone', 'mobile', 'email']:
             if field in data:
                 setattr(customer, field, data[field])
-        
+
         db.session.commit()
-        
+
         return jsonify({
             'success': True,
             'customer': customer.to_dict()
@@ -773,6 +804,7 @@ def update_customer(customer_id):
             'success': False,
             'error': str(e)
         }), 500
+
 
 @app.route('/api/vehicle/<int:vehicle_id>', methods=['PUT'])
 def update_vehicle(vehicle_id):
@@ -799,12 +831,14 @@ def update_vehicle(vehicle_id):
             'error': str(e)
         }), 500
 
+
 @app.route('/api/job/<int:job_id>')
 def get_job(job_id):
     """Get specific job details"""
     try:
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -859,12 +893,14 @@ def get_job(job_id):
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/jobs/kanban')
 def get_jobs_kanban():
     """Get jobs organized by status for Kanban board"""
     try:
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -949,6 +985,7 @@ def get_jobs_kanban():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/jobs/<int:job_id>/status', methods=['PUT'])
 def update_job_status(job_id):
     """Update job status for Kanban drag-and-drop"""
@@ -960,7 +997,8 @@ def update_job_status(job_id):
             return jsonify({'success': False, 'error': 'Status is required'}), 400
 
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -1001,12 +1039,14 @@ def update_job_status(job_id):
 # WORKSHOP SCHEDULING API ENDPOINTS
 # ============================================================================
 
+
 @app.route('/api/technicians')
 def get_technicians():
     """Get all technicians"""
     try:
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -1041,12 +1081,14 @@ def get_technicians():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/workshop-bays')
 def get_workshop_bays():
     """Get all workshop bays"""
     try:
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -1077,6 +1119,7 @@ def get_workshop_bays():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/appointments')
 def get_appointments():
     """Get appointments with optional date filtering"""
@@ -1086,7 +1129,8 @@ def get_appointments():
         end_date = request.args.get('end_date')
 
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -1158,6 +1202,7 @@ def get_appointments():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/appointments', methods=['POST'])
 def create_appointment():
     """Create a new appointment"""
@@ -1165,7 +1210,8 @@ def create_appointment():
         data = request.get_json()
 
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -1204,6 +1250,7 @@ def create_appointment():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/appointments/<int:appointment_id>', methods=['PUT'])
 def update_appointment(appointment_id):
     """Update an existing appointment"""
@@ -1215,12 +1262,14 @@ def update_appointment(appointment_id):
         print(f"Updating appointment {appointment_id} with data: {data}")
 
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
         # Check if appointment exists
-        cursor.execute('SELECT id FROM appointments WHERE id = ?', (appointment_id,))
+        cursor.execute(
+            'SELECT id FROM appointments WHERE id = ?', (appointment_id,))
         if not cursor.fetchone():
             conn.close()
             return jsonify({'error': 'Appointment not found'}), 404
@@ -1311,12 +1360,14 @@ def update_appointment(appointment_id):
 # JOB SHEETS API ENDPOINTS
 # ============================================================================
 
+
 @app.route('/api/job-sheet-templates')
 def get_job_sheet_templates():
     """Get all active job sheet templates"""
     try:
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -1354,6 +1405,7 @@ def get_job_sheet_templates():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/job-sheets')
 def get_job_sheets():
     """Get job sheets with optional filtering"""
@@ -1362,7 +1414,8 @@ def get_job_sheets():
         status = request.args.get('status')
 
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -1434,6 +1487,7 @@ def get_job_sheets():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/job-sheets', methods=['POST'])
 def create_job_sheet():
     """Create a new job sheet"""
@@ -1441,7 +1495,8 @@ def create_job_sheet():
         data = request.get_json()
 
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -1484,6 +1539,7 @@ def create_job_sheet():
 # QUOTES & ESTIMATES API ENDPOINTS
 # ============================================================================
 
+
 @app.route('/api/quotes')
 def get_quotes():
     """Get quotes with optional filtering"""
@@ -1492,7 +1548,8 @@ def get_quotes():
         status = request.args.get('status')
 
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -1561,6 +1618,7 @@ def get_quotes():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/quotes', methods=['POST'])
 def create_quote():
     """Create a new quote"""
@@ -1568,7 +1626,8 @@ def create_quote():
         data = request.get_json()
 
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -1620,12 +1679,14 @@ def create_quote():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/quotes/<int:quote_id>/convert', methods=['POST'])
 def convert_quote_to_job(quote_id):
     """Convert a quote to a job"""
     try:
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -1687,6 +1748,7 @@ def convert_quote_to_job(quote_id):
 # PAYMENT INTEGRATION API ENDPOINTS
 # ============================================================================
 
+
 @app.route('/api/payments/create-intent', methods=['POST'])
 def create_payment_intent():
     """Create a Stripe payment intent for invoice payment"""
@@ -1718,6 +1780,7 @@ def create_payment_intent():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/payments/confirm', methods=['POST'])
 def confirm_payment():
     """Confirm payment and update invoice status"""
@@ -1727,7 +1790,8 @@ def confirm_payment():
         payment_intent_id = data.get('payment_intent_id')
 
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -1756,6 +1820,7 @@ def confirm_payment():
 # ONLINE BOOKING WIDGET API ENDPOINTS
 # ============================================================================
 
+
 @app.route('/api/booking/availability')
 def get_booking_availability():
     """Get available appointment slots for online booking"""
@@ -1767,7 +1832,8 @@ def get_booking_availability():
             return jsonify({'success': False, 'error': 'Date is required'}), 400
 
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -1781,10 +1847,12 @@ def get_booking_availability():
         existing_appointments = cursor.fetchall()
 
         # Get available technicians and bays
-        cursor.execute('SELECT id, name, start_time, end_time FROM technicians WHERE is_active = 1')
+        cursor.execute(
+            'SELECT id, name, start_time, end_time FROM technicians WHERE is_active = 1')
         technicians = cursor.fetchall()
 
-        cursor.execute('SELECT id, bay_number FROM workshop_bays WHERE is_available = 1')
+        cursor.execute(
+            'SELECT id, bay_number FROM workshop_bays WHERE is_available = 1')
         bays = cursor.fetchall()
 
         # Generate available time slots (simplified logic)
@@ -1793,7 +1861,8 @@ def get_booking_availability():
             time_slot = f"{hour:02d}:00"
 
             # Check if slot is available (simplified - would need more complex logic)
-            is_available = len(existing_appointments) < len(technicians) * len(bays)
+            is_available = len(existing_appointments) < len(
+                technicians) * len(bays)
 
             if is_available:
                 available_slots.append({
@@ -1812,6 +1881,7 @@ def get_booking_availability():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/booking/create', methods=['POST'])
 def create_online_booking():
     """Create an appointment from online booking"""
@@ -1820,19 +1890,21 @@ def create_online_booking():
 
         # Validate required fields
         required_fields = ['customer_name', 'customer_phone', 'vehicle_registration',
-                          'appointment_date', 'start_time', 'service_type']
+                           'appointment_date', 'start_time', 'service_type']
 
         for field in required_fields:
             if not data.get(field):
                 return jsonify({'success': False, 'error': f'{field} is required'}), 400
 
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
         # Check if customer exists, create if not
-        cursor.execute('SELECT id FROM customers WHERE phone = ?', (data['customer_phone'],))
+        cursor.execute('SELECT id FROM customers WHERE phone = ?',
+                       (data['customer_phone'],))
         customer = cursor.fetchone()
 
         if customer:
@@ -1846,7 +1918,8 @@ def create_online_booking():
             customer_id = cursor.lastrowid
 
         # Check if vehicle exists, create if not
-        cursor.execute('SELECT id FROM vehicles WHERE registration = ?', (data['vehicle_registration'],))
+        cursor.execute('SELECT id FROM vehicles WHERE registration = ?',
+                       (data['vehicle_registration'],))
         vehicle = cursor.fetchone()
 
         if vehicle:
@@ -1861,11 +1934,13 @@ def create_online_booking():
             vehicle_id = cursor.lastrowid
 
         # Get available technician and bay (simplified assignment)
-        cursor.execute('SELECT id FROM technicians WHERE is_active = 1 LIMIT 1')
+        cursor.execute(
+            'SELECT id FROM technicians WHERE is_active = 1 LIMIT 1')
         technician = cursor.fetchone()
         technician_id = technician[0] if technician else None
 
-        cursor.execute('SELECT id FROM workshop_bays WHERE is_available = 1 LIMIT 1')
+        cursor.execute(
+            'SELECT id FROM workshop_bays WHERE is_available = 1 LIMIT 1')
         bay = cursor.fetchone()
         bay_id = bay[0] if bay else None
 
@@ -1883,7 +1958,8 @@ def create_online_booking():
         ''', (
             customer_id, vehicle_id, technician_id, bay_id,
             data['appointment_date'], data['start_time'], end_time, 60,
-            data['service_type'], data.get('description', ''), 'SCHEDULED', 'NORMAL'
+            data['service_type'], data.get(
+                'description', ''), 'SCHEDULED', 'NORMAL'
         ))
 
         appointment_id = cursor.lastrowid
@@ -1899,13 +1975,15 @@ def create_online_booking():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/invoice/<int:invoice_id>')
 @app.route('/api/invoices/<int:invoice_id>')
 def get_invoice(invoice_id):
     """Get specific invoice details"""
     try:
         import sqlite3
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -1976,6 +2054,8 @@ def get_invoice(invoice_id):
         return jsonify({'success': False, 'error': str(e)}), 500
 
 # MOT API Routes
+
+
 @app.route('/api/mot/vehicles', methods=['GET', 'POST'])
 def mot_vehicles():
     """Get all MOT vehicles or add a new vehicle"""
@@ -1984,8 +2064,10 @@ def mot_vehicles():
             return jsonify({'success': False, 'error': 'MOT service not available'}), 503
 
         if request.method == 'GET':
-            include_archived = request.args.get('include_archived', 'false').lower() == 'true'
-            vehicles = mot_service.get_all_mot_vehicles(include_archived=include_archived)
+            include_archived = request.args.get(
+                'include_archived', 'false').lower() == 'true'
+            vehicles = mot_service.get_all_mot_vehicles(
+                include_archived=include_archived)
             return jsonify({
                 'success': True,
                 'vehicles': vehicles,
@@ -2001,11 +2083,13 @@ def mot_vehicles():
             if not registration:
                 return jsonify({'success': False, 'error': 'Registration required'})
 
-            result = mot_service.add_mot_vehicle(registration, customer_name, mobile_number)
+            result = mot_service.add_mot_vehicle(
+                registration, customer_name, mobile_number)
             return jsonify(result)
 
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @app.route('/api/mot/failed-registrations')
 def get_failed_registrations():
@@ -2025,6 +2109,7 @@ def get_failed_registrations():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/mot/sms/status')
 def get_sms_status():
     """Get SMS service status"""
@@ -2036,6 +2121,7 @@ def get_sms_status():
         return jsonify(status)
     except Exception as e:
         return jsonify({'configured': False, 'error': str(e)})
+
 
 @app.route('/api/mot/sms/history')
 def get_mot_sms_history():
@@ -2096,6 +2182,7 @@ def get_mot_sms_history():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/mot/check', methods=['POST'])
 def check_mot_vehicle():
     """Check MOT status for a vehicle registration"""
@@ -2138,6 +2225,7 @@ def check_mot_vehicle():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/mot/add', methods=['POST'])
 def add_mot_vehicle():
     """Add a vehicle to MOT monitoring"""
@@ -2155,6 +2243,7 @@ def add_mot_vehicle():
         return jsonify(result)
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @app.route('/api/mot/sms/send', methods=['POST'])
 def send_mot_sms():
@@ -2175,6 +2264,7 @@ def send_mot_sms():
         return jsonify(result)
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @app.route('/api/mot/link-existing-vehicles', methods=['POST'])
 def link_existing_vehicles():
@@ -2202,7 +2292,8 @@ def link_existing_vehicles():
 
         for registration, customer_name, mobile_number in unlinked_vehicles:
             # Try to link to existing customer
-            customer_link = mot_service.link_mot_vehicle_to_customer(registration, customer_name, mobile_number)
+            customer_link = mot_service.link_mot_vehicle_to_customer(
+                registration, customer_name, mobile_number)
 
             if customer_link:
                 # Update MOT vehicle with customer link
@@ -2237,6 +2328,7 @@ def link_existing_vehicles():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/mot/clear-all-data', methods=['POST'])
 def clear_all_mot_data():
     """Clear all MOT data - USE WITH CAUTION"""
@@ -2269,10 +2361,12 @@ def clear_all_mot_data():
         cursor.execute('DELETE FROM mot_vehicles')
         cursor.execute('DELETE FROM mot_reminders_log')
         cursor.execute('DELETE FROM failed_registrations')
-        cursor.execute('DELETE FROM customers WHERE id NOT IN (SELECT DISTINCT main_customer_id FROM mot_vehicles WHERE main_customer_id IS NOT NULL)')
+        cursor.execute(
+            'DELETE FROM customers WHERE id NOT IN (SELECT DISTINCT main_customer_id FROM mot_vehicles WHERE main_customer_id IS NOT NULL)')
 
         # Reset auto-increment counters
-        cursor.execute('DELETE FROM sqlite_sequence WHERE name IN ("mot_vehicles", "mot_reminders_log", "failed_registrations", "customers")')
+        cursor.execute(
+            'DELETE FROM sqlite_sequence WHERE name IN ("mot_vehicles", "mot_reminders_log", "failed_registrations", "customers")')
 
         conn.commit()
         conn.close()
@@ -2289,6 +2383,7 @@ def clear_all_mot_data():
 
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @app.route('/api/mot/bulk-upload', methods=['POST'])
 def mot_bulk_upload():
@@ -2367,6 +2462,7 @@ def mot_bulk_upload():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/mot/vehicles/<registration>', methods=['DELETE'])
 def delete_mot_vehicle(registration):
     """Delete a single MOT vehicle"""
@@ -2379,17 +2475,21 @@ def delete_mot_vehicle(registration):
         cursor = conn.cursor()
 
         # Check if vehicle exists
-        cursor.execute('SELECT registration FROM mot_vehicles WHERE registration = ?', (registration,))
+        cursor.execute(
+            'SELECT registration FROM mot_vehicles WHERE registration = ?', (registration,))
         if not cursor.fetchone():
             conn.close()
             return jsonify({'success': False, 'error': 'Vehicle not found'}), 404
 
         # Delete the vehicle
-        cursor.execute('DELETE FROM mot_vehicles WHERE registration = ?', (registration,))
+        cursor.execute(
+            'DELETE FROM mot_vehicles WHERE registration = ?', (registration,))
 
         # Also delete related records
-        cursor.execute('DELETE FROM mot_reminders_log WHERE registration = ?', (registration,))
-        cursor.execute('DELETE FROM failed_registrations WHERE registration = ?', (registration,))
+        cursor.execute(
+            'DELETE FROM mot_reminders_log WHERE registration = ?', (registration,))
+        cursor.execute(
+            'DELETE FROM failed_registrations WHERE registration = ?', (registration,))
 
         conn.commit()
         conn.close()
@@ -2401,6 +2501,7 @@ def delete_mot_vehicle(registration):
 
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @app.route('/api/mot/vehicles/bulk-delete', methods=['POST'])
 def bulk_delete_mot_vehicles():
@@ -2424,12 +2525,16 @@ def bulk_delete_mot_vehicles():
         for registration in registrations:
             try:
                 # Check if vehicle exists
-                cursor.execute('SELECT registration FROM mot_vehicles WHERE registration = ?', (registration,))
+                cursor.execute(
+                    'SELECT registration FROM mot_vehicles WHERE registration = ?', (registration,))
                 if cursor.fetchone():
                     # Delete the vehicle and related records
-                    cursor.execute('DELETE FROM mot_vehicles WHERE registration = ?', (registration,))
-                    cursor.execute('DELETE FROM mot_reminders_log WHERE registration = ?', (registration,))
-                    cursor.execute('DELETE FROM failed_registrations WHERE registration = ?', (registration,))
+                    cursor.execute(
+                        'DELETE FROM mot_vehicles WHERE registration = ?', (registration,))
+                    cursor.execute(
+                        'DELETE FROM mot_reminders_log WHERE registration = ?', (registration,))
+                    cursor.execute(
+                        'DELETE FROM failed_registrations WHERE registration = ?', (registration,))
                     deleted += 1
                 else:
                     failed += 1
@@ -2450,6 +2555,7 @@ def bulk_delete_mot_vehicles():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/mot/vehicles/<registration>/archive', methods=['POST'])
 def archive_mot_vehicle(registration):
     """Archive a MOT vehicle"""
@@ -2461,13 +2567,15 @@ def archive_mot_vehicle(registration):
         cursor = conn.cursor()
 
         # Check if vehicle exists
-        cursor.execute('SELECT registration FROM mot_vehicles WHERE registration = ?', (registration,))
+        cursor.execute(
+            'SELECT registration FROM mot_vehicles WHERE registration = ?', (registration,))
         if not cursor.fetchone():
             conn.close()
             return jsonify({'success': False, 'error': 'Vehicle not found'}), 404
 
         # Archive the vehicle
-        cursor.execute('UPDATE mot_vehicles SET is_archived = 1 WHERE registration = ?', (registration,))
+        cursor.execute(
+            'UPDATE mot_vehicles SET is_archived = 1 WHERE registration = ?', (registration,))
         conn.commit()
         conn.close()
 
@@ -2478,6 +2586,7 @@ def archive_mot_vehicle(registration):
 
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @app.route('/api/mot/vehicles/<registration>/unarchive', methods=['POST'])
 def unarchive_mot_vehicle(registration):
@@ -2490,13 +2599,15 @@ def unarchive_mot_vehicle(registration):
         cursor = conn.cursor()
 
         # Check if vehicle exists
-        cursor.execute('SELECT registration FROM mot_vehicles WHERE registration = ?', (registration,))
+        cursor.execute(
+            'SELECT registration FROM mot_vehicles WHERE registration = ?', (registration,))
         if not cursor.fetchone():
             conn.close()
             return jsonify({'success': False, 'error': 'Vehicle not found'}), 404
 
         # Unarchive the vehicle
-        cursor.execute('UPDATE mot_vehicles SET is_archived = 0 WHERE registration = ?', (registration,))
+        cursor.execute(
+            'UPDATE mot_vehicles SET is_archived = 0 WHERE registration = ?', (registration,))
         conn.commit()
         conn.close()
 
@@ -2508,9 +2619,11 @@ def unarchive_mot_vehicle(registration):
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.errorhandler(404)
 def not_found(error):
     return jsonify({'error': 'Not found'}), 404
+
 
 @app.errorhandler(500)
 def internal_error(error):
@@ -2518,6 +2631,8 @@ def internal_error(error):
     return jsonify({'error': 'Internal server error'}), 500
 
 # Error Monitoring and Reporting Endpoints
+
+
 @app.route('/api/error-reports', methods=['POST'])
 def receive_error_report():
     """Receive error reports from the client-side monitoring system"""
@@ -2539,7 +2654,8 @@ def receive_error_report():
             try:
                 data = request.get_json(force=True)
             except Exception:
-                data = {'error': 'Unable to parse request data', 'raw_data': request.get_data(as_text=True)}
+                data = {'error': 'Unable to parse request data',
+                        'raw_data': request.get_data(as_text=True)}
 
         if not data:
             return jsonify({'error': 'No data provided'}), 400
@@ -2579,10 +2695,12 @@ def receive_error_report():
 
         # Check if this error requires immediate attention
         if data.get('error', {}).get('type') in ['javascript_error', 'promise_rejection']:
-            severity = 'high' if 'null is not an object' in str(data.get('error', {}).get('message', '')) else 'medium'
+            severity = 'high' if 'null is not an object' in str(
+                data.get('error', {}).get('message', '')) else 'medium'
 
             if severity == 'high':
-                print(f"🚨 HIGH SEVERITY ERROR DETECTED: {data.get('error', {}).get('message', 'Unknown')}")
+                print(
+                    f"🚨 HIGH SEVERITY ERROR DETECTED: {data.get('error', {}).get('message', 'Unknown')}")
 
                 # Trigger automated fix if possible
                 trigger_automated_fix(data)
@@ -2592,6 +2710,7 @@ def receive_error_report():
     except Exception as e:
         print(f"❌ Error processing error report: {e}")
         return jsonify({'error': 'Failed to process report'}), 500
+
 
 @app.route('/api/error-reports', methods=['GET'])
 def get_error_reports():
@@ -2612,12 +2731,13 @@ def get_error_reports():
         # Filter by severity if specified
         if severity:
             filtered_logs = [log for log in logs
-                           if log.get('report', {}).get('pattern', {}).get('severity') == severity]
+                             if log.get('report', {}).get('pattern', {}).get('severity') == severity]
         else:
             filtered_logs = logs
 
         # Return most recent entries
-        recent_logs = filtered_logs[-limit:] if len(filtered_logs) > limit else filtered_logs
+        recent_logs = filtered_logs[-limit:] if len(
+            filtered_logs) > limit else filtered_logs
         recent_logs.reverse()  # Most recent first
 
         return jsonify({
@@ -2629,6 +2749,7 @@ def get_error_reports():
     except Exception as e:
         print(f"❌ Error retrieving error reports: {e}")
         return jsonify({'error': 'Failed to retrieve reports'}), 500
+
 
 def trigger_automated_fix(error_data):
     """Trigger automated fix for server-side issues"""
@@ -2671,6 +2792,7 @@ def trigger_automated_fix(error_data):
     except Exception as e:
         print(f"❌ Error in automated fix: {e}")
 
+
 def create_missing_static_file(url):
     """Create a minimal static file to resolve 404 errors"""
     try:
@@ -2684,7 +2806,8 @@ def create_missing_static_file(url):
                 os.makedirs(os.path.dirname(full_path), exist_ok=True)
                 with open(full_path, 'w') as f:
                     f.write(f"/* Auto-generated CSS file for {file_path} */\n")
-                    f.write("/* This file was created by the automated error monitoring system */\n")
+                    f.write(
+                        "/* This file was created by the automated error monitoring system */\n")
                 print(f"✅ Created missing CSS file: {full_path}")
 
         elif '/js/' in url:
@@ -2695,13 +2818,17 @@ def create_missing_static_file(url):
             if not os.path.exists(full_path):
                 os.makedirs(os.path.dirname(full_path), exist_ok=True)
                 with open(full_path, 'w') as f:
-                    f.write(f"// Auto-generated JavaScript file for {file_path}\n")
-                    f.write("// This file was created by the automated error monitoring system\n")
-                    f.write("console.log('Placeholder JS file loaded:', '" + file_path + "');\n")
+                    f.write(
+                        f"// Auto-generated JavaScript file for {file_path}\n")
+                    f.write(
+                        "// This file was created by the automated error monitoring system\n")
+                    f.write(
+                        "console.log('Placeholder JS file loaded:', '" + file_path + "');\n")
                 print(f"✅ Created missing JS file: {full_path}")
 
     except Exception as e:
         print(f"❌ Error creating static file: {e}")
+
 
 # DeepSource Fix Management API Endpoints
 try:
@@ -2712,10 +2839,12 @@ except Exception as e:
     print(f"❌ Failed to initialize DeepSource Fix Manager: {e}")
     deepsource_manager = None
 
+
 @app.route('/deepsource-dashboard')
 def deepsource_dashboard():
     """DeepSource fix management dashboard"""
     return send_from_directory('static/templates', 'deepsource_dashboard.html')
+
 
 @app.route('/api/deepsource/stats')
 def get_deepsource_stats():
@@ -2728,6 +2857,7 @@ def get_deepsource_stats():
         return jsonify(stats)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 @app.route('/api/deepsource/fixes')
 def get_deepsource_fixes():
@@ -2749,6 +2879,7 @@ def get_deepsource_fixes():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 @app.route('/api/deepsource/trigger-analysis', methods=['POST'])
 def trigger_deepsource_analysis():
     """Trigger DeepSource analysis (placeholder)"""
@@ -2761,6 +2892,7 @@ def trigger_deepsource_analysis():
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 @app.route('/api/deepsource/cleanup', methods=['POST'])
 def cleanup_deepsource_records():
@@ -2780,6 +2912,7 @@ def cleanup_deepsource_records():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 @app.route('/api/deepsource/export')
 def export_deepsource_data():
     """Export DeepSource fix data"""
@@ -2798,10 +2931,12 @@ def export_deepsource_data():
         }
 
         response = jsonify(export_data)
-        response.headers['Content-Disposition'] = f'attachment; filename=deepsource_fixes_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
+        response.headers[
+            'Content-Disposition'] = f'attachment; filename=deepsource_fixes_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
         return response
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 def create_tables():
     """Create database tables"""
@@ -2809,10 +2944,11 @@ def create_tables():
         db.create_all()
         print("✅ Database tables created successfully!")
 
+
 if __name__ == '__main__':
     # Create tables if they don't exist
     create_tables()
-    
+
     # Run the application
     print("🚀 Starting Garage Management System...")
     print("📊 Main interface: http://127.0.0.1:5001")

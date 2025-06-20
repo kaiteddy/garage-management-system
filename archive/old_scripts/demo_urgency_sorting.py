@@ -10,9 +10,10 @@ from datetime import datetime, timedelta
 # Add the current directory to Python path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
+
 def create_demo_vehicles_with_urgency():
     """Create demo vehicles with different urgency levels"""
-    
+
     # Sample vehicles with different MOT expiry scenarios
     demo_vehicles = [
         {
@@ -96,25 +97,26 @@ def create_demo_vehicles_with_urgency():
             'test_result': 'PASSED'
         }
     ]
-    
+
     return demo_vehicles
+
 
 def demonstrate_sorting():
     """Demonstrate the sorting logic"""
     print("MOT Reminder Tool - Urgency Sorting Demo")
     print("=" * 60)
-    
+
     vehicles = create_demo_vehicles_with_urgency()
-    
+
     # Sort vehicles by urgency (same logic as in the app)
     sorted_vehicles = sorted(vehicles, key=lambda v: (
         0 if v['is_expired'] else 1,  # Expired vehicles first
         v['days_until_expiry'] if not v['is_expired'] else -v['days_until_expiry']
     ))
-    
+
     print("\n🚨 VEHICLES SORTED BY URGENCY (Most urgent first):")
     print("-" * 60)
-    
+
     for i, vehicle in enumerate(sorted_vehicles, 1):
         if vehicle['is_expired']:
             status = f"🔴 EXPIRED ({abs(vehicle['days_until_expiry'])} days ago)"
@@ -128,9 +130,10 @@ def demonstrate_sorting():
         else:
             status = f"🟢 VALID ({vehicle['days_until_expiry']} days left)"
             urgency = "OK"
-        
-        print(f"{i:2d}. {vehicle['registration']:10s} | {vehicle['make']:10s} {vehicle['model']:10s} | {status:30s} | {urgency}")
-    
+
+        print(
+            f"{i:2d}. {vehicle['registration']:10s} | {vehicle['make']:10s} {vehicle['model']:10s} | {status:30s} | {urgency}")
+
     # Calculate statistics
     stats = {
         'total': len(sorted_vehicles),
@@ -139,7 +142,7 @@ def demonstrate_sorting():
         'due_soon': len([v for v in sorted_vehicles if not v['is_expired'] and 7 < v['days_until_expiry'] <= 30]),
         'valid': len([v for v in sorted_vehicles if not v['is_expired'] and v['days_until_expiry'] > 30])
     }
-    
+
     print("\n📊 STATISTICS SUMMARY:")
     print("-" * 60)
     print(f"Total Vehicles:     {stats['total']:3d}")
@@ -147,11 +150,12 @@ def demonstrate_sorting():
     print(f"🟠 Critical (≤7d):  {stats['critical']:3d}")
     print(f"🟡 Due Soon (8-30d): {stats['due_soon']:3d}")
     print(f"🟢 Valid (>30d):    {stats['valid']:3d}")
-    
+
     urgent_count = stats['expired'] + stats['critical']
-    urgent_percentage = (urgent_count / stats['total'] * 100) if stats['total'] > 0 else 0
+    urgent_percentage = (
+        urgent_count / stats['total'] * 100) if stats['total'] > 0 else 0
     print(f"⚠️  Urgent Total:    {urgent_count:3d} ({urgent_percentage:.1f}%)")
-    
+
     print("\n✨ NEW FEATURES DEMONSTRATED:")
     print("-" * 60)
     print("✅ List view with sortable table")
@@ -162,9 +166,10 @@ def demonstrate_sorting():
     print("✅ Toggle between list and card views")
     print("✅ Responsive design for mobile")
     print("✅ Enhanced visual hierarchy")
-    
+
     print(f"\n🌐 View the enhanced interface at: http://127.0.0.1:5001")
     print("📝 The list view shows vehicles sorted by urgency with clear visual indicators!")
+
 
 if __name__ == "__main__":
     demonstrate_sorting()

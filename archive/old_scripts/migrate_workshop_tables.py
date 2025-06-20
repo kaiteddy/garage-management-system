@@ -3,26 +3,27 @@
 Database migration script to add workshop management tables
 """
 
-import sqlite3
 import os
+import sqlite3
 import sys
+
 
 def migrate_workshop_tables():
     """Add workshop management tables to the database"""
-    
+
     # Get database path
     db_path = os.path.join(os.path.dirname(__file__), 'instance', 'garage.db')
-    
+
     if not os.path.exists(db_path):
         print("❌ Database not found. Please run the main application first to create the database.")
         return False
-    
+
     try:
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         print("🔄 Starting workshop tables migration...")
-        
+
         # Create technicians table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS technicians (
@@ -39,7 +40,7 @@ def migrate_workshop_tables():
             )
         ''')
         print("✅ Created technicians table")
-        
+
         # Create workshop_bays table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS workshop_bays (
@@ -53,7 +54,7 @@ def migrate_workshop_tables():
             )
         ''')
         print("✅ Created workshop_bays table")
-        
+
         # Create appointments table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS appointments (
@@ -83,7 +84,7 @@ def migrate_workshop_tables():
             )
         ''')
         print("✅ Created appointments table")
-        
+
         # Create job_sheet_templates table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS job_sheet_templates (
@@ -102,7 +103,7 @@ def migrate_workshop_tables():
             )
         ''')
         print("✅ Created job_sheet_templates table")
-        
+
         # Create job_sheets table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS job_sheets (
@@ -157,20 +158,21 @@ def migrate_workshop_tables():
         # Commit changes
         conn.commit()
         print("✅ Migration completed successfully!")
-        
+
         # Show table summary
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
         tables = [row[0] for row in cursor.fetchall()]
-        
+
         print(f"\n📊 Database Tables ({len(tables)} total):")
         for table in tables:
             cursor.execute(f"SELECT COUNT(*) FROM {table}")
             count = cursor.fetchone()[0]
             print(f"   {table}: {count} records")
-        
+
         conn.close()
         return True
-        
+
     except sqlite3.Error as e:
         print(f"❌ Database error: {e}")
         return False
@@ -178,12 +180,13 @@ def migrate_workshop_tables():
         print(f"❌ Unexpected error: {e}")
         return False
 
+
 if __name__ == '__main__':
     print("🚀 Workshop Tables Migration Script")
     print("=" * 50)
-    
+
     success = migrate_workshop_tables()
-    
+
     if success:
         print("\n🎉 Migration completed successfully!")
         print("You can now run the workshop data initialization script.")

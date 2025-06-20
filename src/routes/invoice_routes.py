@@ -5,17 +5,21 @@ Extracted from monolithic app.py
 
 import os
 import sqlite3
+
 from flask import Blueprint, jsonify, request
-from models import Invoice, Customer, Job
+
+from models import Customer, Invoice, Job
 
 invoice_bp = Blueprint('invoice', __name__)
+
 
 @invoice_bp.route('/api/invoices')
 def get_invoices():
     """Get all invoices"""
     try:
         # Use direct SQLite query for now
-        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.dirname(__file__))), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -67,12 +71,13 @@ def get_invoices():
             'error': str(e)
         }), 500
 
+
 @invoice_bp.route('/api/invoices', methods=['POST'])
 def create_invoice():
     """Create a new invoice"""
     try:
         data = request.get_json()
-        
+
         invoice = Invoice(
             invoice_number=data.get('invoice_number'),
             job_id=data.get('job_id'),
@@ -86,21 +91,22 @@ def create_invoice():
             payment_method=data.get('payment_method'),
             notes=data.get('notes')
         )
-        
+
         from models import db
         db.session.add(invoice)
         db.session.commit()
-        
+
         return jsonify({
             'success': True,
             'invoice': invoice.to_dict()
         }), 201
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
 
 @invoice_bp.route('/api/invoices/<int:invoice_id>', methods=['PUT'])
 def update_invoice(invoice_id):
@@ -108,7 +114,7 @@ def update_invoice(invoice_id):
     try:
         invoice = Invoice.query.get_or_404(invoice_id)
         data = request.get_json()
-        
+
         # Update fields if provided
         if 'invoice_number' in data:
             invoice.invoice_number = data['invoice_number']
@@ -134,36 +140,37 @@ def update_invoice(invoice_id):
             invoice.payment_method = data['payment_method']
         if 'notes' in data:
             invoice.notes = data['notes']
-        
+
         from models import db
         db.session.commit()
-        
+
         return jsonify({
             'success': True,
             'invoice': invoice.to_dict()
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
 
+
 @invoice_bp.route('/api/invoices/<int:invoice_id>', methods=['DELETE'])
 def delete_invoice(invoice_id):
     """Delete an invoice"""
     try:
         invoice = Invoice.query.get_or_404(invoice_id)
-        
+
         from models import db
         db.session.delete(invoice)
         db.session.commit()
-        
+
         return jsonify({
             'success': True,
             'message': 'Invoice deleted successfully'
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
