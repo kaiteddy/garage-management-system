@@ -7,28 +7,6 @@ name = "javascript"
   [analyzers.meta]
   plugins = ["react"]
   environment = ["nodejs", "browser"]
-  style_guide = "standard"
-
-  # Enable specific checks for garage management system
-  [analyzers.meta.checks]
-  # Security checks
-  "JS-0001" = true  # Avoid eval()
-  "JS-0002" = true  # Avoid innerHTML with user data (XSS prevention)
-  "JS-0003" = true  # Use === instead of ==
-  "JS-0004" = true  # Avoid hardcoded credentials
-  "JS-0005" = true  # Use const/let instead of var
-
-  # Code quality checks
-  "JS-0101" = true  # Remove unused variables
-  "JS-0102" = true  # Remove unreachable code
-  "JS-0103" = true  # Avoid empty catch blocks
-  "JS-0104" = true  # Remove console.log statements
-  "JS-0105" = true  # Avoid callback hell
-
-  # Performance checks
-  "JS-0201" = true  # Efficient array operations
-  "JS-0202" = true  # Avoid inefficient DOM manipulation
-  "JS-0203" = true  # Use proper event handling
 
 # Python Analyzer Configuration
 [[analyzers]]
@@ -36,28 +14,6 @@ name = "python"
 
   [analyzers.meta]
   runtime_version = "3.x.x"
-
-  # Enable comprehensive Python checks
-  [analyzers.meta.checks]
-  # Security checks
-  "PY-S001" = true  # SQL injection prevention
-  "PY-S002" = true  # Hardcoded credentials detection
-  "PY-S003" = true  # Insecure random number generation
-  "PY-S004" = true  # Shell injection prevention
-
-  # Code quality checks
-  "PY-E001" = true  # Unused imports
-  "PY-E002" = true  # Unused variables
-  "PY-E003" = true  # Bare except clauses
-  "PY-E004" = true  # Mutable default arguments
-  "PY-E005" = true  # Resource leaks (unclosed files)
-
-  # Best practices
-  "PY-W001" = true  # Use of global variables
-  "PY-W002" = true  # Code duplication
-  "PY-W003" = true  # Inefficient string operations
-  "PY-W004" = true  # Poor exception handling
-  "PY-W005" = true  # Magic numbers
 
 # Test Coverage Analyzer
 [[analyzers]]
@@ -70,14 +26,6 @@ name = "test-coverage"
 [[analyzers]]
 name = "secrets"
 
-# Shell Script Analyzer (for deployment scripts)
-[[analyzers]]
-name = "shell"
-
-# Docker Analyzer (for Dockerfile)
-[[analyzers]]
-name = "docker"
-
 # Configuration for transformers (auto-fixes)
 [[transformers]]
 name = "autopep8"
@@ -89,7 +37,6 @@ name = "isort"
 name = "prettier"
 
   [transformers.meta]
-  # Prettier configuration for JavaScript/HTML/CSS
   print_width = 100
   tab_width = 2
   use_tabs = false
@@ -117,26 +64,3 @@ name = "prettier"
 - "tests/fixtures/**"
 - "*.log"
 - "*.db"
-
-# Exclude specific test files (our intentional bad code)
-- "src/test_deepsource_issues.py"
-- "src/static/js/test-deepsource-issues.js"
-
-# Garage Management System Specific Configuration
-[garage_management_config]
-# Custom rules for garage management domain
-focus_areas = [
-  "security",           # Critical for customer data protection
-  "performance",        # Important for responsive UI
-  "maintainability",    # Essential for long-term development
-  "reliability"         # Critical for business operations
-]
-
-# Priority issues for automotive/garage domain
-priority_checks = [
-  "hardcoded_credentials",  # Customer data security
-  "sql_injection",          # Database security
-  "xss_prevention",         # Web application security
-  "resource_leaks",         # Server stability
-  "error_handling"          # User experience
-]
