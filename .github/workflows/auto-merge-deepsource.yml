@@ -138,15 +138,17 @@ jobs:
             return result;
 
       - name: Log fix attempt
+        env:
+          VALIDATION_RESULT: ${{ steps.validate.outputs.result }}
         run: |
           python3 -c "
           import json
           import os
           from datetime import datetime
-          
+
           # Create logs directory if it doesn't exist
           os.makedirs('logs', exist_ok=True)
-          
+
           # Load existing log
           log_file = 'logs/deepsource_fixes.json'
           try:
@@ -154,29 +156,29 @@ jobs:
                   logs = json.load(f)
           except:
               logs = []
-          
+
           # Add new log entry
           log_entry = {
               'timestamp': datetime.now().isoformat(),
               'pr_number': '${{ steps.validate.outputs.pr_number }}' or 'unknown',
               'pr_title': '${{ steps.validate.outputs.pr_title }}' or 'unknown',
               'pr_url': '${{ steps.validate.outputs.pr_url }}' or 'unknown',
-              'validation_result': '''${{ steps.validate.outputs.result }}''',
+              'validation_result': os.environ.get('VALIDATION_RESULT', 'unknown'),
               'action': 'auto_merge_attempt',
               'actor': '${{ github.actor }}',
               'event_type': '${{ github.event_name }}',
               'commit_sha': '${{ github.sha }}'
           }
-          
+
           logs.append(log_entry)
-          
+
           # Keep only last 500 entries
           if len(logs) > 500:
               logs = logs[-500:]
-          
+
           with open(log_file, 'w') as f:
               json.dump(logs, f, indent=2)
-          
+
           print(f'Logged fix attempt for PR #{log_entry[\"pr_number\"]}')
           "
 
