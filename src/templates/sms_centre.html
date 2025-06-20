@@ -1,347 +1,389 @@
-{% extends "layouts/modern.html" %}
-
-{% block title %}SMS Centre - GarageManager Pro{% endblock %}
-
-{% block content %}
+{% extends "layouts/modern.html" %} {% block title %}SMS Centre - GarageManager
+Pro{% endblock %} {% block content %}
 <div class="space-y-6">
-    <!-- Header -->
-    <div class="flex items-center justify-between">
-        <div>
-            <h1 class="text-3xl font-bold text-gray-900">SMS Centre</h1>
-            <p class="text-gray-600 mt-1">Send automated MOT reminders via SMS to customers</p>
-        </div>
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900">SMS Centre</h1>
+      <p class="text-gray-600 mt-1">
+        Send automated MOT reminders via SMS to customers
+      </p>
+    </div>
+    <div class="flex items-center gap-3">
+      <button id="refreshData" class="btn btn-secondary">
+        <i class="fas fa-sync-alt mr-2"></i>
+        Refresh Data
+      </button>
+      <button id="sendBulkSMS" class="btn btn-primary" disabled>
+        <i class="fas fa-paper-plane mr-2"></i>
+        Send Selected
+      </button>
+    </div>
+  </div>
+
+  <!-- SMS Service Status -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="fas fa-cog mr-2"></i>
+        SMS Service Status
+      </h3>
+    </div>
+    <div class="card-body">
+      <div id="smsStatus" class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="flex items-center gap-3">
-            <button id="refreshData" class="btn btn-secondary">
-                <i class="fas fa-sync-alt mr-2"></i>
-                Refresh Data
-            </button>
-            <button id="sendBulkSMS" class="btn btn-primary" disabled>
-                <i class="fas fa-paper-plane mr-2"></i>
-                Send Selected
-            </button>
+          <div
+            id="statusIndicator"
+            class="w-3 h-3 rounded-full bg-gray-400"
+          ></div>
+          <div>
+            <span class="font-medium">Status:</span>
+            <span id="statusText" class="ml-2 text-gray-600">Loading...</span>
+          </div>
         </div>
+        <div>
+          <span class="font-medium">From Number:</span>
+          <span id="fromNumber" class="ml-2 text-gray-600"
+            >+44 7488 896449</span
+          >
+        </div>
+        <div>
+          <span class="font-medium">Business:</span>
+          <span class="ml-2 text-gray-600">Eli Motors</span>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- SMS Service Status -->
+  <!-- SMS Statistics -->
+  <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
     <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">
-                <i class="fas fa-cog mr-2"></i>
-                SMS Service Status
-            </h3>
+      <div class="card-body text-center">
+        <div class="text-2xl font-bold text-gray-900 mb-1" id="totalVehicles">
+          -
         </div>
-        <div class="card-body">
-            <div id="smsStatus" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="flex items-center gap-3">
-                    <div id="statusIndicator" class="w-3 h-3 rounded-full bg-gray-400"></div>
-                    <div>
-                        <span class="font-medium">Status:</span>
-                        <span id="statusText" class="ml-2 text-gray-600">Loading...</span>
-                    </div>
-                </div>
-                <div>
-                    <span class="font-medium">From Number:</span>
-                    <span id="fromNumber" class="ml-2 text-gray-600">+44 7488 896449</span>
-                </div>
-                <div>
-                    <span class="font-medium">Business:</span>
-                    <span class="ml-2 text-gray-600">Eli Motors</span>
-                </div>
-            </div>
-        </div>
+        <div class="text-sm text-gray-600">Total Vehicles</div>
+      </div>
     </div>
-
-    <!-- SMS Statistics -->
-    <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
-        <div class="card">
-            <div class="card-body text-center">
-                <div class="text-2xl font-bold text-gray-900 mb-1" id="totalVehicles">-</div>
-                <div class="text-sm text-gray-600">Total Vehicles</div>
-            </div>
+    <div class="card bg-green-50 border-green-200">
+      <div class="card-body text-center">
+        <div class="text-2xl font-bold text-green-600 mb-1" id="withMobile">
+          -
         </div>
-        <div class="card bg-green-50 border-green-200">
-            <div class="card-body text-center">
-                <div class="text-2xl font-bold text-green-600 mb-1" id="withMobile">-</div>
-                <div class="text-sm text-green-600">With Mobile</div>
-            </div>
-        </div>
-        <div class="card bg-yellow-50 border-yellow-200">
-            <div class="card-body text-center">
-                <div class="text-2xl font-bold text-yellow-600 mb-1" id="withoutMobile">-</div>
-                <div class="text-sm text-yellow-600">No Mobile</div>
-            </div>
-        </div>
-        <div class="card bg-red-50 border-red-200">
-            <div class="card-body text-center">
-                <div class="text-2xl font-bold text-red-600 mb-1" id="urgentMobile">-</div>
-                <div class="text-sm text-red-600">Urgent + Mobile</div>
-            </div>
-        </div>
-        <div class="card bg-blue-50 border-blue-200">
-            <div class="card-body text-center">
-                <div class="text-2xl font-bold text-blue-600 mb-1" id="dueSoonMobile">-</div>
-                <div class="text-sm text-blue-600">Due Soon + Mobile</div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body text-center">
-                <div class="text-2xl font-bold text-gray-900 mb-1" id="coverage">-</div>
-                <div class="text-sm text-gray-600">Coverage</div>
-            </div>
-        </div>
+        <div class="text-sm text-green-600">With Mobile</div>
+      </div>
     </div>
-
-    <!-- Quick Actions -->
+    <div class="card bg-yellow-50 border-yellow-200">
+      <div class="card-body text-center">
+        <div class="text-2xl font-bold text-yellow-600 mb-1" id="withoutMobile">
+          -
+        </div>
+        <div class="text-sm text-yellow-600">No Mobile</div>
+      </div>
+    </div>
+    <div class="card bg-red-50 border-red-200">
+      <div class="card-body text-center">
+        <div class="text-2xl font-bold text-red-600 mb-1" id="urgentMobile">
+          -
+        </div>
+        <div class="text-sm text-red-600">Urgent + Mobile</div>
+      </div>
+    </div>
+    <div class="card bg-blue-50 border-blue-200">
+      <div class="card-body text-center">
+        <div class="text-2xl font-bold text-blue-600 mb-1" id="dueSoonMobile">
+          -
+        </div>
+        <div class="text-sm text-blue-600">Due Soon + Mobile</div>
+      </div>
+    </div>
     <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">
-                <i class="fas fa-bolt mr-2"></i>
-                Quick Actions
-            </h3>
-        </div>
-        <div class="card-body">
-            <div class="flex flex-wrap gap-3">
-                <button id="selectAll" class="btn btn-secondary">
-                    <i class="fas fa-check-square mr-2"></i>
-                    Select All
-                </button>
-                <button id="selectUrgent" class="btn btn-warning">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    Select Urgent Only
-                </button>
-                <button id="selectNone" class="btn btn-ghost">
-                    <i class="fas fa-square mr-2"></i>
-                    Clear Selection
-                </button>
-                <a href="{{ url_for('mot_dashboard') }}" class="btn btn-ghost">
-                    <i class="fas fa-tachometer-alt mr-2"></i>
-                    MOT Dashboard
-                </a>
-            </div>
-        </div>
+      <div class="card-body text-center">
+        <div class="text-2xl font-bold text-gray-900 mb-1" id="coverage">-</div>
+        <div class="text-sm text-gray-600">Coverage</div>
+      </div>
     </div>
+  </div>
 
-    <!-- Vehicles Table -->
-    <div class="card">
-        <div class="card-header">
-            <div class="flex items-center justify-between">
-                <h3 class="card-title">
-                    <i class="fas fa-mobile-alt mr-2"></i>
-                    Vehicles with Mobile Numbers
-                    <span id="vehicleCount" class="ml-2 text-sm font-normal text-gray-500">(Loading...)</span>
-                </h3>
-                <div class="flex items-center gap-3">
-                    <div class="flex items-center gap-2">
-                        <label for="statusFilter" class="text-sm font-medium text-gray-700">Filter:</label>
-                        <select id="statusFilter" class="form-select form-select-sm">
-                            <option value="all">All Vehicles</option>
-                            <option value="expired">Expired Only</option>
-                            <option value="critical">Critical Only</option>
-                            <option value="due_soon">Due Soon</option>
-                            <option value="valid">Valid Only</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-body p-0">
-            <div class="overflow-x-auto">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th class="w-12">
-                                <input type="checkbox" id="selectAllCheckbox" class="form-checkbox">
-                            </th>
-                            <th>Status</th>
-                            <th>Registration</th>
-                            <th>Vehicle</th>
-                            <th>Customer</th>
-                            <th>Mobile</th>
-                            <th>MOT Expiry</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="vehiclesTableBody">
-                        <tr>
-                            <td colspan="8" class="text-center py-8 text-gray-500">
-                                <i class="fas fa-spinner fa-spin mr-2"></i>
-                                Loading vehicles...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <!-- Quick Actions -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="fas fa-bolt mr-2"></i>
+        Quick Actions
+      </h3>
     </div>
+    <div class="card-body">
+      <div class="flex flex-wrap gap-3">
+        <button id="selectAll" class="btn btn-secondary">
+          <i class="fas fa-check-square mr-2"></i>
+          Select All
+        </button>
+        <button id="selectUrgent" class="btn btn-warning">
+          <i class="fas fa-exclamation-triangle mr-2"></i>
+          Select Urgent Only
+        </button>
+        <button id="selectNone" class="btn btn-ghost">
+          <i class="fas fa-square mr-2"></i>
+          Clear Selection
+        </button>
+        <a href="{{ url_for('mot_dashboard') }}" class="btn btn-ghost">
+          <i class="fas fa-tachometer-alt mr-2"></i>
+          MOT Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vehicles Table -->
+  <div class="card">
+    <div class="card-header">
+      <div class="flex items-center justify-between">
+        <h3 class="card-title">
+          <i class="fas fa-mobile-alt mr-2"></i>
+          Vehicles with Mobile Numbers
+          <span id="vehicleCount" class="ml-2 text-sm font-normal text-gray-500"
+            >(Loading...)</span
+          >
+        </h3>
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2">
+            <label for="statusFilter" class="text-sm font-medium text-gray-700"
+              >Filter:</label
+            >
+            <select id="statusFilter" class="form-select form-select-sm">
+              <option value="all">All Vehicles</option>
+              <option value="expired">Expired Only</option>
+              <option value="critical">Critical Only</option>
+              <option value="due_soon">Due Soon</option>
+              <option value="valid">Valid Only</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body p-0">
+      <div class="overflow-x-auto">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="w-12">
+                <input
+                  type="checkbox"
+                  id="selectAllCheckbox"
+                  class="form-checkbox"
+                />
+              </th>
+              <th>Status</th>
+              <th>Registration</th>
+              <th>Vehicle</th>
+              <th>Customer</th>
+              <th>Mobile</th>
+              <th>MOT Expiry</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="vehiclesTableBody">
+            <tr>
+              <td colspan="8" class="text-center py-8 text-gray-500">
+                <i class="fas fa-spinner fa-spin mr-2"></i>
+                Loading vehicles...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Bulk SMS Confirmation Modal -->
 <div id="bulkSMSModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title">Confirm Bulk SMS</h3>
-            <button class="modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-            <p class="mb-4">Are you sure you want to send SMS reminders to <span id="selectedCount">0</span> selected vehicle(s)?</p>
-            <div id="selectedVehiclesList" class="max-h-48 overflow-y-auto bg-gray-50 rounded-lg p-3 mb-4">
-                <!-- Selected vehicles will be listed here -->
-            </div>
-            <div class="flex justify-end gap-3">
-                <button id="cancelBulkSMS" class="btn btn-secondary">Cancel</button>
-                <button id="confirmBulkSMS" class="btn btn-primary">
-                    <i class="fas fa-paper-plane mr-2"></i>
-                    Send SMS
-                </button>
-            </div>
-        </div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title">Confirm Bulk SMS</h3>
+      <button class="modal-close">&times;</button>
     </div>
+    <div class="modal-body">
+      <p class="mb-4">
+        Are you sure you want to send SMS reminders to
+        <span id="selectedCount">0</span> selected vehicle(s)?
+      </p>
+      <div
+        id="selectedVehiclesList"
+        class="max-h-48 overflow-y-auto bg-gray-50 rounded-lg p-3 mb-4"
+      >
+        <!-- Selected vehicles will be listed here -->
+      </div>
+      <div class="flex justify-end gap-3">
+        <button id="cancelBulkSMS" class="btn btn-secondary">Cancel</button>
+        <button id="confirmBulkSMS" class="btn btn-primary">
+          <i class="fas fa-paper-plane mr-2"></i>
+          Send SMS
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <style>
-.status-badge {
+  .status-badge {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
-}
+  }
 
-.status-expired {
+  .status-expired {
     @apply bg-red-100 text-red-800;
-}
+  }
 
-.status-critical {
+  .status-critical {
     @apply bg-yellow-100 text-yellow-800;
-}
+  }
 
-.status-due-soon {
+  .status-due-soon {
     @apply bg-blue-100 text-blue-800;
-}
+  }
 
-.status-valid {
+  .status-valid {
     @apply bg-green-100 text-green-800;
-}
+  }
 </style>
-{% endblock %}
-
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script>
-// SMS Centre functionality integrated into main application
-class SMSCentreIntegrated {
+  // SMS Centre functionality integrated into main application
+  class SMSCentreIntegrated {
     constructor() {
-        this.vehicles = [];
-        this.selectedVehicles = new Set();
-        this.isLoading = false;
+      this.vehicles = [];
+      this.selectedVehicles = new Set();
+      this.isLoading = false;
     }
 
     init() {
-        console.log('🚀 Initializing SMS Centre...');
-        this.bindEvents();
-        this.loadData();
+      console.log("🚀 Initializing SMS Centre...");
+      this.bindEvents();
+      this.loadData();
     }
 
     bindEvents() {
-        // Refresh data
-        document.getElementById('refreshData')?.addEventListener('click', () => {
-            this.loadData();
+      // Refresh data
+      document.getElementById("refreshData")?.addEventListener("click", () => {
+        this.loadData();
+      });
+
+      // Bulk SMS
+      document.getElementById("sendBulkSMS")?.addEventListener("click", () => {
+        this.showBulkSMSModal();
+      });
+
+      // Quick actions
+      document.getElementById("selectAll")?.addEventListener("click", () => {
+        this.selectAllVehicles();
+      });
+
+      document.getElementById("selectUrgent")?.addEventListener("click", () => {
+        this.selectUrgentVehicles();
+      });
+
+      document.getElementById("selectNone")?.addEventListener("click", () => {
+        this.clearSelection();
+      });
+
+      // Filter
+      document
+        .getElementById("statusFilter")
+        ?.addEventListener("change", (e) => {
+          this.filterVehicles(e.target.value);
         });
 
-        // Bulk SMS
-        document.getElementById('sendBulkSMS')?.addEventListener('click', () => {
-            this.showBulkSMSModal();
+      // Modal events
+      document
+        .querySelector("#bulkSMSModal .modal-close")
+        ?.addEventListener("click", () => {
+          this.hideModal("bulkSMSModal");
         });
 
-        // Quick actions
-        document.getElementById('selectAll')?.addEventListener('click', () => {
-            this.selectAllVehicles();
+      document
+        .getElementById("cancelBulkSMS")
+        ?.addEventListener("click", () => {
+          this.hideModal("bulkSMSModal");
         });
 
-        document.getElementById('selectUrgent')?.addEventListener('click', () => {
-            this.selectUrgentVehicles();
-        });
-
-        document.getElementById('selectNone')?.addEventListener('click', () => {
-            this.clearSelection();
-        });
-
-        // Filter
-        document.getElementById('statusFilter')?.addEventListener('change', (e) => {
-            this.filterVehicles(e.target.value);
-        });
-
-        // Modal events
-        document.querySelector('#bulkSMSModal .modal-close')?.addEventListener('click', () => {
-            this.hideModal('bulkSMSModal');
-        });
-
-        document.getElementById('cancelBulkSMS')?.addEventListener('click', () => {
-            this.hideModal('bulkSMSModal');
-        });
-
-        document.getElementById('confirmBulkSMS')?.addEventListener('click', () => {
-            this.sendBulkSMS();
+      document
+        .getElementById("confirmBulkSMS")
+        ?.addEventListener("click", () => {
+          this.sendBulkSMS();
         });
     }
 
     async loadData() {
-        if (this.isLoading) return;
-        
-        this.isLoading = true;
-        this.showLoading();
+      if (this.isLoading) return;
 
-        try {
-            const response = await fetch('/api/mot/vehicles');
-            
-            if (response.ok) {
-                const data = await response.json();
-                this.vehicles = data.vehicles || [];
-                this.updateStatistics();
-                this.renderVehiclesTable();
-            }
+      this.isLoading = true;
+      this.showLoading();
 
-        } catch (error) {
-            console.error('Error loading SMS Centre data:', error);
-        } finally {
-            this.isLoading = false;
+      try {
+        const response = await fetch("/api/mot/vehicles");
+
+        if (response.ok) {
+          const data = await response.json();
+          this.vehicles = data.vehicles || [];
+          this.updateStatistics();
+          this.renderVehiclesTable();
         }
+      } catch (error) {
+        console.error("Error loading SMS Centre data:", error);
+      } finally {
+        this.isLoading = false;
+      }
     }
 
     updateStatistics() {
-        const vehiclesWithMobile = this.vehicles.filter(v => v.mobile_number);
-        const urgentWithMobile = vehiclesWithMobile.filter(v => 
-            v.is_expired || (v.days_until_expiry !== null && v.days_until_expiry <= 7)
-        );
-        const dueSoonWithMobile = vehiclesWithMobile.filter(v => 
-            !v.is_expired && v.days_until_expiry > 7 && v.days_until_expiry <= 30
-        );
+      const vehiclesWithMobile = this.vehicles.filter((v) => v.mobile_number);
+      const urgentWithMobile = vehiclesWithMobile.filter(
+        (v) =>
+          v.is_expired ||
+          (v.days_until_expiry !== null && v.days_until_expiry <= 7),
+      );
+      const dueSoonWithMobile = vehiclesWithMobile.filter(
+        (v) =>
+          !v.is_expired && v.days_until_expiry > 7 && v.days_until_expiry <= 30,
+      );
 
-        const coverage = this.vehicles.length > 0 
-            ? Math.round((vehiclesWithMobile.length / this.vehicles.length) * 100)
-            : 0;
+      const coverage =
+        this.vehicles.length > 0
+          ? Math.round((vehiclesWithMobile.length / this.vehicles.length) * 100)
+          : 0;
 
-        // Update statistics
-        document.getElementById('totalVehicles').textContent = this.vehicles.length;
-        document.getElementById('withMobile').textContent = vehiclesWithMobile.length;
-        document.getElementById('withoutMobile').textContent = this.vehicles.length - vehiclesWithMobile.length;
-        document.getElementById('urgentMobile').textContent = urgentWithMobile.length;
-        document.getElementById('dueSoonMobile').textContent = dueSoonWithMobile.length;
-        document.getElementById('coverage').textContent = `${coverage}%`;
+      // Update statistics
+      document.getElementById("totalVehicles").textContent =
+        this.vehicles.length;
+      document.getElementById("withMobile").textContent =
+        vehiclesWithMobile.length;
+      document.getElementById("withoutMobile").textContent =
+        this.vehicles.length - vehiclesWithMobile.length;
+      document.getElementById("urgentMobile").textContent =
+        urgentWithMobile.length;
+      document.getElementById("dueSoonMobile").textContent =
+        dueSoonWithMobile.length;
+      document.getElementById("coverage").textContent = `${coverage}%`;
 
-        // Update status
-        const statusIndicator = document.getElementById('statusIndicator');
-        const statusText = document.getElementById('statusText');
-        
-        statusIndicator.className = 'w-3 h-3 rounded-full bg-green-500';
-        statusText.textContent = 'Configured & Ready';
-        statusText.className = 'ml-2 text-green-600 font-medium';
+      // Update status
+      const statusIndicator = document.getElementById("statusIndicator");
+      const statusText = document.getElementById("statusText");
+
+      statusIndicator.className = "w-3 h-3 rounded-full bg-green-500";
+      statusText.textContent = "Configured & Ready";
+      statusText.className = "ml-2 text-green-600 font-medium";
     }
 
     renderVehiclesTable() {
-        const tbody = document.getElementById('vehiclesTableBody');
-        const vehicleCount = document.getElementById('vehicleCount');
-        
-        const vehiclesWithMobile = this.vehicles.filter(v => v.mobile_number);
-        vehicleCount.textContent = `(${vehiclesWithMobile.length} vehicles)`;
+      const tbody = document.getElementById("vehiclesTableBody");
+      const vehicleCount = document.getElementById("vehicleCount");
 
-        if (vehiclesWithMobile.length === 0) {
-            tbody.innerHTML = `
+      const vehiclesWithMobile = this.vehicles.filter((v) => v.mobile_number);
+      vehicleCount.textContent = `(${vehiclesWithMobile.length} vehicles)`;
+
+      if (vehiclesWithMobile.length === 0) {
+        tbody.innerHTML = `
                 <tr>
                     <td colspan="8" class="text-center py-8 text-gray-500">
                         <i class="fas fa-mobile-alt mr-2"></i>
@@ -349,31 +391,33 @@ class SMSCentreIntegrated {
                     </td>
                 </tr>
             `;
-            return;
-        }
+        return;
+      }
 
-        // Sort by urgency
-        const sortedVehicles = vehiclesWithMobile.sort((a, b) => {
-            if (a.is_expired && !b.is_expired) return -1;
-            if (!a.is_expired && b.is_expired) return 1;
-            return (a.days_until_expiry || 999) - (b.days_until_expiry || 999);
-        });
+      // Sort by urgency
+      const sortedVehicles = vehiclesWithMobile.sort((a, b) => {
+        if (a.is_expired && !b.is_expired) return -1;
+        if (!a.is_expired && b.is_expired) return 1;
+        return (a.days_until_expiry || 999) - (b.days_until_expiry || 999);
+      });
 
-        tbody.innerHTML = sortedVehicles.map(vehicle => this.renderVehicleRow(vehicle)).join('');
-        this.bindVehicleRowEvents();
+      tbody.innerHTML = sortedVehicles
+        .map((vehicle) => this.renderVehicleRow(vehicle))
+        .join("");
+      this.bindVehicleRowEvents();
     }
 
     renderVehicleRow(vehicle) {
-        const statusInfo = this.getVehicleStatus(vehicle);
-        const isSelected = this.selectedVehicles.has(vehicle.registration);
-        
-        return `
+      const statusInfo = this.getVehicleStatus(vehicle);
+      const isSelected = this.selectedVehicles.has(vehicle.registration);
+
+      return `
             <tr class="vehicle-row ${statusInfo.rowClass}" data-registration="${vehicle.registration}">
                 <td>
                     <input type="checkbox" 
                            class="form-checkbox vehicle-checkbox" 
                            data-registration="${vehicle.registration}"
-                           ${isSelected ? 'checked' : ''}>
+                           ${isSelected ? "checked" : ""}>
                 </td>
                 <td>
                     <span class="status-badge ${statusInfo.badgeClass}">
@@ -382,9 +426,10 @@ class SMSCentreIntegrated {
                     </span>
                 </td>
                 <td class="font-mono font-medium">${vehicle.registration}</td>
-                <td>${vehicle.make || 'Unknown'} ${vehicle.model || ''}</td>
+                <td>${vehicle.make || "Unknown"} ${vehicle.model || ""}</td>
                 <td>
-                    ${vehicle.customer_name 
+                    ${
+                      vehicle.customer_name
                         ? `<div class="flex items-center"><i class="fas fa-user text-gray-400 mr-2"></i>${vehicle.customer_name}</div>`
                         : '<span class="text-gray-400 italic">No customer data</span>'
                     }
@@ -413,266 +458,287 @@ class SMSCentreIntegrated {
     }
 
     getVehicleStatus(vehicle) {
-        if (vehicle.is_expired) {
-            return {
-                text: 'EXPIRED',
-                icon: 'fas fa-exclamation-triangle',
-                badgeClass: 'status-expired',
-                rowClass: 'bg-red-50',
-                dateClass: 'text-red-600 font-medium'
-            };
-        } else if (vehicle.days_until_expiry <= 7) {
-            return {
-                text: 'CRITICAL',
-                icon: 'fas fa-clock',
-                badgeClass: 'status-critical',
-                rowClass: 'bg-yellow-50',
-                dateClass: 'text-yellow-600 font-medium'
-            };
-        } else if (vehicle.days_until_expiry <= 30) {
-            return {
-                text: 'DUE SOON',
-                icon: 'fas fa-exclamation',
-                badgeClass: 'status-due-soon',
-                rowClass: '',
-                dateClass: 'text-blue-600'
-            };
-        } else {
-            return {
-                text: 'VALID',
-                icon: 'fas fa-check',
-                badgeClass: 'status-valid',
-                rowClass: '',
-                dateClass: 'text-gray-600'
-            };
-        }
+      if (vehicle.is_expired) {
+        return {
+          text: "EXPIRED",
+          icon: "fas fa-exclamation-triangle",
+          badgeClass: "status-expired",
+          rowClass: "bg-red-50",
+          dateClass: "text-red-600 font-medium",
+        };
+      } else if (vehicle.days_until_expiry <= 7) {
+        return {
+          text: "CRITICAL",
+          icon: "fas fa-clock",
+          badgeClass: "status-critical",
+          rowClass: "bg-yellow-50",
+          dateClass: "text-yellow-600 font-medium",
+        };
+      } else if (vehicle.days_until_expiry <= 30) {
+        return {
+          text: "DUE SOON",
+          icon: "fas fa-exclamation",
+          badgeClass: "status-due-soon",
+          rowClass: "",
+          dateClass: "text-blue-600",
+        };
+      } else {
+        return {
+          text: "VALID",
+          icon: "fas fa-check",
+          badgeClass: "status-valid",
+          rowClass: "",
+          dateClass: "text-gray-600",
+        };
+      }
     }
 
     formatDate(dateString) {
-        if (!dateString) return 'Unknown';
-        try {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-GB');
-        } catch {
-            return dateString;
-        }
+      if (!dateString) return "Unknown";
+      try {
+        const date = new Date(dateString);
+        return date.toLocaleDateString("en-GB");
+      } catch {
+        return dateString;
+      }
     }
 
     formatDaysUntilExpiry(vehicle) {
-        if (vehicle.is_expired) {
-            const daysAgo = Math.abs(vehicle.days_until_expiry || 0);
-            return `<br><small>(${daysAgo} days ago)</small>`;
-        } else if (vehicle.days_until_expiry !== null) {
-            return `<br><small>(${vehicle.days_until_expiry} days)</small>`;
-        }
-        return '';
+      if (vehicle.is_expired) {
+        const daysAgo = Math.abs(vehicle.days_until_expiry || 0);
+        return `<br><small>(${daysAgo} days ago)</small>`;
+      } else if (vehicle.days_until_expiry !== null) {
+        return `<br><small>(${vehicle.days_until_expiry} days)</small>`;
+      }
+      return "";
     }
 
     bindVehicleRowEvents() {
-        // Vehicle checkboxes
-        document.querySelectorAll('.vehicle-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', (e) => {
-                const registration = e.target.dataset.registration;
-                if (e.target.checked) {
-                    this.selectedVehicles.add(registration);
-                } else {
-                    this.selectedVehicles.delete(registration);
-                }
-                this.updateSelectionUI();
-            });
+      // Vehicle checkboxes
+      document.querySelectorAll(".vehicle-checkbox").forEach((checkbox) => {
+        checkbox.addEventListener("change", (e) => {
+          const registration = e.target.dataset.registration;
+          if (e.target.checked) {
+            this.selectedVehicles.add(registration);
+          } else {
+            this.selectedVehicles.delete(registration);
+          }
+          this.updateSelectionUI();
         });
+      });
 
-        // Send SMS buttons
-        document.querySelectorAll('.send-sms-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const registration = e.target.closest('button').dataset.registration;
-                this.sendSingleSMS(registration);
-            });
+      // Send SMS buttons
+      document.querySelectorAll(".send-sms-btn").forEach((button) => {
+        button.addEventListener("click", (e) => {
+          const registration = e.target.closest("button").dataset.registration;
+          this.sendSingleSMS(registration);
         });
+      });
     }
 
     updateSelectionUI() {
-        const sendBulkBtn = document.getElementById('sendBulkSMS');
-        sendBulkBtn.disabled = this.selectedVehicles.size === 0;
+      const sendBulkBtn = document.getElementById("sendBulkSMS");
+      sendBulkBtn.disabled = this.selectedVehicles.size === 0;
     }
 
     selectAllVehicles() {
-        document.querySelectorAll('.vehicle-checkbox').forEach(checkbox => {
-            checkbox.checked = true;
-            this.selectedVehicles.add(checkbox.dataset.registration);
-        });
-        this.updateSelectionUI();
+      document.querySelectorAll(".vehicle-checkbox").forEach((checkbox) => {
+        checkbox.checked = true;
+        this.selectedVehicles.add(checkbox.dataset.registration);
+      });
+      this.updateSelectionUI();
     }
 
     selectUrgentVehicles() {
-        this.clearSelection();
-        document.querySelectorAll('.vehicle-checkbox').forEach(checkbox => {
-            const registration = checkbox.dataset.registration;
-            const vehicle = this.vehicles.find(v => v.registration === registration);
-            if (vehicle && (vehicle.is_expired || (vehicle.days_until_expiry !== null && vehicle.days_until_expiry <= 7))) {
-                checkbox.checked = true;
-                this.selectedVehicles.add(registration);
-            }
-        });
-        this.updateSelectionUI();
+      this.clearSelection();
+      document.querySelectorAll(".vehicle-checkbox").forEach((checkbox) => {
+        const registration = checkbox.dataset.registration;
+        const vehicle = this.vehicles.find(
+          (v) => v.registration === registration,
+        );
+        if (
+          vehicle &&
+          (vehicle.is_expired ||
+            (vehicle.days_until_expiry !== null &&
+              vehicle.days_until_expiry <= 7))
+        ) {
+          checkbox.checked = true;
+          this.selectedVehicles.add(registration);
+        }
+      });
+      this.updateSelectionUI();
     }
 
     clearSelection() {
-        document.querySelectorAll('.vehicle-checkbox').forEach(checkbox => {
-            checkbox.checked = false;
-        });
-        this.selectedVehicles.clear();
-        this.updateSelectionUI();
+      document.querySelectorAll(".vehicle-checkbox").forEach((checkbox) => {
+        checkbox.checked = false;
+      });
+      this.selectedVehicles.clear();
+      this.updateSelectionUI();
     }
 
     filterVehicles(status) {
-        const rows = document.querySelectorAll('.vehicle-row');
-        rows.forEach(row => {
-            const registration = row.dataset.registration;
-            const vehicle = this.vehicles.find(v => v.registration === registration);
-            
-            if (!vehicle) {
-                row.style.display = 'none';
-                return;
-            }
-            
-            let shouldShow = true;
-            switch (status) {
-                case 'expired':
-                    shouldShow = vehicle.is_expired;
-                    break;
-                case 'critical':
-                    shouldShow = !vehicle.is_expired && vehicle.days_until_expiry <= 7;
-                    break;
-                case 'due_soon':
-                    shouldShow = !vehicle.is_expired && vehicle.days_until_expiry > 7 && vehicle.days_until_expiry <= 30;
-                    break;
-                case 'valid':
-                    shouldShow = !vehicle.is_expired && vehicle.days_until_expiry > 30;
-                    break;
-                default:
-                    shouldShow = true;
-            }
-            
-            row.style.display = shouldShow ? '' : 'none';
-        });
+      const rows = document.querySelectorAll(".vehicle-row");
+      rows.forEach((row) => {
+        const registration = row.dataset.registration;
+        const vehicle = this.vehicles.find(
+          (v) => v.registration === registration,
+        );
+
+        if (!vehicle) {
+          row.style.display = "none";
+          return;
+        }
+
+        let shouldShow = true;
+        switch (status) {
+          case "expired":
+            shouldShow = vehicle.is_expired;
+            break;
+          case "critical":
+            shouldShow = !vehicle.is_expired && vehicle.days_until_expiry <= 7;
+            break;
+          case "due_soon":
+            shouldShow =
+              !vehicle.is_expired &&
+              vehicle.days_until_expiry > 7 &&
+              vehicle.days_until_expiry <= 30;
+            break;
+          case "valid":
+            shouldShow = !vehicle.is_expired && vehicle.days_until_expiry > 30;
+            break;
+          default:
+            shouldShow = true;
+        }
+
+        row.style.display = shouldShow ? "" : "none";
+      });
     }
 
     showBulkSMSModal() {
-        if (this.selectedVehicles.size === 0) {
-            alert('Please select at least one vehicle');
-            return;
-        }
+      if (this.selectedVehicles.size === 0) {
+        alert("Please select at least one vehicle");
+        return;
+      }
 
-        const selectedCount = document.getElementById('selectedCount');
-        const selectedList = document.getElementById('selectedVehiclesList');
-        
-        selectedCount.textContent = this.selectedVehicles.size;
-        
-        const selectedVehicleData = Array.from(this.selectedVehicles).map(registration => {
-            return this.vehicles.find(v => v.registration === registration);
-        }).filter(Boolean);
-        
-        selectedList.innerHTML = selectedVehicleData.map(vehicle => `
+      const selectedCount = document.getElementById("selectedCount");
+      const selectedList = document.getElementById("selectedVehiclesList");
+
+      selectedCount.textContent = this.selectedVehicles.size;
+
+      const selectedVehicleData = Array.from(this.selectedVehicles)
+        .map((registration) => {
+          return this.vehicles.find((v) => v.registration === registration);
+        })
+        .filter(Boolean);
+
+      selectedList.innerHTML = selectedVehicleData
+        .map(
+          (vehicle) => `
             <div class="flex items-center justify-between py-2 px-3 bg-white rounded border mb-2">
                 <div>
                     <span class="font-medium">${vehicle.registration}</span>
-                    <span class="text-gray-600 ml-2">${vehicle.make || 'Unknown'} ${vehicle.model || ''}</span>
+                    <span class="text-gray-600 ml-2">${vehicle.make || "Unknown"} ${vehicle.model || ""}</span>
                 </div>
                 <span class="text-sm text-gray-500">${vehicle.mobile_number}</span>
             </div>
-        `).join('');
-        
-        this.showModal('bulkSMSModal');
+        `,
+        )
+        .join("");
+
+      this.showModal("bulkSMSModal");
     }
 
     async sendBulkSMS() {
-        const confirmBtn = document.getElementById('confirmBulkSMS');
-        const originalText = confirmBtn.innerHTML;
-        
-        try {
-            confirmBtn.disabled = true;
-            confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
-            
-            const selectedRegistrations = Array.from(this.selectedVehicles);
-            
-            const response = await fetch('/api/mot/sms/send-bulk', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    registrations: selectedRegistrations
-                })
-            });
-            
-            const result = await response.json();
-            
-            if (result.success) {
-                alert(`SMS sent successfully to ${result.sent} vehicle(s)`);
-                this.clearSelection();
-                this.loadData();
-            } else {
-                alert(result.error || 'Failed to send bulk SMS');
-            }
-            
-        } catch (error) {
-            console.error('Error sending bulk SMS:', error);
-            alert('Failed to send bulk SMS');
-        } finally {
-            confirmBtn.disabled = false;
-            confirmBtn.innerHTML = originalText;
-            this.hideModal('bulkSMSModal');
+      const confirmBtn = document.getElementById("confirmBulkSMS");
+      const originalText = confirmBtn.innerHTML;
+
+      try {
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML =
+          '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+
+        const selectedRegistrations = Array.from(this.selectedVehicles);
+
+        const response = await fetch("/api/mot/sms/send-bulk", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            registrations: selectedRegistrations,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert(`SMS sent successfully to ${result.sent} vehicle(s)`);
+          this.clearSelection();
+          this.loadData();
+        } else {
+          alert(result.error || "Failed to send bulk SMS");
         }
+      } catch (error) {
+        console.error("Error sending bulk SMS:", error);
+        alert("Failed to send bulk SMS");
+      } finally {
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = originalText;
+        this.hideModal("bulkSMSModal");
+      }
     }
 
     async sendSingleSMS(registration) {
-        const vehicle = this.vehicles.find(v => v.registration === registration);
-        if (!vehicle) {
-            alert('Vehicle not found');
-            return;
-        }
+      const vehicle = this.vehicles.find(
+        (v) => v.registration === registration,
+      );
+      if (!vehicle) {
+        alert("Vehicle not found");
+        return;
+      }
 
-        const button = document.querySelector(`[data-registration="${registration}"].send-sms-btn`);
-        const originalHTML = button.innerHTML;
-        
-        try {
-            button.disabled = true;
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            
-            const response = await fetch('/api/mot/sms/send', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    registration: registration,
-                    mobile_number: vehicle.mobile_number,
-                    customer_name: vehicle.customer_name
-                })
-            });
-            
-            const result = await response.json();
-            
-            if (result.success) {
-                alert(`SMS sent successfully to ${vehicle.mobile_number}`);
-            } else {
-                alert(result.error || 'Failed to send SMS');
-            }
-            
-        } catch (error) {
-            console.error('Error sending SMS:', error);
-            alert('Failed to send SMS');
-        } finally {
-            button.disabled = false;
-            button.innerHTML = originalHTML;
+      const button = document.querySelector(
+        `[data-registration="${registration}"].send-sms-btn`,
+      );
+      const originalHTML = button.innerHTML;
+
+      try {
+        button.disabled = true;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+        const response = await fetch("/api/mot/sms/send", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            registration: registration,
+            mobile_number: vehicle.mobile_number,
+            customer_name: vehicle.customer_name,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert(`SMS sent successfully to ${vehicle.mobile_number}`);
+        } else {
+          alert(result.error || "Failed to send SMS");
         }
+      } catch (error) {
+        console.error("Error sending SMS:", error);
+        alert("Failed to send SMS");
+      } finally {
+        button.disabled = false;
+        button.innerHTML = originalHTML;
+      }
     }
 
     showLoading() {
-        const tbody = document.getElementById('vehiclesTableBody');
-        if (tbody) {
-            tbody.innerHTML = `
+      const tbody = document.getElementById("vehiclesTableBody");
+      if (tbody) {
+        tbody.innerHTML = `
                 <tr>
                     <td colspan="8" class="text-center py-8 text-gray-500">
                         <i class="fas fa-spinner fa-spin mr-2"></i>
@@ -680,32 +746,28 @@ class SMSCentreIntegrated {
                     </td>
                 </tr>
             `;
-        }
+      }
     }
 
     showModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
     }
 
     hideModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove("active");
+        document.body.style.overflow = "";
+      }
     }
-}
+  }
 
-// Initialize SMS Centre
-const smsCenter = new SMSCentreIntegrated();
+  // Initialize SMS Centre
+  const smsCenter = new SMSCentreIntegrated();
 </script>
-{% endblock %}
-
-{% block page_init %}
-// Initialize SMS Centre
-smsCenter.init();
+{% endblock %} {% block page_init %} // Initialize SMS Centre smsCenter.init();
 {% endblock %}

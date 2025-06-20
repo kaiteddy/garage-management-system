@@ -3,73 +3,88 @@
 Comprehensive validation of linking results and data integrity
 """
 
-import sys
 import os
+import sys
+
 
 def validate_linking_results():
     """Validate the results of the linking fixes"""
-    
+
     db_path = os.path.join(os.path.dirname(__file__), 'instance', 'garage.db')
-    
+
     try:
         import sqlite3
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         print('✅ LINKING RESULTS VALIDATION')
         print('=' * 60)
-        
+
         # 1. OVERALL STATISTICS
         print('\n1️⃣ FINAL LINKING STATISTICS:')
         print('-' * 40)
-        
+
         # Vehicle-Customer linking
-        cursor.execute('SELECT COUNT(*) FROM vehicles WHERE customer_id IS NOT NULL')
+        cursor.execute(
+            'SELECT COUNT(*) FROM vehicles WHERE customer_id IS NOT NULL')
         linked_vehicles = cursor.fetchone()[0]
         cursor.execute('SELECT COUNT(*) FROM vehicles')
         total_vehicles = cursor.fetchone()[0]
-        vehicle_rate = (linked_vehicles / total_vehicles * 100) if total_vehicles > 0 else 0
-        
-        print(f'   🚗 Vehicles linked to customers: {linked_vehicles}/{total_vehicles} ({vehicle_rate:.1f}%)')
-        
+        vehicle_rate = (linked_vehicles / total_vehicles *
+                        100) if total_vehicles > 0 else 0
+
+        print(
+            f'   🚗 Vehicles linked to customers: {linked_vehicles}/{total_vehicles} ({vehicle_rate:.1f}%)')
+
         # Job-Customer linking
-        cursor.execute('SELECT COUNT(*) FROM jobs WHERE customer_id IS NOT NULL')
+        cursor.execute(
+            'SELECT COUNT(*) FROM jobs WHERE customer_id IS NOT NULL')
         linked_jobs = cursor.fetchone()[0]
         cursor.execute('SELECT COUNT(*) FROM jobs')
         total_jobs = cursor.fetchone()[0]
         job_rate = (linked_jobs / total_jobs * 100) if total_jobs > 0 else 0
-        
-        print(f'   🔧 Jobs linked to customers: {linked_jobs}/{total_jobs} ({job_rate:.1f}%)')
-        
+
+        print(
+            f'   🔧 Jobs linked to customers: {linked_jobs}/{total_jobs} ({job_rate:.1f}%)')
+
         # Job-Vehicle linking
-        cursor.execute('SELECT COUNT(*) FROM jobs WHERE vehicle_id IS NOT NULL')
+        cursor.execute(
+            'SELECT COUNT(*) FROM jobs WHERE vehicle_id IS NOT NULL')
         job_vehicle_links = cursor.fetchone()[0]
-        job_vehicle_rate = (job_vehicle_links / total_jobs * 100) if total_jobs > 0 else 0
-        
-        print(f'   🔗 Jobs linked to vehicles: {job_vehicle_links}/{total_jobs} ({job_vehicle_rate:.1f}%)')
-        
+        job_vehicle_rate = (job_vehicle_links / total_jobs *
+                            100) if total_jobs > 0 else 0
+
+        print(
+            f'   🔗 Jobs linked to vehicles: {job_vehicle_links}/{total_jobs} ({job_vehicle_rate:.1f}%)')
+
         # Invoice-Job linking
-        cursor.execute('SELECT COUNT(*) FROM invoices WHERE job_id IS NOT NULL')
+        cursor.execute(
+            'SELECT COUNT(*) FROM invoices WHERE job_id IS NOT NULL')
         invoice_job_links = cursor.fetchone()[0]
         cursor.execute('SELECT COUNT(*) FROM invoices')
         total_invoices = cursor.fetchone()[0]
-        invoice_rate = (invoice_job_links / total_invoices * 100) if total_invoices > 0 else 0
-        
-        print(f'   💰 Invoices linked to jobs: {invoice_job_links}/{total_invoices} ({invoice_rate:.1f}%)')
-        
+        invoice_rate = (invoice_job_links / total_invoices *
+                        100) if total_invoices > 0 else 0
+
+        print(
+            f'   💰 Invoices linked to jobs: {invoice_job_links}/{total_invoices} ({invoice_rate:.1f}%)')
+
         # Payment linking
-        cursor.execute('SELECT COUNT(*) FROM payments WHERE customer_id IS NOT NULL')
+        cursor.execute(
+            'SELECT COUNT(*) FROM payments WHERE customer_id IS NOT NULL')
         payment_customer_links = cursor.fetchone()[0]
         cursor.execute('SELECT COUNT(*) FROM payments')
         total_payments = cursor.fetchone()[0]
-        payment_rate = (payment_customer_links / total_payments * 100) if total_payments > 0 else 0
-        
-        print(f'   💳 Payments linked to customers: {payment_customer_links}/{total_payments} ({payment_rate:.1f}%)')
-        
+        payment_rate = (payment_customer_links /
+                        total_payments * 100) if total_payments > 0 else 0
+
+        print(
+            f'   💳 Payments linked to customers: {payment_customer_links}/{total_payments} ({payment_rate:.1f}%)')
+
         # 2. DATA INTEGRITY CHECKS
         print('\n2️⃣ DATA INTEGRITY VALIDATION:')
         print('-' * 40)
-        
+
         # Check for orphaned records
         cursor.execute('''
             SELECT COUNT(*) FROM vehicles v
@@ -77,8 +92,9 @@ def validate_linking_results():
             WHERE v.customer_id IS NOT NULL AND c.id IS NULL
         ''')
         orphaned_vehicles = cursor.fetchone()[0]
-        print(f'   ⚠️  Orphaned vehicles (invalid customer_id): {orphaned_vehicles}')
-        
+        print(
+            f'   ⚠️  Orphaned vehicles (invalid customer_id): {orphaned_vehicles}')
+
         cursor.execute('''
             SELECT COUNT(*) FROM jobs j
             LEFT JOIN customers c ON j.customer_id = c.id
@@ -86,7 +102,7 @@ def validate_linking_results():
         ''')
         orphaned_jobs = cursor.fetchone()[0]
         print(f'   ⚠️  Orphaned jobs (invalid customer_id): {orphaned_jobs}')
-        
+
         # Check customer distribution
         cursor.execute('''
             SELECT 
@@ -107,15 +123,15 @@ def validate_linking_results():
             ORDER BY customer_count DESC
         ''')
         vehicle_distribution = cursor.fetchall()
-        
+
         print('\n   Customer vehicle distribution:')
         for range_name, count in vehicle_distribution:
             print(f'     {range_name}: {count} customers')
-        
+
         # 3. SAMPLE LINKED DATA VALIDATION
         print('\n3️⃣ SAMPLE LINKED DATA:')
         print('-' * 40)
-        
+
         # Sample complete customer relationships
         cursor.execute('''
             SELECT 
@@ -136,15 +152,16 @@ def validate_linking_results():
             LIMIT 10
         ''')
         complete_customers = cursor.fetchall()
-        
+
         print('   Top customers with complete relationships:')
         for acc, name, vehicles, jobs, invoices, payments in complete_customers:
-            print(f'     {acc} ({name}): {vehicles}V, {jobs}J, {invoices}I, {payments}P')
-        
+            print(
+                f'     {acc} ({name}): {vehicles}V, {jobs}J, {invoices}I, {payments}P')
+
         # 4. BUSINESS LOGIC VALIDATION
         print('\n4️⃣ BUSINESS LOGIC VALIDATION:')
         print('-' * 40)
-        
+
         # Check for jobs with vehicles but no customer match
         cursor.execute('''
             SELECT COUNT(*) FROM jobs j
@@ -152,8 +169,9 @@ def validate_linking_results():
             WHERE j.customer_id != v.customer_id
         ''')
         mismatched_relationships = cursor.fetchone()[0]
-        print(f'   ⚠️  Jobs with mismatched customer-vehicle relationships: {mismatched_relationships}')
-        
+        print(
+            f'   ⚠️  Jobs with mismatched customer-vehicle relationships: {mismatched_relationships}')
+
         # Check invoice-job-customer consistency
         cursor.execute('''
             SELECT COUNT(*) FROM invoices i
@@ -161,8 +179,9 @@ def validate_linking_results():
             WHERE i.customer_id != j.customer_id
         ''')
         invoice_job_mismatches = cursor.fetchone()[0]
-        print(f'   ⚠️  Invoices with mismatched job-customer relationships: {invoice_job_mismatches}')
-        
+        print(
+            f'   ⚠️  Invoices with mismatched job-customer relationships: {invoice_job_mismatches}')
+
         # Check for reasonable financial data
         cursor.execute('''
             SELECT 
@@ -173,19 +192,22 @@ def validate_linking_results():
             FROM invoices
         ''')
         financial_stats = cursor.fetchone()
-        print(f'   💰 Financial data: {financial_stats[1]}/{financial_stats[0]} invoices with amounts')
-        print(f'       Average: £{financial_stats[2]:.2f}, Max: £{financial_stats[3]:.2f}')
-        
+        print(
+            f'   💰 Financial data: {financial_stats[1]}/{financial_stats[0]} invoices with amounts')
+        print(
+            f'       Average: £{financial_stats[2]:.2f}, Max: £{financial_stats[3]:.2f}')
+
         conn.close()
-        
+
     except Exception as e:
         print(f'❌ Error validating results: {e}')
         import traceback
         traceback.print_exc()
 
+
 def generate_success_report():
     """Generate final success report"""
-    
+
     print('\n🎉 LINKING SUCCESS REPORT')
     print('=' * 60)
     print('**MISSION ACCOMPLISHED!**')
@@ -223,9 +245,10 @@ def generate_success_report():
     print('   connected relational data with 100% vehicle')
     print('   and job linking - exceeding all targets!')
 
+
 def show_next_steps():
     """Show recommended next steps"""
-    
+
     print('\n📋 RECOMMENDED NEXT STEPS:')
     print('=' * 60)
     print('1. 🧪 **Test System Functionality:**')
@@ -252,6 +275,7 @@ def show_next_steps():
     print('   - Regular database backups')
     print('   - Export important reports')
     print('   - Document any customizations')
+
 
 if __name__ == "__main__":
     validate_linking_results()

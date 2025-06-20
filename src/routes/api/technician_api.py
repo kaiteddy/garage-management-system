@@ -5,15 +5,19 @@ Handles technician management endpoints
 
 import os
 import sqlite3
-from flask import Blueprint, jsonify, request
 from datetime import datetime
+
+from flask import Blueprint, jsonify, request
 
 technician_api_bp = Blueprint('technician_api', __name__)
 
+
 def get_db_path():
     """Get database path"""
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    project_root = os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.dirname(__file__))))
     return os.path.join(project_root, 'instance', 'garage.db')
+
 
 @technician_api_bp.route('/api/technicians')
 def get_technicians():
@@ -23,7 +27,7 @@ def get_technicians():
         conn = sqlite3.connect(db_path)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
-        
+
         # Get all active technicians
         cursor.execute('''
             SELECT id, name, email, phone, specialization, hourly_rate, 
@@ -32,7 +36,7 @@ def get_technicians():
             WHERE is_active = 1
             ORDER BY name
         ''')
-        
+
         technicians = []
         for row in cursor.fetchall():
             technician = {
@@ -48,20 +52,21 @@ def get_technicians():
                 'created_date': row['created_date']
             }
             technicians.append(technician)
-        
+
         conn.close()
-        
+
         return jsonify({
             'success': True,
             'technicians': technicians,
             'total': len(technicians)
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
 
 @technician_api_bp.route('/api/technicians/<int:technician_id>')
 def get_technician(technician_id):
@@ -71,14 +76,14 @@ def get_technician(technician_id):
         conn = sqlite3.connect(db_path)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
-        
+
         cursor.execute('''
             SELECT id, name, email, phone, specialization, hourly_rate, 
                    is_active, start_time, end_time, created_date
             FROM technicians 
             WHERE id = ?
         ''', (technician_id,))
-        
+
         row = cursor.fetchone()
         if not row:
             conn.close()
@@ -86,7 +91,7 @@ def get_technician(technician_id):
                 'success': False,
                 'error': 'Technician not found'
             }), 404
-        
+
         technician = {
             'id': row['id'],
             'name': row['name'],
@@ -99,36 +104,37 @@ def get_technician(technician_id):
             'end_time': row['end_time'] or '17:00',
             'created_date': row['created_date']
         }
-        
+
         conn.close()
-        
+
         return jsonify({
             'success': True,
             'technician': technician
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
 
+
 @technician_api_bp.route('/api/technicians', methods=['POST'])
 def create_technician():
     """Create a new technician"""
     try:
         data = request.get_json()
-        
+
         if not data or not data.get('name'):
             return jsonify({
                 'success': False,
                 'error': 'Technician name is required'
             }), 400
-        
+
         db_path = get_db_path()
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         cursor.execute('''
             INSERT INTO technicians (name, email, phone, specialization, hourly_rate, 
                                    is_active, start_time, end_time, created_date)
@@ -144,17 +150,17 @@ def create_technician():
             data.get('end_time', '17:00'),
             datetime.now().date()
         ))
-        
+
         technician_id = cursor.lastrowid
         conn.commit()
         conn.close()
-        
+
         return jsonify({
             'success': True,
             'technician_id': technician_id,
             'message': 'Technician created successfully'
         }), 201
-        
+
     except Exception as e:
         return jsonify({
             'success': False,

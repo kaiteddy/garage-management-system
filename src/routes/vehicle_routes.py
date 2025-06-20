@@ -5,18 +5,22 @@ Extracted from monolithic app.py
 
 import os
 import sqlite3
+
 from flask import Blueprint, jsonify, request
+
+from models import Invoice, Job
 from models.vehicle import Vehicle
-from models import Job, Invoice
 
 vehicle_bp = Blueprint('vehicle', __name__)
+
 
 @vehicle_bp.route('/api/vehicles')
 def get_vehicles():
     """Get all vehicles"""
     try:
         # Use direct SQLite query for now
-        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.dirname(__file__))), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -61,6 +65,7 @@ def get_vehicles():
             'error': str(e)
         }), 500
 
+
 @vehicle_bp.route('/api/vehicle/<int:vehicle_id>')
 def get_vehicle(vehicle_id):
     """Get specific vehicle details by integer ID"""
@@ -85,6 +90,7 @@ def get_vehicle(vehicle_id):
             'error': str(e)
         }), 500
 
+
 @vehicle_bp.route('/api/vehicles/<vehicle_identifier>')
 def get_vehicle_by_identifier(vehicle_identifier):
     """Get specific vehicle details by ID or registration"""
@@ -95,7 +101,8 @@ def get_vehicle_by_identifier(vehicle_identifier):
             vehicle = Vehicle.query.get(vehicle_id)
         except ValueError:
             # If not an integer, search by registration
-            vehicle = Vehicle.query.filter_by(registration=vehicle_identifier.upper()).first()
+            vehicle = Vehicle.query.filter_by(
+                registration=vehicle_identifier.upper()).first()
 
         if not vehicle:
             return jsonify({
@@ -104,7 +111,8 @@ def get_vehicle_by_identifier(vehicle_identifier):
             }), 404
 
         # Get vehicle's jobs and invoices using direct SQL for better performance
-        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.dirname(__file__))), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -169,12 +177,13 @@ def get_vehicle_by_identifier(vehicle_identifier):
             'error': str(e)
         }), 500
 
+
 @vehicle_bp.route('/api/vehicles', methods=['POST'])
 def create_vehicle():
     """Create a new vehicle"""
     try:
         data = request.get_json()
-        
+
         vehicle = Vehicle(
             registration=data.get('registration', '').upper(),
             make=data.get('make'),
@@ -187,21 +196,22 @@ def create_vehicle():
             mileage=data.get('mileage'),
             customer_id=data.get('customer_id')
         )
-        
+
         from models import db
         db.session.add(vehicle)
         db.session.commit()
-        
+
         return jsonify({
             'success': True,
             'vehicle': vehicle.to_dict()
         }), 201
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
 
 @vehicle_bp.route('/api/vehicles/<int:vehicle_id>', methods=['PUT'])
 def update_vehicle(vehicle_id):
@@ -209,7 +219,7 @@ def update_vehicle(vehicle_id):
     try:
         vehicle = Vehicle.query.get_or_404(vehicle_id)
         data = request.get_json()
-        
+
         # Update fields if provided
         if 'registration' in data:
             vehicle.registration = data['registration'].upper()
@@ -231,36 +241,37 @@ def update_vehicle(vehicle_id):
             vehicle.mileage = data['mileage']
         if 'customer_id' in data:
             vehicle.customer_id = data['customer_id']
-        
+
         from models import db
         db.session.commit()
-        
+
         return jsonify({
             'success': True,
             'vehicle': vehicle.to_dict()
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
 
+
 @vehicle_bp.route('/api/vehicles/<int:vehicle_id>', methods=['DELETE'])
 def delete_vehicle(vehicle_id):
     """Delete a vehicle"""
     try:
         vehicle = Vehicle.query.get_or_404(vehicle_id)
-        
+
         from models import db
         db.session.delete(vehicle)
         db.session.commit()
-        
+
         return jsonify({
             'success': True,
             'message': 'Vehicle deleted successfully'
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,

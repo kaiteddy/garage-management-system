@@ -1,55 +1,52 @@
-{% extends "layouts/modern.html" %}
-
-{% block page_title %}Customers - Garage Management System{% endblock %}
-
-{% block extra_css %}
+{% extends "layouts/modern.html" %} {% block page_title %}Customers - Garage
+Management System{% endblock %} {% block extra_css %}
 <style>
-.customer-card {
+  .customer-card {
     transition: all var(--transition-normal);
     cursor: pointer;
-}
+  }
 
-.customer-card:hover {
+  .customer-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
-}
+  }
 
-.search-container {
+  .search-container {
     position: relative;
-}
+  }
 
-.search-icon {
+  .search-icon {
     position: absolute;
     left: 12px;
     top: 50%;
     transform: translateY(-50%);
     color: var(--gray-400);
     pointer-events: none;
-}
+  }
 
-.search-input {
+  .search-input {
     padding-left: 40px;
-}
+  }
 
-.stats-grid {
+  .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-6);
-}
+  }
 
-@media (max-width: 1024px) {
+  @media (max-width: 1024px) {
     .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
-}
+  }
 
-@media (max-width: 640px) {
+  @media (max-width: 640px) {
     .stats-grid {
-        grid-template-columns: 1fr;
+      grid-template-columns: 1fr;
     }
-}
+  }
 
-.customer-avatar {
+  .customer-avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -60,252 +57,276 @@
     color: white;
     font-weight: var(--font-weight-semibold);
     font-size: var(--font-size-sm);
-}
+  }
 
-.table-container {
+  .table-container {
     overflow-x: auto;
     min-width: 100%;
-}
+  }
 
-.table {
+  .table {
     min-width: 1000px;
     width: 100%;
-}
+  }
 
-.table th:first-child,
-.table td:first-child {
+  .table th:first-child,
+  .table td:first-child {
     min-width: 200px;
-}
+  }
 
-.table th:nth-child(2),
-.table td:nth-child(2) {
+  .table th:nth-child(2),
+  .table td:nth-child(2) {
     min-width: 180px;
-}
+  }
 
-.table th:nth-child(3),
-.table td:nth-child(3) {
+  .table th:nth-child(3),
+  .table td:nth-child(3) {
     min-width: 100px;
     text-align: center;
-}
+  }
 
-.table th:nth-child(4),
-.table td:nth-child(4) {
+  .table th:nth-child(4),
+  .table td:nth-child(4) {
     min-width: 120px;
     text-align: right;
-}
+  }
 
-.table th:nth-child(5),
-.table td:nth-child(5) {
+  .table th:nth-child(5),
+  .table td:nth-child(5) {
     min-width: 120px;
-}
+  }
 
-.table th:nth-child(6),
-.table td:nth-child(6) {
+  .table th:nth-child(6),
+  .table td:nth-child(6) {
     min-width: 100px;
     text-align: center;
-}
+  }
 
-.table th:nth-child(7),
-.table td:nth-child(7) {
+  .table th:nth-child(7),
+  .table td:nth-child(7) {
     min-width: 120px;
     text-align: center;
-}
+  }
 </style>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 <div class="space-y-8">
-    <!-- Page Header -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-            <h1 class="text-3xl font-bold text-gray-900">Customers</h1>
-            <p class="text-gray-600 mt-1">Manage your customer database and relationships.</p>
+  <!-- Page Header -->
+  <div
+    class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
+  >
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900">Customers</h1>
+      <p class="text-gray-600 mt-1">
+        Manage your customer database and relationships.
+      </p>
+    </div>
+    <div class="flex gap-3">
+      <button class="btn btn-secondary">
+        <i class="fas fa-download mr-2"></i>
+        Export
+      </button>
+      <button class="btn btn-primary" onclick="openAddCustomerModal()">
+        <i class="fas fa-plus mr-2"></i>
+        Add Customer
+      </button>
+    </div>
+  </div>
+
+  <!-- Customer Statistics -->
+  <div class="stats-grid">
+    <div class="card hover-lift">
+      <div class="card-body text-center py-8">
+        <div
+          class="text-3xl font-bold text-primary-600 mb-2"
+          id="total-customers"
+        >
+          0
+        </div>
+        <div class="text-sm font-medium text-gray-600">Total Customers</div>
+      </div>
+    </div>
+    <div class="card hover-lift">
+      <div class="card-body text-center py-8">
+        <div
+          class="text-3xl font-bold text-success-600 mb-2"
+          id="active-customers"
+        >
+          0
+        </div>
+        <div class="text-sm font-medium text-gray-600">Active This Month</div>
+      </div>
+    </div>
+    <div class="card hover-lift">
+      <div class="card-body text-center py-8">
+        <div
+          class="text-3xl font-bold text-warning-600 mb-2"
+          id="new-customers"
+        >
+          0
+        </div>
+        <div class="text-sm font-medium text-gray-600">New This Month</div>
+      </div>
+    </div>
+    <div class="card hover-lift">
+      <div class="card-body text-center py-8">
+        <div class="text-3xl font-bold text-gray-900 mb-2" id="total-revenue">
+          £0
+        </div>
+        <div class="text-sm font-medium text-gray-600">Total Revenue</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filters -->
+  <div class="card">
+    <div class="card-body py-6">
+      <div class="flex flex-col lg:flex-row gap-6">
+        <div class="flex-1 search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input
+            type="text"
+            class="form-input search-input text-base py-4"
+            placeholder="Search customers by name, email, or phone..."
+            id="customer-search"
+          />
         </div>
         <div class="flex gap-3">
-            <button class="btn btn-secondary">
-                <i class="fas fa-download mr-2"></i>
-                Export
-            </button>
-            <button class="btn btn-primary" onclick="openAddCustomerModal()">
-                <i class="fas fa-plus mr-2"></i>
-                Add Customer
-            </button>
+          <select
+            class="form-select text-base py-4 min-w-[150px]"
+            id="status-filter"
+          >
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+          <button class="btn btn-secondary px-6" onclick="clearFilters()">
+            <i class="fas fa-times mr-2"></i>
+            Clear
+          </button>
         </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Customer Statistics -->
-    <div class="stats-grid">
-        <div class="card hover-lift">
-            <div class="card-body text-center py-8">
-                <div class="text-3xl font-bold text-primary-600 mb-2" id="total-customers">0</div>
-                <div class="text-sm font-medium text-gray-600">Total Customers</div>
-            </div>
+  <!-- Customers List -->
+  <div class="card">
+    <div class="card-header py-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900">
+            Customer Directory
+          </h3>
+          <p class="text-sm text-gray-600 mt-1">
+            Click on a customer to view details
+          </p>
         </div>
-        <div class="card hover-lift">
-            <div class="card-body text-center py-8">
-                <div class="text-3xl font-bold text-success-600 mb-2" id="active-customers">0</div>
-                <div class="text-sm font-medium text-gray-600">Active This Month</div>
-            </div>
+        <div class="text-sm text-gray-500">
+          <i class="fas fa-users mr-1"></i>
+          <span id="customer-count">Loading...</span>
         </div>
-        <div class="card hover-lift">
-            <div class="card-body text-center py-8">
-                <div class="text-3xl font-bold text-warning-600 mb-2" id="new-customers">0</div>
-                <div class="text-sm font-medium text-gray-600">New This Month</div>
-            </div>
-        </div>
-        <div class="card hover-lift">
-            <div class="card-body text-center py-8">
-                <div class="text-3xl font-bold text-gray-900 mb-2" id="total-revenue">£0</div>
-                <div class="text-sm font-medium text-gray-600">Total Revenue</div>
-            </div>
-        </div>
+      </div>
     </div>
-
-    <!-- Search and Filters -->
-    <div class="card">
-        <div class="card-body py-6">
-            <div class="flex flex-col lg:flex-row gap-6">
-                <div class="flex-1 search-container">
-                    <i class="fas fa-search search-icon"></i>
-                    <input
-                        type="text"
-                        class="form-input search-input text-base py-4"
-                        placeholder="Search customers by name, email, or phone..."
-                        id="customer-search"
-                    >
-                </div>
-                <div class="flex gap-3">
-                    <select class="form-select text-base py-4 min-w-[150px]" id="status-filter">
-                        <option value="">All Status</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                    </select>
-                    <button class="btn btn-secondary px-6" onclick="clearFilters()">
-                        <i class="fas fa-times mr-2"></i>
-                        Clear
-                    </button>
-                </div>
-            </div>
-        </div>
+    <div class="card-body p-0">
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Contact</th>
+              <th>Vehicles</th>
+              <th>Total Spent</th>
+              <th>Last Service</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="customers-table-body">
+            <tr>
+              <td colspan="7" class="text-center py-8">
+                <div class="spinner mx-auto mb-2"></div>
+                <p class="text-gray-500">Loading customers...</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-
-    <!-- Customers List -->
-    <div class="card">
-        <div class="card-header py-6">
-            <div class="flex justify-between items-center">
-                <div>
-                    <h3 class="text-xl font-semibold text-gray-900">Customer Directory</h3>
-                    <p class="text-sm text-gray-600 mt-1">Click on a customer to view details</p>
-                </div>
-                <div class="text-sm text-gray-500">
-                    <i class="fas fa-users mr-1"></i>
-                    <span id="customer-count">Loading...</span>
-                </div>
-            </div>
+    <div class="card-footer py-6">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="text-sm font-medium text-gray-600" id="pagination-info">
+          Showing 0 of 0 customers
         </div>
-        <div class="card-body p-0">
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Customer</th>
-                            <th>Contact</th>
-                            <th>Vehicles</th>
-                            <th>Total Spent</th>
-                            <th>Last Service</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="customers-table-body">
-                        <tr>
-                            <td colspan="7" class="text-center py-8">
-                                <div class="spinner mx-auto mb-2"></div>
-                                <p class="text-gray-500">Loading customers...</p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="flex gap-2" id="pagination-controls">
+          <!-- Pagination buttons will be inserted here -->
         </div>
-        <div class="card-footer py-6">
-            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                <div class="text-sm font-medium text-gray-600" id="pagination-info">
-                    Showing 0 of 0 customers
-                </div>
-                <div class="flex gap-2" id="pagination-controls">
-                    <!-- Pagination buttons will be inserted here -->
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- Add Customer Modal -->
-<div class="modal-backdrop" id="add-customer-modal-backdrop" style="display: none;">
-    <div class="modal" id="add-customer-modal">
-        <div class="modal-header">
-            <h3 class="modal-title">Add New Customer</h3>
-            <button class="modal-close" onclick="closeAddCustomerModal()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form id="add-customer-form">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="form-group">
-                        <label class="form-label">First Name *</label>
-                        <input type="text" class="form-input" name="first_name" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Last Name *</label>
-                        <input type="text" class="form-input" name="last_name" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-input" name="email">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Phone</label>
-                        <input type="tel" class="form-input" name="phone">
-                    </div>
-                    <div class="form-group md:col-span-2">
-                        <label class="form-label">Company</label>
-                        <input type="text" class="form-input" name="company">
-                    </div>
-                    <div class="form-group md:col-span-2">
-                        <label class="form-label">Address</label>
-                        <input type="text" class="form-input" name="address">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">City</label>
-                        <input type="text" class="form-input" name="city">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Postcode</label>
-                        <input type="text" class="form-input" name="postcode">
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeAddCustomerModal()">Cancel</button>
-            <button class="btn btn-primary" onclick="saveCustomer()">
-                <i class="fas fa-save mr-2"></i>
-                Save Customer
-            </button>
-        </div>
+<div
+  class="modal-backdrop"
+  id="add-customer-modal-backdrop"
+  style="display: none"
+>
+  <div class="modal" id="add-customer-modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Add New Customer</h3>
+      <button class="modal-close" onclick="closeAddCustomerModal()">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
+    <div class="modal-body">
+      <form id="add-customer-form">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="form-group">
+            <label class="form-label">First Name *</label>
+            <input type="text" class="form-input" name="first_name" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name *</label>
+            <input type="text" class="form-input" name="last_name" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" name="email" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input type="tel" class="form-input" name="phone" />
+          </div>
+          <div class="form-group md:col-span-2">
+            <label class="form-label">Company</label>
+            <input type="text" class="form-input" name="company" />
+          </div>
+          <div class="form-group md:col-span-2">
+            <label class="form-label">Address</label>
+            <input type="text" class="form-input" name="address" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">City</label>
+            <input type="text" class="form-input" name="city" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Postcode</label>
+            <input type="text" class="form-input" name="postcode" />
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeAddCustomerModal()">
+        Cancel
+      </button>
+      <button class="btn btn-primary" onclick="saveCustomer()">
+        <i class="fas fa-save mr-2"></i>
+        Save Customer
+      </button>
+    </div>
+  </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='js/pages/customers-modern.js') }}"></script>
-{% endblock %}
-
-{% block page_init %}
-// Initialize customers page
-if (typeof CustomersModern !== 'undefined') {
-    CustomersModern.init();
-}
-{% endblock %}
+{% endblock %} {% block page_init %} // Initialize customers page if (typeof
+CustomersModern !== 'undefined') { CustomersModern.init(); } {% endblock %}

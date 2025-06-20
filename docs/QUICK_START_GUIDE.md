@@ -3,23 +3,27 @@
 ## 🚀 Getting Started
 
 ### 1. Open the Application
+
 - Open `src/static/index.html` in your web browser
 - Navigate to **"MOT Reminders"** in the sidebar
 
 ### 2. Test the System
 
 #### **Empty System Start**
+
 - The system starts completely empty with no vehicles
 - All statistics show zero (0 Expired, 0 Critical, 0 Due Soon, 0 Valid)
 - You'll see a helpful empty state with buttons to add vehicles
 
 #### **Add Single Vehicle**
+
 1. Click **"Add Vehicle"** button
 2. Enter a registration number (e.g., "TEST123")
 3. Optionally add customer name and mobile number
 4. Click **"Add Vehicle"** - system will simulate DVSA API call
 
 #### **Test Bulk Upload**
+
 1. Click **"Bulk Upload"** button
 2. Download the CSV template by clicking **"CSV Template"**
 3. Use the provided `test_bulk_upload.csv` file or create your own
@@ -27,6 +31,7 @@
 5. Preview the data and click **"Upload Vehicles"**
 
 #### **Test SMS Functionality**
+
 1. Select vehicles using checkboxes
 2. Click **"Send SMS"** button
 3. Review selected vehicles
@@ -35,6 +40,7 @@
 ### 3. CSV File Format
 
 Your CSV file should have these columns:
+
 ```csv
 registration,customer_name,mobile_number
 AB12CDE,John Smith,07123456789
@@ -42,32 +48,39 @@ XY98ZYZ,Sarah Johnson,07987654321
 ```
 
 **Required:**
+
 - `registration` - Vehicle registration number
 
 **Optional:**
+
 - `customer_name` - Customer name for personalized SMS
 - `mobile_number` - Mobile number for SMS notifications
 
 ### 4. Features Available
 
 #### **View Modes**
+
 - **List View**: Comprehensive table with all details
 - **Card View**: Visual cards with color-coded status
 
 #### **Sorting Options**
+
 - By Urgency (default)
 - By Expiry Date
 - By Registration
 - By Customer
 
 #### **Status Indicators**
+
 - 🚨 **EXPIRED**: Red background, urgent attention needed
 - ⚠️ **CRITICAL**: Orange background, expires within 7 days
 - 📅 **DUE SOON**: Yellow background, expires within 30 days
 - ✅ **VALID**: Green background, MOT valid for 30+ days
 
 #### **SMS Templates**
+
 Different message templates based on urgency:
+
 - **Expired**: Urgent warning about expired MOT
 - **Critical**: Warning for MOTs expiring within 7 days
 - **Due Soon**: Reminder for MOTs expiring within 30 days
@@ -76,16 +89,19 @@ Different message templates based on urgency:
 ### 5. Troubleshooting
 
 #### **Data Not Loading**
+
 - Check browser console for error messages
 - Ensure you're on the "MOT Reminders" page
 - Try refreshing the page
 
 #### **Bulk Upload Issues**
+
 - Ensure CSV has 'registration' column header
 - Check file format (CSV or Excel)
 - Verify data preview shows correctly
 
 #### **SMS Not Working**
+
 - System runs in demo mode by default
 - Check browser console for SMS message logs
 - Configure Twilio credentials for real SMS
@@ -95,15 +111,19 @@ Different message templates based on urgency:
 To enable real DVSA MOT data instead of simulated data:
 
 1. **Install Dependencies**:
+
    ```bash
    pip install -r requirements.txt
    ```
 
 2. **Start DVSA Backend Service**:
+
    ```bash
    python start_mot_service.py
    ```
+
    This will:
+
    - Start the backend service with real DVSA API integration
    - Use pre-configured DVSA credentials
    - Provide real MOT data for UK vehicles
@@ -139,6 +159,7 @@ After following this guide, you should see:
 ## 📞 Support
 
 If you encounter issues:
+
 1. Check browser console for error messages
 2. Verify CSV file format matches template
 3. Ensure all required columns are present

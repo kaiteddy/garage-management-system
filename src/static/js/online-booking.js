@@ -4,29 +4,29 @@
  */
 
 class OnlineBooking {
-    constructor() {
-        this.selectedDate = null;
-        this.selectedTime = null;
-        this.availableSlots = [];
-        this.currentStep = 1;
-        this.maxSteps = 4;
-        this.init();
+  constructor () {
+    this.selectedDate = null
+    this.selectedTime = null
+    this.availableSlots = []
+    this.currentStep = 1
+    this.maxSteps = 4
+    this.init()
+  }
+
+  init () {
+    this.createBookingHTML()
+    this.setupEventListeners()
+    this.setMinDate()
+  }
+
+  createBookingHTML () {
+    const container = document.getElementById('online-booking-container')
+    if (!container) {
+      console.error('Online booking container not found')
+      return
     }
 
-    init() {
-        this.createBookingHTML();
-        this.setupEventListeners();
-        this.setMinDate();
-    }
-
-    createBookingHTML() {
-        const container = document.getElementById('online-booking-container');
-        if (!container) {
-            console.error('Online booking container not found');
-            return;
-        }
-
-        container.innerHTML = `
+    container.innerHTML = `
             <div class="booking-widget">
                 <div class="booking-header">
                     <h2>
@@ -236,147 +236,167 @@ class OnlineBooking {
                     </div>
                 </div>
             </div>
-        `;
+        `
+  }
+
+  setMinDate () {
+    const dateInput = document.getElementById('booking-date')
+    if (dateInput) {
+      const tomorrow = new Date()
+      tomorrow.setDate(tomorrow.getDate() + 1)
+      dateInput.min = tomorrow.toISOString().split('T')[0]
+
+      // Set max date to 3 months from now
+      const maxDate = new Date()
+      maxDate.setMonth(maxDate.getMonth() + 3)
+      dateInput.max = maxDate.toISOString().split('T')[0]
+    }
+  }
+
+  async loadAvailableSlots () {
+    const date = document.getElementById('booking-date').value
+    const serviceType = document.getElementById('service-type').value
+
+    if (!date) return
+
+    const slotsContainer = document.getElementById('time-slots')
+    slotsContainer.innerHTML =
+      '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading available times...</div>'
+
+    try {
+      const response = await fetch(
+        `/api/booking/availability?date=${date}&service_type=${serviceType}`
+      )
+      const result = await response.json()
+
+      if (result.success) {
+        this.availableSlots = result.available_slots
+        this.renderTimeSlots()
+      } else {
+        slotsContainer.innerHTML =
+          '<p class="error">Failed to load available times. Please try again.</p>'
+      }
+    } catch (error) {
+      console.error('Error loading slots:', error)
+      slotsContainer.innerHTML =
+        '<p class="error">Failed to load available times. Please try again.</p>'
+    }
+  }
+
+  renderTimeSlots () {
+    const slotsContainer = document.getElementById('time-slots')
+
+    if (this.availableSlots.length === 0) {
+      slotsContainer.innerHTML =
+        '<p class="no-slots">No available appointments for this date. Please choose another date.</p>'
+      return
     }
 
-    setMinDate() {
-        const dateInput = document.getElementById('booking-date');
-        if (dateInput) {
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            dateInput.min = tomorrow.toISOString().split('T')[0];
-            
-            // Set max date to 3 months from now
-            const maxDate = new Date();
-            maxDate.setMonth(maxDate.getMonth() + 3);
-            dateInput.max = maxDate.toISOString().split('T')[0];
-        }
-    }
-
-    async loadAvailableSlots() {
-        const date = document.getElementById('booking-date').value;
-        const serviceType = document.getElementById('service-type').value;
-        
-        if (!date) return;
-
-        const slotsContainer = document.getElementById('time-slots');
-        slotsContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading available times...</div>';
-
-        try {
-            const response = await fetch(`/api/booking/availability?date=${date}&service_type=${serviceType}`);
-            const result = await response.json();
-
-            if (result.success) {
-                this.availableSlots = result.available_slots;
-                this.renderTimeSlots();
-            } else {
-                slotsContainer.innerHTML = '<p class="error">Failed to load available times. Please try again.</p>';
-            }
-        } catch (error) {
-            console.error('Error loading slots:', error);
-            slotsContainer.innerHTML = '<p class="error">Failed to load available times. Please try again.</p>';
-        }
-    }
-
-    renderTimeSlots() {
-        const slotsContainer = document.getElementById('time-slots');
-
-        if (this.availableSlots.length === 0) {
-            slotsContainer.innerHTML = '<p class="no-slots">No available appointments for this date. Please choose another date.</p>';
-            return;
-        }
-
-        slotsContainer.innerHTML = `
+    slotsContainer.innerHTML = `
             <h4>Available Times:</h4>
             <div class="time-grid">
-                ${this.availableSlots.map(slot => `
+                ${this.availableSlots
+                  .map(
+                    (slot) => `
                     <button class="time-slot-btn" onclick="booking.selectTime('${slot.time}')" data-time="${slot.time}">
                         ${slot.time}
                         <small>${slot.duration} min</small>
                     </button>
-                `).join('')}
+                `
+                  )
+                  .join('')}
             </div>
-        `;
+        `
+  }
+
+  selectTime (time) {
+    this.selectedTime = time
+
+    // Update UI
+    document.querySelectorAll('.time-slot-btn').forEach((btn) => {
+      btn.classList.remove('selected')
+    })
+
+    document.querySelector(`[data-time="${time}"]`).classList.add('selected')
+    document.getElementById('step-1-next').disabled = false
+  }
+
+  nextStep () {
+    if (this.currentStep < this.maxSteps) {
+      // Validate current step
+      if (!this.validateCurrentStep()) return
+
+      this.currentStep++
+      this.updateStepDisplay()
+
+      if (this.currentStep === 4) {
+        this.generateBookingSummary()
+      }
     }
+  }
 
-    selectTime(time) {
-        this.selectedTime = time;
-        
-        // Update UI
-        document.querySelectorAll('.time-slot-btn').forEach(btn => {
-            btn.classList.remove('selected');
-        });
-        
-        document.querySelector(`[data-time="${time}"]`).classList.add('selected');
-        document.getElementById('step-1-next').disabled = false;
+  previousStep () {
+    if (this.currentStep > 1) {
+      this.currentStep--
+      this.updateStepDisplay()
     }
+  }
 
-    nextStep() {
-        if (this.currentStep < this.maxSteps) {
-            // Validate current step
-            if (!this.validateCurrentStep()) return;
-            
-            this.currentStep++;
-            this.updateStepDisplay();
-            
-            if (this.currentStep === 4) {
-                this.generateBookingSummary();
-            }
-        }
+  updateStepDisplay () {
+    // Update progress steps
+    document.querySelectorAll('.step').forEach((step, index) => {
+      if (index + 1 <= this.currentStep) {
+        step.classList.add('active')
+      } else {
+        step.classList.remove('active')
+      }
+    })
+
+    // Update step content
+    document.querySelectorAll('.booking-step').forEach((step, index) => {
+      if (index + 1 === this.currentStep) {
+        step.classList.add('active')
+      } else {
+        step.classList.remove('active')
+      }
+    })
+  }
+
+  validateCurrentStep () {
+    switch (this.currentStep) {
+      case 1:
+        return (
+          this.selectedTime && document.getElementById('booking-date').value
+        )
+      case 2:
+        return document.getElementById('vehicle-registration').value.trim()
+      case 3:
+        return (
+          document.getElementById('customer-name').value.trim() &&
+          document.getElementById('customer-phone').value.trim()
+        )
+      default:
+        return true
     }
+  }
 
-    previousStep() {
-        if (this.currentStep > 1) {
-            this.currentStep--;
-            this.updateStepDisplay();
-        }
-    }
+  generateBookingSummary () {
+    const summaryContainer = document.getElementById('booking-summary')
+    const date = document.getElementById('booking-date').value
+    const serviceType = document.getElementById('service-type').value
 
-    updateStepDisplay() {
-        // Update progress steps
-        document.querySelectorAll('.step').forEach((step, index) => {
-            if (index + 1 <= this.currentStep) {
-                step.classList.add('active');
-            } else {
-                step.classList.remove('active');
-            }
-        });
-
-        // Update step content
-        document.querySelectorAll('.booking-step').forEach((step, index) => {
-            if (index + 1 === this.currentStep) {
-                step.classList.add('active');
-            } else {
-                step.classList.remove('active');
-            }
-        });
-    }
-
-    validateCurrentStep() {
-        switch (this.currentStep) {
-            case 1:
-                return this.selectedTime && document.getElementById('booking-date').value;
-            case 2:
-                return document.getElementById('vehicle-registration').value.trim();
-            case 3:
-                return document.getElementById('customer-name').value.trim() && 
-                       document.getElementById('customer-phone').value.trim();
-            default:
-                return true;
-        }
-    }
-
-    generateBookingSummary() {
-        const summaryContainer = document.getElementById('booking-summary');
-        const date = document.getElementById('booking-date').value;
-        const serviceType = document.getElementById('service-type').value;
-        
-        summaryContainer.innerHTML = `
+    summaryContainer.innerHTML = `
             <div class="summary-section">
                 <h4><i class="fas fa-calendar"></i> Appointment Details</h4>
-                <p><strong>Date:</strong> ${new Date(date).toLocaleDateString('en-GB', { 
-                    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
-                })}</p>
+                <p><strong>Date:</strong> ${new Date(date).toLocaleDateString(
+                  'en-GB',
+                  {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  }
+                )}</p>
                 <p><strong>Time:</strong> ${this.selectedTime}</p>
                 <p><strong>Service:</strong> ${serviceType.replace('_', ' ')}</p>
             </div>
@@ -385,81 +405,90 @@ class OnlineBooking {
                 <h4><i class="fas fa-car"></i> Vehicle Information</h4>
                 <p><strong>Registration:</strong> ${document.getElementById('vehicle-registration').value}</p>
                 <p><strong>Make/Model:</strong> ${document.getElementById('vehicle-make').value} ${document.getElementById('vehicle-model').value}</p>
-                ${document.getElementById('service-description').value ? 
-                    `<p><strong>Description:</strong> ${document.getElementById('service-description').value}</p>` : ''}
+                ${
+                  document.getElementById('service-description').value
+                    ? `<p><strong>Description:</strong> ${document.getElementById('service-description').value}</p>`
+                    : ''
+                }
             </div>
             
             <div class="summary-section">
                 <h4><i class="fas fa-user"></i> Contact Information</h4>
                 <p><strong>Name:</strong> ${document.getElementById('customer-name').value}</p>
                 <p><strong>Phone:</strong> ${document.getElementById('customer-phone').value}</p>
-                ${document.getElementById('customer-email').value ? 
-                    `<p><strong>Email:</strong> ${document.getElementById('customer-email').value}</p>` : ''}
+                ${
+                  document.getElementById('customer-email').value
+                    ? `<p><strong>Email:</strong> ${document.getElementById('customer-email').value}</p>`
+                    : ''
+                }
             </div>
-        `;
+        `
+  }
+
+  async confirmBooking () {
+    const confirmBtn = document.getElementById('confirm-booking-btn')
+    const termsConsent = document.getElementById('terms-consent').checked
+
+    if (!termsConsent) {
+      alert('Please accept the terms and conditions to proceed.')
+      return
     }
 
-    async confirmBooking() {
-        const confirmBtn = document.getElementById('confirm-booking-btn');
-        const termsConsent = document.getElementById('terms-consent').checked;
-        
-        if (!termsConsent) {
-            alert('Please accept the terms and conditions to proceed.');
-            return;
-        }
+    confirmBtn.disabled = true
+    confirmBtn.innerHTML =
+      '<i class="fas fa-spinner fa-spin"></i> Creating Booking...'
 
-        confirmBtn.disabled = true;
-        confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Booking...';
+    try {
+      const bookingData = {
+        customer_name: document.getElementById('customer-name').value,
+        customer_phone: document.getElementById('customer-phone').value,
+        customer_email: document.getElementById('customer-email').value,
+        vehicle_registration: document.getElementById('vehicle-registration')
+          .value,
+        vehicle_make: document.getElementById('vehicle-make').value,
+        vehicle_model: document.getElementById('vehicle-model').value,
+        appointment_date: document.getElementById('booking-date').value,
+        start_time: this.selectedTime,
+        service_type: document.getElementById('service-type').value,
+        description: document.getElementById('service-description').value,
+        special_requirements: document.getElementById('special-requirements')
+          .value,
+        marketing_consent: document.getElementById('marketing-consent').checked
+      }
 
-        try {
-            const bookingData = {
-                customer_name: document.getElementById('customer-name').value,
-                customer_phone: document.getElementById('customer-phone').value,
-                customer_email: document.getElementById('customer-email').value,
-                vehicle_registration: document.getElementById('vehicle-registration').value,
-                vehicle_make: document.getElementById('vehicle-make').value,
-                vehicle_model: document.getElementById('vehicle-model').value,
-                appointment_date: document.getElementById('booking-date').value,
-                start_time: this.selectedTime,
-                service_type: document.getElementById('service-type').value,
-                description: document.getElementById('service-description').value,
-                special_requirements: document.getElementById('special-requirements').value,
-                marketing_consent: document.getElementById('marketing-consent').checked
-            };
+      const response = await fetch('/api/booking/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bookingData)
+      })
 
-            const response = await fetch('/api/booking/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(bookingData)
-            });
+      const result = await response.json()
 
-            const result = await response.json();
-
-            if (result.success) {
-                this.showSuccessMessage(result);
-            } else {
-                throw new Error(result.error);
-            }
-        } catch (error) {
-            console.error('Booking error:', error);
-            alert('Failed to create booking. Please try again or call us directly.');
-            confirmBtn.disabled = false;
-            confirmBtn.innerHTML = '<i class="fas fa-check"></i> Confirm Booking';
-        }
+      if (result.success) {
+        this.showSuccessMessage(result)
+      } else {
+        throw new Error(result.error)
+      }
+    } catch (error) {
+      console.error('Booking error:', error)
+      alert('Failed to create booking. Please try again or call us directly.')
+      confirmBtn.disabled = false
+      confirmBtn.innerHTML = '<i class="fas fa-check"></i> Confirm Booking'
     }
+  }
 
-    showSuccessMessage(result) {
-        document.querySelectorAll('.booking-step').forEach(step => {
-            step.style.display = 'none';
-        });
-        
-        const successStep = document.getElementById('booking-success');
-        successStep.style.display = 'block';
-        
-        const confirmationDetails = document.getElementById('confirmation-details');
-        confirmationDetails.innerHTML = `
+  showSuccessMessage (result) {
+    document.querySelectorAll('.booking-step').forEach((step) => {
+      step.style.display = 'none'
+    })
+
+    const successStep = document.getElementById('booking-success')
+    successStep.style.display = 'block'
+
+    const confirmationDetails = document.getElementById('confirmation-details')
+    confirmationDetails.innerHTML = `
             <div class="confirmation-card">
                 <h4>Confirmation Number: ${result.confirmation_number}</h4>
                 <p><strong>Date:</strong> ${new Date(document.getElementById('booking-date').value).toLocaleDateString('en-GB')}</p>
@@ -483,56 +512,60 @@ class OnlineBooking {
                     <p>Email: <strong>bookings@elimotors.com</strong></p>
                 </div>
             </div>
-        `;
-    }
+        `
+  }
 
-    newBooking() {
-        // Reset the form
-        this.currentStep = 1;
-        this.selectedDate = null;
-        this.selectedTime = null;
-        this.availableSlots = [];
-        
-        // Show booking steps again
-        document.getElementById('booking-success').style.display = 'none';
-        document.querySelectorAll('.booking-step').forEach(step => {
-            step.style.display = 'block';
-        });
-        
-        // Reset form fields
-        document.querySelectorAll('input, select, textarea').forEach(field => {
-            field.value = '';
-            field.checked = false;
-        });
-        
-        this.updateStepDisplay();
-        this.setMinDate();
-    }
+  newBooking () {
+    // Reset the form
+    this.currentStep = 1
+    this.selectedDate = null
+    this.selectedTime = null
+    this.availableSlots = []
 
-    showTerms() {
-        alert('Terms and Conditions:\n\n1. Appointments must be cancelled at least 24 hours in advance\n2. A £20 cancellation fee applies for same-day cancellations\n3. We reserve the right to reschedule appointments due to unforeseen circumstances\n4. Payment is due upon completion of work\n5. We are not liable for items left in vehicles');
-    }
+    // Show booking steps again
+    document.getElementById('booking-success').style.display = 'none'
+    document.querySelectorAll('.booking-step').forEach((step) => {
+      step.style.display = 'block'
+    })
 
-    setupEventListeners() {
-        // Wait for DOM to be ready before setting up listeners
-        setTimeout(() => {
-            // Auto-format registration input
-            const regInput = document.getElementById('vehicle-registration');
-            if (regInput) {
-                regInput.addEventListener('input', (e) => {
-                    e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-                });
-            }
-        }, 100);
-    }
+    // Reset form fields
+    document.querySelectorAll('input, select, textarea').forEach((field) => {
+      field.value = ''
+      field.checked = false
+    })
+
+    this.updateStepDisplay()
+    this.setMinDate()
+  }
+
+  showTerms () {
+    alert(
+      'Terms and Conditions:\n\n1. Appointments must be cancelled at least 24 hours in advance\n2. A £20 cancellation fee applies for same-day cancellations\n3. We reserve the right to reschedule appointments due to unforeseen circumstances\n4. Payment is due upon completion of work\n5. We are not liable for items left in vehicles'
+    )
+  }
+
+  setupEventListeners () {
+    // Wait for DOM to be ready before setting up listeners
+    setTimeout(() => {
+      // Auto-format registration input
+      const regInput = document.getElementById('vehicle-registration')
+      if (regInput) {
+        regInput.addEventListener('input', (e) => {
+          e.target.value = e.target.value
+            .toUpperCase()
+            .replace(/[^A-Z0-9]/g, '')
+        })
+      }
+    }, 100)
+  }
 }
 
 // Global booking instance
-let booking;
+let booking
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('online-booking-container')) {
-        booking = new OnlineBooking();
-    }
-});
+  if (document.getElementById('online-booking-container')) {
+    booking = new OnlineBooking()
+  }
+})

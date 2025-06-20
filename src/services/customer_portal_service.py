@@ -4,14 +4,15 @@ Customer Self-Service Portal Service
 Customer portal for work approval, communication, and online booking
 """
 
-import os
-import json
-import sqlite3
 import hashlib
+import json
+import os
 import secrets
+import sqlite3
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
-from dataclasses import dataclass
+
 
 @dataclass
 class CustomerSession:
@@ -20,6 +21,7 @@ class CustomerSession:
     session_token: str
     expires_at: datetime
     ip_address: str
+
 
 @dataclass
 class WorkApproval:
@@ -31,19 +33,20 @@ class WorkApproval:
     approval_status: str
     approval_date: datetime = None
 
+
 class CustomerPortalService:
     """Service for customer self-service portal"""
-    
+
     def __init__(self, db_path: str):
         self.db_path = db_path
         self._ensure_portal_tables()
-    
+
     def _ensure_portal_tables(self):
         """Create customer portal tables if they don't exist"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             # Customer portal sessions table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS customer_sessions (
@@ -58,7 +61,7 @@ class CustomerPortalService:
                     FOREIGN KEY (customer_id) REFERENCES customers (id)
                 )
             ''')
-            
+
             # Work approvals table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS work_approvals (
@@ -76,7 +79,7 @@ class CustomerPortalService:
                     FOREIGN KEY (customer_id) REFERENCES customers (id)
                 )
             ''')
-            
+
             # Customer communications table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS customer_communications (
@@ -93,7 +96,7 @@ class CustomerPortalService:
                     FOREIGN KEY (job_id) REFERENCES jobs (id)
                 )
             ''')
-            
+
             # Online booking requests table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS online_booking_requests (
@@ -117,7 +120,7 @@ class CustomerPortalService:
                     FOREIGN KEY (appointment_id) REFERENCES appointments (id)
                 )
             ''')
-            
+
             # Customer portal preferences table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS customer_portal_preferences (
@@ -133,47 +136,49 @@ class CustomerPortalService:
                     FOREIGN KEY (customer_id) REFERENCES customers (id)
                 )
             ''')
-            
+
             conn.commit()
             conn.close()
-            
+
         except Exception as e:
             print(f"Error creating portal tables: {str(e)}")
-    
+
     def create_customer_session(self, customer_email: str, ip_address: str = None,
-                               user_agent: str = None) -> Dict:
+                                user_agent: str = None) -> Dict:
         """Create a customer portal session"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             # Find customer by email
-            cursor.execute('SELECT id, name FROM customers WHERE email = ?', (customer_email,))
+            cursor.execute(
+                'SELECT id, name FROM customers WHERE email = ?', (customer_email,))
             customer = cursor.fetchone()
-            
+
             if not customer:
                 return {'success': False, 'error': 'Customer not found'}
-            
+
             customer_id = customer[0]
             customer_name = customer[1]
-            
+
             # Generate session token
             session_token = secrets.token_urlsafe(32)
             expires_at = datetime.now() + timedelta(hours=24)  # 24-hour session
-            
+
             # Clean up old sessions for this customer
-            cursor.execute('DELETE FROM customer_sessions WHERE customer_id = ?', (customer_id,))
-            
+            cursor.execute(
+                'DELETE FROM customer_sessions WHERE customer_id = ?', (customer_id,))
+
             # Create new session
             cursor.execute('''
                 INSERT INTO customer_sessions 
                 (customer_id, session_token, expires_at, ip_address, user_agent)
                 VALUES (?, ?, ?, ?, ?)
             ''', (customer_id, session_token, expires_at, ip_address, user_agent))
-            
+
             conn.commit()
             conn.close()
-            
+
             return {
                 'success': True,
                 'session_token': session_token,
@@ -181,61 +186,61 @@ class CustomerPortalService:
                 'customer_name': customer_name,
                 'expires_at': expires_at.isoformat()
             }
-            
+
         except Exception as e:
             return {
                 'success': False,
                 'error': str(e)
             }
-    
+
     def validate_session(self, session_token: str) -> Dict:
         """Validate customer session token"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             cursor.execute('''
                 SELECT cs.customer_id, cs.expires_at, c.name, c.email
                 FROM customer_sessions cs
                 JOIN customers c ON cs.customer_id = c.id
                 WHERE cs.session_token = ? AND cs.expires_at > CURRENT_TIMESTAMP
             ''', (session_token,))
-            
+
             session = cursor.fetchone()
-            
+
             if not session:
                 conn.close()
                 return {'success': False, 'error': 'Invalid or expired session'}
-            
+
             # Update last activity
             cursor.execute('''
                 UPDATE customer_sessions 
                 SET last_activity = CURRENT_TIMESTAMP 
                 WHERE session_token = ?
             ''', (session_token,))
-            
+
             conn.commit()
             conn.close()
-            
+
             return {
                 'success': True,
                 'customer_id': session[0],
                 'customer_name': session[2],
                 'customer_email': session[3]
             }
-            
+
         except Exception as e:
             return {
                 'success': False,
                 'error': str(e)
             }
-    
+
     def get_customer_jobs(self, customer_id: int, status: str = None) -> List[Dict]:
         """Get jobs for a customer with optional status filtering"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             query = '''
                 SELECT j.id, j.job_number, j.description, j.status, j.labour_cost,
                        j.parts_cost, j.total_amount, j.created_date, j.completed_date,
@@ -245,15 +250,15 @@ class CustomerPortalService:
                 WHERE j.customer_id = ?
             '''
             params = [customer_id]
-            
+
             if status:
                 query += ' AND j.status = ?'
                 params.append(status)
-            
+
             query += ' ORDER BY j.created_date DESC'
-            
+
             cursor.execute(query, params)
-            
+
             jobs = []
             for row in cursor.fetchall():
                 jobs.append({
@@ -272,20 +277,20 @@ class CustomerPortalService:
                         'model': row[11]
                     }
                 })
-            
+
             conn.close()
             return jobs
-            
+
         except Exception as e:
             print(f"Error getting customer jobs: {str(e)}")
             return []
-    
+
     def get_pending_approvals(self, customer_id: int) -> List[Dict]:
         """Get pending work approvals for a customer"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             cursor.execute('''
                 SELECT wa.id, wa.job_id, wa.work_description, wa.estimated_cost,
                        wa.created_date, j.job_number, j.description as job_description,
@@ -296,7 +301,7 @@ class CustomerPortalService:
                 WHERE wa.customer_id = ? AND wa.approval_status = 'PENDING'
                 ORDER BY wa.created_date DESC
             ''', (customer_id,))
-            
+
             approvals = []
             for row in cursor.fetchall():
                 approvals.append({
@@ -313,35 +318,35 @@ class CustomerPortalService:
                         'model': row[9]
                     }
                 })
-            
+
             conn.close()
             return approvals
-            
+
         except Exception as e:
             print(f"Error getting pending approvals: {str(e)}")
             return []
-    
+
     def approve_work(self, approval_id: int, customer_id: int, approved: bool,
-                    notes: str = None) -> Dict:
+                     notes: str = None) -> Dict:
         """Approve or reject work"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             # Verify approval belongs to customer
             cursor.execute('''
                 SELECT job_id FROM work_approvals 
                 WHERE id = ? AND customer_id = ? AND approval_status = 'PENDING'
             ''', (approval_id, customer_id))
-            
+
             approval = cursor.fetchone()
             if not approval:
                 conn.close()
                 return {'success': False, 'error': 'Approval not found or already processed'}
-            
+
             job_id = approval[0]
             status = 'APPROVED' if approved else 'REJECTED'
-            
+
             # Update approval
             cursor.execute('''
                 UPDATE work_approvals 
@@ -349,21 +354,21 @@ class CustomerPortalService:
                     approval_notes = ?, updated_date = CURRENT_TIMESTAMP
                 WHERE id = ?
             ''', (status, notes, approval_id))
-            
+
             # Update job status if approved
             if approved:
                 cursor.execute('''
                     UPDATE jobs SET status = 'APPROVED' WHERE id = ?
                 ''', (job_id,))
-            
+
             conn.commit()
             conn.close()
-            
+
             return {
                 'success': True,
                 'message': f'Work {"approved" if approved else "rejected"} successfully'
             }
-            
+
         except Exception as e:
             return {
                 'success': False,
@@ -379,7 +384,8 @@ class CustomerPortalService:
             # Check if customer exists by email
             customer_id = None
             if booking_data.get('customer_email'):
-                cursor.execute('SELECT id FROM customers WHERE email = ?', (booking_data['customer_email'],))
+                cursor.execute(
+                    'SELECT id FROM customers WHERE email = ?', (booking_data['customer_email'],))
                 customer = cursor.fetchone()
                 customer_id = customer[0] if customer else None
 

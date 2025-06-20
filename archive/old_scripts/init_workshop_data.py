@@ -3,27 +3,28 @@
 Initialize workshop data - technicians, bays, and sample appointments
 """
 
-import sqlite3
 import os
+import sqlite3
 import sys
 from datetime import datetime, timedelta
 
+
 def init_workshop_data():
     """Initialize workshop data with technicians, bays, and sample appointments"""
-    
+
     # Get database path
     db_path = os.path.join(os.path.dirname(__file__), 'instance', 'garage.db')
-    
+
     if not os.path.exists(db_path):
         print("❌ Database not found. Please run the main application first to create the database.")
         return False
-    
+
     try:
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         print("🔄 Initializing workshop data...")
-        
+
         # Create tables first (in case they don't exist)
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS technicians (
@@ -39,7 +40,7 @@ def init_workshop_data():
                 created_date DATE DEFAULT CURRENT_DATE
             )
         ''')
-        
+
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS workshop_bays (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -51,7 +52,7 @@ def init_workshop_data():
                 notes TEXT
             )
         ''')
-        
+
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS job_sheet_templates (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -68,44 +69,55 @@ def init_workshop_data():
                 created_date DATE DEFAULT CURRENT_DATE
             )
         ''')
-        
+
         # Insert sample technicians
         technicians = [
-            ('John Smith', 'john.smith@elimotors.com', '07123456789', 'MOT Testing', 25.00, '08:00', '17:00'),
-            ('Sarah Johnson', 'sarah.johnson@elimotors.com', '07234567890', 'Diagnostics', 28.00, '08:30', '17:30'),
-            ('Mike Wilson', 'mike.wilson@elimotors.com', '07345678901', 'Engine Repair', 30.00, '08:00', '16:30'),
-            ('Emma Davis', 'emma.davis@elimotors.com', '07456789012', 'Bodywork', 26.00, '09:00', '17:00'),
-            ('Tom Brown', 'tom.brown@elimotors.com', '07567890123', 'General Service', 24.00, '08:00', '17:00')
+            ('John Smith', 'john.smith@elimotors.com',
+             '07123456789', 'MOT Testing', 25.00, '08:00', '17:00'),
+            ('Sarah Johnson', 'sarah.johnson@elimotors.com',
+             '07234567890', 'Diagnostics', 28.00, '08:30', '17:30'),
+            ('Mike Wilson', 'mike.wilson@elimotors.com',
+             '07345678901', 'Engine Repair', 30.00, '08:00', '16:30'),
+            ('Emma Davis', 'emma.davis@elimotors.com',
+             '07456789012', 'Bodywork', 26.00, '09:00', '17:00'),
+            ('Tom Brown', 'tom.brown@elimotors.com', '07567890123',
+             'General Service', 24.00, '08:00', '17:00')
         ]
-        
+
         for tech in technicians:
             cursor.execute('''
                 INSERT OR IGNORE INTO technicians 
                 (name, email, phone, specialization, hourly_rate, start_time, end_time)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
             ''', tech)
-        
+
         print(f"✅ Added {len(technicians)} technicians")
-        
+
         # Insert workshop bays
         bays = [
-            ('1', 'Bay 1 - MOT', 'MOT', '["MOT Testing Equipment", "Brake Tester", "Emissions Tester"]'),
-            ('2', 'Bay 2 - Service', 'GENERAL', '["2-Post Lift", "Air Tools", "Oil Drain"]'),
-            ('3', 'Bay 3 - Diagnostics', 'DIAGNOSTIC', '["4-Post Lift", "Diagnostic Scanner", "Oscilloscope"]'),
-            ('4', 'Bay 4 - Heavy Repair', 'LIFT', '["4-Post Heavy Lift", "Engine Crane", "Welding Equipment"]'),
-            ('5', 'Bay 5 - Quick Service', 'GENERAL', '["Quick Lift", "Tyre Machine", "Wheel Balancer"]'),
-            ('6', 'Bay 6 - Bodywork', 'BODYWORK', '["Paint Booth", "Body Repair Tools", "Spray Equipment"]')
+            ('1', 'Bay 1 - MOT', 'MOT',
+             '["MOT Testing Equipment", "Brake Tester", "Emissions Tester"]'),
+            ('2', 'Bay 2 - Service', 'GENERAL',
+             '["2-Post Lift", "Air Tools", "Oil Drain"]'),
+            ('3', 'Bay 3 - Diagnostics', 'DIAGNOSTIC',
+             '["4-Post Lift", "Diagnostic Scanner", "Oscilloscope"]'),
+            ('4', 'Bay 4 - Heavy Repair', 'LIFT',
+             '["4-Post Heavy Lift", "Engine Crane", "Welding Equipment"]'),
+            ('5', 'Bay 5 - Quick Service', 'GENERAL',
+             '["Quick Lift", "Tyre Machine", "Wheel Balancer"]'),
+            ('6', 'Bay 6 - Bodywork', 'BODYWORK',
+             '["Paint Booth", "Body Repair Tools", "Spray Equipment"]')
         ]
-        
+
         for bay in bays:
             cursor.execute('''
                 INSERT OR IGNORE INTO workshop_bays 
                 (bay_number, bay_name, bay_type, equipment)
                 VALUES (?, ?, ?, ?)
             ''', bay)
-        
+
         print(f"✅ Added {len(bays)} workshop bays")
-        
+
         # Insert job sheet templates
         templates = [
             (
@@ -168,7 +180,7 @@ def init_workshop_data():
                 120
             )
         ]
-        
+
         for template in templates:
             cursor.execute('''
                 INSERT OR IGNORE INTO job_sheet_templates 
@@ -176,39 +188,39 @@ def init_workshop_data():
                  default_parts, default_tools, default_checks, estimated_time)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', template)
-        
+
         print(f"✅ Added {len(templates)} job sheet templates")
-        
+
         # Create some sample appointments for the next few days
         today = datetime.now().date()
-        
+
         # Get some customer and vehicle IDs for sample appointments
         cursor.execute('SELECT id FROM customers LIMIT 5')
         customer_ids = [row[0] for row in cursor.fetchall()]
-        
+
         cursor.execute('SELECT id FROM vehicles LIMIT 5')
         vehicle_ids = [row[0] for row in cursor.fetchall()]
-        
+
         cursor.execute('SELECT id FROM technicians LIMIT 3')
         technician_ids = [row[0] for row in cursor.fetchall()]
-        
+
         cursor.execute('SELECT id FROM workshop_bays LIMIT 3')
         bay_ids = [row[0] for row in cursor.fetchall()]
-        
+
         if customer_ids and vehicle_ids and technician_ids and bay_ids:
             sample_appointments = [
-                (customer_ids[0], vehicle_ids[0], technician_ids[0], bay_ids[0], 
+                (customer_ids[0], vehicle_ids[0], technician_ids[0], bay_ids[0],
                  today, '09:00', '10:00', 60, 'MOT Test', 'Annual MOT test', 'SCHEDULED', 'NORMAL'),
-                (customer_ids[1], vehicle_ids[1], technician_ids[1], bay_ids[1], 
+                (customer_ids[1], vehicle_ids[1], technician_ids[1], bay_ids[1],
                  today, '10:30', '12:00', 90, 'Full Service', 'Comprehensive service', 'SCHEDULED', 'NORMAL'),
-                (customer_ids[2], vehicle_ids[2], technician_ids[2], bay_ids[2], 
+                (customer_ids[2], vehicle_ids[2], technician_ids[2], bay_ids[2],
                  today + timedelta(days=1), '14:00', '16:00', 120, 'Brake Repair', 'Brake pad replacement', 'SCHEDULED', 'HIGH'),
-                (customer_ids[3], vehicle_ids[3], technician_ids[0], bay_ids[0], 
+                (customer_ids[3], vehicle_ids[3], technician_ids[0], bay_ids[0],
                  today + timedelta(days=1), '09:30', '10:15', 45, 'MOT Test', 'MOT retest', 'SCHEDULED', 'URGENT'),
-                (customer_ids[4], vehicle_ids[4], technician_ids[1], bay_ids[1], 
+                (customer_ids[4], vehicle_ids[4], technician_ids[1], bay_ids[1],
                  today + timedelta(days=2), '11:00', '12:30', 90, 'Diagnostics', 'Engine fault diagnosis', 'SCHEDULED', 'HIGH')
             ]
-            
+
             for apt in sample_appointments:
                 cursor.execute('''
                     INSERT OR IGNORE INTO appointments 
@@ -216,7 +228,7 @@ def init_workshop_data():
                      start_time, end_time, estimated_duration, service_type, description, status, priority)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ''', apt)
-            
+
             print(f"✅ Added {len(sample_appointments)} sample appointments")
 
         # Create some sample quotes
@@ -260,17 +272,19 @@ def init_workshop_data():
         # Commit changes
         conn.commit()
         print("✅ Workshop data initialization completed successfully!")
-        
+
         # Show summary
         cursor.execute('SELECT COUNT(*) FROM technicians WHERE is_active = 1')
         tech_count = cursor.fetchone()[0]
-        
-        cursor.execute('SELECT COUNT(*) FROM workshop_bays WHERE is_available = 1')
+
+        cursor.execute(
+            'SELECT COUNT(*) FROM workshop_bays WHERE is_available = 1')
         bay_count = cursor.fetchone()[0]
-        
-        cursor.execute('SELECT COUNT(*) FROM job_sheet_templates WHERE is_active = 1')
+
+        cursor.execute(
+            'SELECT COUNT(*) FROM job_sheet_templates WHERE is_active = 1')
         template_count = cursor.fetchone()[0]
-        
+
         cursor.execute('SELECT COUNT(*) FROM appointments')
         appointment_count = cursor.fetchone()[0]
 
@@ -283,10 +297,10 @@ def init_workshop_data():
         print(f"   Job Templates: {template_count}")
         print(f"   Appointments: {appointment_count}")
         print(f"   Quotes: {quote_count}")
-        
+
         conn.close()
         return True
-        
+
     except sqlite3.Error as e:
         print(f"❌ Database error: {e}")
         return False
@@ -294,12 +308,13 @@ def init_workshop_data():
         print(f"❌ Unexpected error: {e}")
         return False
 
+
 if __name__ == '__main__':
     print("🚀 Workshop Data Initialization Script")
     print("=" * 50)
-    
+
     success = init_workshop_data()
-    
+
     if success:
         print("\n🎉 Workshop data initialized successfully!")
         print("You can now use the Workshop Diary and Job Sheet features.")

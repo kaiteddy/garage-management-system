@@ -7,15 +7,19 @@ Handles SMS notifications using Twilio API with template support
 import os
 import re
 from datetime import datetime
-from twilio.rest import Client
+
 import phonenumbers
-from phonenumbers import NumberParseException
 from dotenv import load_dotenv
+from phonenumbers import NumberParseException
+from twilio.rest import Client
 
 # Load environment variables from multiple possible locations
 load_dotenv()  # Current directory
-load_dotenv(os.path.join(os.path.dirname(__file__), '..', 'src', '.env'))  # src/.env
-load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))  # parent/.env
+load_dotenv(os.path.join(os.path.dirname(__file__),
+            '..', 'src', '.env'))  # src/.env
+load_dotenv(os.path.join(os.path.dirname(
+    __file__), '..', '.env'))  # parent/.env
+
 
 def format_date_for_display(date_string):
     """Convert date from various formats to DD-MM-YYYY format for display"""
@@ -71,7 +75,8 @@ def format_date_for_display(date_string):
                 if len(parts[0]) == 4:
                     # YYYY-MM-DD format
                     try:
-                        date_obj = datetime.strptime(str(date_string), '%Y-%m-%d')
+                        date_obj = datetime.strptime(
+                            str(date_string), '%Y-%m-%d')
                     except ValueError:
                         pass
                 elif len(parts[2]) == 4:
@@ -89,7 +94,8 @@ def format_date_for_display(date_string):
                 except ValueError:
                     try:
                         # Try YYYY/MM/DD format
-                        date_obj = datetime.strptime(str(date_string), '%Y/%m/%d')
+                        date_obj = datetime.strptime(
+                            str(date_string), '%Y/%m/%d')
                     except ValueError:
                         pass
         else:
@@ -108,6 +114,7 @@ def format_date_for_display(date_string):
 
     except Exception as e:
         return str(date_string)  # Return original if parsing fails
+
 
 class SMSService:
     def __init__(self):
@@ -136,8 +143,9 @@ class SMSService:
                 print(f"❌ Twilio client initialization failed: {e}")
         else:
             self.client = None
-            print("⚠️ Twilio credentials not configured or using placeholders. SMS service will run in demo mode.")
-    
+            print(
+                "⚠️ Twilio credentials not configured or using placeholders. SMS service will run in demo mode.")
+
     def validate_phone_number(self, phone_number, country_code='GB'):
         """
         Validate and format phone number
@@ -211,11 +219,13 @@ class SMSService:
         name = customer_name.strip()
 
         # Remove titles (Mr, Mrs, Ms, Dr, etc.)
-        name = re.sub(r'^(Mr\.?|Mrs\.?|Ms\.?|Miss\.?|Dr\.?|Prof\.?)\s+', '', name, flags=re.IGNORECASE)
+        name = re.sub(r'^(Mr\.?|Mrs\.?|Ms\.?|Miss\.?|Dr\.?|Prof\.?)\s+',
+                      '', name, flags=re.IGNORECASE)
 
         # Handle cases where name contains contact info (like "John Smith t: 123 m: 456 e: email")
         # Extract just the name part before any contact details
-        name_parts = re.split(r'\s+(?:t:|m:|e:|tel:|mobile:|email:)', name, flags=re.IGNORECASE)
+        name_parts = re.split(
+            r'\s+(?:t:|m:|e:|tel:|mobile:|email:)', name, flags=re.IGNORECASE)
         if name_parts:
             name = name_parts[0].strip()
 
@@ -272,12 +282,12 @@ class SMSService:
     def create_message_from_template(self, template_name, vehicle_info, customer_name=None):
         """
         Create SMS message from template
-        
+
         Args:
             template_name (str): Template name ('expired', 'critical', 'due_soon', 'reminder')
             vehicle_info (dict): Vehicle information
             customer_name (str): Customer name (optional)
-            
+
         Returns:
             str: Formatted SMS message
         """
@@ -302,9 +312,9 @@ Call Eli Motors: 0208 203 6449 to schedule your test.""",
 Please book your MOT test when convenient.
 Call Eli Motors: 0208 203 6449 for more information."""
         }
-        
+
         template = templates.get(template_name, templates['reminder'])
-        
+
         # Prepare customer greeting with intelligent name handling
         if customer_name and customer_name.strip():
             # Clean and format the customer name
@@ -315,7 +325,7 @@ Call Eli Motors: 0208 203 6449 for more information."""
                 customer_greeting = ""  # No greeting if name is unclear
         else:
             customer_greeting = ""  # No greeting if no name available
-        
+
         # Format the message
         try:
             # Ensure expiry date is formatted correctly
@@ -335,20 +345,20 @@ Call Eli Motors: 0208 203 6449 for more information."""
         except KeyError as e:
             print(f"Error formatting template: {e}")
             return f"MOT reminder for {vehicle_info.get('registration', 'your vehicle')}"
-    
+
     def determine_template_type(self, vehicle_info):
         """
         Determine which template to use based on vehicle MOT status
-        
+
         Args:
             vehicle_info (dict): Vehicle information
-            
+
         Returns:
             str: Template name
         """
         days_until_expiry = vehicle_info.get('days_until_expiry', 0)
         is_expired = vehicle_info.get('is_expired', False)
-        
+
         if is_expired:
             return 'expired'
         elif days_until_expiry <= 7:
@@ -357,16 +367,16 @@ Call Eli Motors: 0208 203 6449 for more information."""
             return 'due_soon'
         else:
             return 'reminder'
-    
+
     def send_sms(self, to_number, message, vehicle_registration=None):
         """
         Send SMS message
-        
+
         Args:
             to_number (str): Recipient phone number
             message (str): SMS message content
             vehicle_registration (str): Vehicle registration for logging
-            
+
         Returns:
             dict: Result with success status and details
         """
@@ -378,7 +388,7 @@ Call Eli Motors: 0208 203 6449 for more information."""
                 'error': f'Invalid phone number: {to_number}',
                 'message_sid': None
             }
-        
+
         # Check if Twilio client is available
         if not self.client:
             # Demo mode - just log the message
@@ -387,14 +397,14 @@ Call Eli Motors: 0208 203 6449 for more information."""
             print(f"Vehicle: {vehicle_registration or 'Unknown'}")
             print(f"Message: {message}")
             print("-" * 50)
-            
+
             return {
                 'success': True,
                 'error': None,
                 'message_sid': 'DEMO_' + datetime.now().strftime('%Y%m%d_%H%M%S'),
                 'demo_mode': True
             }
-        
+
         try:
             # Send SMS via Twilio (private system - no callback)
             message_obj = self.client.messages.create(
@@ -403,7 +413,8 @@ Call Eli Motors: 0208 203 6449 for more information."""
                 to=formatted_number
             )
 
-            print(f"✅ SMS sent to {formatted_number} for {vehicle_registration or 'vehicle'}")
+            print(
+                f"✅ SMS sent to {formatted_number} for {vehicle_registration or 'vehicle'}")
             print(f"   Message SID: {message_obj.sid}")
 
             return {
@@ -412,16 +423,16 @@ Call Eli Motors: 0208 203 6449 for more information."""
                 'message_sid': message_obj.sid,
                 'demo_mode': False
             }
-            
+
         except Exception as e:
             print(f"❌ Failed to send SMS to {formatted_number}: {str(e)}")
-            
+
             return {
                 'success': False,
                 'error': str(e),
                 'message_sid': None
             }
-    
+
     def send_mot_reminder(self, vehicle_info, mobile_number, customer_name=None):
         """
         Send MOT reminder SMS for a specific vehicle
@@ -435,7 +446,8 @@ Call Eli Motors: 0208 203 6449 for more information."""
             dict: Result with success status and details
         """
         # Check if we should send SMS based on data quality
-        validation = self.should_send_sms(vehicle_info, mobile_number, customer_name)
+        validation = self.should_send_sms(
+            vehicle_info, mobile_number, customer_name)
         if not validation['should_send']:
             return {
                 'success': False,
@@ -448,7 +460,8 @@ Call Eli Motors: 0208 203 6449 for more information."""
         template_type = self.determine_template_type(vehicle_info)
 
         # Create message from template
-        message = self.create_message_from_template(template_type, vehicle_info, customer_name)
+        message = self.create_message_from_template(
+            template_type, vehicle_info, customer_name)
 
         # Send SMS
         result = self.send_sms(
@@ -456,20 +469,20 @@ Call Eli Motors: 0208 203 6449 for more information."""
             message=message,
             vehicle_registration=vehicle_info.get('registration')
         )
-        
+
         # Add template info to result
         result['template_type'] = template_type
         result['customer_name'] = customer_name
-        
+
         return result
-    
+
     def send_bulk_reminders(self, vehicles_with_contacts):
         """
         Send bulk MOT reminders
-        
+
         Args:
             vehicles_with_contacts (list): List of dicts with vehicle_info, mobile_number, customer_name
-            
+
         Returns:
             dict: Summary of bulk send results
         """
@@ -480,33 +493,36 @@ Call Eli Motors: 0208 203 6449 for more information."""
             'errors': [],
             'details': []
         }
-        
+
         for item in vehicles_with_contacts:
             vehicle_info = item.get('vehicle_info')
             mobile_number = item.get('mobile_number')
             customer_name = item.get('customer_name')
-            
+
             if not vehicle_info or not mobile_number:
                 results['failed'] += 1
-                results['errors'].append(f"Missing data for {vehicle_info.get('registration', 'unknown vehicle') if vehicle_info else 'unknown vehicle'}")
+                results['errors'].append(
+                    f"Missing data for {vehicle_info.get('registration', 'unknown vehicle') if vehicle_info else 'unknown vehicle'}")
                 continue
-            
-            result = self.send_mot_reminder(vehicle_info, mobile_number, customer_name)
-            
+
+            result = self.send_mot_reminder(
+                vehicle_info, mobile_number, customer_name)
+
             if result['success']:
                 results['sent'] += 1
             else:
                 results['failed'] += 1
-                results['errors'].append(f"{vehicle_info.get('registration', 'unknown')}: {result['error']}")
-            
+                results['errors'].append(
+                    f"{vehicle_info.get('registration', 'unknown')}: {result['error']}")
+
             results['details'].append(result)
-        
+
         return results
-    
+
     def get_service_status(self):
         """
         Get SMS service status
-        
+
         Returns:
             dict: Service status information
         """
@@ -516,5 +532,5 @@ Call Eli Motors: 0208 203 6449 for more information."""
             'from_number': self.from_number if self.from_number else 'Not configured',
             'account_sid': self.account_sid[:8] + '...' if self.account_sid else 'Not configured'
         }
-        
+
         return status

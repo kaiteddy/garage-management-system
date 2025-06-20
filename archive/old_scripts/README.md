@@ -5,6 +5,7 @@ A comprehensive, modern garage management system built with Python Flask, featur
 ## 🌟 Key Features
 
 ### 🎯 **Unified Management Interface**
+
 - **Single Dashboard**: All garage operations in one unified interface
 - **Modern UI**: Apple-inspired design with blue and white color scheme
 - **Responsive Layout**: Works perfectly on desktop, tablet, and mobile
@@ -12,6 +13,7 @@ A comprehensive, modern garage management system built with Python Flask, featur
 - **Professional Design**: Clean, minimalistic interface with proper spacing
 
 ### 🔔 **MOT Reminder System**
+
 - **DVSA API Integration**: Real-time MOT data from official DVLA sources
 - **SMS Notifications**: Automated reminders via Twilio integration
 - **Bulk Processing**: Handle hundreds of vehicles efficiently
@@ -24,6 +26,7 @@ A comprehensive, modern garage management system built with Python Flask, featur
 - **Customer Integration**: Mobile numbers and names pulled from customer records
 
 ### 👥 **Customer & Vehicle Management**
+
 - **Complete Customer Database**: Detailed customer profiles and history
 - **Vehicle Tracking**: Comprehensive vehicle records with MOT integration
 - **Service History**: Track all jobs, invoices, and maintenance
@@ -32,6 +35,7 @@ A comprehensive, modern garage management system built with Python Flask, featur
 - **Import/Export**: CSV bulk operations with validation
 
 ### 📊 **Business Intelligence Dashboard**
+
 - **Key Metrics**: Customer count, vehicle tracking, revenue monitoring
 - **Quick Actions**: Fast access to common operations
 - **Activity Overview**: Recent jobs, invoices, and system activity
@@ -39,6 +43,7 @@ A comprehensive, modern garage management system built with Python Flask, featur
 - **Modern Cards**: Clean, professional data presentation
 
 ### 🔧 **Advanced Data Management**
+
 - **CSV Import/Export**: Bulk data operations with intelligent validation
 - **Google Drive Integration**: Seamless cloud data synchronization
 - **Data Validation**: Intelligent error detection and correction
@@ -46,6 +51,7 @@ A comprehensive, modern garage management system built with Python Flask, featur
 - **Real-time Linking**: Automatic customer-vehicle-job connections
 
 ### ⚙️ **Comprehensive Settings System**
+
 - **MOT Configuration**: DVSA API setup and SMS service configuration
 - **System Preferences**: Date formats, UI themes, and display options
 - **Garage Information**: Business details and operating hours
@@ -55,23 +61,27 @@ A comprehensive, modern garage management system built with Python Flask, featur
 ## 🛠️ Technology Stack
 
 ### **Backend**
+
 - **Flask**: Python web framework with modular route structure
 - **SQLite**: Lightweight, reliable database with automatic initialization
 - **Python 3.7+**: Modern Python with type hints and async support
 
 ### **Frontend**
+
 - **HTML5**: Semantic markup with modern standards
 - **CSS3**: Apple San Francisco font family, CSS Grid, Flexbox
 - **JavaScript**: ES6+ with modern DOM manipulation
 - **Responsive Design**: Mobile-first approach with breakpoints
 
 ### **Integrations**
+
 - **DVSA API**: Official UK government MOT data integration
 - **Twilio SMS**: Professional SMS notification service
 - **Google Drive API**: Cloud storage and data synchronization
 - **Font Awesome**: Professional icon library
 
 ### **Design System**
+
 - **Apple Design Language**: Consistent with iOS/macOS aesthetics
 - **Blue & White Theme**: Professional color scheme
 - **Typography**: San Francisco font family (SF Pro, SF Compact, SF Mono)
@@ -86,6 +96,7 @@ A comprehensive, modern garage management system built with Python Flask, featur
 ## 🚀 Quick Start
 
 ### **1. Clone & Setup**
+
 ```bash
 git clone https://github.com/kaiteddy/garage-management-system.git
 cd garage-management-system
@@ -99,24 +110,28 @@ pip install -r requirements.txt
 ```
 
 ### **2. Initialize Database**
+
 ```bash
 # Initialize the database with sample data
 python src/init_database.py
 ```
 
 ### **3. Run the Application**
+
 ```bash
 # Start the main application
 python src/main.py
 ```
 
 ### **4. Access the System**
+
 - **Main Application**: `http://localhost:5001`
 - **MOT Reminders**: Click "MOT Reminders" in the sidebar navigation (fully integrated)
 - **Upload Interface**: `http://localhost:5001/upload`
 - **Google Drive Sync**: `http://localhost:5001/google-drive`
 
 ### **5. Optional: Configure Integrations**
+
 ```bash
 # Set up Google Drive integration (optional)
 python setup_google_drive.py
@@ -153,25 +168,31 @@ The application uses SQLite database which is automatically created on first run
 ## 📊 API Endpoints
 
 ### Dashboard
+
 - `GET /api/dashboard` - Get dashboard statistics
 
 ### Customers
+
 - `GET /api/customers` - Get paginated customer list
 - `GET /api/customers/<id>` - Get customer details with vehicles and history
 
 ### Vehicles
+
 - `GET /api/vehicles` - Get paginated vehicle list
 - `GET /api/vehicles/<id>` - Get vehicle details with service history
 
 ### Jobs
+
 - `GET /api/jobs` - Get all jobs
 - `POST /api/jobs` - Create new job
 
 ### Invoices
+
 - `GET /api/invoices` - Get all invoices
 - `POST /api/invoices` - Create new invoice
 
 ### Health Check
+
 - `GET /api/health` - Check system health and database connection
 
 ## 🎨 Design Features
@@ -195,17 +216,20 @@ The application uses SQLite database which is automatically created on first run
 The application can be deployed to various platforms:
 
 ### Local Development
+
 ```bash
 python src/main.py
 ```
 
 ### Production Deployment
+
 1. Set environment variables for production
 2. Use a production WSGI server like Gunicorn
 3. Configure reverse proxy (nginx)
 4. Set up SSL certificates
 
 ### Docker Deployment
+
 ```dockerfile
 FROM python:3.9-slim
 WORKDIR /app
@@ -257,4 +281,3 @@ For support, please open an issue on GitHub or contact the development team.
 ---
 
 **Built with ❤️ for automotive service businesses**
-

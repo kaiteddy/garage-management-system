@@ -3,15 +3,16 @@
 Demo server for the Garage Management System Modern GUI
 Showcases the beautiful interface without complex dependencies
 """
-import os
 import json
+import os
 from datetime import datetime, timedelta
-from flask import Flask, render_template, jsonify, request, send_from_directory
+
+from flask import Flask, jsonify, render_template, request, send_from_directory
 
 # Create Flask app
-app = Flask(__name__, 
-           template_folder='src/templates', 
-           static_folder='src/static')
+app = Flask(__name__,
+            template_folder='src/templates',
+            static_folder='src/static')
 app.config['SECRET_KEY'] = 'demo-secret-key'
 
 # Mock data for demonstration
@@ -85,20 +86,25 @@ MOCK_CUSTOMER_STATS = {
 }
 
 # Routes
+
+
 @app.route('/')
 def index():
     """Main dashboard page."""
     return render_template('dashboard/modern.html')
+
 
 @app.route('/dashboard')
 def dashboard():
     """Dashboard page."""
     return render_template('dashboard/modern.html')
 
+
 @app.route('/customers')
 def customers():
     """Customers page."""
     return render_template('customers/modern.html')
+
 
 @app.route('/demo')
 def demo():
@@ -106,6 +112,8 @@ def demo():
     return send_from_directory('.', 'demo_modern_gui.html')
 
 # API Routes for demo data
+
+
 @app.route('/api/dashboard/metrics')
 def dashboard_metrics():
     """Get dashboard metrics."""
@@ -113,6 +121,7 @@ def dashboard_metrics():
         'status': 'success',
         'data': MOCK_DASHBOARD_DATA
     })
+
 
 @app.route('/api/dashboard/activity')
 def dashboard_activity():
@@ -142,11 +151,12 @@ def dashboard_activity():
             'created_at': (datetime.now() - timedelta(hours=5)).isoformat()
         }
     ]
-    
+
     return jsonify({
         'status': 'success',
         'data': mock_activity
     })
+
 
 @app.route('/api/dashboard/schedule')
 def dashboard_schedule():
@@ -177,11 +187,12 @@ def dashboard_schedule():
             'status': 'scheduled'
         }
     ]
-    
+
     return jsonify({
         'status': 'success',
         'data': mock_schedule
     })
+
 
 @app.route('/api/dashboard/upcoming-mots')
 def upcoming_mots():
@@ -202,21 +213,22 @@ def upcoming_mots():
             'days_until_expiry': 12
         }
     ]
-    
+
     return jsonify({
         'status': 'success',
         'data': mock_mots
     })
 
+
 @app.route('/api/dashboard/revenue-chart')
 def revenue_chart():
     """Get revenue chart data."""
     days = int(request.args.get('days', 30))
-    
+
     # Generate mock chart data
     labels = []
     values = []
-    
+
     for i in range(days):
         date = datetime.now() - timedelta(days=days-i-1)
         labels.append(date.strftime('%Y-%m-%d'))
@@ -224,7 +236,7 @@ def revenue_chart():
         base_value = 800 + (i * 10)
         variation = (i % 7) * 50  # Weekly pattern
         values.append(base_value + variation)
-    
+
     return jsonify({
         'status': 'success',
         'data': {
@@ -233,29 +245,30 @@ def revenue_chart():
         }
     })
 
+
 @app.route('/api/customers')
 def api_customers():
     """Get customers list."""
     page = int(request.args.get('page', 1))
     per_page = int(request.args.get('per_page', 25))
     search = request.args.get('search', '')
-    
+
     # Filter customers based on search
     filtered_customers = MOCK_CUSTOMERS
     if search:
         search_lower = search.lower()
         filtered_customers = [
-            c for c in MOCK_CUSTOMERS 
-            if search_lower in c['first_name'].lower() 
+            c for c in MOCK_CUSTOMERS
+            if search_lower in c['first_name'].lower()
             or search_lower in c['last_name'].lower()
             or search_lower in c['email'].lower()
         ]
-    
+
     # Pagination
     start = (page - 1) * per_page
     end = start + per_page
     paginated_customers = filtered_customers[start:end]
-    
+
     return jsonify({
         'status': 'success',
         'data': {
@@ -267,6 +280,7 @@ def api_customers():
         }
     })
 
+
 @app.route('/api/customers/stats')
 def customers_stats():
     """Get customer statistics."""
@@ -275,10 +289,12 @@ def customers_stats():
         'data': MOCK_CUSTOMER_STATS
     })
 
+
 @app.route('/api/customers/<int:customer_id>')
 def customer_detail(customer_id):
     """Get customer details."""
-    customer = next((c for c in MOCK_CUSTOMERS if c['id'] == customer_id), None)
+    customer = next(
+        (c for c in MOCK_CUSTOMERS if c['id'] == customer_id), None)
 
     if not customer:
         return jsonify({
@@ -299,6 +315,7 @@ def customer_detail(customer_id):
         'status': 'success',
         'data': customer_detail
     })
+
 
 @app.route('/api/monitoring/health')
 def monitoring_health():
@@ -328,6 +345,8 @@ def monitoring_health():
     })
 
 # Template filters
+
+
 @app.template_filter('currency')
 def currency_filter(value):
     """Format currency."""
@@ -335,6 +354,7 @@ def currency_filter(value):
         return f"£{float(value):,.2f}"
     except (ValueError, TypeError):
         return "£0.00"
+
 
 @app.template_filter('datetime')
 def datetime_filter(value, format='%Y-%m-%d %H:%M'):
@@ -351,6 +371,8 @@ def datetime_filter(value, format='%Y-%m-%d %H:%M'):
     return value
 
 # Error handlers
+
+
 @app.errorhandler(404)
 def not_found(error):
     """Handle 404 errors."""
@@ -359,6 +381,7 @@ def not_found(error):
     <p>The page you're looking for doesn't exist.</p>
     <p><a href="/">Go to Dashboard</a> | <a href="/demo">View Demo</a></p>
     """, 404
+
 
 if __name__ == '__main__':
     print("""

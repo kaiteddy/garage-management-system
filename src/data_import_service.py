@@ -4,20 +4,22 @@ Data Import Service for Garage Management System
 Handles importing real customer, vehicle, and job data from CSV and Excel files
 """
 
-import pandas as pd
 import json
+import logging
 import os
 from pathlib import Path
-from typing import Dict, List, Any, Optional
-import logging
+from typing import Any, Dict, List, Optional
+
+import pandas as pd
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 class DataImportService:
     """Service for importing real data into the garage management system"""
-    
+
     def __init__(self, data_dir: str = "."):
         self.data_dir = Path(data_dir)
         self.imported_data = {
@@ -27,7 +29,7 @@ class DataImportService:
             "invoices": [],
             "documents": []
         }
-    
+
     def import_eli_motors_customers(self, file_path: str = "eli_motors_customers_sample.csv") -> List[Dict]:
         """Import customer data from ELI MOTORS CSV file"""
         try:
@@ -35,10 +37,10 @@ class DataImportService:
             if not file_path.exists():
                 logger.warning(f"Customer file not found: {file_path}")
                 return []
-            
+
             df = pd.read_csv(file_path)
             customers = []
-            
+
             for _, row in df.iterrows():
                 customer = {
                     "id": len(customers) + 1,
@@ -58,15 +60,15 @@ class DataImportService:
                     "reminders_allowed": bool(row.get('remindersAllowed', 1))
                 }
                 customers.append(customer)
-            
+
             self.imported_data["customers"] = customers
             logger.info(f"Imported {len(customers)} customers from ELI MOTORS")
             return customers
-            
+
         except Exception as e:
             logger.error(f"Error importing customers: {e}")
             return []
-    
+
     def import_eli_motors_vehicles(self, file_path: str = "eli_motors_vehicles_sample.csv") -> List[Dict]:
         """Import vehicle data from ELI MOTORS CSV file"""
         try:
@@ -74,10 +76,10 @@ class DataImportService:
             if not file_path.exists():
                 logger.warning(f"Vehicle file not found: {file_path}")
                 return []
-            
+
             df = pd.read_csv(file_path)
             vehicles = []
-            
+
             for _, row in df.iterrows():
                 vehicle = {
                     "id": len(vehicles) + 1,
@@ -99,15 +101,15 @@ class DataImportService:
                     "notes": row.get('Notes', '')
                 }
                 vehicles.append(vehicle)
-            
+
             self.imported_data["vehicles"] = vehicles
             logger.info(f"Imported {len(vehicles)} vehicles from ELI MOTORS")
             return vehicles
-            
+
         except Exception as e:
             logger.error(f"Error importing vehicles: {e}")
             return []
-    
+
     def import_eli_motors_documents(self, file_path: str = "eli_motors_documents_sample.csv") -> List[Dict]:
         """Import job/invoice documents from ELI MOTORS CSV file"""
         try:
@@ -115,14 +117,14 @@ class DataImportService:
             if not file_path.exists():
                 logger.warning(f"Documents file not found: {file_path}")
                 return []
-            
+
             df = pd.read_csv(file_path)
             jobs = []
             invoices = []
-            
+
             for _, row in df.iterrows():
                 doc_type = row.get('Type', '').lower()
-                
+
                 if 'invoice' in doc_type or 'job' in doc_type:
                     # Create job record
                     job = {
@@ -141,7 +143,7 @@ class DataImportService:
                         "notes": row.get('Notes', '')
                     }
                     jobs.append(job)
-                    
+
                     # Create invoice record if it's an invoice
                     if 'invoice' in doc_type:
                         invoice = {
@@ -158,16 +160,17 @@ class DataImportService:
                             "subtotal": job["total_amount"] - job["vat_amount"]
                         }
                         invoices.append(invoice)
-            
+
             self.imported_data["jobs"] = jobs
             self.imported_data["invoices"] = invoices
-            logger.info(f"Imported {len(jobs)} jobs and {len(invoices)} invoices from ELI MOTORS")
+            logger.info(
+                f"Imported {len(jobs)} jobs and {len(invoices)} invoices from ELI MOTORS")
             return {"jobs": jobs, "invoices": invoices}
-            
+
         except Exception as e:
             logger.error(f"Error importing documents: {e}")
             return {"jobs": [], "invoices": []}
-    
+
     def import_ga4_data(self, data_dir: str = "ga4_complete_data") -> Dict[str, List]:
         """Import data from GA4 complete data Excel files"""
         try:
@@ -175,9 +178,9 @@ class DataImportService:
             if not ga4_dir.exists():
                 logger.warning(f"GA4 data directory not found: {ga4_dir}")
                 return {}
-            
+
             results = {}
-            
+
             # Import customers from Excel
             customers_file = ga4_dir / "customers.xlsx"
             if customers_file.exists():
@@ -185,7 +188,7 @@ class DataImportService:
                 customers = self._process_ga4_customers(df)
                 results["customers"] = customers
                 self.imported_data["customers"].extend(customers)
-            
+
             # Import vehicles from Excel
             vehicles_file = ga4_dir / "vehicles.xlsx"
             if vehicles_file.exists():
@@ -193,7 +196,7 @@ class DataImportService:
                 vehicles = self._process_ga4_vehicles(df)
                 results["vehicles"] = vehicles
                 self.imported_data["vehicles"].extend(vehicles)
-            
+
             # Import documents from Excel
             documents_file = ga4_dir / "documents.xlsx"
             if documents_file.exists():
@@ -202,18 +205,18 @@ class DataImportService:
                 results.update(docs)
                 self.imported_data["jobs"].extend(docs.get("jobs", []))
                 self.imported_data["invoices"].extend(docs.get("invoices", []))
-            
+
             logger.info(f"Imported GA4 data: {len(results)} datasets")
             return results
-            
+
         except Exception as e:
             logger.error(f"Error importing GA4 data: {e}")
             return {}
-    
+
     def get_imported_data(self) -> Dict[str, List]:
         """Get all imported data"""
         return self.imported_data
-    
+
     def export_to_json(self, output_file: str = "imported_data.json") -> bool:
         """Export imported data to JSON file"""
         try:
@@ -225,7 +228,7 @@ class DataImportService:
         except Exception as e:
             logger.error(f"Error exporting data: {e}")
             return False
-    
+
     # Helper methods
     def _build_customer_name(self, row) -> str:
         """Build customer name from row data"""
@@ -233,13 +236,13 @@ class DataImportService:
         forename = row.get('nameForename', '')
         surname = row.get('nameSurname', '')
         company = row.get('nameCompany', '')
-        
+
         if company:
             return company
-        
+
         name_parts = [title, forename, surname]
         return ' '.join([part for part in name_parts if part]).strip()
-    
+
     def _build_address(self, row) -> str:
         """Build address from row data"""
         parts = [
@@ -251,19 +254,19 @@ class DataImportService:
             row.get('addressPostCode', '')
         ]
         return ', '.join([part for part in parts if part]).strip()
-    
+
     def _clean_email(self, email: str) -> str:
         """Clean and validate email"""
         if pd.isna(email) or not email:
             return ""
         return str(email).strip().lower()
-    
+
     def _clean_phone(self, phone: str) -> str:
         """Clean phone number"""
         if pd.isna(phone) or not phone:
             return ""
         return str(phone).strip()
-    
+
     def _parse_date(self, date_str: str) -> str:
         """Parse date string to ISO format"""
         if pd.isna(date_str) or not date_str:
@@ -281,28 +284,28 @@ class DataImportService:
             return str(date_str)
         except:
             return ""
-    
+
     def _parse_year(self, year_str: str) -> int:
         """Parse year from string"""
         try:
             return int(float(str(year_str)))
         except:
             return 0
-    
+
     def _parse_int(self, value) -> int:
         """Parse integer from value"""
         try:
             return int(float(str(value)))
         except:
             return 0
-    
+
     def _parse_float(self, value) -> float:
         """Parse float from value"""
         try:
             return float(str(value))
         except:
             return 0.0
-    
+
     def _link_to_customer(self, row) -> int:
         """Link record to customer by matching name or other criteria"""
         # Simple linking - in real implementation would use more sophisticated matching
@@ -311,7 +314,7 @@ class DataImportService:
             if customer["name"].lower() == customer_name.lower():
                 return customer["id"]
         return 1  # Default to first customer if no match
-    
+
     def _determine_job_status(self, row) -> str:
         """Determine job status from row data"""
         if row.get('Completed', False):
@@ -320,7 +323,7 @@ class DataImportService:
             return "IN_PROGRESS"
         else:
             return "PENDING"
-    
+
     def _calculate_due_date(self, date_str: str) -> str:
         """Calculate due date (30 days from invoice date)"""
         try:
@@ -329,7 +332,7 @@ class DataImportService:
             return due_dt.strftime('%Y-%m-%d')
         except:
             return date_str
-    
+
     def _process_ga4_customers(self, df: pd.DataFrame) -> List[Dict]:
         """Process GA4 customers data"""
         customers = []
@@ -347,7 +350,7 @@ class DataImportService:
             }
             customers.append(customer)
         return customers
-    
+
     def _process_ga4_vehicles(self, df: pd.DataFrame) -> List[Dict]:
         """Process GA4 vehicles data"""
         vehicles = []
@@ -365,12 +368,12 @@ class DataImportService:
             }
             vehicles.append(vehicle)
         return vehicles
-    
+
     def _process_ga4_documents(self, df: pd.DataFrame) -> Dict[str, List]:
         """Process GA4 documents data"""
         jobs = []
         invoices = []
-        
+
         for _, row in df.iterrows():
             job = {
                 "id": len(self.imported_data["jobs"]) + len(jobs) + 1,
@@ -382,24 +385,25 @@ class DataImportService:
                 "total_amount": self._parse_float(row.get('Total', 0))
             }
             jobs.append(job)
-        
+
         return {"jobs": jobs, "invoices": invoices}
+
 
 if __name__ == "__main__":
     # Test the import service
     service = DataImportService()
-    
+
     # Import ELI MOTORS data
     customers = service.import_eli_motors_customers()
     vehicles = service.import_eli_motors_vehicles()
     documents = service.import_eli_motors_documents()
-    
+
     # Import GA4 data
     ga4_data = service.import_ga4_data()
-    
+
     # Export to JSON
     service.export_to_json()
-    
+
     print(f"Import complete:")
     print(f"- Customers: {len(service.imported_data['customers'])}")
     print(f"- Vehicles: {len(service.imported_data['vehicles'])}")

@@ -6,15 +6,19 @@ Handles dashboard statistics and overview data
 import os
 import sqlite3
 from datetime import datetime
+
 from flask import Blueprint, jsonify
 
 dashboard_api_bp = Blueprint('dashboard_api', __name__)
 
+
 def get_db_path():
     """Get database path"""
     # Get the project root directory (3 levels up from src/routes/api/)
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    project_root = os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.dirname(__file__))))
     return os.path.join(project_root, 'instance', 'garage.db')
+
 
 @dashboard_api_bp.route('/api/stats')
 def get_stats():
@@ -39,14 +43,17 @@ def get_stats():
         invoices_count = cursor.fetchone()[0]
 
         # Calculate revenue from paid invoices
-        cursor.execute('SELECT SUM(total_amount) FROM invoices WHERE status = "PAID"')
+        cursor.execute(
+            'SELECT SUM(total_amount) FROM invoices WHERE status = "PAID"')
         total_revenue = cursor.fetchone()[0] or 0
 
         # Get linking statistics
-        cursor.execute('SELECT COUNT(*) FROM vehicles WHERE customer_id IS NOT NULL')
+        cursor.execute(
+            'SELECT COUNT(*) FROM vehicles WHERE customer_id IS NOT NULL')
         linked_vehicles = cursor.fetchone()[0]
 
-        cursor.execute('SELECT COUNT(*) FROM jobs WHERE customer_id IS NOT NULL')
+        cursor.execute(
+            'SELECT COUNT(*) FROM jobs WHERE customer_id IS NOT NULL')
         linked_jobs = cursor.fetchone()[0]
 
         conn.close()
@@ -72,6 +79,7 @@ def get_stats():
             'success': False,
             'error': str(e)
         }), 500
+
 
 @dashboard_api_bp.route('/api/recent-activity')
 def get_recent_activity():
@@ -138,6 +146,7 @@ def get_recent_activity():
             'error': str(e),
             'activities': []
         }), 500
+
 
 @dashboard_api_bp.route('/api/dashboard')
 def get_dashboard_data():
@@ -216,6 +225,7 @@ def get_dashboard_data():
             'error': str(e)
         }), 500
 
+
 @dashboard_api_bp.route('/api/health')
 def health_check():
     """Health check endpoint"""
@@ -223,13 +233,13 @@ def health_check():
         db_path = get_db_path()
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         # Simple query to test database connection
         cursor.execute('SELECT COUNT(*) FROM customers')
         customer_count = cursor.fetchone()[0]
-        
+
         conn.close()
-        
+
         return jsonify({
             'status': 'healthy',
             'database': 'connected',

@@ -7,11 +7,12 @@ Imports and runs the modular Flask application
 import os
 import sys
 
+from app import app
+
 # Add the src directory to Python path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 # Import the modular application
-from app import app
 
 if __name__ == '__main__':
     print("🚀 Starting Integrated Garage Management System...")
@@ -24,13 +25,15 @@ if __name__ == '__main__':
 # Import and register MOT blueprint
 try:
     # Import from the mot_reminder directory
-    mot_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'mot_reminder')
+    mot_path = os.path.join(os.path.dirname(
+        os.path.dirname(__file__)), 'mot_reminder')
     if mot_path not in sys.path:
         sys.path.insert(0, mot_path)
 
     # Import the MOT blueprint from the mot_reminder app
     import importlib.util
-    spec = importlib.util.spec_from_file_location("mot_app", os.path.join(mot_path, "app.py"))
+    spec = importlib.util.spec_from_file_location(
+        "mot_app", os.path.join(mot_path, "app.py"))
     mot_app = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mot_app)
 
@@ -65,11 +68,12 @@ except Exception as e:
 # Database path - use absolute path for deployment
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'garage.db')
 
+
 def format_date_for_display(date_string):
     """Convert date from YYYY-MM-DD to DD-MM-YYYY format for display"""
     if not date_string or date_string == '-' or date_string == '':
         return '-'
-    
+
     try:
         # Parse the date string
         if '-' in date_string:
@@ -80,11 +84,12 @@ def format_date_for_display(date_string):
             date_obj = datetime.strptime(date_string, '%m/%d/%Y')
         else:
             return date_string  # Return as-is if format is unrecognized
-        
+
         # Format as DD-MM-YYYY
         return date_obj.strftime('%d-%m-%Y')
     except ValueError:
         return date_string  # Return original if parsing fails
+
 
 def init_db():
     """Initialize database with sample data if it doesn't exist"""
@@ -202,7 +207,7 @@ def init_db():
                 FOREIGN KEY (vehicle_id) REFERENCES vehicles (id)
             )
         ''')
-        
+
         conn.commit()
         conn.close()
         return True
@@ -210,12 +215,13 @@ def init_db():
         print(f"Database initialization error: {e}")
         return False
 
+
 def get_db_connection():
     """Get database connection with error handling"""
     try:
         if not os.path.exists(DB_PATH):
             init_db()
-        
+
         conn = sqlite3.connect(DB_PATH)
         conn.row_factory = sqlite3.Row
         return conn
@@ -223,9 +229,11 @@ def get_db_connection():
         print(f"Database connection error: {e}")
         return None
 
+
 @app.route('/')
 def index():
     return send_from_directory(app.static_folder, 'index.html')
+
 
 @app.route('/health')
 def health_check():
@@ -242,7 +250,8 @@ def health_check():
             db_status = "unhealthy"
 
         # Check if MOT system is available
-        mot_status = "available" if 'mot_bp' in [bp.name for bp in app.blueprints.values()] else "unavailable"
+        mot_status = "available" if 'mot_bp' in [
+            bp.name for bp in app.blueprints.values()] else "unavailable"
 
         status = {
             "status": "healthy" if db_status == "healthy" else "unhealthy",
@@ -262,20 +271,22 @@ def health_check():
             "error": str(e)
         }), 503
 
+
 @app.route('/test')
 def test():
     return "<h1>Test Route Working</h1><script>alert('Test route JavaScript');</script>"
+
 
 @app.route('/legacy')
 def legacy():
     return send_from_directory(app.static_folder, 'index.html')
 
 
-
 @app.route('/modern')
 def modern_dashboard():
     from flask import render_template
     return render_template('dashboard/modern.html')
+
 
 @app.route('/mot-dashboard')
 def mot_dashboard():
@@ -285,6 +296,7 @@ def mot_dashboard():
         print(f"Error rendering MOT dashboard: {e}")
         return f"<h1>MOT Dashboard</h1><p>Template error: {e}</p>", 500
 
+
 @app.route('/sms-centre')
 def sms_centre():
     try:
@@ -293,30 +305,32 @@ def sms_centre():
         print(f"Error rendering SMS centre: {e}")
         return f"<h1>SMS Centre</h1><p>Template error: {e}</p>", 500
 
+
 @app.route('/api/dashboard')
 def dashboard():
     try:
         conn = get_db_connection()
         if not conn:
             return jsonify({'error': 'Database connection failed'}), 500
-        
+
         cursor = conn.cursor()
-        
+
         # Get counts
         cursor.execute("SELECT COUNT(*) FROM customers")
         customer_count = cursor.fetchone()[0]
-        
+
         cursor.execute("SELECT COUNT(*) FROM vehicles")
         vehicle_count = cursor.fetchone()[0]
-        
-        cursor.execute("SELECT SUM(amount) FROM invoices WHERE status = 'PAID'")
+
+        cursor.execute(
+            "SELECT SUM(amount) FROM invoices WHERE status = 'PAID'")
         total_revenue = cursor.fetchone()[0] or 0
-        
+
         cursor.execute("SELECT COUNT(*) FROM invoices")
         document_count = cursor.fetchone()[0]
-        
+
         conn.close()
-        
+
         return jsonify({
             'success': True,
             'stats': {
@@ -330,9 +344,12 @@ def dashboard():
         return jsonify({'error': str(e)}), 500
 
 # Add alias for /api/stats (frontend expects this endpoint)
+
+
 @app.route('/api/stats')
 def stats():
     return dashboard()
+
 
 @app.route('/api/customers')
 def get_customers():
@@ -340,13 +357,13 @@ def get_customers():
         conn = get_db_connection()
         if not conn:
             return jsonify({'error': 'Database connection failed'}), 500
-        
+
         page = int(request.args.get('page', 1))
         per_page = int(request.args.get('per_page', 50))
         search = request.args.get('search', '')
-        
+
         cursor = conn.cursor()
-        
+
         # Build query with search
         base_query = '''
             SELECT c.*, 
@@ -357,26 +374,26 @@ def get_customers():
             LEFT JOIN vehicles v ON c.id = v.customer_id
             LEFT JOIN invoices i ON c.id = i.customer_id
         '''
-        
+
         if search:
             base_query += " WHERE c.name LIKE ? OR c.company LIKE ? OR c.account_number LIKE ?"
             search_param = f'%{search}%'
             params = [search_param, search_param, search_param]
         else:
             params = []
-        
+
         base_query += " GROUP BY c.id ORDER BY c.name"
-        
+
         # Get total count
         count_query = f"SELECT COUNT(*) FROM ({base_query}) as subquery"
         cursor.execute(count_query, params)
         total = cursor.fetchone()[0]
-        
+
         # Get paginated results
         offset = (page - 1) * per_page
         paginated_query = f"{base_query} LIMIT ? OFFSET ?"
         cursor.execute(paginated_query, params + [per_page, offset])
-        
+
         customers = []
         for row in cursor.fetchall():
             customers.append({
@@ -392,9 +409,9 @@ def get_customers():
                 'document_count': row['document_count'],
                 'last_invoice': format_date_for_display(row['last_invoice'])
             })
-        
+
         conn.close()
-        
+
         return jsonify({
             'success': True,
             'customers': customers,
@@ -406,19 +423,20 @@ def get_customers():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 @app.route('/api/vehicles')
 def get_vehicles():
     try:
         conn = get_db_connection()
         if not conn:
             return jsonify({'error': 'Database connection failed'}), 500
-        
+
         page = int(request.args.get('page', 1))
         per_page = int(request.args.get('per_page', 50))
         search = request.args.get('search', '')
-        
+
         cursor = conn.cursor()
-        
+
         # Build query with search
         base_query = '''
             SELECT v.*, c.name as customer_name, c.company as customer_company,
@@ -427,26 +445,26 @@ def get_vehicles():
             LEFT JOIN customers c ON v.customer_id = c.id
             LEFT JOIN jobs j ON v.id = j.vehicle_id
         '''
-        
+
         if search:
             base_query += " WHERE v.registration LIKE ? OR v.make LIKE ? OR v.model LIKE ?"
             search_param = f'%{search}%'
             params = [search_param, search_param, search_param]
         else:
             params = []
-        
+
         base_query += " GROUP BY v.id ORDER BY v.registration"
-        
+
         # Get total count
         count_query = f"SELECT COUNT(*) FROM ({base_query}) as subquery"
         cursor.execute(count_query, params)
         total = cursor.fetchone()[0]
-        
+
         # Get paginated results
         offset = (page - 1) * per_page
         paginated_query = f"{base_query} LIMIT ? OFFSET ?"
         cursor.execute(paginated_query, params + [per_page, offset])
-        
+
         vehicles = []
         for row in cursor.fetchall():
             vehicles.append({
@@ -462,9 +480,9 @@ def get_vehicles():
                 'customer_company': row['customer_company'],
                 'last_service': format_date_for_display(row['last_service'])
             })
-        
+
         conn.close()
-        
+
         return jsonify({
             'success': True,
             'vehicles': vehicles,
@@ -476,13 +494,14 @@ def get_vehicles():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 @app.route('/api/jobs')
 def get_jobs():
     try:
         conn = get_db_connection()
         if not conn:
             return jsonify({'error': 'Database connection failed'}), 500
-        
+
         cursor = conn.cursor()
         cursor.execute('''
             SELECT j.*, v.registration, c.name as customer_name, c.company as customer_company
@@ -491,7 +510,7 @@ def get_jobs():
             LEFT JOIN customers c ON j.customer_id = c.id
             ORDER BY j.created_date DESC
         ''')
-        
+
         jobs = []
         for row in cursor.fetchall():
             jobs.append({
@@ -505,7 +524,7 @@ def get_jobs():
                 'total_amount': row['total_amount'],
                 'created_date': format_date_for_display(row['created_date'])
             })
-        
+
         conn.close()
         return jsonify({
             'success': True,
@@ -514,13 +533,14 @@ def get_jobs():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 @app.route('/api/invoices')
 def get_invoices():
     try:
         conn = get_db_connection()
         if not conn:
             return jsonify({'error': 'Database connection failed'}), 500
-        
+
         cursor = conn.cursor()
         cursor.execute('''
             SELECT i.*, v.registration, c.name as customer_name, c.company as customer_company,
@@ -531,7 +551,7 @@ def get_invoices():
             LEFT JOIN jobs j ON i.job_id = j.id
             ORDER BY i.created_date DESC
         ''')
-        
+
         invoices = []
         for row in cursor.fetchall():
             invoices.append({
@@ -545,7 +565,7 @@ def get_invoices():
                 'status': row['status'],
                 'created_date': format_date_for_display(row['created_date'])
             })
-        
+
         conn.close()
         return jsonify({
             'success': True,
@@ -553,6 +573,7 @@ def get_invoices():
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 @app.route('/api/invoices/<int:invoice_id>')
 def get_invoice_detail(invoice_id):
@@ -752,34 +773,37 @@ def get_invoice_detail(invoice_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 @app.route('/api/customers/<customer_id>')
 def get_customer_detail(customer_id):
     try:
         conn = get_db_connection()
         if not conn:
             return jsonify({'error': 'Database connection failed'}), 500
-        
+
         cursor = conn.cursor()
-        
+
         # Get customer details
-        cursor.execute("SELECT * FROM customers WHERE id = ? OR account_number = ?", (customer_id, customer_id))
+        cursor.execute(
+            "SELECT * FROM customers WHERE id = ? OR account_number = ?", (customer_id, customer_id))
         customer = cursor.fetchone()
-        
+
         if not customer:
             return jsonify({
                 'success': False,
                 'error': 'Customer not found',
                 'message': f'No customer found with ID or account number: {customer_id}'
             }), 200
-        
+
         # Get customer vehicles
-        cursor.execute("SELECT * FROM vehicles WHERE customer_id = ?", (customer['id'],))
+        cursor.execute(
+            "SELECT * FROM vehicles WHERE customer_id = ?", (customer['id'],))
         vehicles = []
         for row in cursor.fetchall():
             vehicle = dict(row)
             vehicle['mot_due'] = format_date_for_display(vehicle['mot_due'])
             vehicles.append(vehicle)
-        
+
         # Get customer jobs
         cursor.execute('''
             SELECT j.*, v.registration 
@@ -793,7 +817,7 @@ def get_customer_detail(customer_id):
             job = dict(row)
             job['created_date'] = format_date_for_display(job['created_date'])
             jobs.append(job)
-        
+
         # Get customer invoices
         cursor.execute('''
             SELECT i.*, v.registration, j.description as job_description
@@ -806,15 +830,17 @@ def get_customer_detail(customer_id):
         invoices = []
         for row in cursor.fetchall():
             invoice = dict(row)
-            invoice['created_date'] = format_date_for_display(invoice['created_date'])
+            invoice['created_date'] = format_date_for_display(
+                invoice['created_date'])
             invoices.append(invoice)
-        
+
         conn.close()
-        
+
         # Format customer dates
         customer_dict = dict(customer)
-        customer_dict['created_date'] = format_date_for_display(customer_dict['created_date'])
-        
+        customer_dict['created_date'] = format_date_for_display(
+            customer_dict['created_date'])
+
         return jsonify({
             'success': True,
             'customer': customer_dict,
@@ -825,15 +851,16 @@ def get_customer_detail(customer_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 @app.route('/api/vehicles/<vehicle_id>')
 def get_vehicle_detail(vehicle_id):
     try:
         conn = get_db_connection()
         if not conn:
             return jsonify({'error': 'Database connection failed'}), 500
-        
+
         cursor = conn.cursor()
-        
+
         # Get vehicle details with customer info
         cursor.execute('''
             SELECT v.*, c.name as customer_name, c.company as customer_company, c.account_number
@@ -842,10 +869,10 @@ def get_vehicle_detail(vehicle_id):
             WHERE v.id = ? OR v.registration = ?
         ''', (vehicle_id, vehicle_id))
         vehicle = cursor.fetchone()
-        
+
         if not vehicle:
             return jsonify({'error': 'Vehicle not found'}), 404
-        
+
         # Get vehicle jobs
         cursor.execute('''
             SELECT j.*, c.name as customer_name 
@@ -859,7 +886,7 @@ def get_vehicle_detail(vehicle_id):
             job = dict(row)
             job['created_date'] = format_date_for_display(job['created_date'])
             jobs.append(job)
-        
+
         # Get vehicle invoices
         cursor.execute('''
             SELECT i.*, j.description as job_description
@@ -871,15 +898,17 @@ def get_vehicle_detail(vehicle_id):
         invoices = []
         for row in cursor.fetchall():
             invoice = dict(row)
-            invoice['created_date'] = format_date_for_display(invoice['created_date'])
+            invoice['created_date'] = format_date_for_display(
+                invoice['created_date'])
             invoices.append(invoice)
-        
+
         conn.close()
-        
+
         # Format vehicle dates
         vehicle_dict = dict(vehicle)
-        vehicle_dict['mot_due'] = format_date_for_display(vehicle_dict['mot_due'])
-        
+        vehicle_dict['mot_due'] = format_date_for_display(
+            vehicle_dict['mot_due'])
+
         return jsonify({
             'vehicle': vehicle_dict,
             'jobs': jobs,
@@ -887,6 +916,7 @@ def get_vehicle_detail(vehicle_id):
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 @app.route('/api/test-date')
 def test_date():
@@ -899,22 +929,23 @@ def test_date():
         'function_exists': 'format_date_for_display' in globals()
     })
 
+
 @app.route('/api/health')
 def api_health_check():
     try:
         conn = get_db_connection()
         if not conn:
             return jsonify({'status': 'error', 'message': 'Database connection failed'}), 500
-        
+
         cursor = conn.cursor()
         cursor.execute("SELECT COUNT(*) FROM customers")
         customer_count = cursor.fetchone()[0]
-        
+
         cursor.execute("SELECT COUNT(*) FROM vehicles")
         vehicle_count = cursor.fetchone()[0]
-        
+
         conn.close()
-        
+
         return jsonify({
             'status': 'healthy',
             'database': 'connected',
@@ -925,6 +956,8 @@ def api_health_check():
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 # SMS Centre API endpoints
+
+
 @app.route('/api/mot/sms/send-bulk', methods=['POST'])
 def send_bulk_sms():
     """Send bulk SMS to selected vehicles"""
@@ -943,8 +976,10 @@ def send_bulk_sms():
             return jsonify({'success': False, 'error': 'SMS service not available'}), 503
 
         # Get vehicle data for selected registrations
-        vehicles = mot_service.get_all_mot_vehicles(include_flagged=True, include_archived=False)
-        selected_vehicles = [v for v in vehicles if v['registration'] in registrations and v.get('mobile_number')]
+        vehicles = mot_service.get_all_mot_vehicles(
+            include_flagged=True, include_archived=False)
+        selected_vehicles = [v for v in vehicles if v['registration']
+                             in registrations and v.get('mobile_number')]
 
         if not selected_vehicles:
             return jsonify({'success': False, 'error': 'No vehicles with mobile numbers found'}), 400
@@ -966,7 +1001,8 @@ def send_bulk_sms():
                     sent_count += 1
                 else:
                     failed_count += 1
-                    errors.append(f"{vehicle['registration']}: {result.get('error', 'Unknown error')}")
+                    errors.append(
+                        f"{vehicle['registration']}: {result.get('error', 'Unknown error')}")
 
             except Exception as e:
                 failed_count += 1
@@ -982,6 +1018,7 @@ def send_bulk_sms():
     except Exception as e:
         print(f"Error in send_bulk_sms: {e}")
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @app.route('/api/mot/sms/send', methods=['POST'])
 def send_single_sms():
@@ -1003,8 +1040,10 @@ def send_single_sms():
             return jsonify({'success': False, 'error': 'SMS service not available'}), 503
 
         # Get vehicle data
-        vehicles = mot_service.get_all_mot_vehicles(include_flagged=True, include_archived=False)
-        vehicle = next((v for v in vehicles if v['registration'] == registration), None)
+        vehicles = mot_service.get_all_mot_vehicles(
+            include_flagged=True, include_archived=False)
+        vehicle = next(
+            (v for v in vehicles if v['registration'] == registration), None)
 
         if not vehicle:
             return jsonify({'success': False, 'error': 'Vehicle not found'}), 404
@@ -1021,6 +1060,7 @@ def send_single_sms():
     except Exception as e:
         print(f"Error in send_single_sms: {e}")
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @app.route('/api/mot/sms/history')
 def get_sms_history():
@@ -1067,7 +1107,6 @@ def get_sms_history():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 # Note: MOT API endpoints are now handled by the MOT blueprint at /mot/api/*
-
 
 
 # Error Monitoring and Reporting Endpoints
@@ -1131,12 +1170,13 @@ def receive_error_report():
         print(f"❌ Error processing error report: {e}")
         return jsonify({'error': 'Failed to process report'}), 500
 
+
 @app.route('/api/error-reports', methods=['GET'])
 def get_error_reports():
     """Get recent error reports for dashboard"""
     try:
-        import os
         import json
+        import os
 
         log_file = os.path.join('logs', 'error_reports.json')
 
@@ -1153,12 +1193,13 @@ def get_error_reports():
         # Filter by severity if specified
         if severity:
             filtered_logs = [log for log in logs
-                           if log.get('report', {}).get('pattern', {}).get('severity') == severity]
+                             if log.get('report', {}).get('pattern', {}).get('severity') == severity]
         else:
             filtered_logs = logs
 
         # Sort by timestamp (newest first) and limit
-        filtered_logs = sorted(filtered_logs, key=lambda x: x.get('timestamp', ''), reverse=True)[:limit]
+        filtered_logs = sorted(filtered_logs, key=lambda x: x.get(
+            'timestamp', ''), reverse=True)[:limit]
 
         return jsonify({
             'reports': filtered_logs,
@@ -1171,6 +1212,8 @@ def get_error_reports():
         return jsonify({'error': 'Failed to retrieve reports'}), 500
 
 # Phase 3 Feature Endpoints (Placeholder implementations)
+
+
 @app.route('/api/jobs/kanban')
 def get_jobs_kanban():
     """Get jobs in kanban format - placeholder for Phase 3"""
@@ -1184,6 +1227,7 @@ def get_jobs_kanban():
         'message': 'Kanban board feature coming in Phase 3'
     })
 
+
 @app.route('/api/technicians')
 def get_technicians():
     """Get technicians - placeholder for Phase 3"""
@@ -1192,6 +1236,7 @@ def get_technicians():
         'technicians': [],
         'message': 'Technician management feature coming in Phase 3'
     })
+
 
 @app.route('/api/workshop-bays')
 def get_workshop_bays():
@@ -1202,6 +1247,7 @@ def get_workshop_bays():
         'message': 'Workshop bay management feature coming in Phase 3'
     })
 
+
 @app.route('/api/appointments')
 def get_appointments():
     """Get appointments - placeholder for Phase 3"""
@@ -1210,6 +1256,7 @@ def get_appointments():
         'appointments': [],
         'message': 'Appointment scheduling feature coming in Phase 3'
     })
+
 
 @app.route('/api/job-sheet-templates')
 def get_job_sheet_templates():
@@ -1220,6 +1267,7 @@ def get_job_sheet_templates():
         'message': 'Job sheet templates feature coming in Phase 3'
     })
 
+
 @app.route('/api/job-sheets')
 def get_job_sheets():
     """Get job sheets - placeholder for Phase 3"""
@@ -1229,6 +1277,7 @@ def get_job_sheets():
         'message': 'Digital job sheets feature coming in Phase 3'
     })
 
+
 @app.route('/api/quotes')
 def get_quotes():
     """Get quotes - placeholder for Phase 3"""
@@ -1237,7 +1286,6 @@ def get_quotes():
         'quotes': [],
         'message': 'Quotes & estimates feature coming in Phase 3'
     })
-
 
 
 # Initialize database on startup
@@ -1250,4 +1298,3 @@ if __name__ == '__main__':
     print("📤 Upload interface: http://127.0.0.1:5001/upload")
     print("✅ All systems integrated and ready!")
     app.run(host='0.0.0.0', port=5001, debug=False)
-

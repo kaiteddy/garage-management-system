@@ -5,6 +5,7 @@ All notable changes to the Garage Management System will be documented in this f
 ## [1.3.0] - 2025-06-08
 
 ### Added
+
 - Complete invoice management system with TechmanGMS-style interface
 - Comprehensive job tracking with status management
 - Enhanced customer detail views with service history
@@ -15,6 +16,7 @@ All notable changes to the Garage Management System will be documented in this f
 - Modern responsive design with dark sidebar navigation
 
 ### Enhanced
+
 - Database schema with proper relationships between customers, vehicles, jobs, and invoices
 - API endpoints with comprehensive error handling
 - Frontend interface with modern styling and animations
@@ -22,6 +24,7 @@ All notable changes to the Garage Management System will be documented in this f
 - CORS configuration for secure API access
 
 ### Fixed
+
 - Database connection issues in deployment environment
 - Loading errors across all sections
 - API endpoint reliability and error handling
@@ -31,6 +34,7 @@ All notable changes to the Garage Management System will be documented in this f
 ## [1.2.0] - 2025-06-07
 
 ### Added
+
 - Enhanced UI with TechmanGMS-inspired design
 - Customer and vehicle detail pages with clickable navigation
 - Service history tracking for each customer and vehicle
@@ -38,6 +42,7 @@ All notable changes to the Garage Management System will be documented in this f
 - Icon integration with FontAwesome
 
 ### Enhanced
+
 - Database structure with sample business data
 - API endpoints for customer and vehicle management
 - Frontend navigation and user experience
@@ -46,12 +51,14 @@ All notable changes to the Garage Management System will be documented in this f
 ## [1.1.0] - 2025-06-06
 
 ### Added
+
 - Basic invoice generation and tracking
 - Job management system
 - Customer and vehicle linking
 - Payment status tracking
 
 ### Enhanced
+
 - Database relationships between entities
 - API structure for data management
 - Frontend data display capabilities
@@ -59,6 +66,7 @@ All notable changes to the Garage Management System will be documented in this f
 ## [1.0.0] - 2025-06-05
 
 ### Added
+
 - Initial release of Garage Management System
 - Basic customer management
 - Vehicle tracking functionality
@@ -68,6 +76,7 @@ All notable changes to the Garage Management System will be documented in this f
 - HTML/CSS/JavaScript frontend
 
 ### Features
+
 - Customer database with contact information
 - Vehicle registration and details
 - Basic job tracking
@@ -79,6 +88,7 @@ All notable changes to the Garage Management System will be documented in this f
 ## Future Roadmap
 
 ### Planned Features
+
 - [ ] Advanced reporting and analytics
 - [ ] Email notifications for MOT reminders
 - [ ] Parts inventory management
@@ -91,6 +101,7 @@ All notable changes to the Garage Management System will be documented in this f
 - [ ] Integration with accounting software
 
 ### Technical Improvements
+
 - [ ] PostgreSQL database option
 - [ ] Redis caching for performance
 - [ ] API rate limiting
@@ -105,4 +116,3 @@ All notable changes to the Garage Management System will be documented in this f
 ---
 
 **For detailed information about each release, see the commit history on GitHub.**
-

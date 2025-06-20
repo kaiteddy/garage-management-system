@@ -1,174 +1,199 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Window Positioning Test - Garage Management System</title>
-    <link rel="stylesheet" href="static/css/design-system.css">
-    <link rel="stylesheet" href="static/css/components.css">
+    <link rel="stylesheet" href="static/css/design-system.css" />
+    <link rel="stylesheet" href="static/css/components.css" />
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            padding: 2rem;
-            background: #f8fafc;
-        }
-        
-        .test-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .test-section {
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-        }
-        
-        .test-button {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            cursor: pointer;
-            margin: 0.5rem;
-            font-size: 0.9rem;
-            transition: background 0.2s;
-        }
-        
-        .test-button:hover {
-            background: #2563eb;
-        }
-        
-        .test-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
-            z-index: 1000;
-            min-width: 400px;
-        }
-        
-        .test-modal-backdrop {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-        }
-        
-        .close-btn {
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 1rem;
-        }
-        
-        .status {
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 6px;
-            background: #f0f9ff;
-            border: 1px solid #0ea5e9;
-            color: #0c4a6e;
-        }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        padding: 2rem;
+        background: #f8fafc;
+      }
+
+      .test-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .test-section {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+      }
+
+      .test-button {
+        background: #3b82f6;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        cursor: pointer;
+        margin: 0.5rem;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+      }
+
+      .test-button:hover {
+        background: #2563eb;
+      }
+
+      .test-modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        min-width: 400px;
+      }
+
+      .test-modal-backdrop {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+      }
+
+      .close-btn {
+        background: #ef4444;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 1rem;
+      }
+
+      .status {
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 6px;
+        background: #f0f9ff;
+        border: 1px solid #0ea5e9;
+        color: #0c4a6e;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="test-container">
-        <h1>🔧 Window Positioning Test</h1>
-        <p>This page tests the window and modal positioning fixes for the Garage Management System.</p>
-        
-        <div class="test-section">
-            <h3>🪟 Popup Window Tests</h3>
-            <p>These buttons test the new centered window opening functionality:</p>
-            
-            <button class="test-button" onclick="testGoogleDriveWindow()">
-                📁 Test Google Drive Window
-            </button>
-            
-            <button class="test-button" onclick="testAuthWindow()">
-                🔐 Test Auth Window
-            </button>
-            
-            <button class="test-button" onclick="testCustomWindow()">
-                ⚙️ Test Custom Window
-            </button>
-        </div>
-        
-        <div class="test-section">
-            <h3>📋 Modal Dialog Tests</h3>
-            <p>These buttons test the modal centering functionality:</p>
-            
-            <button class="test-button" onclick="testBasicModal()">
-                📝 Test Basic Modal
-            </button>
-            
-            <button class="test-button" onclick="testUtilityModal()">
-                🛠️ Test Utility Modal
-            </button>
-            
-            <button class="test-button" onclick="testLargeModal()">
-                📊 Test Large Modal
-            </button>
-        </div>
-        
-        <div class="status" id="status">
-            ✅ Ready to test. Click any button above to test window/modal positioning.
-        </div>
+      <h1>🔧 Window Positioning Test</h1>
+      <p>
+        This page tests the window and modal positioning fixes for the Garage
+        Management System.
+      </p>
+
+      <div class="test-section">
+        <h3>🪟 Popup Window Tests</h3>
+        <p>These buttons test the new centered window opening functionality:</p>
+
+        <button class="test-button" onclick="testGoogleDriveWindow()">
+          📁 Test Google Drive Window
+        </button>
+
+        <button class="test-button" onclick="testAuthWindow()">
+          🔐 Test Auth Window
+        </button>
+
+        <button class="test-button" onclick="testCustomWindow()">
+          ⚙️ Test Custom Window
+        </button>
+      </div>
+
+      <div class="test-section">
+        <h3>📋 Modal Dialog Tests</h3>
+        <p>These buttons test the modal centering functionality:</p>
+
+        <button class="test-button" onclick="testBasicModal()">
+          📝 Test Basic Modal
+        </button>
+
+        <button class="test-button" onclick="testUtilityModal()">
+          🛠️ Test Utility Modal
+        </button>
+
+        <button class="test-button" onclick="testLargeModal()">
+          📊 Test Large Modal
+        </button>
+      </div>
+
+      <div class="status" id="status">
+        ✅ Ready to test. Click any button above to test window/modal
+        positioning.
+      </div>
     </div>
 
     <!-- Test Modals -->
     <div class="test-modal-backdrop" id="test-modal-backdrop"></div>
     <div class="test-modal" id="test-modal">
-        <h3>Test Modal</h3>
-        <p>This is a test modal to verify centering functionality.</p>
-        <button class="close-btn" onclick="closeTestModal()">Close</button>
+      <h3>Test Modal</h3>
+      <p>This is a test modal to verify centering functionality.</p>
+      <button class="close-btn" onclick="closeTestModal()">Close</button>
     </div>
 
     <div class="test-modal-backdrop" id="large-modal-backdrop"></div>
-    <div class="test-modal" id="large-modal" style="min-width: 600px; min-height: 400px;">
-        <h3>Large Test Modal</h3>
-        <p>This is a larger modal to test centering with different sizes.</p>
-        <div style="height: 200px; background: #f8fafc; margin: 1rem 0; padding: 1rem; border-radius: 6px;">
-            <p>Large content area to test modal positioning with various content sizes.</p>
-            <p>The modal should remain centered regardless of its content size.</p>
-        </div>
-        <button class="close-btn" onclick="closeLargeModal()">Close</button>
+    <div
+      class="test-modal"
+      id="large-modal"
+      style="min-width: 600px; min-height: 400px"
+    >
+      <h3>Large Test Modal</h3>
+      <p>This is a larger modal to test centering with different sizes.</p>
+      <div
+        style="
+          height: 200px;
+          background: #f8fafc;
+          margin: 1rem 0;
+          padding: 1rem;
+          border-radius: 6px;
+        "
+      >
+        <p>
+          Large content area to test modal positioning with various content
+          sizes.
+        </p>
+        <p>The modal should remain centered regardless of its content size.</p>
+      </div>
+      <button class="close-btn" onclick="closeLargeModal()">Close</button>
     </div>
 
     <!-- Include Utils -->
     <script src="static/js/utils.js"></script>
-    
-    <script>
-        function updateStatus(message) {
-            document.getElementById('status').innerHTML = message;
-        }
 
-        // Window Tests
-        function testGoogleDriveWindow() {
-            updateStatus('🔄 Testing Google Drive window positioning...');
-            
-            if (Utils && Utils.openCenteredWindow) {
-                const win = Utils.openCenteredWindow('about:blank', 'testGoogleDrive', 1200, 800);
-                if (win) {
-                    win.document.write(`
+    <script>
+      function updateStatus(message) {
+        document.getElementById("status").innerHTML = message;
+      }
+
+      // Window Tests
+      function testGoogleDriveWindow() {
+        updateStatus("🔄 Testing Google Drive window positioning...");
+
+        if (Utils && Utils.openCenteredWindow) {
+          const win = Utils.openCenteredWindow(
+            "about:blank",
+            "testGoogleDrive",
+            1200,
+            800,
+          );
+          if (win) {
+            win.document.write(`
                         <html>
                             <head><title>Test Google Drive Window</title></head>
                             <body style="font-family: sans-serif; padding: 2rem; text-align: center;">
@@ -179,22 +204,29 @@
                             </body>
                         </html>
                     `);
-                    updateStatus('✅ Google Drive window opened successfully!');
-                } else {
-                    updateStatus('❌ Failed to open Google Drive window (popup blocked?)');
-                }
-            } else {
-                updateStatus('❌ Utils.openCenteredWindow not available');
-            }
+            updateStatus("✅ Google Drive window opened successfully!");
+          } else {
+            updateStatus(
+              "❌ Failed to open Google Drive window (popup blocked?)",
+            );
+          }
+        } else {
+          updateStatus("❌ Utils.openCenteredWindow not available");
         }
+      }
 
-        function testAuthWindow() {
-            updateStatus('🔄 Testing auth window positioning...');
-            
-            if (Utils && Utils.openCenteredWindow) {
-                const win = Utils.openCenteredWindow('about:blank', 'testAuth', 600, 600);
-                if (win) {
-                    win.document.write(`
+      function testAuthWindow() {
+        updateStatus("🔄 Testing auth window positioning...");
+
+        if (Utils && Utils.openCenteredWindow) {
+          const win = Utils.openCenteredWindow(
+            "about:blank",
+            "testAuth",
+            600,
+            600,
+          );
+          if (win) {
+            win.document.write(`
                         <html>
                             <head><title>Test Auth Window</title></head>
                             <body style="font-family: sans-serif; padding: 2rem; text-align: center;">
@@ -205,25 +237,31 @@
                             </body>
                         </html>
                     `);
-                    updateStatus('✅ Auth window opened successfully!');
-                } else {
-                    updateStatus('❌ Failed to open auth window (popup blocked?)');
-                }
-            } else {
-                updateStatus('❌ Utils.openCenteredWindow not available');
-            }
+            updateStatus("✅ Auth window opened successfully!");
+          } else {
+            updateStatus("❌ Failed to open auth window (popup blocked?)");
+          }
+        } else {
+          updateStatus("❌ Utils.openCenteredWindow not available");
         }
+      }
 
-        function testCustomWindow() {
-            updateStatus('🔄 Testing custom window positioning...');
-            
-            if (Utils && Utils.openCenteredWindow) {
-                const win = Utils.openCenteredWindow('about:blank', 'testCustom', 900, 700, {
-                    menubar: 'yes',
-                    toolbar: 'yes'
-                });
-                if (win) {
-                    win.document.write(`
+      function testCustomWindow() {
+        updateStatus("🔄 Testing custom window positioning...");
+
+        if (Utils && Utils.openCenteredWindow) {
+          const win = Utils.openCenteredWindow(
+            "about:blank",
+            "testCustom",
+            900,
+            700,
+            {
+              menubar: "yes",
+              toolbar: "yes",
+            },
+          );
+          if (win) {
+            win.document.write(`
                         <html>
                             <head><title>Test Custom Window</title></head>
                             <body style="font-family: sans-serif; padding: 2rem; text-align: center;">
@@ -234,107 +272,112 @@
                             </body>
                         </html>
                     `);
-                    updateStatus('✅ Custom window opened successfully!');
-                } else {
-                    updateStatus('❌ Failed to open custom window (popup blocked?)');
-                }
-            } else {
-                updateStatus('❌ Utils.openCenteredWindow not available');
-            }
+            updateStatus("✅ Custom window opened successfully!");
+          } else {
+            updateStatus("❌ Failed to open custom window (popup blocked?)");
+          }
+        } else {
+          updateStatus("❌ Utils.openCenteredWindow not available");
         }
+      }
 
-        // Modal Tests
-        function testBasicModal() {
-            updateStatus('🔄 Testing basic modal positioning...');
-            
-            const backdrop = document.getElementById('test-modal-backdrop');
-            const modal = document.getElementById('test-modal');
-            
-            backdrop.style.display = 'block';
-            modal.style.display = 'block';
-            
-            if (Utils && Utils.centerModal) {
-                Utils.centerModal(modal);
-                updateStatus('✅ Basic modal opened with Utils.centerModal!');
-            } else {
-                updateStatus('⚠️ Basic modal opened without Utils.centerModal');
-            }
+      // Modal Tests
+      function testBasicModal() {
+        updateStatus("🔄 Testing basic modal positioning...");
+
+        const backdrop = document.getElementById("test-modal-backdrop");
+        const modal = document.getElementById("test-modal");
+
+        backdrop.style.display = "block";
+        modal.style.display = "block";
+
+        if (Utils && Utils.centerModal) {
+          Utils.centerModal(modal);
+          updateStatus("✅ Basic modal opened with Utils.centerModal!");
+        } else {
+          updateStatus("⚠️ Basic modal opened without Utils.centerModal");
         }
+      }
 
-        function testUtilityModal() {
-            updateStatus('🔄 Testing utility modal function...');
-            
-            if (Utils && Utils.showModal) {
-                const success = Utils.showModal('test-modal');
-                if (success) {
-                    updateStatus('✅ Modal opened using Utils.showModal!');
-                } else {
-                    updateStatus('❌ Failed to open modal using Utils.showModal');
-                }
-            } else {
-                updateStatus('❌ Utils.showModal not available');
-            }
+      function testUtilityModal() {
+        updateStatus("🔄 Testing utility modal function...");
+
+        if (Utils && Utils.showModal) {
+          const success = Utils.showModal("test-modal");
+          if (success) {
+            updateStatus("✅ Modal opened using Utils.showModal!");
+          } else {
+            updateStatus("❌ Failed to open modal using Utils.showModal");
+          }
+        } else {
+          updateStatus("❌ Utils.showModal not available");
         }
+      }
 
-        function testLargeModal() {
-            updateStatus('🔄 Testing large modal positioning...');
-            
-            if (Utils && Utils.showModal) {
-                const success = Utils.showModal('large-modal');
-                if (success) {
-                    updateStatus('✅ Large modal opened using Utils.showModal!');
-                } else {
-                    updateStatus('❌ Failed to open large modal');
-                }
-            } else {
-                // Fallback
-                const backdrop = document.getElementById('large-modal-backdrop');
-                const modal = document.getElementById('large-modal');
-                
-                backdrop.style.display = 'block';
-                modal.style.display = 'block';
-                
-                if (Utils && Utils.centerModal) {
-                    Utils.centerModal(modal);
-                    updateStatus('✅ Large modal opened with fallback method!');
-                } else {
-                    updateStatus('⚠️ Large modal opened without centering');
-                }
-            }
+      function testLargeModal() {
+        updateStatus("🔄 Testing large modal positioning...");
+
+        if (Utils && Utils.showModal) {
+          const success = Utils.showModal("large-modal");
+          if (success) {
+            updateStatus("✅ Large modal opened using Utils.showModal!");
+          } else {
+            updateStatus("❌ Failed to open large modal");
+          }
+        } else {
+          // Fallback
+          const backdrop = document.getElementById("large-modal-backdrop");
+          const modal = document.getElementById("large-modal");
+
+          backdrop.style.display = "block";
+          modal.style.display = "block";
+
+          if (Utils && Utils.centerModal) {
+            Utils.centerModal(modal);
+            updateStatus("✅ Large modal opened with fallback method!");
+          } else {
+            updateStatus("⚠️ Large modal opened without centering");
+          }
         }
+      }
 
-        function closeTestModal() {
-            if (Utils && Utils.hideModal) {
-                Utils.hideModal('test-modal');
-            } else {
-                document.getElementById('test-modal-backdrop').style.display = 'none';
-                document.getElementById('test-modal').style.display = 'none';
-            }
-            updateStatus('✅ Test modal closed');
+      function closeTestModal() {
+        if (Utils && Utils.hideModal) {
+          Utils.hideModal("test-modal");
+        } else {
+          document.getElementById("test-modal-backdrop").style.display = "none";
+          document.getElementById("test-modal").style.display = "none";
         }
+        updateStatus("✅ Test modal closed");
+      }
 
-        function closeLargeModal() {
-            if (Utils && Utils.hideModal) {
-                Utils.hideModal('large-modal');
-            } else {
-                document.getElementById('large-modal-backdrop').style.display = 'none';
-                document.getElementById('large-modal').style.display = 'none';
-            }
-            updateStatus('✅ Large modal closed');
+      function closeLargeModal() {
+        if (Utils && Utils.hideModal) {
+          Utils.hideModal("large-modal");
+        } else {
+          document.getElementById("large-modal-backdrop").style.display =
+            "none";
+          document.getElementById("large-modal").style.display = "none";
         }
+        updateStatus("✅ Large modal closed");
+      }
 
-        // Close modals when clicking backdrop
-        document.getElementById('test-modal-backdrop').addEventListener('click', closeTestModal);
-        document.getElementById('large-modal-backdrop').addEventListener('click', closeLargeModal);
+      // Close modals when clicking backdrop
+      document
+        .getElementById("test-modal-backdrop")
+        .addEventListener("click", closeTestModal);
+      document
+        .getElementById("large-modal-backdrop")
+        .addEventListener("click", closeLargeModal);
 
-        // Test Utils availability on load
-        window.addEventListener('load', () => {
-            if (Utils) {
-                updateStatus('✅ Utils loaded successfully. Ready to test!');
-            } else {
-                updateStatus('❌ Utils not loaded. Some tests may not work.');
-            }
-        });
+      // Test Utils availability on load
+      window.addEventListener("load", () => {
+        if (Utils) {
+          updateStatus("✅ Utils loaded successfully. Ready to test!");
+        } else {
+          updateStatus("❌ Utils not loaded. Some tests may not work.");
+        }
+      });
     </script>
-</body>
+  </body>
 </html>
