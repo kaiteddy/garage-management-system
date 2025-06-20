@@ -623,12 +623,18 @@
 }
 
 /* Ensure all cards have consistent border radius */
-.card, .upload-card, .stats-card, .nav-section {
+.card,
+.upload-card,
+.stats-card,
+.nav-section {
   border-radius: var(--radius-lg) !important;
 }
 
 /* Fix any square corners */
-.btn, .form-control, .badge, .alert {
+.btn,
+.form-control,
+.badge,
+.alert {
   border-radius: var(--radius-lg) !important;
 }
 
@@ -1028,7 +1034,8 @@
   max-width: 800px;
 }
 
-.status-card, .config-card {
+.status-card,
+.config-card {
   background: white;
   border: 1px solid var(--gray-200);
   border-radius: var(--radius-lg);
@@ -1036,7 +1043,8 @@
   overflow: hidden;
 }
 
-.status-header, .config-header {
+.status-header,
+.config-header {
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -1045,14 +1053,16 @@
   border-bottom: 1px solid var(--gray-200);
 }
 
-.status-header h4, .config-header h4 {
+.status-header h4,
+.config-header h4 {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--gray-900);
   margin: 0;
 }
 
-.status-body, .config-body {
+.status-body,
+.config-body {
   padding: var(--space-5);
 }
 
@@ -1076,7 +1086,8 @@
   color: var(--error-700);
 }
 
-.status-description, .config-description {
+.status-description,
+.config-description {
   color: var(--gray-600);
   margin-bottom: var(--space-4);
 }
