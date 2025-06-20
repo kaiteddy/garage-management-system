@@ -43,6 +43,7 @@ jobs:
             let pr;
 
             // Handle manual trigger vs automatic PR trigger
+            console.log(`Event name: ${context.eventName}`);
             if (context.eventName === 'workflow_dispatch') {
               // For manual trigger, find open DeepSource PRs
               const { data: prs } = await github.rest.pulls.list({
@@ -52,6 +53,8 @@ jobs:
               });
 
               // Find DeepSource autofix PR
+              console.log(`Found ${prs.length} open PRs`);
+              prs.forEach(p => console.log(`PR #${p.number}: ${p.title} by ${p.user.login}`));
               pr = prs.find(p => p.user.login === 'deepsource-autofix[bot]');
 
               if (!pr) {
@@ -65,14 +68,14 @@ jobs:
             } else {
               // Normal PR trigger
               pr = context.payload.pull_request;
-            }
 
-            // Validate this is a DeepSource autofix PR
-            if (pr.user.login !== 'deepsource-autofix[bot]') {
-              console.log('Not a DeepSource autofix PR');
-              const result = { shouldMerge: false, reason: 'Not DeepSource bot' };
-              core.setOutput('result', JSON.stringify(result));
-              return result;
+              // Validate this is a DeepSource autofix PR
+              if (!pr || pr.user.login !== 'deepsource-autofix[bot]') {
+                console.log('Not a DeepSource autofix PR');
+                const result = { shouldMerge: false, reason: 'Not DeepSource bot' };
+                core.setOutput('result', JSON.stringify(result));
+                return result;
+              }
             }
             
             // Check PR title patterns
