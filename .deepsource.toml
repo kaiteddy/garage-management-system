@@ -1,5 +1,23 @@
 version = 1
 
+exclude_patterns = [
+  "src/static/assets/**",
+  "**/*.min.js",
+  "**/*.min.css",
+  "**/node_modules/**",
+  "**/venv/**",
+  "**/__pycache__/**",
+  "**/build/**",
+  "**/dist/**",
+  "archive/**",
+  "**/*backup*.py",
+  "**/*old*.py",
+  "**/*test*.py",
+  "**/*test*.js",
+  "tests/**",
+  "logs/**"
+]
+
 [[analyzers]]
 name = "secrets"
 
