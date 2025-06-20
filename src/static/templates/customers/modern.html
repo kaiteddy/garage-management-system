@@ -160,7 +160,7 @@
 </div>
 
 <script>
-// Customer page JavaScript
+// Customer page JavaScript - Clean production code
 let customers = [];
 let filteredCustomers = [];
 let currentPage = 1;
@@ -178,7 +178,7 @@ function hideAddCustomerModal() {
 function showCustomerDetailsModal(customerId) {
     const customer = customers.find(c => c.id === customerId);
     if (!customer) return;
-    
+
     const content = `
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -210,10 +210,10 @@ function showCustomerDetailsModal(customerId) {
             </div>
         </div>
     `;
-    
+
     document.getElementById('customer-details-content').innerHTML = content;
     document.getElementById('customer-details-modal').style.display = 'flex';
-    
+
     // Load customer vehicles
     loadCustomerVehicles(customerId);
 }
@@ -226,17 +226,17 @@ function filterCustomers() {
     const searchTerm = document.getElementById('customer-search').value.toLowerCase();
     const statusFilter = document.getElementById('status-filter').value;
     const sortBy = document.getElementById('sort-filter').value;
-    
+
     filteredCustomers = customers.filter(customer => {
         const matchesSearch = customer.name.toLowerCase().includes(searchTerm) ||
                             customer.email?.toLowerCase().includes(searchTerm) ||
                             customer.phone.includes(searchTerm);
-        
+
         const matchesStatus = !statusFilter || customer.status === statusFilter;
-        
+
         return matchesSearch && matchesStatus;
     });
-    
+
     // Sort customers
     filteredCustomers.sort((a, b) => {
         switch (sortBy) {
@@ -252,7 +252,7 @@ function filterCustomers() {
                 return 0;
         }
     });
-    
+
     currentPage = 1;
     renderCustomers();
 }
