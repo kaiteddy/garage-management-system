@@ -161,7 +161,7 @@ jobs:
               'pr_number': '${{ steps.validate.outputs.pr_number }}' or 'unknown',
               'pr_title': '${{ steps.validate.outputs.pr_title }}' or 'unknown',
               'pr_url': '${{ steps.validate.outputs.pr_url }}' or 'unknown',
-              'validation_result': '${{ steps.validate.outputs.result }}',
+              'validation_result': '''${{ steps.validate.outputs.result }}''',
               'action': 'auto_merge_attempt',
               'actor': '${{ github.actor }}',
               'event_type': '${{ github.event_name }}',
