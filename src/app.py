@@ -7,7 +7,8 @@ Clean, organized structure with separated concerns
 import os
 import sys
 from datetime import datetime
-from flask import Flask, render_template, send_from_directory, jsonify, request
+
+from flask import Flask, jsonify, render_template, request, send_from_directory
 
 from models import db
 
@@ -191,7 +192,8 @@ def register_core_routes(app):
         """Get comprehensive customer profile with all related data"""
         try:
             import sqlite3
-            db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+            db_path = os.path.join(os.path.dirname(
+                os.path.dirname(__file__)), 'instance', 'garage.db')
             conn = sqlite3.connect(db_path)
             cursor = conn.cursor()
 
@@ -306,7 +308,8 @@ def register_core_routes(app):
         """Get all documents for a specific customer"""
         try:
             import sqlite3
-            db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+            db_path = os.path.join(os.path.dirname(
+                os.path.dirname(__file__)), 'instance', 'garage.db')
             conn = sqlite3.connect(db_path)
             cursor = conn.cursor()
 
@@ -363,7 +366,8 @@ def register_core_routes(app):
         """Get comprehensive vehicle profile with all related data"""
         try:
             import sqlite3
-            db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')
+            db_path = os.path.join(os.path.dirname(
+                os.path.dirname(__file__)), 'instance', 'garage.db')
             conn = sqlite3.connect(db_path)
             cursor = conn.cursor()
 
