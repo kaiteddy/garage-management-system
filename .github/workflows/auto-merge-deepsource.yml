@@ -56,7 +56,9 @@ jobs:
 
               if (!pr) {
                 console.log('No open DeepSource autofix PRs found');
-                return { shouldMerge: false, reason: 'No DeepSource PRs found' };
+                const result = { shouldMerge: false, reason: 'No DeepSource PRs found' };
+                core.setOutput('result', JSON.stringify(result));
+                return result;
               }
 
               console.log(`Found DeepSource PR #${pr.number}: ${pr.title}`);
@@ -68,7 +70,9 @@ jobs:
             // Validate this is a DeepSource autofix PR
             if (pr.user.login !== 'deepsource-autofix[bot]') {
               console.log('Not a DeepSource autofix PR');
-              return { shouldMerge: false, reason: 'Not DeepSource bot' };
+              const result = { shouldMerge: false, reason: 'Not DeepSource bot' };
+              core.setOutput('result', JSON.stringify(result));
+              return result;
             }
             
             // Check PR title patterns
@@ -85,13 +89,17 @@ jobs:
             
             if (!isValidTitle) {
               console.log('Invalid PR title pattern');
-              return { shouldMerge: false, reason: 'Invalid title pattern' };
+              const result = { shouldMerge: false, reason: 'Invalid title pattern' };
+              core.setOutput('result', JSON.stringify(result));
+              return result;
             }
             
             // Check for conflicts
             if (pr.mergeable === false) {
               console.log('PR has merge conflicts');
-              return { shouldMerge: false, reason: 'Merge conflicts' };
+              const result = { shouldMerge: false, reason: 'Merge conflicts' };
+              core.setOutput('result', JSON.stringify(result));
+              return result;
             }
             
             // Check file changes are safe
@@ -117,10 +125,14 @@ jobs:
             
             if (unsafeFiles.length > 0) {
               console.log('PR contains unsafe file changes');
-              return { shouldMerge: false, reason: 'Unsafe file changes' };
+              const result = { shouldMerge: false, reason: 'Unsafe file changes' };
+              core.setOutput('result', JSON.stringify(result));
+              return result;
             }
-            
-            return { shouldMerge: true, reason: 'Validation passed' };
+
+            const result = { shouldMerge: true, reason: 'Validation passed' };
+            core.setOutput('result', JSON.stringify(result));
+            return result;
 
       - name: Log fix attempt
         run: |
@@ -143,9 +155,9 @@ jobs:
           # Add new log entry
           log_entry = {
               'timestamp': datetime.now().isoformat(),
-              'pr_number': ${{ steps.validate.outputs.pr_number || 'unknown' }},
-              'pr_title': '${{ steps.validate.outputs.pr_title || 'unknown' }}',
-              'pr_url': '${{ steps.validate.outputs.pr_url || 'unknown' }}',
+              'pr_number': '${{ steps.validate.outputs.pr_number }}' or 'unknown',
+              'pr_title': '${{ steps.validate.outputs.pr_title }}' or 'unknown',
+              'pr_url': '${{ steps.validate.outputs.pr_url }}' or 'unknown',
               'validation_result': '${{ steps.validate.outputs.result }}',
               'action': 'auto_merge_attempt',
               'actor': '${{ github.actor }}',
@@ -172,7 +184,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             // Get PR details from validation step
-            const prNumber = ${{ steps.validate.outputs.pr_number }};
+            const prNumber = parseInt('${{ steps.validate.outputs.pr_number }}');
 
             // Fetch fresh PR data
             const { data: pr } = await github.rest.pulls.get({
