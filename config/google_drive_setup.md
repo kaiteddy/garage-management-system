@@ -53,6 +53,7 @@ pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib g
 Create folders in your Google Drive for each data type:
 
 ### Recommended Folder Structure:
+
 ```
 📁 ELI_MOTORS_Data/
 ├── 📁 ELI_MOTORS_Customers/
@@ -100,16 +101,19 @@ Create folders in your Google Drive for each data type:
 ## Features
 
 ### Automatic Synchronization
+
 - **Real-time Updates**: Files are checked for changes every 30 minutes
 - **Manual Sync**: Force synchronization at any time
 - **Incremental Updates**: Only processes changed files
 
 ### File Management
+
 - **Multiple Formats**: Supports CSV, XLSX, and XLS files
 - **Latest File Priority**: Always uses the most recently modified file
 - **Backup Safety**: Original data is preserved during updates
 
 ### Monitoring
+
 - **Sync History**: Track all synchronization activities
 - **Status Dashboard**: Monitor connection and folder status
 - **Error Reporting**: Detailed error messages for troubleshooting
@@ -119,17 +123,21 @@ Create folders in your Google Drive for each data type:
 ### Common Issues
 
 **"Google Drive dependencies not installed"**
+
 - Run: `pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib`
 
 **"Credentials file not found"**
+
 - Ensure `google_credentials.json` is in the `config/` directory
 - Check the file path in the error message
 
 **"Permission denied"**
+
 - Re-run the authentication process
 - Check that you granted all requested permissions
 
 **"No files found in folder"**
+
 - Verify the folder contains CSV/Excel files
 - Check that files are not in subfolders
 

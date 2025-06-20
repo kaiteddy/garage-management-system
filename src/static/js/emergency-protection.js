@@ -136,4 +136,4 @@ if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chr
     });
 }
 
-console.log('✅ Emergency protection script initialized'); 
+console.log('✅ Emergency protection script initialized');

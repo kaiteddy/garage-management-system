@@ -4,26 +4,28 @@ Create missing database tables for new models
 """
 
 import os
-import sys
 import sqlite3
+import sys
 from datetime import datetime, time
 
 # Add the src directory to Python path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+
 def get_db_path():
     """Get database path"""
     return os.path.join(os.path.dirname(__file__), 'instance', 'garage.db')
+
 
 def create_missing_tables():
     """Create missing tables for new models"""
     db_path = get_db_path()
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-    
+
     try:
         print("🔧 Creating missing database tables...")
-        
+
         # Create technicians table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS technicians (
@@ -40,7 +42,7 @@ def create_missing_tables():
             )
         ''')
         print("✅ Technicians table created/verified")
-        
+
         # Create workshop_bays table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS workshop_bays (
@@ -54,7 +56,7 @@ def create_missing_tables():
             )
         ''')
         print("✅ Workshop bays table created/verified")
-        
+
         # Create appointments table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS appointments (
@@ -84,7 +86,7 @@ def create_missing_tables():
             )
         ''')
         print("✅ Appointments table created/verified")
-        
+
         # Create quotes table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS quotes (
@@ -110,7 +112,7 @@ def create_missing_tables():
             )
         ''')
         print("✅ Quotes table created/verified")
-        
+
         # Create job_sheet_templates table if it doesn't exist
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS job_sheet_templates (
@@ -129,7 +131,7 @@ def create_missing_tables():
             )
         ''')
         print("✅ Job sheet templates table created/verified")
-        
+
         # Create job_sheets table if it doesn't exist
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS job_sheets (
@@ -154,10 +156,10 @@ def create_missing_tables():
             )
         ''')
         print("✅ Job sheets table created/verified")
-        
+
         conn.commit()
         print("🎉 All tables created successfully!")
-        
+
     except Exception as e:
         print(f"❌ Error creating tables: {e}")
         conn.rollback()
@@ -165,28 +167,32 @@ def create_missing_tables():
     finally:
         conn.close()
 
+
 def seed_sample_data():
     """Add some sample data for testing"""
     db_path = get_db_path()
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-    
+
     try:
         print("🌱 Seeding sample data...")
-        
+
         # Add sample technicians
         sample_technicians = [
-            ('John Smith', 'john@elimotors.com', '07123456789', 'MOT Testing', 25.0),
-            ('Sarah Johnson', 'sarah@elimotors.com', '07987654321', 'Diagnostics', 30.0),
-            ('Mike Wilson', 'mike@elimotors.com', '07555123456', 'General Repair', 22.0)
+            ('John Smith', 'john@elimotors.com',
+             '07123456789', 'MOT Testing', 25.0),
+            ('Sarah Johnson', 'sarah@elimotors.com',
+             '07987654321', 'Diagnostics', 30.0),
+            ('Mike Wilson', 'mike@elimotors.com',
+             '07555123456', 'General Repair', 22.0)
         ]
-        
+
         for tech in sample_technicians:
             cursor.execute('''
                 INSERT OR IGNORE INTO technicians (name, email, phone, specialization, hourly_rate)
                 VALUES (?, ?, ?, ?, ?)
             ''', tech)
-        
+
         # Add sample workshop bays
         sample_bays = [
             ('BAY1', 'Main Service Bay', 'GENERAL'),
@@ -194,20 +200,23 @@ def seed_sample_data():
             ('BAY3', 'Diagnostic Bay', 'DIAGNOSTIC'),
             ('BAY4', 'Quick Service Bay', 'GENERAL')
         ]
-        
+
         for bay in sample_bays:
             cursor.execute('''
                 INSERT OR IGNORE INTO workshop_bays (bay_number, bay_name, bay_type)
                 VALUES (?, ?, ?)
             ''', bay)
-        
+
         # Add sample job sheet templates
         sample_templates = [
-            ('MOT Test', 'MOT', 'Standard MOT testing procedure', 'Perform full MOT inspection', 'Ensure vehicle is secure on lift', '[]', '["MOT equipment", "Brake tester"]', '["Lights", "Brakes", "Steering"]', 60),
-            ('Annual Service', 'Service', 'Annual vehicle service', 'Oil change, filter replacement, general inspection', 'Use correct oil grade', '["Oil filter", "Air filter", "Oil"]', '["Spanner set", "Oil drain pan"]', '["Oil level", "Filter seal", "No leaks"]', 120),
-            ('Brake Service', 'Repair', 'Brake system service and repair', 'Inspect brake pads, discs, and fluid', 'Brake fluid is corrosive', '["Brake pads", "Brake fluid"]', '["Brake tools", "Fluid tester"]', '["Pad thickness", "Disc condition", "Fluid level"]', 90)
+            ('MOT Test', 'MOT', 'Standard MOT testing procedure', 'Perform full MOT inspection',
+             'Ensure vehicle is secure on lift', '[]', '["MOT equipment", "Brake tester"]', '["Lights", "Brakes", "Steering"]', 60),
+            ('Annual Service', 'Service', 'Annual vehicle service', 'Oil change, filter replacement, general inspection', 'Use correct oil grade',
+             '["Oil filter", "Air filter", "Oil"]', '["Spanner set", "Oil drain pan"]', '["Oil level", "Filter seal", "No leaks"]', 120),
+            ('Brake Service', 'Repair', 'Brake system service and repair', 'Inspect brake pads, discs, and fluid', 'Brake fluid is corrosive',
+             '["Brake pads", "Brake fluid"]', '["Brake tools", "Fluid tester"]', '["Pad thickness", "Disc condition", "Fluid level"]', 90)
         ]
-        
+
         for template in sample_templates:
             cursor.execute('''
                 INSERT OR IGNORE INTO job_sheet_templates 
@@ -215,16 +224,17 @@ def seed_sample_data():
                  default_parts, default_tools, default_checks, estimated_time)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', template)
-        
+
         conn.commit()
         print("✅ Sample data seeded successfully!")
-        
+
     except Exception as e:
         print(f"❌ Error seeding data: {e}")
         conn.rollback()
         raise
     finally:
         conn.close()
+
 
 if __name__ == '__main__':
     print("🚀 Setting up database tables...")

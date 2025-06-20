@@ -4,17 +4,21 @@ Audit Trail & Logging API Routes
 Handles audit trail queries, security monitoring, and compliance reporting
 """
 
-import os
 import json
+import os
 from datetime import datetime, timedelta
+
 from flask import Blueprint, jsonify, request
+
 from services.audit_service import AuditService, AuditSeverity
 
 audit_bp = Blueprint('audit', __name__)
 
 # Initialize audit service
-db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+db_path = os.path.join(os.path.dirname(os.path.dirname(
+    os.path.dirname(__file__))), 'instance', 'garage.db')
 audit_service = AuditService(db_path)
+
 
 @audit_bp.route('/api/audit/trail')
 def get_audit_trail():
@@ -27,11 +31,11 @@ def get_audit_trail():
         start_date = request.args.get('start_date')
         end_date = request.args.get('end_date')
         limit = int(request.args.get('limit', 100))
-        
+
         # Validate limit
         if limit > 1000:
             limit = 1000
-        
+
         audit_trail = audit_service.get_audit_trail(
             resource_type=resource_type,
             resource_id=resource_id,
@@ -40,7 +44,7 @@ def get_audit_trail():
             end_date=end_date,
             limit=limit
         )
-        
+
         return jsonify({
             'success': True,
             'audit_trail': audit_trail,
@@ -54,12 +58,13 @@ def get_audit_trail():
                 'limit': limit
             }
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
 
 @audit_bp.route('/api/audit/security-events')
 def get_security_events():
@@ -69,28 +74,29 @@ def get_security_events():
         start_date = request.args.get('start_date')
         end_date = request.args.get('end_date')
         limit = int(request.args.get('limit', 100))
-        
+
         if limit > 1000:
             limit = 1000
-        
+
         security_events = audit_service.get_security_events(
             severity=severity,
             start_date=start_date,
             end_date=end_date,
             limit=limit
         )
-        
+
         return jsonify({
             'success': True,
             'security_events': security_events,
             'count': len(security_events)
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
 
 @audit_bp.route('/api/audit/performance')
 def get_performance_metrics():
@@ -99,23 +105,24 @@ def get_performance_metrics():
         endpoint = request.args.get('endpoint')
         start_date = request.args.get('start_date')
         end_date = request.args.get('end_date')
-        
+
         metrics = audit_service.get_performance_metrics(
             endpoint=endpoint,
             start_date=start_date,
             end_date=end_date
         )
-        
+
         return jsonify({
             'success': True,
             'performance_metrics': metrics
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
 
 @audit_bp.route('/api/audit/errors')
 def get_error_summary():
@@ -123,29 +130,30 @@ def get_error_summary():
     try:
         start_date = request.args.get('start_date')
         end_date = request.args.get('end_date')
-        
+
         error_summary = audit_service.get_error_summary(
             start_date=start_date,
             end_date=end_date
         )
-        
+
         return jsonify({
             'success': True,
             'error_summary': error_summary
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
 
+
 @audit_bp.route('/api/audit/log-event', methods=['POST'])
 def log_audit_event():
     """Manually log an audit event"""
     try:
         data = request.get_json()
-        
+
         # Validate required fields
         required_fields = ['event_type', 'action', 'user_id']
         for field in required_fields:
@@ -154,11 +162,12 @@ def log_audit_event():
                     'success': False,
                     'error': f'Missing required field: {field}'
                 }), 400
-        
+
         # Get client information
-        ip_address = request.environ.get('HTTP_X_FORWARDED_FOR', request.environ.get('REMOTE_ADDR'))
+        ip_address = request.environ.get(
+            'HTTP_X_FORWARDED_FOR', request.environ.get('REMOTE_ADDR'))
         user_agent = request.headers.get('User-Agent')
-        
+
         # Determine event type and severity
         event_type_map = {
             'DATA_ACCESS': audit_service.AuditEventType.DATA_ACCESS,
@@ -170,20 +179,22 @@ def log_audit_event():
             'SECURITY_EVENT': audit_service.AuditEventType.SECURITY_EVENT,
             'COMPLIANCE_EVENT': audit_service.AuditEventType.COMPLIANCE_EVENT
         }
-        
+
         severity_map = {
             'LOW': AuditSeverity.LOW,
             'MEDIUM': AuditSeverity.MEDIUM,
             'HIGH': AuditSeverity.HIGH,
             'CRITICAL': AuditSeverity.CRITICAL
         }
-        
-        event_type = event_type_map.get(data['event_type'], audit_service.AuditEventType.API_CALL)
-        severity = severity_map.get(data.get('severity', 'MEDIUM'), AuditSeverity.MEDIUM)
-        
+
+        event_type = event_type_map.get(
+            data['event_type'], audit_service.AuditEventType.API_CALL)
+        severity = severity_map.get(
+            data.get('severity', 'MEDIUM'), AuditSeverity.MEDIUM)
+
         # Create audit event
         from services.audit_service import AuditEvent
-        
+
         event = AuditEvent(
             event_type=event_type,
             severity=severity,
@@ -196,9 +207,9 @@ def log_audit_event():
             user_agent=user_agent or '',
             timestamp=datetime.now()
         )
-        
+
         success = audit_service.log_event(event)
-        
+
         if success:
             return jsonify({
                 'success': True,
@@ -209,19 +220,20 @@ def log_audit_event():
                 'success': False,
                 'error': 'Failed to log audit event'
             }), 500
-            
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
 
+
 @audit_bp.route('/api/audit/log-security-event', methods=['POST'])
 def log_security_event():
     """Log a security event"""
     try:
         data = request.get_json()
-        
+
         required_fields = ['event_type', 'attempted_action']
         for field in required_fields:
             if not data.get(field):
@@ -229,20 +241,22 @@ def log_security_event():
                     'success': False,
                     'error': f'Missing required field: {field}'
                 }), 400
-        
+
         # Get client information
-        source_ip = request.environ.get('HTTP_X_FORWARDED_FOR', request.environ.get('REMOTE_ADDR'))
+        source_ip = request.environ.get(
+            'HTTP_X_FORWARDED_FOR', request.environ.get('REMOTE_ADDR'))
         user_agent = request.headers.get('User-Agent')
-        
+
         severity_map = {
             'LOW': AuditSeverity.LOW,
             'MEDIUM': AuditSeverity.MEDIUM,
             'HIGH': AuditSeverity.HIGH,
             'CRITICAL': AuditSeverity.CRITICAL
         }
-        
-        severity = severity_map.get(data.get('severity', 'MEDIUM'), AuditSeverity.MEDIUM)
-        
+
+        severity = severity_map.get(
+            data.get('severity', 'MEDIUM'), AuditSeverity.MEDIUM)
+
         success = audit_service.log_security_event(
             event_type=data['event_type'],
             severity=severity,
@@ -252,7 +266,7 @@ def log_security_event():
             blocked=data.get('blocked', False),
             user_agent=user_agent
         )
-        
+
         if success:
             return jsonify({
                 'success': True,
@@ -263,22 +277,23 @@ def log_security_event():
                 'success': False,
                 'error': 'Failed to log security event'
             }), 500
-            
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
 
+
 @audit_bp.route('/api/audit/compliance-events')
 def get_compliance_events():
     """Get compliance events"""
     try:
         import sqlite3
-        
+
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         cursor.execute('''
             SELECT id, compliance_type, event_description, customer_id, data_subject,
                    legal_basis, retention_period, action_required, due_date,
@@ -287,7 +302,7 @@ def get_compliance_events():
             ORDER BY timestamp DESC
             LIMIT 100
         ''')
-        
+
         compliance_events = []
         for row in cursor.fetchall():
             compliance_events.append({
@@ -303,20 +318,21 @@ def get_compliance_events():
                 'completed_date': row[9],
                 'timestamp': row[10]
             })
-        
+
         conn.close()
-        
+
         return jsonify({
             'success': True,
             'compliance_events': compliance_events,
             'count': len(compliance_events)
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
 
 @audit_bp.route('/api/audit/cleanup', methods=['POST'])
 def cleanup_old_logs():
@@ -324,23 +340,24 @@ def cleanup_old_logs():
     try:
         data = request.get_json() or {}
         retention_days = data.get('retention_days', 365)
-        
+
         # Validate retention period
         if retention_days < 30:
             return jsonify({
                 'success': False,
                 'error': 'Minimum retention period is 30 days'
             }), 400
-        
+
         result = audit_service.cleanup_old_logs(retention_days)
-        
+
         return jsonify(result)
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
 
 @audit_bp.route('/api/audit/dashboard')
 def get_audit_dashboard():
@@ -349,33 +366,33 @@ def get_audit_dashboard():
         # Get date range (last 30 days)
         end_date = datetime.now()
         start_date = end_date - timedelta(days=30)
-        
+
         start_date_str = start_date.strftime('%Y-%m-%d')
         end_date_str = end_date.strftime('%Y-%m-%d')
-        
+
         # Get various metrics
         recent_audit_trail = audit_service.get_audit_trail(
             start_date=start_date_str,
             end_date=end_date_str,
             limit=10
         )
-        
+
         security_events = audit_service.get_security_events(
             start_date=start_date_str,
             end_date=end_date_str,
             limit=10
         )
-        
+
         performance_metrics = audit_service.get_performance_metrics(
             start_date=start_date_str,
             end_date=end_date_str
         )
-        
+
         error_summary = audit_service.get_error_summary(
             start_date=start_date_str,
             end_date=end_date_str
         )
-        
+
         return jsonify({
             'success': True,
             'dashboard': {
@@ -390,7 +407,7 @@ def get_audit_dashboard():
                 'error_summary': error_summary
             }
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,

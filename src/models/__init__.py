@@ -1,14 +1,18 @@
+from datetime import datetime, time, timezone
+
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime, timezone, time
+
+from .vehicle import Vehicle
 
 db = SQLAlchemy()
 
 # Import Vehicle model to make it available
-from .vehicle import Vehicle
+
 
 def utc_now():
     """Get current UTC datetime"""
     return datetime.now(timezone.utc)
+
 
 def safe_date_format(date_value):
     """Safely format a date value to ISO format, handling empty strings and None values."""
@@ -43,6 +47,7 @@ def safe_date_format(date_value):
             return str(date_value) if date_value else None
     except (AttributeError, ValueError, TypeError):
         return None
+
 
 class Customer(db.Model):
     __tablename__ = 'customers'
@@ -79,6 +84,7 @@ class Customer(db.Model):
             'updated_date': safe_date_format(self.updated_date)
         }
 
+
 class Job(db.Model):
     __tablename__ = 'jobs'
 
@@ -87,8 +93,10 @@ class Job(db.Model):
     customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'))
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicles.id'))
     description = db.Column(db.Text)
-    status = db.Column(db.String(20), default='BOOKED_IN')  # Enhanced status workflow
-    priority = db.Column(db.String(10), default='NORMAL')  # URGENT, HIGH, NORMAL, LOW
+    # Enhanced status workflow
+    status = db.Column(db.String(20), default='BOOKED_IN')
+    # URGENT, HIGH, NORMAL, LOW
+    priority = db.Column(db.String(10), default='NORMAL')
     assigned_technician = db.Column(db.String(100))  # Technician assignment
     estimated_hours = db.Column(db.Float, default=0.0)  # Time estimation
     actual_hours = db.Column(db.Float, default=0.0)  # Actual time spent
@@ -101,7 +109,8 @@ class Job(db.Model):
     due_date = db.Column(db.Date)  # Expected completion date
     notes = db.Column(db.Text)
     internal_notes = db.Column(db.Text)  # Private technician notes
-    customer_authorization = db.Column(db.Boolean, default=False)  # Customer approval for work
+    customer_authorization = db.Column(
+        db.Boolean, default=False)  # Customer approval for work
     bay_number = db.Column(db.String(10))  # Workshop bay assignment
 
     # Relationships
@@ -133,6 +142,7 @@ class Job(db.Model):
             'bay_number': self.bay_number
         }
 
+
 class Technician(db.Model):
     __tablename__ = 'technicians'
 
@@ -140,7 +150,8 @@ class Technician(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100))
     phone = db.Column(db.String(20))
-    specialization = db.Column(db.String(100))  # MOT, Diagnostics, Bodywork, etc.
+    # MOT, Diagnostics, Bodywork, etc.
+    specialization = db.Column(db.String(100))
     hourly_rate = db.Column(db.Float, default=0.0)
     is_active = db.Column(db.Boolean, default=True)
     start_time = db.Column(db.Time, default=time(8, 0))  # Default 8:00 AM
@@ -148,7 +159,8 @@ class Technician(db.Model):
     created_date = db.Column(db.Date, default=utc_now)
 
     # Relationships
-    appointments = db.relationship('Appointment', backref='technician', lazy=True)
+    appointments = db.relationship(
+        'Appointment', backref='technician', lazy=True)
 
     def to_dict(self):
         return {
@@ -164,13 +176,15 @@ class Technician(db.Model):
             'created_date': safe_date_format(self.created_date)
         }
 
+
 class WorkshopBay(db.Model):
     __tablename__ = 'workshop_bays'
 
     id = db.Column(db.Integer, primary_key=True)
     bay_number = db.Column(db.String(10), unique=True, nullable=False)
     bay_name = db.Column(db.String(50))
-    bay_type = db.Column(db.String(20), default='GENERAL')  # GENERAL, MOT, LIFT, DIAGNOSTIC
+    # GENERAL, MOT, LIFT, DIAGNOSTIC
+    bay_type = db.Column(db.String(20), default='GENERAL')
     is_available = db.Column(db.Boolean, default=True)
     equipment = db.Column(db.Text)  # JSON string of equipment list
     notes = db.Column(db.Text)
@@ -189,6 +203,7 @@ class WorkshopBay(db.Model):
             'notes': self.notes
         }
 
+
 class Appointment(db.Model):
     __tablename__ = 'appointments'
 
@@ -206,7 +221,8 @@ class Appointment(db.Model):
 
     service_type = db.Column(db.String(100))  # MOT, Service, Repair, etc.
     description = db.Column(db.Text)
-    status = db.Column(db.String(20), default='SCHEDULED')  # SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED
+    # SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED
+    status = db.Column(db.String(20), default='SCHEDULED')
     priority = db.Column(db.String(10), default='NORMAL')
 
     customer_notified = db.Column(db.Boolean, default=False)
@@ -237,13 +253,15 @@ class Appointment(db.Model):
             'notes': self.notes
         }
 
+
 class JobSheet(db.Model):
     __tablename__ = 'job_sheets'
 
     id = db.Column(db.Integer, primary_key=True)
     job_id = db.Column(db.Integer, db.ForeignKey('jobs.id'), nullable=False)
     sheet_number = db.Column(db.String(50), unique=True, nullable=False)
-    template_id = db.Column(db.Integer, db.ForeignKey('job_sheet_templates.id'))
+    template_id = db.Column(
+        db.Integer, db.ForeignKey('job_sheet_templates.id'))
 
     work_instructions = db.Column(db.Text)
     safety_notes = db.Column(db.Text)
@@ -258,7 +276,8 @@ class JobSheet(db.Model):
     signed_date = db.Column(db.DateTime)
     completed_date = db.Column(db.DateTime)
 
-    status = db.Column(db.String(20), default='DRAFT')  # DRAFT, ACTIVE, COMPLETED, ARCHIVED
+    # DRAFT, ACTIVE, COMPLETED, ARCHIVED
+    status = db.Column(db.String(20), default='DRAFT')
     created_date = db.Column(db.Date, default=utc_now)
 
     # Relationships
@@ -275,7 +294,8 @@ class JobSheet(db.Model):
             'parts_required': self.parts_required,
             'tools_required': self.tools_required,
             'quality_checks': self.quality_checks,
-            'technician_signature': bool(self.technician_signature),  # Don't expose actual signature
+            # Don't expose actual signature
+            'technician_signature': bool(self.technician_signature),
             'supervisor_signature': bool(self.supervisor_signature),
             'customer_signature': bool(self.customer_signature),
             'signed_date': self.signed_date.isoformat() if self.signed_date else None,
@@ -283,6 +303,7 @@ class JobSheet(db.Model):
             'status': self.status,
             'created_date': safe_date_format(self.created_date)
         }
+
 
 class Quote(db.Model):
     __tablename__ = 'quotes'
@@ -299,7 +320,8 @@ class Quote(db.Model):
     vat_amount = db.Column(db.Float, default=0.0)
     final_total = db.Column(db.Float, default=0.0)
 
-    status = db.Column(db.String(20), default='DRAFT')  # DRAFT, SENT, ACCEPTED, REJECTED, EXPIRED
+    # DRAFT, SENT, ACCEPTED, REJECTED, EXPIRED
+    status = db.Column(db.String(20), default='DRAFT')
     valid_until = db.Column(db.Date)
     created_date = db.Column(db.Date, default=utc_now)
     sent_date = db.Column(db.Date)
@@ -332,6 +354,7 @@ class Quote(db.Model):
             'notes': self.notes,
             'terms_conditions': self.terms_conditions
         }
+
 
 class JobSheetTemplate(db.Model):
     __tablename__ = 'job_sheet_templates'
@@ -370,6 +393,7 @@ class JobSheetTemplate(db.Model):
             'created_date': safe_date_format(self.created_date)
         }
 
+
 class Invoice(db.Model):
     __tablename__ = 'invoices'
 
@@ -381,7 +405,8 @@ class Invoice(db.Model):
     amount = db.Column(db.Float, nullable=False)
     vat_amount = db.Column(db.Float, default=0.0)
     total_amount = db.Column(db.Float, nullable=False)
-    status = db.Column(db.String(20), default='PENDING')  # PENDING, PAID, OVERDUE, CANCELLED
+    # PENDING, PAID, OVERDUE, CANCELLED
+    status = db.Column(db.String(20), default='PENDING')
     created_date = db.Column(db.Date, default=utc_now)
     due_date = db.Column(db.Date)
     paid_date = db.Column(db.Date)
@@ -407,6 +432,7 @@ class Invoice(db.Model):
             'notes': self.notes,
             'is_locked': self.is_locked
         }
+
 
 class Part(db.Model):
     __tablename__ = 'parts'
@@ -441,6 +467,7 @@ class Part(db.Model):
             'created_date': self.created_date.isoformat() if self.created_date else None
         }
 
+
 class JobPart(db.Model):
     __tablename__ = 'job_parts'
 
@@ -460,6 +487,7 @@ class JobPart(db.Model):
             'unit_price': self.unit_price,
             'total_price': self.total_price
         }
+
 
 class Supplier(db.Model):
     __tablename__ = 'suppliers'
@@ -493,6 +521,7 @@ class Supplier(db.Model):
             'payment_terms': self.payment_terms,
             'created_date': self.created_date.isoformat() if self.created_date else None
         }
+
 
 class Expense(db.Model):
     __tablename__ = 'expenses'

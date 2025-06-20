@@ -1,248 +1,273 @@
-{% extends "layouts/modern.html" %}
-
-{% block title %}MOT Dashboard - GarageManager Pro{% endblock %}
-
-{% block content %}
+{% extends "layouts/modern.html" %} {% block title %}MOT Dashboard -
+GarageManager Pro{% endblock %} {% block content %}
 <div class="space-y-6">
-    <!-- Header -->
-    <div class="flex items-center justify-between">
-        <div>
-            <h1 class="text-3xl font-bold text-gray-900">MOT Dashboard</h1>
-            <p class="text-gray-600 mt-1">Monitor vehicle MOT status, manage customer data, and send automated reminders</p>
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900">MOT Dashboard</h1>
+      <p class="text-gray-600 mt-1">
+        Monitor vehicle MOT status, manage customer data, and send automated
+        reminders
+      </p>
+    </div>
+    <div class="flex items-center gap-3">
+      <button id="refreshData" class="btn btn-secondary">
+        <i class="fas fa-sync-alt mr-2"></i>
+        Refresh Data
+      </button>
+      <button id="uploadVehicles" class="btn btn-primary">
+        <i class="fas fa-upload mr-2"></i>
+        Upload Vehicles
+      </button>
+    </div>
+  </div>
+
+  <!-- MOT Statistics -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+    <div class="card">
+      <div class="card-body text-center">
+        <div class="text-3xl font-bold text-gray-900 mb-2" id="totalVehicles">
+          -
         </div>
+        <div class="text-sm text-gray-600">Total Vehicles</div>
+      </div>
+    </div>
+    <div class="card bg-red-50 border-red-200">
+      <div class="card-body text-center">
+        <div class="text-3xl font-bold text-red-600 mb-2" id="expiredVehicles">
+          -
+        </div>
+        <div class="text-sm text-red-600">Expired MOT</div>
+      </div>
+    </div>
+    <div class="card bg-yellow-50 border-yellow-200">
+      <div class="card-body text-center">
+        <div
+          class="text-3xl font-bold text-yellow-600 mb-2"
+          id="criticalVehicles"
+        >
+          -
+        </div>
+        <div class="text-sm text-yellow-600">Critical (≤7 days)</div>
+      </div>
+    </div>
+    <div class="card bg-blue-50 border-blue-200">
+      <div class="card-body text-center">
+        <div class="text-3xl font-bold text-blue-600 mb-2" id="dueSoonVehicles">
+          -
+        </div>
+        <div class="text-sm text-blue-600">Due Soon (≤30 days)</div>
+      </div>
+    </div>
+    <div class="card bg-green-50 border-green-200">
+      <div class="card-body text-center">
+        <div class="text-3xl font-bold text-green-600 mb-2" id="validVehicles">
+          -
+        </div>
+        <div class="text-sm text-green-600">Valid MOT</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="fas fa-bolt mr-2"></i>
+        Quick Actions
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <button id="viewExpired" class="btn btn-danger w-full">
+          <i class="fas fa-exclamation-triangle mr-2"></i>
+          View Expired MOTs
+        </button>
+        <button id="viewCritical" class="btn btn-warning w-full">
+          <i class="fas fa-clock mr-2"></i>
+          View Critical MOTs
+        </button>
+        <button id="sendReminders" class="btn btn-primary w-full">
+          <i class="fas fa-paper-plane mr-2"></i>
+          Send SMS Reminders
+        </button>
+        <button id="exportData" class="btn btn-secondary w-full">
+          <i class="fas fa-download mr-2"></i>
+          Export Data
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter and Search -->
+  <div class="card">
+    <div class="card-header">
+      <div class="flex items-center justify-between">
+        <h3 class="card-title">
+          <i class="fas fa-car mr-2"></i>
+          Vehicle MOT Status
+          <span id="vehicleCount" class="ml-2 text-sm font-normal text-gray-500"
+            >(Loading...)</span
+          >
+        </h3>
         <div class="flex items-center gap-3">
-            <button id="refreshData" class="btn btn-secondary">
-                <i class="fas fa-sync-alt mr-2"></i>
-                Refresh Data
-            </button>
-            <button id="uploadVehicles" class="btn btn-primary">
-                <i class="fas fa-upload mr-2"></i>
-                Upload Vehicles
-            </button>
+          <div class="flex items-center gap-2">
+            <label for="statusFilter" class="text-sm font-medium text-gray-700"
+              >Filter:</label
+            >
+            <select id="statusFilter" class="form-select form-select-sm">
+              <option value="all">All Vehicles</option>
+              <option value="expired">Expired Only</option>
+              <option value="critical">Critical Only</option>
+              <option value="due_soon">Due Soon</option>
+              <option value="valid">Valid Only</option>
+              <option value="with_mobile">With Mobile Numbers</option>
+            </select>
+          </div>
+          <div class="flex items-center gap-2">
+            <label for="searchInput" class="text-sm font-medium text-gray-700"
+              >Search:</label
+            >
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Registration, customer..."
+              class="form-input form-input-sm"
+            />
+          </div>
         </div>
+      </div>
     </div>
-
-    <!-- MOT Statistics -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-        <div class="card">
-            <div class="card-body text-center">
-                <div class="text-3xl font-bold text-gray-900 mb-2" id="totalVehicles">-</div>
-                <div class="text-sm text-gray-600">Total Vehicles</div>
-            </div>
-        </div>
-        <div class="card bg-red-50 border-red-200">
-            <div class="card-body text-center">
-                <div class="text-3xl font-bold text-red-600 mb-2" id="expiredVehicles">-</div>
-                <div class="text-sm text-red-600">Expired MOT</div>
-            </div>
-        </div>
-        <div class="card bg-yellow-50 border-yellow-200">
-            <div class="card-body text-center">
-                <div class="text-3xl font-bold text-yellow-600 mb-2" id="criticalVehicles">-</div>
-                <div class="text-sm text-yellow-600">Critical (≤7 days)</div>
-            </div>
-        </div>
-        <div class="card bg-blue-50 border-blue-200">
-            <div class="card-body text-center">
-                <div class="text-3xl font-bold text-blue-600 mb-2" id="dueSoonVehicles">-</div>
-                <div class="text-sm text-blue-600">Due Soon (≤30 days)</div>
-            </div>
-        </div>
-        <div class="card bg-green-50 border-green-200">
-            <div class="card-body text-center">
-                <div class="text-3xl font-bold text-green-600 mb-2" id="validVehicles">-</div>
-                <div class="text-sm text-green-600">Valid MOT</div>
-            </div>
-        </div>
+    <div class="card-body p-0">
+      <div class="overflow-x-auto">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Registration</th>
+              <th>Vehicle</th>
+              <th>Customer</th>
+              <th>Mobile</th>
+              <th>MOT Expiry</th>
+              <th>Days Until Expiry</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="vehiclesTableBody">
+            <tr>
+              <td colspan="8" class="text-center py-8 text-gray-500">
+                <i class="fas fa-spinner fa-spin mr-2"></i>
+                Loading vehicles...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-
-    <!-- Quick Actions -->
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">
-                <i class="fas fa-bolt mr-2"></i>
-                Quick Actions
-            </h3>
-        </div>
-        <div class="card-body">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <button id="viewExpired" class="btn btn-danger w-full">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    View Expired MOTs
-                </button>
-                <button id="viewCritical" class="btn btn-warning w-full">
-                    <i class="fas fa-clock mr-2"></i>
-                    View Critical MOTs
-                </button>
-                <button id="sendReminders" class="btn btn-primary w-full">
-                    <i class="fas fa-paper-plane mr-2"></i>
-                    Send SMS Reminders
-                </button>
-                <button id="exportData" class="btn btn-secondary w-full">
-                    <i class="fas fa-download mr-2"></i>
-                    Export Data
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Filter and Search -->
-    <div class="card">
-        <div class="card-header">
-            <div class="flex items-center justify-between">
-                <h3 class="card-title">
-                    <i class="fas fa-car mr-2"></i>
-                    Vehicle MOT Status
-                    <span id="vehicleCount" class="ml-2 text-sm font-normal text-gray-500">(Loading...)</span>
-                </h3>
-                <div class="flex items-center gap-3">
-                    <div class="flex items-center gap-2">
-                        <label for="statusFilter" class="text-sm font-medium text-gray-700">Filter:</label>
-                        <select id="statusFilter" class="form-select form-select-sm">
-                            <option value="all">All Vehicles</option>
-                            <option value="expired">Expired Only</option>
-                            <option value="critical">Critical Only</option>
-                            <option value="due_soon">Due Soon</option>
-                            <option value="valid">Valid Only</option>
-                            <option value="with_mobile">With Mobile Numbers</option>
-                        </select>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <label for="searchInput" class="text-sm font-medium text-gray-700">Search:</label>
-                        <input type="text" id="searchInput" placeholder="Registration, customer..." class="form-input form-input-sm">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-body p-0">
-            <div class="overflow-x-auto">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Status</th>
-                            <th>Registration</th>
-                            <th>Vehicle</th>
-                            <th>Customer</th>
-                            <th>Mobile</th>
-                            <th>MOT Expiry</th>
-                            <th>Days Until Expiry</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="vehiclesTableBody">
-                        <tr>
-                            <td colspan="8" class="text-center py-8 text-gray-500">
-                                <i class="fas fa-spinner fa-spin mr-2"></i>
-                                Loading vehicles...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+  </div>
 </div>
 
 <!-- Vehicle Details Modal -->
 <div id="vehicleDetailsModal" class="modal">
-    <div class="modal-content max-w-4xl">
-        <div class="modal-header">
-            <h3 class="modal-title">Vehicle Details</h3>
-            <button class="modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div id="vehicleDetailsContent">
-                <div class="text-center py-8 text-gray-500">
-                    <i class="fas fa-spinner fa-spin mr-2"></i>
-                    Loading vehicle details...
-                </div>
-            </div>
-        </div>
+  <div class="modal-content max-w-4xl">
+    <div class="modal-header">
+      <h3 class="modal-title">Vehicle Details</h3>
+      <button class="modal-close">&times;</button>
     </div>
+    <div class="modal-body">
+      <div id="vehicleDetailsContent">
+        <div class="text-center py-8 text-gray-500">
+          <i class="fas fa-spinner fa-spin mr-2"></i>
+          Loading vehicle details...
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Upload Vehicles Modal -->
 <div id="uploadVehiclesModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title">Upload Vehicle Data</h3>
-            <button class="modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Upload CSV File</label>
-                    <input type="file" id="vehicleFileInput" accept=".csv,.xlsx,.xls" class="form-input w-full">
-                    <p class="text-sm text-gray-500 mt-1">Supported formats: CSV, Excel (.xlsx, .xls)</p>
-                </div>
-                <div>
-                    <h4 class="font-medium text-gray-900 mb-2">Required Columns:</h4>
-                    <ul class="text-sm text-gray-600 space-y-1">
-                        <li>• Registration (required)</li>
-                        <li>• Customer Name</li>
-                        <li>• Mobile Number</li>
-                        <li>• Email</li>
-                        <li>• Make/Model (optional)</li>
-                    </ul>
-                </div>
-                <div class="flex justify-end gap-3">
-                    <button id="cancelUpload" class="btn btn-secondary">Cancel</button>
-                    <button id="confirmUpload" class="btn btn-primary">
-                        <i class="fas fa-upload mr-2"></i>
-                        Upload
-                    </button>
-                </div>
-            </div>
-        </div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title">Upload Vehicle Data</h3>
+      <button class="modal-close">&times;</button>
     </div>
+    <div class="modal-body">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Upload CSV File</label
+          >
+          <input
+            type="file"
+            id="vehicleFileInput"
+            accept=".csv,.xlsx,.xls"
+            class="form-input w-full"
+          />
+          <p class="text-sm text-gray-500 mt-1">
+            Supported formats: CSV, Excel (.xlsx, .xls)
+          </p>
+        </div>
+        <div>
+          <h4 class="font-medium text-gray-900 mb-2">Required Columns:</h4>
+          <ul class="text-sm text-gray-600 space-y-1">
+            <li>• Registration (required)</li>
+            <li>• Customer Name</li>
+            <li>• Mobile Number</li>
+            <li>• Email</li>
+            <li>• Make/Model (optional)</li>
+          </ul>
+        </div>
+        <div class="flex justify-end gap-3">
+          <button id="cancelUpload" class="btn btn-secondary">Cancel</button>
+          <button id="confirmUpload" class="btn btn-primary">
+            <i class="fas fa-upload mr-2"></i>
+            Upload
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <style>
-.status-badge {
+  .status-badge {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
-}
+  }
 
-.status-expired {
+  .status-expired {
     @apply bg-red-100 text-red-800;
-}
+  }
 
-.status-critical {
+  .status-critical {
     @apply bg-yellow-100 text-yellow-800;
-}
+  }
 
-.status-due-soon {
+  .status-due-soon {
     @apply bg-blue-100 text-blue-800;
-}
+  }
 
-.status-valid {
+  .status-valid {
     @apply bg-green-100 text-green-800;
-}
+  }
 
-.vehicle-row.expired {
+  .vehicle-row.expired {
     @apply bg-red-50;
-}
+  }
 
-.vehicle-row.critical {
+  .vehicle-row.critical {
     @apply bg-yellow-50;
-}
+  }
 
-.vehicle-row.due-soon {
+  .vehicle-row.due-soon {
     @apply bg-blue-50;
-}
+  }
 
-.vehicle-row.valid {
+  .vehicle-row.valid {
     @apply bg-green-50;
-}
+  }
 </style>
-{% endblock %}
-
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='js/mot-dashboard.js') }}"></script>
-{% endblock %}
-
-{% block page_init %}
-// Initialize MOT Dashboard
-if (typeof MOTDashboard !== 'undefined') {
-    MOTDashboard.init();
-}
-{% endblock %}
+{% endblock %} {% block page_init %} // Initialize MOT Dashboard if (typeof
+MOTDashboard !== 'undefined') { MOTDashboard.init(); } {% endblock %}

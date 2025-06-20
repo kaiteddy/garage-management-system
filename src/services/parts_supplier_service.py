@@ -4,14 +4,16 @@ Parts Supplier Integration Service
 Framework for integrating with GSF Car Parts, Euro Car Parts, and other suppliers
 """
 
-import os
+import hashlib
 import json
+import os
 import sqlite3
-import requests
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
-from dataclasses import dataclass
-import hashlib
+
+import requests
+
 
 @dataclass
 class PartSearchResult:
@@ -26,6 +28,7 @@ class PartSearchResult:
     image_url: str = None
     specifications: Dict = None
 
+
 @dataclass
 class SupplierConfig:
     """Supplier configuration"""
@@ -36,20 +39,21 @@ class SupplierConfig:
     password: str = None
     active: bool = True
 
+
 class PartsSupplierService:
     """Service for parts supplier integration"""
-    
+
     def __init__(self, db_path: str):
         self.db_path = db_path
         self._ensure_parts_tables()
         self.suppliers = self._load_supplier_configs()
-    
+
     def _ensure_parts_tables(self):
         """Create parts-related tables if they don't exist"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             # Supplier configurations table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS supplier_configs (
@@ -64,7 +68,7 @@ class PartsSupplierService:
                     updated_date DATE DEFAULT CURRENT_DATE
                 )
             ''')
-            
+
             # Parts catalog table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS parts_catalog (
@@ -88,7 +92,7 @@ class PartsSupplierService:
                     FOREIGN KEY (supplier_id) REFERENCES supplier_configs (id)
                 )
             ''')
-            
+
             # Parts orders table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS parts_orders (
@@ -107,7 +111,7 @@ class PartsSupplierService:
                     FOREIGN KEY (job_id) REFERENCES jobs (id)
                 )
             ''')
-            
+
             # Parts order items table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS parts_order_items (
@@ -124,7 +128,7 @@ class PartsSupplierService:
                     FOREIGN KEY (part_id) REFERENCES parts_catalog (id)
                 )
             ''')
-            
+
             # Parts usage tracking table
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS parts_usage (
@@ -142,25 +146,25 @@ class PartsSupplierService:
                     FOREIGN KEY (part_id) REFERENCES parts_catalog (id)
                 )
             ''')
-            
+
             conn.commit()
             conn.close()
-            
+
         except Exception as e:
             print(f"Error creating parts tables: {str(e)}")
-    
+
     def _load_supplier_configs(self) -> Dict[str, SupplierConfig]:
         """Load supplier configurations from database"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             cursor.execute('''
                 SELECT id, name, api_endpoint, api_key, username, password, active
                 FROM supplier_configs
                 WHERE active = 1
             ''')
-            
+
             suppliers = {}
             for row in cursor.fetchall():
                 suppliers[row[1]] = SupplierConfig(
@@ -171,46 +175,46 @@ class PartsSupplierService:
                     password=row[5],
                     active=bool(row[6])
                 )
-            
+
             conn.close()
             return suppliers
-            
+
         except Exception as e:
             print(f"Error loading supplier configs: {str(e)}")
             return {}
-    
+
     def add_supplier_config(self, name: str, api_endpoint: str, api_key: str,
-                           username: str = None, password: str = None) -> Dict:
+                            username: str = None, password: str = None) -> Dict:
         """Add a new supplier configuration"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             cursor.execute('''
                 INSERT INTO supplier_configs 
                 (name, api_endpoint, api_key, username, password)
                 VALUES (?, ?, ?, ?, ?)
             ''', (name, api_endpoint, api_key, username, password))
-            
+
             supplier_id = cursor.lastrowid
             conn.commit()
             conn.close()
-            
+
             # Reload supplier configs
             self.suppliers = self._load_supplier_configs()
-            
+
             return {
                 'success': True,
                 'supplier_id': supplier_id,
                 'message': f'Supplier {name} added successfully'
             }
-            
+
         except Exception as e:
             return {
                 'success': False,
                 'error': str(e)
             }
-    
+
     def search_parts_gsf(self, search_term: str, vehicle_reg: str = None) -> List[PartSearchResult]:
         """Search parts using GSF Car Parts API (mock implementation)"""
         try:
@@ -225,7 +229,8 @@ class PartsSupplierService:
                     supplier="GSF Car Parts",
                     supplier_part_id="BP001234",
                     image_url="https://example.com/brake-pads.jpg",
-                    specifications={"material": "Ceramic", "warranty": "2 years"}
+                    specifications={"material": "Ceramic",
+                                    "warranty": "2 years"}
                 ),
                 PartSearchResult(
                     part_number="GSF001235",
@@ -239,19 +244,19 @@ class PartsSupplierService:
                     specifications={"diameter": "280mm", "thickness": "25mm"}
                 )
             ]
-            
+
             # Filter results based on search term
             filtered_results = [
-                result for result in mock_results 
+                result for result in mock_results
                 if search_term.lower() in result.description.lower()
             ]
-            
+
             return filtered_results
-            
+
         except Exception as e:
             print(f"Error searching GSF parts: {str(e)}")
             return []
-    
+
     def search_parts_euro_car_parts(self, search_term: str, vehicle_reg: str = None) -> List[PartSearchResult]:
         """Search parts using Euro Car Parts API (mock implementation)"""
         try:
@@ -277,53 +282,56 @@ class PartsSupplierService:
                     supplier="Euro Car Parts",
                     supplier_part_id="AF567891",
                     image_url="https://example.com/air-filter.jpg",
-                    specifications={"dimensions": "200x150x50mm", "washable": True}
+                    specifications={
+                        "dimensions": "200x150x50mm", "washable": True}
                 )
             ]
-            
+
             filtered_results = [
-                result for result in mock_results 
+                result for result in mock_results
                 if search_term.lower() in result.description.lower()
             ]
-            
+
             return filtered_results
-            
+
         except Exception as e:
             print(f"Error searching Euro Car Parts: {str(e)}")
             return []
-    
+
     def search_parts_all_suppliers(self, search_term: str, vehicle_reg: str = None) -> List[PartSearchResult]:
         """Search parts across all configured suppliers"""
         all_results = []
-        
+
         # Search GSF Car Parts
         gsf_results = self.search_parts_gsf(search_term, vehicle_reg)
         all_results.extend(gsf_results)
-        
+
         # Search Euro Car Parts
-        euro_results = self.search_parts_euro_car_parts(search_term, vehicle_reg)
+        euro_results = self.search_parts_euro_car_parts(
+            search_term, vehicle_reg)
         all_results.extend(euro_results)
-        
+
         # Sort by price (lowest first)
         all_results.sort(key=lambda x: x.price)
-        
+
         return all_results
-    
+
     def add_part_to_catalog(self, part_result: PartSearchResult, markup_percent: float = 25.0) -> Dict:
         """Add a part from search results to the local catalog"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             # Get supplier ID
-            cursor.execute('SELECT id FROM supplier_configs WHERE name = ?', (part_result.supplier,))
+            cursor.execute(
+                'SELECT id FROM supplier_configs WHERE name = ?', (part_result.supplier,))
             supplier_row = cursor.fetchone()
             supplier_id = supplier_row[0] if supplier_row else None
-            
+
             # Calculate selling price with markup
             cost_price = part_result.price
             selling_price = cost_price * (1 + markup_percent / 100)
-            
+
             cursor.execute('''
                 INSERT INTO parts_catalog 
                 (part_number, description, brand, price, cost_price, markup_percent,
@@ -340,60 +348,62 @@ class PartsSupplierService:
                 part_result.supplier_part_id,
                 part_result.availability,
                 part_result.image_url,
-                json.dumps(part_result.specifications) if part_result.specifications else None
+                json.dumps(
+                    part_result.specifications) if part_result.specifications else None
             ))
-            
+
             part_id = cursor.lastrowid
             conn.commit()
             conn.close()
-            
+
             return {
                 'success': True,
                 'part_id': part_id,
                 'selling_price': round(selling_price, 2),
                 'message': 'Part added to catalog successfully'
             }
-            
+
         except Exception as e:
             return {
                 'success': False,
                 'error': str(e)
             }
-    
+
     def create_parts_order(self, supplier_name: str, parts_list: List[Dict], job_id: int = None) -> Dict:
         """Create a parts order with a supplier"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
-            
+
             # Get supplier ID
-            cursor.execute('SELECT id FROM supplier_configs WHERE name = ?', (supplier_name,))
+            cursor.execute(
+                'SELECT id FROM supplier_configs WHERE name = ?', (supplier_name,))
             supplier_row = cursor.fetchone()
             if not supplier_row:
                 return {'success': False, 'error': 'Supplier not found'}
-            
+
             supplier_id = supplier_row[0]
-            
+
             # Generate order number
             order_number = f"PO-{datetime.now().strftime('%Y%m%d')}-{supplier_id:03d}"
-            
+
             # Create order
             cursor.execute('''
                 INSERT INTO parts_orders 
                 (order_number, supplier_id, job_id, status)
                 VALUES (?, ?, ?, ?)
             ''', (order_number, supplier_id, job_id, 'PENDING'))
-            
+
             order_id = cursor.lastrowid
             total_amount = 0.0
-            
+
             # Add order items
             for part in parts_list:
                 quantity = part['quantity']
                 unit_price = part['unit_price']
                 total_price = quantity * unit_price
                 total_amount += total_price
-                
+
                 cursor.execute('''
                     INSERT INTO parts_order_items 
                     (order_id, part_number, description, quantity, unit_price, total_price)
@@ -406,15 +416,15 @@ class PartsSupplierService:
                     unit_price,
                     total_price
                 ))
-            
+
             # Update order total
             cursor.execute('''
                 UPDATE parts_orders SET total_amount = ? WHERE id = ?
             ''', (total_amount, order_id))
-            
+
             conn.commit()
             conn.close()
-            
+
             return {
                 'success': True,
                 'order_id': order_id,
@@ -422,7 +432,7 @@ class PartsSupplierService:
                 'total_amount': round(total_amount, 2),
                 'message': 'Parts order created successfully'
             }
-            
+
         except Exception as e:
             return {
                 'success': False,

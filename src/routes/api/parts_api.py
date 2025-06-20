@@ -6,15 +6,19 @@ Handles all parts-related API endpoints
 import os
 import sqlite3
 from datetime import datetime
+
 from flask import Blueprint, jsonify
 
 parts_api_bp = Blueprint('parts_api', __name__)
 
+
 def get_db_path():
     """Get database path"""
     # Get the project root directory (3 levels up from src/routes/api/)
-    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+    project_root = os.path.dirname(os.path.dirname(
+        os.path.dirname(os.path.dirname(__file__))))
     return os.path.join(project_root, 'instance', 'garage.db')
+
 
 @parts_api_bp.route('/api/parts')
 def get_parts():
@@ -28,7 +32,7 @@ def get_parts():
         cursor.execute('''
             SELECT name FROM sqlite_master WHERE type='table' AND name='parts'
         ''')
-        
+
         if not cursor.fetchone():
             conn.close()
             return jsonify({
@@ -75,6 +79,7 @@ def get_parts():
             'error': str(e)
         }), 500
 
+
 @parts_api_bp.route('/api/parts/low-stock')
 def get_low_stock_parts():
     """Get parts with low stock"""
@@ -87,7 +92,7 @@ def get_low_stock_parts():
         cursor.execute('''
             SELECT name FROM sqlite_master WHERE type='table' AND name='parts'
         ''')
-        
+
         if not cursor.fetchone():
             conn.close()
             return jsonify({
@@ -132,6 +137,7 @@ def get_low_stock_parts():
             'error': str(e)
         }), 500
 
+
 @parts_api_bp.route('/api/parts/stats')
 def get_parts_stats():
     """Get parts statistics"""
@@ -144,7 +150,7 @@ def get_parts_stats():
         cursor.execute('''
             SELECT name FROM sqlite_master WHERE type='table' AND name='parts'
         ''')
-        
+
         if not cursor.fetchone():
             conn.close()
             return jsonify({
@@ -163,7 +169,8 @@ def get_parts_stats():
         total_parts = cursor.fetchone()[0]
 
         # Get low stock count
-        cursor.execute('SELECT COUNT(*) FROM parts WHERE stock_quantity <= minimum_stock')
+        cursor.execute(
+            'SELECT COUNT(*) FROM parts WHERE stock_quantity <= minimum_stock')
         low_stock_count = cursor.fetchone()[0]
 
         # Get out of stock count

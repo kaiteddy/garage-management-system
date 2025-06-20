@@ -7,24 +7,28 @@ This automated system manages DeepSource code quality fixes with comprehensive l
 ## 🚀 Features
 
 ### ✅ **Automated Fix Management**
+
 - **Auto-merge safe fixes** (style, formatting, imports)
 - **Manual review for critical issues** (security, performance)
 - **Duplicate prevention** - never repeat the same fix
 - **Comprehensive logging** - track all fix attempts and results
 
 ### 📊 **Fix Tracking & Analytics**
+
 - **SQLite database** for persistent fix history
 - **JSON logs** for easy viewing and analysis
 - **Success rate monitoring** and statistics
 - **Fix categorization** by type and priority
 
 ### 🔧 **GitHub Integration**
+
 - **GitHub Actions workflow** for auto-merging PRs
 - **PR validation** - only merge safe, verified changes
 - **Automatic comments** on PRs with fix details
 - **Branch cleanup** after successful merges
 
 ### 🌐 **Web Dashboard**
+
 - **Real-time statistics** and fix history
 - **Interactive filtering** by status, type, date
 - **Export functionality** for data analysis
@@ -57,12 +61,15 @@ This automated system manages DeepSource code quality fixes with comprehensive l
 ## 🛠️ Setup Instructions
 
 ### 1. **Run Setup Script**
+
 ```bash
 ./scripts/setup_deepsource_automation.sh
 ```
 
 ### 2. **Configure Environment**
+
 Update `.env` file with your credentials:
+
 ```bash
 DEEPSOURCE_WEBHOOK_SECRET=your-webhook-secret-here
 WEBHOOK_PORT=5002
@@ -70,12 +77,15 @@ GITHUB_TOKEN=your-github-token-here  # Optional
 ```
 
 ### 3. **GitHub Repository Settings**
+
 - **Actions > General > Workflow permissions**: Read and write permissions
 - **Actions > General**: Allow GitHub Actions to create and approve pull requests ✅
 - **Settings > Webhooks**: Add DeepSource webhook URL
 
 ### 4. **DeepSource Configuration**
+
 Ensure `.deepsource.toml` includes:
+
 ```toml
 [[analyzers]]
 name = "javascript"
@@ -95,6 +105,7 @@ name = "isort"
 ## 🔄 How It Works
 
 ### **Automatic Fix Flow**
+
 1. **DeepSource analyzes** code and creates autofix PR
 2. **GitHub Actions triggers** on PR creation
 3. **Validation checks** ensure PR is safe to merge
@@ -105,6 +116,7 @@ name = "isort"
 ### **Fix Categories**
 
 #### 🟢 **Auto-Merge (Safe)**
+
 - Code formatting (Prettier, autopep8)
 - Import organization (isort)
 - Style fixes (StandardJS)
@@ -112,6 +124,7 @@ name = "isort"
 - Unused import removal
 
 #### 🟡 **Manual Review Required**
+
 - Security vulnerabilities
 - Performance issues
 - Complex refactoring
@@ -119,6 +132,7 @@ name = "isort"
 - Logic changes
 
 #### 🔴 **Never Auto-Merge**
+
 - Configuration file changes
 - Dependency updates
 - Database migrations
@@ -127,11 +141,13 @@ name = "isort"
 ## 📊 Dashboard Usage
 
 ### **Access Dashboard**
+
 ```
 http://localhost:5001/deepsource-dashboard
 ```
 
 ### **Key Features**
+
 - **📈 Statistics**: Total fixes, success rate, recent activity
 - **📋 Fix History**: Searchable list of all fixes
 - **🔍 Filtering**: By status (success/pending/failed), type, date
@@ -139,6 +155,7 @@ http://localhost:5001/deepsource-dashboard
 - **📊 Export**: Download fix data for analysis
 
 ### **API Endpoints**
+
 ```
 GET  /api/deepsource/stats          # Get fix statistics
 GET  /api/deepsource/fixes          # Get fix history
@@ -150,11 +167,13 @@ GET  /api/deepsource/export         # Export data
 ## 🔧 Monitoring & Maintenance
 
 ### **Check System Status**
+
 ```bash
 ./scripts/monitor_deepsource.sh
 ```
 
 ### **View Recent Activity**
+
 ```bash
 # View fix logs
 tail -f logs/fix_manager.log
@@ -169,11 +188,13 @@ print(manager.get_fix_statistics())
 ```
 
 ### **Cleanup Old Data**
+
 ```bash
 ./scripts/cleanup_deepsource.sh
 ```
 
 ### **Manual Database Operations**
+
 ```python
 from deepsource_fix_manager import DeepSourceFixManager
 
@@ -195,6 +216,7 @@ deleted = manager.cleanup_old_records(90)  # 90 days
 ## ⚙️ Configuration Options
 
 ### **Auto-Fix Settings** (`config/deepsource_config.json`)
+
 ```json
 {
   "auto_merge_enabled": true,
@@ -206,6 +228,7 @@ deleted = manager.cleanup_old_records(90)  # 90 days
 ```
 
 ### **GitHub Actions Settings**
+
 ```json
 {
   "auto_merge_delay_minutes": 5,
@@ -220,12 +243,14 @@ deleted = manager.cleanup_old_records(90)  # 90 days
 ### **Common Issues**
 
 #### **Auto-merge not working**
+
 1. Check GitHub Actions permissions
 2. Verify webhook secret is set
 3. Ensure PR validation passes
 4. Check workflow logs in GitHub Actions
 
 #### **Database errors**
+
 ```bash
 # Reinitialize database
 python3 -c "
@@ -236,11 +261,13 @@ manager = DeepSourceFixManager()
 ```
 
 #### **Dashboard not loading**
+
 1. Ensure Flask app is running
 2. Check API endpoints are accessible
 3. Verify static files are served correctly
 
 ### **Debug Commands**
+
 ```bash
 # Test fix manager
 python3 src/deepsource_fix_manager.py --stats
@@ -255,6 +282,7 @@ gh run list --workflow="auto-merge-deepsource.yml"
 ## 📈 Success Metrics
 
 ### **Key Performance Indicators**
+
 - **Fix Success Rate**: Target >90%
 - **Auto-merge Rate**: Target >80% for style fixes
 - **Duplicate Prevention**: 100% (no repeated fixes)
@@ -262,7 +290,9 @@ gh run list --workflow="auto-merge-deepsource.yml"
 - **System Uptime**: >99%
 
 ### **Monthly Reports**
+
 The system automatically tracks:
+
 - Total fixes applied
 - Success/failure rates by category
 - Time saved through automation
@@ -271,6 +301,7 @@ The system automatically tracks:
 ## 🔒 Security Considerations
 
 ### **Safe Auto-merge Rules**
+
 - Only style and formatting changes
 - No configuration file modifications
 - No dependency updates
@@ -278,6 +309,7 @@ The system automatically tracks:
 - PR author must be `deepsource-autofix[bot]`
 
 ### **Manual Review Triggers**
+
 - Security vulnerability fixes
 - Performance optimization changes
 - Complex refactoring suggestions
@@ -286,18 +318,21 @@ The system automatically tracks:
 ## 🎯 Benefits
 
 ### **Time Savings**
+
 - **Eliminate manual merging** of style fixes
 - **Prevent duplicate work** on same issues
 - **Automated tracking** reduces management overhead
 - **Quick identification** of fix patterns
 
 ### **Quality Improvements**
+
 - **Consistent code style** through automated fixes
 - **Faster issue resolution** with auto-merge
 - **Better visibility** into code quality trends
 - **Reduced human error** in fix management
 
 ### **Team Productivity**
+
 - **Focus on important issues** (security, performance)
 - **Less time on repetitive tasks** (style fixes)
 - **Clear audit trail** of all changes
@@ -310,6 +345,7 @@ The system automatically tracks:
 This DeepSource automation system provides a comprehensive solution for managing code quality fixes while preventing duplicate work. It combines the power of automated fixes with intelligent tracking and human oversight for critical issues.
 
 **Key Benefits:**
+
 - ✅ **Automated safe fixes** with comprehensive logging
 - ✅ **Duplicate prevention** - never repeat the same work
 - ✅ **Full audit trail** of all fix attempts and results

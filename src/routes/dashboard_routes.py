@@ -6,16 +6,19 @@ Extracted from monolithic app.py
 import os
 import sqlite3
 from datetime import datetime, timedelta
+
 from flask import Blueprint, jsonify
 
 dashboard_bp = Blueprint('dashboard', __name__)
+
 
 @dashboard_bp.route('/api/stats')
 def get_stats():
     """Get dashboard statistics"""
     try:
         # Use direct SQLite query for now
-        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.dirname(__file__))), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -33,14 +36,17 @@ def get_stats():
         invoices_count = cursor.fetchone()[0]
 
         # Calculate revenue from paid invoices
-        cursor.execute('SELECT SUM(total_amount) FROM invoices WHERE status = "PAID"')
+        cursor.execute(
+            'SELECT SUM(total_amount) FROM invoices WHERE status = "PAID"')
         total_revenue = cursor.fetchone()[0] or 0
 
         # Get linking statistics
-        cursor.execute('SELECT COUNT(*) FROM vehicles WHERE customer_id IS NOT NULL')
+        cursor.execute(
+            'SELECT COUNT(*) FROM vehicles WHERE customer_id IS NOT NULL')
         linked_vehicles = cursor.fetchone()[0]
 
-        cursor.execute('SELECT COUNT(*) FROM jobs WHERE customer_id IS NOT NULL')
+        cursor.execute(
+            'SELECT COUNT(*) FROM jobs WHERE customer_id IS NOT NULL')
         linked_jobs = cursor.fetchone()[0]
 
         conn.close()
@@ -67,11 +73,13 @@ def get_stats():
             'error': str(e)
         }), 500
 
+
 @dashboard_bp.route('/api/recent-activity')
 def get_recent_activity():
     """Get recent activity for dashboard"""
     try:
-        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.dirname(__file__))), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
@@ -140,17 +148,19 @@ def get_recent_activity():
             'activities': []
         }), 500
 
+
 @dashboard_bp.route('/api/dashboard-summary')
 def get_dashboard_summary():
     """Get comprehensive dashboard summary"""
     try:
-        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'instance', 'garage.db')
+        db_path = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.dirname(__file__))), 'instance', 'garage.db')
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
         # Get current month stats
         current_month = datetime.now().strftime('%Y-%m')
-        
+
         # Jobs this month
         cursor.execute('''
             SELECT COUNT(*), SUM(total_amount)
@@ -161,7 +171,8 @@ def get_dashboard_summary():
         revenue_this_month = revenue_this_month or 0
 
         # Pending jobs
-        cursor.execute("SELECT COUNT(*) FROM jobs WHERE status IN ('PENDING', 'IN_PROGRESS')")
+        cursor.execute(
+            "SELECT COUNT(*) FROM jobs WHERE status IN ('PENDING', 'IN_PROGRESS')")
         pending_jobs = cursor.fetchone()[0]
 
         # Overdue invoices
@@ -174,7 +185,8 @@ def get_dashboard_summary():
         overdue_amount = overdue_amount or 0
 
         # MOT reminders (vehicles expiring in next 30 days)
-        thirty_days_from_now = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+        thirty_days_from_now = (
+            datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
         cursor.execute('''
             SELECT COUNT(*) 
             FROM vehicles 
@@ -206,22 +218,24 @@ def get_dashboard_summary():
             'error': str(e)
         }), 500
 
+
 def format_date(date_string):
     """Format date string for display"""
     if not date_string:
         return 'Unknown'
-    
+
     try:
         # Parse the date string
         if 'T' in date_string:
-            date_obj = datetime.fromisoformat(date_string.replace('Z', '+00:00'))
+            date_obj = datetime.fromisoformat(
+                date_string.replace('Z', '+00:00'))
         else:
             date_obj = datetime.strptime(date_string, '%Y-%m-%d')
-        
+
         # Calculate time difference
         now = datetime.now()
         diff = now - date_obj.replace(tzinfo=None)
-        
+
         if diff.days == 0:
             if diff.seconds < 3600:  # Less than 1 hour
                 minutes = diff.seconds // 60
@@ -235,6 +249,6 @@ def format_date(date_string):
             return f"{diff.days} days ago"
         else:
             return date_obj.strftime('%d/%m/%Y')
-            
+
     except Exception:
         return date_string

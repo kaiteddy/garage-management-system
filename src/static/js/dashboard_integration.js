@@ -1,24 +1,27 @@
 // Dashboard Integration Script - Improved UI and Real Data Loading
 
 // Enhanced dashboard initialization
-document.addEventListener('DOMContentLoaded', function() {
-    // Apply improved styling
-    applyImprovedStyling();
-    
-    // Load real dashboard data
-    if (document.getElementById('dashboard') && document.getElementById('dashboard').classList.contains('active')) {
-        loadRealDashboardData();
-    }
-    
-    // Set up auto-refresh
-    setupAutoRefresh();
-});
+document.addEventListener('DOMContentLoaded', function () {
+  // Apply improved styling
+  applyImprovedStyling()
+
+  // Load real dashboard data
+  if (
+    document.getElementById('dashboard') &&
+    document.getElementById('dashboard').classList.contains('active')
+  ) {
+    loadRealDashboardData()
+  }
+
+  // Set up auto-refresh
+  setupAutoRefresh()
+})
 
 // Apply improved styling to dashboard
-function applyImprovedStyling() {
-    // Add improved CSS to head
-    const style = document.createElement('style');
-    style.textContent = `
+function applyImprovedStyling () {
+  // Add improved CSS to head
+  const style = document.createElement('style')
+  style.textContent = `
         /* Enhanced Dashboard Styling - More Neutral and Readable */
         .stat-card {
             background: white;
@@ -138,136 +141,141 @@ function applyImprovedStyling() {
             font-size: 0.85rem;
             color: #6c757d;
         }
-    `;
-    document.head.appendChild(style);
+    `
+  document.head.appendChild(style)
 }
 
 // Load real dashboard data
-async function loadRealDashboardData() {
-    try {
-        // Show loading state
-        showDashboardLoading();
-        
-        // Fetch real statistics from backend
-        const response = await fetch('/api/stats');
-        if (response.ok) {
-            const data = await response.json();
-            if (data.success) {
-                updateDashboardWithRealData(data.stats);
-            } else {
-                console.error('API returned error:', data.error);
-                showDashboardError();
-            }
-        } else {
-            console.error('Failed to fetch dashboard stats:', response.status);
-            showDashboardError();
-        }
-    } catch (error) {
-        console.error('Error loading dashboard data:', error);
-        showDashboardError();
-    } finally {
-        hideDashboardLoading();
+async function loadRealDashboardData () {
+  try {
+    // Show loading state
+    showDashboardLoading()
+
+    // Fetch real statistics from backend
+    const response = await fetch('/api/stats')
+    if (response.ok) {
+      const data = await response.json()
+      if (data.success) {
+        updateDashboardWithRealData(data.stats)
+      } else {
+        console.error('API returned error:', data.error)
+        showDashboardError()
+      }
+    } else {
+      console.error('Failed to fetch dashboard stats:', response.status)
+      showDashboardError()
     }
+  } catch (error) {
+    console.error('Error loading dashboard data:', error)
+    showDashboardError()
+  } finally {
+    hideDashboardLoading()
+  }
 }
 
 // Update dashboard with real data
-function updateDashboardWithRealData(stats) {
-    // Update customer count
-    const customerElement = document.getElementById('total-customers');
-    if (customerElement) {
-        animateNumber(customerElement, 0, stats.customers || 0);
-    }
-    
-    // Update vehicle count
-    const vehicleElement = document.getElementById('total-vehicles');
-    if (vehicleElement) {
-        animateNumber(vehicleElement, 0, stats.vehicles || 0);
-    }
-    
-    // Update job count
-    const jobElement = document.getElementById('total-jobs');
-    if (jobElement) {
-        animateNumber(jobElement, 0, stats.jobs || 0);
-    }
-    
-    // Update revenue (already formatted from backend)
-    const revenueElement = document.getElementById('total-revenue');
-    if (revenueElement && stats.revenue) {
-        revenueElement.textContent = stats.revenue;
-    }
-    
-    console.log('Dashboard updated with real data:', stats);
+function updateDashboardWithRealData (stats) {
+  // Update customer count
+  const customerElement = document.getElementById('total-customers')
+  if (customerElement) {
+    animateNumber(customerElement, 0, stats.customers || 0)
+  }
+
+  // Update vehicle count
+  const vehicleElement = document.getElementById('total-vehicles')
+  if (vehicleElement) {
+    animateNumber(vehicleElement, 0, stats.vehicles || 0)
+  }
+
+  // Update job count
+  const jobElement = document.getElementById('total-jobs')
+  if (jobElement) {
+    animateNumber(jobElement, 0, stats.jobs || 0)
+  }
+
+  // Update revenue (already formatted from backend)
+  const revenueElement = document.getElementById('total-revenue')
+  if (revenueElement && stats.revenue) {
+    revenueElement.textContent = stats.revenue
+  }
+
+  console.log('Dashboard updated with real data:', stats)
 }
 
 // Animate number changes
-function animateNumber(element, from, to) {
-    const duration = 1000;
-    const steps = 30;
-    const stepValue = (to - from) / steps;
-    const stepTime = duration / steps;
-    
-    let current = from;
-    let step = 0;
-    
-    const timer = setInterval(() => {
-        step++;
-        current += stepValue;
-        
-        if (step >= steps) {
-            current = to;
-            clearInterval(timer);
-        }
-        
-        element.textContent = Math.round(current).toLocaleString();
-    }, stepTime);
+function animateNumber (element, from, to) {
+  const duration = 1000
+  const steps = 30
+  const stepValue = (to - from) / steps
+  const stepTime = duration / steps
+
+  let current = from
+  let step = 0
+
+  const timer = setInterval(() => {
+    step++
+    current += stepValue
+
+    if (step >= steps) {
+      current = to
+      clearInterval(timer)
+    }
+
+    element.textContent = Math.round(current).toLocaleString()
+  }, stepTime)
 }
 
 // Show loading state
-function showDashboardLoading() {
-    const statCards = document.querySelectorAll('.stat-card');
-    statCards.forEach(card => {
-        card.classList.add('stat-loading');
-    });
+function showDashboardLoading () {
+  const statCards = document.querySelectorAll('.stat-card')
+  statCards.forEach((card) => {
+    card.classList.add('stat-loading')
+  })
 }
 
 // Hide loading state
-function hideDashboardLoading() {
-    const statCards = document.querySelectorAll('.stat-card');
-    statCards.forEach(card => {
-        card.classList.remove('stat-loading');
-    });
+function hideDashboardLoading () {
+  const statCards = document.querySelectorAll('.stat-card')
+  statCards.forEach((card) => {
+    card.classList.remove('stat-loading')
+  })
 }
 
 // Show error state
-function showDashboardError() {
-    const statCards = document.querySelectorAll('.stat-card h3');
-    statCards.forEach(element => {
-        if (element.textContent === '0' || element.textContent === '£0.00') {
-            element.style.color = '#dc3545';
-            element.title = 'Error loading data - click to retry';
-            element.style.cursor = 'pointer';
-            element.onclick = () => loadRealDashboardData();
-        }
-    });
+function showDashboardError () {
+  const statCards = document.querySelectorAll('.stat-card h3')
+  statCards.forEach((element) => {
+    if (element.textContent === '0' || element.textContent === '£0.00') {
+      element.style.color = '#dc3545'
+      element.title = 'Error loading data - click to retry'
+      element.style.cursor = 'pointer'
+      element.onclick = () => loadRealDashboardData()
+    }
+  })
 }
 
 // Setup auto-refresh
-function setupAutoRefresh() {
-    // Refresh dashboard data every 5 minutes
-    setInterval(() => {
-        if (document.getElementById('dashboard') && document.getElementById('dashboard').classList.contains('active')) {
-            loadRealDashboardData();
-        }
-    }, 300000); // 5 minutes
+function setupAutoRefresh () {
+  // Refresh dashboard data every 5 minutes
+  setInterval(() => {
+    if (
+      document.getElementById('dashboard') &&
+      document.getElementById('dashboard').classList.contains('active')
+    ) {
+      loadRealDashboardData()
+    }
+  }, 300000) // 5 minutes
 }
 
 // Refresh dashboard manually
-function refreshDashboard() {
-    loadRealDashboardData();
+function refreshDashboard () {
+  loadRealDashboardData()
 }
 
 // Make functions globally available
-window.loadRealDashboardData = loadRealDashboardData;
-window.refreshDashboard = refreshDashboard;
+window.loadRealDashboardData = loadRealDashboardData
+window.refreshDashboard = refreshDashboard
 
-console.log('✅ Dashboard integration script loaded - improved styling and real data loading enabled');
+console.log(
+  '✅ Dashboard integration script loaded - improved styling and real data loading enabled'
+)
