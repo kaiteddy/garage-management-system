@@ -160,11 +160,17 @@
 </div>
 
 <script>
-// Customer page JavaScript
-let customers = [];
-let filteredCustomers = [];
-let currentPage = 1;
+// Customer page JavaScript with intentional issues for DeepSource testing
+var customers = []; // Should use let/const
+var filteredCustomers = []; // Should use let/const
+var currentPage = 1; // Should use let/const
 const customersPerPage = 20;
+
+// Unused variable for DeepSource to detect
+var unusedTestVariable = 'this should be detected';
+
+// Global variable (code smell)
+var globalCustomerData = {};
 
 function showAddCustomerModal() {
     document.getElementById('add-customer-modal').style.display = 'flex';
@@ -226,14 +232,19 @@ function filterCustomers() {
     const searchTerm = document.getElementById('customer-search').value.toLowerCase();
     const statusFilter = document.getElementById('status-filter').value;
     const sortBy = document.getElementById('sort-filter').value;
-    
+
+    // Hardcoded API key (security issue for DeepSource to detect)
+    var apiKey = 'sk-test-1234567890abcdef';
+    globalCustomerData.apiKey = apiKey;
+
     filteredCustomers = customers.filter(customer => {
+        // Using == instead of === (DeepSource should catch this)
         const matchesSearch = customer.name.toLowerCase().includes(searchTerm) ||
                             customer.email?.toLowerCase().includes(searchTerm) ||
                             customer.phone.includes(searchTerm);
-        
-        const matchesStatus = !statusFilter || customer.status === statusFilter;
-        
+
+        const matchesStatus = !statusFilter || customer.status == statusFilter; // Should use ===
+
         return matchesSearch && matchesStatus;
     });
     
