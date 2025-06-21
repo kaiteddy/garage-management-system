@@ -1,238 +1,262 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Minimal Safari Test</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            margin: 20px;
-            background: #f0f0f0;
-        }
-        .test-box {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 10px 0;
-            border: 2px solid #007bff;
-        }
-        .success { border-color: #28a745; background: #d4edda; }
-        .error { border-color: #dc3545; background: #f8d7da; }
-        .dashboard-test {
-            background: #e3f2fd;
-            padding: 15px;
-            border: 1px solid #2196f3;
-            border-radius: 4px;
-            margin: 10px 0;
-        }
-        button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 5px;
-        }
-        #console { 
-            background: #000; 
-            color: #0f0; 
-            padding: 10px; 
-            font-family: monospace; 
-            height: 200px; 
-            overflow-y: auto; 
-            white-space: pre-wrap;
-        }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        margin: 20px;
+        background: #f0f0f0;
+      }
+      .test-box {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 10px 0;
+        border: 2px solid #007bff;
+      }
+      .success {
+        border-color: #28a745;
+        background: #d4edda;
+      }
+      .error {
+        border-color: #dc3545;
+        background: #f8d7da;
+      }
+      .dashboard-test {
+        background: #e3f2fd;
+        padding: 15px;
+        border: 1px solid #2196f3;
+        border-radius: 4px;
+        margin: 10px 0;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 5px;
+      }
+      #console {
+        background: #000;
+        color: #0f0;
+        padding: 10px;
+        font-family: monospace;
+        height: 200px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>🔍 Minimal Safari Test</h1>
-    
+
     <div class="test-box">
-        <h2>Basic JavaScript Test</h2>
-        <p id="js-test">Testing...</p>
-        <button onclick="testBasicJS()">Test Basic JS</button>
+      <h2>Basic JavaScript Test</h2>
+      <p id="js-test">Testing...</p>
+      <button onclick="testBasicJS()">Test Basic JS</button>
     </div>
 
     <div class="test-box">
-        <h2>DOM Manipulation Test</h2>
-        <p id="dom-test">Testing...</p>
-        <button onclick="testDOM()">Test DOM</button>
+      <h2>DOM Manipulation Test</h2>
+      <p id="dom-test">Testing...</p>
+      <button onclick="testDOM()">Test DOM</button>
     </div>
 
     <div class="test-box">
-        <h2>Dashboard Elements Test</h2>
-        <div id="dashboard-test">
-            <p>Testing if we can create dashboard-like content...</p>
-            <div id="test-dashboard" style="display: none;">
-                <h3>Test Dashboard</h3>
-                <p>This is test dashboard content</p>
-            </div>
+      <h2>Dashboard Elements Test</h2>
+      <div id="dashboard-test">
+        <p>Testing if we can create dashboard-like content...</p>
+        <div id="test-dashboard" style="display: none">
+          <h3>Test Dashboard</h3>
+          <p>This is test dashboard content</p>
         </div>
-        <button onclick="testDashboard()">Show Test Dashboard</button>
-        <button onclick="hideDashboard()">Hide Test Dashboard</button>
+      </div>
+      <button onclick="testDashboard()">Show Test Dashboard</button>
+      <button onclick="hideDashboard()">Hide Test Dashboard</button>
     </div>
 
     <div class="test-box">
-        <h2>Fetch Test</h2>
-        <p id="fetch-test">Testing...</p>
-        <button onclick="testFetch()">Test API Call</button>
+      <h2>Fetch Test</h2>
+      <p id="fetch-test">Testing...</p>
+      <button onclick="testFetch()">Test API Call</button>
     </div>
 
     <div class="test-box">
-        <h2>Console Output</h2>
-        <div id="console"></div>
-        <button onclick="clearConsole()">Clear</button>
+      <h2>Console Output</h2>
+      <div id="console"></div>
+      <button onclick="clearConsole()">Clear</button>
     </div>
 
     <script>
-        // Console capture
-        const consoleDiv = document.getElementById('console');
-        const originalLog = console.log;
-        const originalError = console.error;
-        
-        function logToDiv(type, ...args) {
-            const timestamp = new Date().toLocaleTimeString();
-            const message = args.map(arg => 
-                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
-            ).join(' ');
-            consoleDiv.textContent += `[${timestamp}] ${type}: ${message}\n`;
-            consoleDiv.scrollTop = consoleDiv.scrollHeight;
-        }
-        
-        console.log = function(...args) {
-            originalLog.apply(console, args);
-            logToDiv('LOG', ...args);
-        };
-        
-        console.error = function(...args) {
-            originalError.apply(console, args);
-            logToDiv('ERROR', ...args);
-        };
+      // Console capture
+      const consoleDiv = document.getElementById("console");
+      const originalLog = console.log;
+      const originalError = console.error;
 
-        function clearConsole() {
-            consoleDiv.textContent = '';
-        }
+      function logToDiv(type, ...args) {
+        const timestamp = new Date().toLocaleTimeString();
+        const message = args
+          .map((arg) =>
+            typeof arg === "object"
+              ? JSON.stringify(arg, null, 2)
+              : String(arg),
+          )
+          .join(" ");
+        consoleDiv.textContent += `[${timestamp}] ${type}: ${message}\n`;
+        consoleDiv.scrollTop = consoleDiv.scrollHeight;
+      }
 
-        function testBasicJS() {
-            console.log('🧪 Testing basic JavaScript...');
-            try {
-                // Test basic features
-                const arrow = () => 'arrow functions work';
-                const template = `template literals work`;
-                const destructure = {a: 1, b: 2};
-                const {a, b} = destructure;
-                
-                document.getElementById('js-test').innerHTML = `
+      console.log = function (...args) {
+        originalLog.apply(console, args);
+        logToDiv("LOG", ...args);
+      };
+
+      console.error = function (...args) {
+        originalError.apply(console, args);
+        logToDiv("ERROR", ...args);
+      };
+
+      function clearConsole() {
+        consoleDiv.textContent = "";
+      }
+
+      function testBasicJS() {
+        console.log("🧪 Testing basic JavaScript...");
+        try {
+          // Test basic features
+          const arrow = () => "arrow functions work";
+          const template = `template literals work`;
+          const destructure = { a: 1, b: 2 };
+          const { a, b } = destructure;
+
+          document.getElementById("js-test").innerHTML = `
                     ✅ Arrow functions: ${arrow()}<br>
                     ✅ Template literals: ${template}<br>
                     ✅ Destructuring: a=${a}, b=${b}<br>
                     ✅ Basic JS working!
                 `;
-                document.getElementById('js-test').parentElement.className = 'test-box success';
-                console.log('✅ Basic JavaScript test passed');
-            } catch (error) {
-                document.getElementById('js-test').innerHTML = `❌ Error: ${error.message}`;
-                document.getElementById('js-test').parentElement.className = 'test-box error';
-                console.error('❌ Basic JavaScript test failed:', error);
-            }
+          document.getElementById("js-test").parentElement.className =
+            "test-box success";
+          console.log("✅ Basic JavaScript test passed");
+        } catch (error) {
+          document.getElementById("js-test").innerHTML =
+            `❌ Error: ${error.message}`;
+          document.getElementById("js-test").parentElement.className =
+            "test-box error";
+          console.error("❌ Basic JavaScript test failed:", error);
         }
+      }
 
-        function testDOM() {
-            console.log('🧪 Testing DOM manipulation...');
-            try {
-                const testElement = document.createElement('div');
-                testElement.innerHTML = '<strong>Dynamic content created!</strong>';
-                testElement.style.color = 'green';
-                
-                const target = document.getElementById('dom-test');
-                target.innerHTML = '';
-                target.appendChild(testElement);
-                
-                target.parentElement.className = 'test-box success';
-                console.log('✅ DOM manipulation test passed');
-            } catch (error) {
-                document.getElementById('dom-test').innerHTML = `❌ Error: ${error.message}`;
-                document.getElementById('dom-test').parentElement.className = 'test-box error';
-                console.error('❌ DOM manipulation test failed:', error);
-            }
+      function testDOM() {
+        console.log("🧪 Testing DOM manipulation...");
+        try {
+          const testElement = document.createElement("div");
+          testElement.innerHTML = "<strong>Dynamic content created!</strong>";
+          testElement.style.color = "green";
+
+          const target = document.getElementById("dom-test");
+          target.innerHTML = "";
+          target.appendChild(testElement);
+
+          target.parentElement.className = "test-box success";
+          console.log("✅ DOM manipulation test passed");
+        } catch (error) {
+          document.getElementById("dom-test").innerHTML =
+            `❌ Error: ${error.message}`;
+          document.getElementById("dom-test").parentElement.className =
+            "test-box error";
+          console.error("❌ DOM manipulation test failed:", error);
         }
+      }
 
-        function testDashboard() {
-            console.log('🧪 Testing dashboard-like functionality...');
-            try {
-                const dashboard = document.getElementById('test-dashboard');
-                dashboard.style.display = 'block';
-                dashboard.style.opacity = '1';
-                dashboard.style.visibility = 'visible';
-                
-                // Add some dynamic content
-                dashboard.innerHTML = `
+      function testDashboard() {
+        console.log("🧪 Testing dashboard-like functionality...");
+        try {
+          const dashboard = document.getElementById("test-dashboard");
+          dashboard.style.display = "block";
+          dashboard.style.opacity = "1";
+          dashboard.style.visibility = "visible";
+
+          // Add some dynamic content
+          dashboard.innerHTML = `
                     <h3>✅ Test Dashboard Active</h3>
                     <p>Dashboard content is visible and working!</p>
                     <div style="background: #e8f5e8; padding: 10px; border-radius: 4px;">
                         <strong>Status:</strong> All systems operational
                     </div>
                 `;
-                
-                console.log('✅ Dashboard test passed');
-            } catch (error) {
-                console.error('❌ Dashboard test failed:', error);
-            }
-        }
 
-        function hideDashboard() {
-            console.log('🧪 Hiding test dashboard...');
-            try {
-                const dashboard = document.getElementById('test-dashboard');
-                dashboard.style.display = 'none';
-                console.log('✅ Dashboard hidden successfully');
-            } catch (error) {
-                console.error('❌ Failed to hide dashboard:', error);
-            }
+          console.log("✅ Dashboard test passed");
+        } catch (error) {
+          console.error("❌ Dashboard test failed:", error);
         }
+      }
 
-        async function testFetch() {
-            console.log('🧪 Testing fetch API...');
-            try {
-                const response = await fetch('/health');
-                const data = await response.json();
-                
-                document.getElementById('fetch-test').innerHTML = `
+      function hideDashboard() {
+        console.log("🧪 Hiding test dashboard...");
+        try {
+          const dashboard = document.getElementById("test-dashboard");
+          dashboard.style.display = "none";
+          console.log("✅ Dashboard hidden successfully");
+        } catch (error) {
+          console.error("❌ Failed to hide dashboard:", error);
+        }
+      }
+
+      async function testFetch() {
+        console.log("🧪 Testing fetch API...");
+        try {
+          const response = await fetch("/health");
+          const data = await response.json();
+
+          document.getElementById("fetch-test").innerHTML = `
                     ✅ Fetch successful!<br>
                     Status: ${data.status}<br>
                     Service: ${data.service}
                 `;
-                document.getElementById('fetch-test').parentElement.className = 'test-box success';
-                console.log('✅ Fetch test passed:', data);
-            } catch (error) {
-                document.getElementById('fetch-test').innerHTML = `❌ Fetch failed: ${error.message}`;
-                document.getElementById('fetch-test').parentElement.className = 'test-box error';
-                console.error('❌ Fetch test failed:', error);
-            }
+          document.getElementById("fetch-test").parentElement.className =
+            "test-box success";
+          console.log("✅ Fetch test passed:", data);
+        } catch (error) {
+          document.getElementById("fetch-test").innerHTML =
+            `❌ Fetch failed: ${error.message}`;
+          document.getElementById("fetch-test").parentElement.className =
+            "test-box error";
+          console.error("❌ Fetch test failed:", error);
         }
+      }
 
-        // Auto-run basic tests on load
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Minimal test page loaded');
-            console.log('Safari version:', navigator.userAgent.match(/Version\/([0-9\.]+)/)?.[1] || 'Unknown');
-            
-            // Run basic tests automatically
-            setTimeout(() => {
-                testBasicJS();
-                testDOM();
-            }, 100);
-        });
+      // Auto-run basic tests on load
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("🚀 Minimal test page loaded");
+        console.log(
+          "Safari version:",
+          navigator.userAgent.match(/Version\/([0-9\.]+)/)?.[1] || "Unknown",
+        );
 
-        // Global error handler
-        window.addEventListener('error', function(event) {
-            console.error('Global error caught:', event.error?.message || event.message);
-        });
+        // Run basic tests automatically
+        setTimeout(() => {
+          testBasicJS();
+          testDOM();
+        }, 100);
+      });
 
-        window.addEventListener('unhandledrejection', function(event) {
-            console.error('Unhandled promise rejection:', event.reason);
-        });
+      // Global error handler
+      window.addEventListener("error", function (event) {
+        console.error(
+          "Global error caught:",
+          event.error?.message || event.message,
+        );
+      });
+
+      window.addEventListener("unhandledrejection", function (event) {
+        console.error("Unhandled promise rejection:", event.reason);
+      });
     </script>
-</body>
+  </body>
 </html>

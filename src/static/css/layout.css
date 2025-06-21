@@ -320,7 +320,7 @@ body.layout-horizontal .toggle-text {
 }
 
 .nav-section-header::after {
-  content: '▼';
+  content: "▼";
   margin-left: auto;
   font-size: var(--font-size-xs);
   transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -494,11 +494,15 @@ body.layout-horizontal .layout-toggle-btn {
 /* ===== ENHANCED STYLING FOR CONSISTENCY ===== */
 /* Ensure proper blue-tinted shadows */
 .sidebar {
-  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1), 0 2px 4px -2px rgba(59, 130, 246, 0.1);
+  box-shadow:
+    0 4px 6px -1px rgba(59, 130, 246, 0.1),
+    0 2px 4px -2px rgba(59, 130, 246, 0.1);
 }
 
 body.layout-horizontal .sidebar {
-  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1), 0 2px 4px -2px rgba(59, 130, 246, 0.1);
+  box-shadow:
+    0 4px 6px -1px rgba(59, 130, 246, 0.1),
+    0 2px 4px -2px rgba(59, 130, 246, 0.1);
 }
 
 /* Enhanced nav item styling with proper transitions */
@@ -521,13 +525,18 @@ body.layout-horizontal .sidebar {
 }
 
 .layout-toggle-btn::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
   transition: left 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -554,7 +563,9 @@ body.layout-horizontal .sidebar {
 /* Submenu styling with proper shadows */
 body.layout-horizontal .nav-submenu {
   border-radius: var(--radius-xl);
-  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1), 0 4px 6px -4px rgba(59, 130, 246, 0.1);
+  box-shadow:
+    0 10px 15px -3px rgba(59, 130, 246, 0.1),
+    0 4px 6px -4px rgba(59, 130, 246, 0.1);
 }
 
 /* Responsive enhancements */
@@ -641,10 +652,18 @@ body.layout-horizontal .nav-submenu {
   opacity: 1; /* Ensure content is visible by default */
 }
 
-.page.active .card:nth-child(1) { animation-delay: 100ms; }
-.page.active .card:nth-child(2) { animation-delay: 150ms; }
-.page.active .card:nth-child(3) { animation-delay: 200ms; }
-.page.active .card:nth-child(4) { animation-delay: 250ms; }
+.page.active .card:nth-child(1) {
+  animation-delay: 100ms;
+}
+.page.active .card:nth-child(2) {
+  animation-delay: 150ms;
+}
+.page.active .card:nth-child(3) {
+  animation-delay: 200ms;
+}
+.page.active .card:nth-child(4) {
+  animation-delay: 250ms;
+}
 
 @keyframes contentFadeIn {
   0% {
@@ -764,7 +783,7 @@ body.layout-horizontal .nav-submenu {
   }
 
   .sidebar.open::before {
-    content: '';
+    content: "";
     position: fixed;
     top: 0;
     left: 280px;
