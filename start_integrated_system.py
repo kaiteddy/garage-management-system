@@ -40,7 +40,7 @@ def start_main_application():
 
     try:
         # Start the main application server
-        subprocess.run([sys.executable, 'main_app_server.py'], check=True)
+        subprocess.run([sys.executable, 'main.py'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"❌ Error starting main application server: {e}")
     except KeyboardInterrupt:
