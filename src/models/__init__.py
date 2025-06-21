@@ -2,10 +2,11 @@ from datetime import datetime, time, timezone
 
 from flask_sqlalchemy import SQLAlchemy
 
+from .vehicle import Vehicle
+
 db = SQLAlchemy()
 
 # Import models after db initialization to avoid circular imports
-from .vehicle import Vehicle
 
 # Import Vehicle model to make it available
 
