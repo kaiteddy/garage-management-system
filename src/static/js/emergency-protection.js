@@ -133,7 +133,9 @@ if (
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("🛡️ Emergency protection script initialized after DOMContentLoaded");
+  console.log(
+    "🛡️ Emergency protection script initialized after DOMContentLoaded",
+  );
 
   // Wrap emergency error handler logic
   window.addEventListener("error", function (event) {

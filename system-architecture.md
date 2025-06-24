@@ -30,14 +30,14 @@ graph TD
     UI --> JS
     JS --> API_Client
     API_Client --> API_Routes
-    
+
     Flask --> Routes
     Flask --> API_Routes
     Routes --> Services
     API_Routes --> Services
     Services --> Models
     Models --> DB
-    
+
     Services --> DVSA
     Services --> GoogleDrive
     Services --> SMS
@@ -90,12 +90,12 @@ graph TD
 
     App --> Config
     Main --> App
-    
+
     App --> Models
     Models --> DB
     DataLoader --> DB
     DataImport --> DB
-    
+
     App --> CustomerService
     App --> VehicleService
     App --> JobService
@@ -103,7 +103,7 @@ graph TD
     App --> MOTService
     App --> InvoiceService
     App --> SearchService
-    
+
     CustomerService --> Models
     VehicleService --> Models
     JobService --> Models
@@ -111,7 +111,7 @@ graph TD
     MOTService --> Models
     InvoiceService --> Models
     SearchService --> Models
-    
+
     App --> CustomerAPI
     App --> VehicleAPI
     App --> JobAPI
@@ -119,7 +119,7 @@ graph TD
     App --> MOTAPI
     App --> InvoiceAPI
     App --> SearchAPI
-    
+
     CustomerAPI --> CustomerService
     VehicleAPI --> VehicleService
     JobAPI --> JobService
@@ -127,7 +127,7 @@ graph TD
     MOTAPI --> MOTService
     InvoiceAPI --> InvoiceService
     SearchAPI --> SearchService
-    
+
     APIClient --> CustomerAPI
     APIClient --> VehicleAPI
     APIClient --> JobAPI
@@ -135,7 +135,7 @@ graph TD
     APIClient --> MOTAPI
     APIClient --> InvoiceAPI
     APIClient --> SearchAPI
-    
+
     JS --> APIClient
     UI --> JS
 ```
@@ -172,19 +172,19 @@ graph TD
 
     WebUI -->|User Actions| API
     CustomerPortal -->|Customer Actions| API
-    
+
     API -->|Process Requests| Services
     Services -->|Store/Retrieve Data| DB
     Services -->|Sync Files| GoogleDrive
-    
+
     Services -->|MOT Checks| DVSA
     Services -->|Send Reminders| SMS
     Services -->|Order Parts| PartsSuppliers
     Services -->|Submit VAT| HMRC
-    
+
     GoogleDrive -->|Import Data| DataProcessing
     DataProcessing -->|Process & Store| DB
-    
+
     DB -->|Retrieve Data| Services
     Services -->|Return Results| API
     API -->|Display Data| WebUI
@@ -322,3 +322,4 @@ graph TD
     AddParts -->|Parts Added| CompleteJob
     CompleteJob -->|Completed Job| GenerateInvoice
     GenerateInvoice -->|Invoice| CustomerDB
+```

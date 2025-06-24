@@ -23,7 +23,8 @@ def start_mot_service():
 
     try:
         # Start the MOT service with a different port (8001)
-        subprocess.run([sys.executable, 'mot_service.py', '--port', '8001'], check=True)
+        subprocess.run([sys.executable, 'mot_service.py',
+                       '--port', '8001'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"❌ Error starting MOT service: {e}")
     except KeyboardInterrupt:
@@ -40,7 +41,8 @@ def start_main_application():
 
     try:
         # Start the main application server with a different port (8002)
-        subprocess.run([sys.executable, 'main.py', '--port', '8002'], check=True)
+        subprocess.run([sys.executable, 'main.py',
+                       '--port', '8002'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"❌ Error starting main application server: {e}")
     except KeyboardInterrupt:

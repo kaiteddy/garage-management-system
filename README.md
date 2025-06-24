@@ -73,14 +73,18 @@ When working with this codebase, please follow these guidelines:
 The system architecture document contains Mermaid diagrams. You have several options to view these diagrams:
 
 ### HTML Version (Recommended)
+
 For the best interactive experience, open the **[System Architecture HTML](system-architecture.html)** file in any modern web browser. This version:
+
 - Renders diagrams automatically using the Mermaid JavaScript library
 - Provides better navigation between diagrams
 - Offers improved styling and readability
 - Works in any browser without additional plugins
 
 ### Markdown Version
+
 If you prefer to view the diagrams in a Markdown context:
+
 1. Use a Markdown viewer that supports Mermaid (like GitHub's built-in viewer)
 2. Use the Mermaid Live Editor (https://mermaid.live/)
 3. Install a Mermaid plugin for your IDE

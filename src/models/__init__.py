@@ -2,11 +2,12 @@ from datetime import datetime, time, timezone
 
 from flask_sqlalchemy import SQLAlchemy
 
+from .vehicle import Vehicle
+
 # Initialize SQLAlchemy
 db = SQLAlchemy()
 
 # Import models after db initialization to avoid circular imports
-from .vehicle import Vehicle
 
 
 def utc_now():
