@@ -1507,6 +1507,16 @@ def check_delivery_status():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
+@app.route('/api/health', methods=['GET'])
+def health_check():
+    """Health check endpoint for monitoring"""
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'service': 'mot-reminder-service',
+        'version': '1.0.0'
+    }), 200
+
 @app.route('/api/mot/sms/history', methods=['GET'])
 def get_sms_history():
     """Get SMS sending history"""
@@ -1909,4 +1919,13 @@ def link_existing_vehicles():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5002, host='127.0.0.1')
+    import argparse
+    
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='MOT Reminder Service')
+    parser.add_argument('--port', type=int, default=5002, help='Port to run the server on')
+    args = parser.parse_args()
+    
+    port = args.port  # Use the port from command line arguments
+    print(f"🚀 Starting MOT Reminder Service on port {port}...")
+    app.run(debug=True, port=port, host='127.0.0.1')

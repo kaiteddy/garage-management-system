@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 def get_db_path():
     """Get database path"""
-    return os.path.join(os.path.dirname(__file__), 'instance', 'garage.db')
+    return os.path.join(os.path.dirname(__file__), '..', 'instance', 'garage.db')
 
 
 def create_missing_tables():
@@ -239,5 +239,5 @@ def seed_sample_data():
 if __name__ == '__main__':
     print("🚀 Setting up database tables...")
     create_missing_tables()
-    seed_sample_data()
     print("🎉 Database setup complete!")
+    print("ℹ️ Sample data seeding is disabled. Data will be imported from Google Drive.")

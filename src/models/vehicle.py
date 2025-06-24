@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 import requests
 from flask import current_app
 
+# Import db from parent module
 from . import db
 
 

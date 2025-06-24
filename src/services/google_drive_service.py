@@ -367,6 +367,7 @@ class GoogleDriveService:
 
             self.logger.info(
                 f"Analyzed {len(files)} files, found {len(categorization)} categories")
+            self.logger.debug(f"Categorization result: {categorization}")
 
             return {
                 'categorization': categorization,

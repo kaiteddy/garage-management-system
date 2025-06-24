@@ -22,8 +22,8 @@ def start_mot_service():
     os.chdir(src_dir)
 
     try:
-        # Start the MOT service
-        subprocess.run([sys.executable, 'mot_service.py'], check=True)
+        # Start the MOT service with a different port (8001)
+        subprocess.run([sys.executable, 'mot_service.py', '--port', '8001'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"❌ Error starting MOT service: {e}")
     except KeyboardInterrupt:
@@ -39,8 +39,8 @@ def start_main_application():
     os.chdir(src_dir)
 
     try:
-        # Start the main application server
-        subprocess.run([sys.executable, 'main.py'], check=True)
+        # Start the main application server with a different port (8002)
+        subprocess.run([sys.executable, 'main.py', '--port', '8002'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"❌ Error starting main application server: {e}")
     except KeyboardInterrupt:
@@ -49,18 +49,18 @@ def start_main_application():
 
 def open_browser():
     """Open the browser after services are ready"""
-    print("🌐 Opening main application in browser...")
+    print("🌐 Opening integrated dashboard in browser...")
 
     # Wait for services to be ready
     time.sleep(5)
 
-    # Open the main application in browser
-    main_app_url = "http://127.0.0.1:5001"
-    print(f"🌐 Opening main application: {main_app_url}")
+    # Open the integrated dashboard in browser
+    main_app_url = "http://127.0.0.1:8002/integrated"
+    print(f"🌐 Opening integrated dashboard: {main_app_url}")
 
     try:
         webbrowser.open(main_app_url)
-        print("✅ Main application opened in browser")
+        print("✅ Integrated dashboard opened in browser")
     except Exception as e:
         print(f"❌ Error opening browser: {e}")
         print(f"Please manually open: {main_app_url}")
@@ -119,8 +119,9 @@ def main():
         print("\n" + "=" * 70)
         print("🎉 System started successfully!")
         print("\n📋 Available Services:")
-        print("   • Main Application: http://127.0.0.1:5001")
-        print("   • MOT Service API:  http://127.0.0.1:5002/api")
+        print("   • Main Application: http://127.0.0.1:8002")
+        print("   • Integrated Dashboard: http://127.0.0.1:8002/integrated")
+        print("   • MOT Service API:  http://127.0.0.1:8001/api")
         print("\n🔧 Features Available:")
         print("   • Customer Management")
         print("   • Vehicle Management")

@@ -30,7 +30,7 @@ class DataImportService:
             "documents": []
         }
 
-    def import_eli_motors_customers(self, file_path: str = "eli_motors_customers_sample.csv") -> List[Dict]:
+    def import_eli_motors_customers(self, file_path: str = "eli_motors_customers.csv") -> List[Dict]:
         """Import customer data from ELI MOTORS CSV file"""
         try:
             file_path = self.data_dir / file_path
@@ -69,7 +69,7 @@ class DataImportService:
             logger.error(f"Error importing customers: {e}")
             return []
 
-    def import_eli_motors_vehicles(self, file_path: str = "eli_motors_vehicles_sample.csv") -> List[Dict]:
+    def import_eli_motors_vehicles(self, file_path: str = "eli_motors_vehicles.csv") -> List[Dict]:
         """Import vehicle data from ELI MOTORS CSV file"""
         try:
             file_path = self.data_dir / file_path
@@ -110,7 +110,7 @@ class DataImportService:
             logger.error(f"Error importing vehicles: {e}")
             return []
 
-    def import_eli_motors_documents(self, file_path: str = "eli_motors_documents_sample.csv") -> List[Dict]:
+    def import_eli_motors_documents(self, file_path: str = "eli_motors_documents.csv") -> List[Dict]:
         """Import job/invoice documents from ELI MOTORS CSV file"""
         try:
             file_path = self.data_dir / file_path
@@ -390,22 +390,7 @@ class DataImportService:
 
 
 if __name__ == "__main__":
-    # Test the import service
-    service = DataImportService()
-
-    # Import ELI MOTORS data
-    customers = service.import_eli_motors_customers()
-    vehicles = service.import_eli_motors_vehicles()
-    documents = service.import_eli_motors_documents()
-
-    # Import GA4 data
-    ga4_data = service.import_ga4_data()
-
-    # Export to JSON
-    service.export_to_json()
-
-    print(f"Import complete:")
-    print(f"- Customers: {len(service.imported_data['customers'])}")
-    print(f"- Vehicles: {len(service.imported_data['vehicles'])}")
-    print(f"- Jobs: {len(service.imported_data['jobs'])}")
-    print(f"- Invoices: {len(service.imported_data['invoices'])}")
+    print("🚀 Data Import Service")
+    print("This module should not be run directly.")
+    print("It is used by the Google Drive service to import data from CSV files.")
+    print("To import data, use the Google Drive integration in the web interface.")

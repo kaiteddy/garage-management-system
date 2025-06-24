@@ -14,7 +14,7 @@ const API = {
    * Base API configuration
    */
   config: {
-    baseURL: '',
+    baseURL: 'http://localhost:5001', // Updated for local Docker backend
     timeout: 10000
   },
 

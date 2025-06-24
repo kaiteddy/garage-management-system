@@ -542,6 +542,33 @@ async function loadDashboardStatsManually() {
   }
 }
 
+// Placeholders for missing page loader functions
+function loadQuotesPage() {
+  const el = document.getElementById("quotes-container") || document.getElementById("quotes-content");
+  if (el) el.innerHTML = `<div class='page-header'><h1 class='page-title'><i class='fas fa-file-invoice-dollar'></i> Quotes</h1><p class='page-subtitle'>Quotes page is under construction.</p></div>`;
+  console.log("Quotes page loaded (placeholder)");
+}
+function loadPartsPage() {
+  const el = document.getElementById("parts-container") || document.getElementById("parts-content");
+  if (el) el.innerHTML = `<div class='page-header'><h1 class='page-title'><i class='fas fa-cogs'></i> Parts</h1><p class='page-subtitle'>Parts page is under construction.</p></div>`;
+  console.log("Parts page loaded (placeholder)");
+}
+function loadReportsPage() {
+  const el = document.getElementById("reports-container") || document.getElementById("reports-content");
+  if (el) el.innerHTML = `<div class='page-header'><h1 class='page-title'><i class='fas fa-chart-bar'></i> Reports</h1><p class='page-subtitle'>Reports page is under construction.</p></div>`;
+  console.log("Reports page loaded (placeholder)");
+}
+function loadUploadPage() {
+  const el = document.getElementById("upload-container") || document.getElementById("upload-content");
+  if (el) el.innerHTML = `<div class='page-header'><h1 class='page-title'><i class='fas fa-upload'></i> Data Import</h1><p class='page-subtitle'>Upload page is under construction.</p></div>`;
+  console.log("Upload page loaded (placeholder)");
+}
+function loadErrorMonitoringPage() {
+  const el = document.getElementById("error-monitoring-content") || document.getElementById("error-monitoring-container");
+  if (el) el.innerHTML = `<div class='page-header'><h1 class='page-title'><i class='fas fa-shield-alt'></i> Error Monitoring</h1><p class='page-subtitle'>Error monitoring page is under construction.</p></div>`;
+  console.log("Error Monitoring page loaded (placeholder)");
+}
+
 // Initialize when DOM is ready
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initializeApplication);
@@ -562,5 +589,10 @@ window.addEventListener("load", function () {
 window.initializeApplication = initializeApplication;
 window.loadPageContent = loadPageContent;
 window.testAllPages = testAllPages;
+window.loadQuotesPage = loadQuotesPage;
+window.loadPartsPage = loadPartsPage;
+window.loadReportsPage = loadReportsPage;
+window.loadUploadPage = loadUploadPage;
+window.loadErrorMonitoringPage = loadErrorMonitoringPage;
 
 console.log("🚀 Garage Management System - Main App Ready");

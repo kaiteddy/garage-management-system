@@ -111,6 +111,11 @@ def register_core_routes(app):
     def index():
         """Main garage management interface"""
         return send_from_directory('static', 'index.html')
+        
+    @app.route('/integrated')
+    def integrated_dashboard():
+        """Integrated dashboard for all system components"""
+        return send_from_directory('static', 'integrated_dashboard.html')
 
     @app.route('/modern-ui')
     def modern_dashboard():
@@ -480,6 +485,40 @@ def initialize_services(app):
     except Exception as e:
         print(f"❌ Failed to initialize MOT service: {e}")
         app.mot_service = None
+        
+    try:
+        # Initialize Google Drive service and sync data
+        from services.google_drive_service import GoogleDriveService
+        
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'instance', 'garage.db')
+        
+        with app.app_context():
+            google_drive_service = GoogleDriveService(db_path)
+            app.google_drive_service = google_drive_service
+            
+            # Check if Google Drive service is available
+            if google_drive_service.is_available():
+                # Get configuration
+                config = google_drive_service.load_config()
+                
+                # Check if auto-sync is enabled
+                if config.get('auto_sync_enabled', False):
+                    print("🔄 Auto-sync enabled, syncing data from Google Drive...")
+                    result = google_drive_service.sync_all_folders(force=False)
+                    
+                    if result.get('success', False):
+                        print(f"✅ Successfully synced data from Google Drive: {result.get('total_imported', 0)} items imported")
+                    else:
+                        print(f"⚠️ Sync from Google Drive completed with issues: {result.get('error', 'Unknown error')}")
+                else:
+                    print("ℹ️ Google Drive auto-sync is disabled")
+            else:
+                print("⚠️ Google Drive service not available")
+    
+    except Exception as e:
+        print(f"❌ Failed to initialize Google Drive service: {e}")
+        app.google_drive_service = None
 
     try:
         # Register MOT blueprint

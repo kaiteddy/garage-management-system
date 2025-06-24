@@ -80,29 +80,6 @@ window.changeSpacing =
     document.body.setAttribute("data-spacing", spacing);
   };
 
-// Emergency error handler
-window.addEventListener("error", function (event) {
-  console.error("💥 Emergency error caught:", event.error);
-
-  // Prevent the error from crashing the page
-  event.preventDefault();
-
-  // Show user-friendly error message
-  const errorDiv = document.createElement("div");
-  errorDiv.style.cssText =
-    "position: fixed; top: 20px; right: 20px; background: #dc3545; color: white; padding: 15px; border-radius: 5px; z-index: 10000; max-width: 300px; font-family: Arial, sans-serif;";
-  errorDiv.innerHTML =
-    '<strong>⚠️ System Error</strong><br>A minor error occurred. The system is still functional.<button onclick="this.parentElement.remove()" style="float: right; background: none; border: none; color: white; cursor: pointer;">×</button>';
-  document.body.appendChild(errorDiv);
-
-  // Auto-remove after 5 seconds
-  setTimeout(() => {
-    if (errorDiv.parentElement) {
-      errorDiv.remove();
-    }
-  }, 5000);
-});
-
 // Ensure basic page visibility
 document.addEventListener("DOMContentLoaded", function () {
   console.log("🛡️ Emergency protection: DOM loaded");
@@ -154,5 +131,32 @@ if (
     page.style.willChange = "transform";
   });
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("🛡️ Emergency protection script initialized after DOMContentLoaded");
+
+  // Wrap emergency error handler logic
+  window.addEventListener("error", function (event) {
+    console.error("💥 Emergency error caught:", event.error);
+
+    // Prevent the error from crashing the page
+    event.preventDefault();
+
+    // Show user-friendly error message
+    const errorDiv = document.createElement("div");
+    errorDiv.style.cssText =
+      "position: fixed; top: 20px; right: 20px; background: #dc3545; color: white; padding: 15px; border-radius: 5px; z-index: 10000; max-width: 300px; font-family: Arial, sans-serif;";
+    errorDiv.innerHTML =
+      '<strong>⚠️ System Error</strong><br>A minor error occurred. The system is still functional.<button onclick="this.parentElement.remove()" style="float: right; background: none; border: none; color: white; cursor: pointer;">×</button>';
+    document.body.appendChild(errorDiv);
+
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+      if (errorDiv.parentElement) {
+        errorDiv.parentElement.removeChild(errorDiv);
+      }
+    }, 5000);
+  });
+});
 
 console.log("✅ Emergency protection script initialized");

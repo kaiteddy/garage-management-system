@@ -37,7 +37,7 @@ def get_quotes():
             SELECT q.id, q.quote_number, q.customer_id, q.vehicle_id,
                    q.description, q.labour_cost, q.parts_cost, q.total_amount,
                    q.vat_amount, q.status, q.valid_until,
-                   q.created_date, q.approved_date, q.notes,
+                   q.created_date, q.accepted_date, q.notes,
                    c.name as customer_name, c.phone as customer_phone, c.email as customer_email,
                    v.registration as vehicle_registration, v.make as vehicle_make, v.model as vehicle_model
             FROM quotes q
@@ -81,7 +81,7 @@ def get_quotes():
                 'status': row['status'],
                 'valid_until': row['valid_until'],
                 'created_date': row['created_date'],
-                'approved_date': row['approved_date'],
+                'accepted_date': row['accepted_date'],
                 'notes': row['notes'],
                 'customer': {
                     'name': row['customer_name'],
@@ -129,7 +129,7 @@ def get_quote(quote_id):
             SELECT q.id, q.quote_number, q.customer_id, q.vehicle_id,
                    q.description, q.labour_cost, q.parts_cost, q.total_amount,
                    q.vat_amount, q.status, q.valid_until,
-                   q.created_date, q.approved_date, q.notes, q.terms_conditions,
+                   q.created_date, q.accepted_date, q.notes, q.terms_conditions,
                    c.name as customer_name, c.phone as customer_phone, c.email as customer_email,
                    c.address as customer_address, c.postcode as customer_postcode,
                    v.registration as vehicle_registration, v.make as vehicle_make,
@@ -163,7 +163,7 @@ def get_quote(quote_id):
             'status': row['status'],
             'valid_until': row['valid_until'],
             'created_date': row['created_date'],
-            'approved_date': row['approved_date'],
+            'accepted_date': row['accepted_date'],
             'notes': row['notes'],
             'terms_conditions': row['terms_conditions'],
             'customer': {
