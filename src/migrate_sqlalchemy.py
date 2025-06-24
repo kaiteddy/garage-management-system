@@ -9,13 +9,13 @@ import sqlite3
 import sys
 from datetime import datetime
 
-# Add the src directory to Python path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
 from app import app, db
 from models import (Appointment, Customer, Invoice, Job, JobPart, JobSheet,
-                   JobSheetTemplate, Part, Quote, Supplier, Technician, Vehicle,
-                   WorkshopBay)
+                    JobSheetTemplate, Part, Quote, Supplier, Technician,
+                    Vehicle, WorkshopBay)
+
+# Add the src directory to Python path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 
 def get_db_path():
@@ -44,17 +44,17 @@ def migrate_customers():
     print("🧑‍🤝‍🧑 Migrating customers...")
     conn = get_sqlite_connection()
     cursor = conn.cursor()
-    
+
     # Get all customers from SQLite
     cursor.execute("""
         SELECT id, account_number, name, company, address, postcode, phone, mobile, email, 
                created_date, updated_date
         FROM customers
     """)
-    
+
     customers = cursor.fetchall()
     conn.close()
-    
+
     # Add customers to SQLAlchemy
     with app.app_context():
         for customer in customers:
@@ -62,7 +62,7 @@ def migrate_customers():
             existing = Customer.query.get(customer['id'])
             if existing:
                 continue
-                
+
             new_customer = Customer(
                 id=customer['id'],
                 account_number=customer['account_number'],
@@ -77,9 +77,9 @@ def migrate_customers():
                 updated_date=customer['updated_date']
             )
             db.session.add(new_customer)
-        
+
         db.session.commit()
-    
+
     print(f"✅ Migrated {len(customers)} customers")
 
 
@@ -88,17 +88,17 @@ def migrate_vehicles():
     print("🚗 Migrating vehicles...")
     conn = get_sqlite_connection()
     cursor = conn.cursor()
-    
+
     # Get all vehicles from SQLite
     cursor.execute("""
         SELECT id, registration, make, model, year, color, fuel_type, mot_expiry, tax_due, 
                mileage, customer_id, created_at, updated_at
         FROM vehicles
     """)
-    
+
     vehicles = cursor.fetchall()
     conn.close()
-    
+
     # Add vehicles to SQLAlchemy
     with app.app_context():
         for vehicle in vehicles:
@@ -106,7 +106,7 @@ def migrate_vehicles():
             existing = Vehicle.query.get(vehicle['id'])
             if existing:
                 continue
-                
+
             new_vehicle = Vehicle(
                 id=vehicle['id'],
                 registration=vehicle['registration'],
@@ -123,9 +123,9 @@ def migrate_vehicles():
                 updated_at=vehicle['updated_at']
             )
             db.session.add(new_vehicle)
-        
+
         db.session.commit()
-    
+
     print(f"✅ Migrated {len(vehicles)} vehicles")
 
 
@@ -134,17 +134,17 @@ def migrate_technicians():
     print("👨‍🔧 Migrating technicians...")
     conn = get_sqlite_connection()
     cursor = conn.cursor()
-    
+
     # Get all technicians from SQLite
     cursor.execute("""
         SELECT id, name, email, phone, specialization, hourly_rate, is_active, 
                start_time, end_time, created_date
         FROM technicians
     """)
-    
+
     technicians = cursor.fetchall()
     conn.close()
-    
+
     # Add technicians to SQLAlchemy
     with app.app_context():
         for technician in technicians:
@@ -152,7 +152,7 @@ def migrate_technicians():
             existing = Technician.query.get(technician['id'])
             if existing:
                 continue
-                
+
             new_technician = Technician(
                 id=technician['id'],
                 name=technician['name'],
@@ -166,9 +166,9 @@ def migrate_technicians():
                 created_date=technician['created_date']
             )
             db.session.add(new_technician)
-        
+
         db.session.commit()
-    
+
     print(f"✅ Migrated {len(technicians)} technicians")
 
 
@@ -177,16 +177,16 @@ def migrate_workshop_bays():
     print("🔧 Migrating workshop bays...")
     conn = get_sqlite_connection()
     cursor = conn.cursor()
-    
+
     # Get all workshop bays from SQLite
     cursor.execute("""
         SELECT id, bay_number, bay_name, bay_type, is_available, equipment, notes
         FROM workshop_bays
     """)
-    
+
     workshop_bays = cursor.fetchall()
     conn.close()
-    
+
     # Add workshop bays to SQLAlchemy
     with app.app_context():
         for bay in workshop_bays:
@@ -194,7 +194,7 @@ def migrate_workshop_bays():
             existing = WorkshopBay.query.get(bay['id'])
             if existing:
                 continue
-                
+
             new_bay = WorkshopBay(
                 id=bay['id'],
                 bay_number=bay['bay_number'],
@@ -205,9 +205,9 @@ def migrate_workshop_bays():
                 notes=bay['notes']
             )
             db.session.add(new_bay)
-        
+
         db.session.commit()
-    
+
     print(f"✅ Migrated {len(workshop_bays)} workshop bays")
 
 
@@ -216,7 +216,7 @@ def migrate_jobs():
     print("🔧 Migrating jobs...")
     conn = get_sqlite_connection()
     cursor = conn.cursor()
-    
+
     # Get all jobs from SQLite
     cursor.execute("""
         SELECT id, job_number, customer_id, vehicle_id, description, status, priority, 
@@ -225,10 +225,10 @@ def migrate_jobs():
                internal_notes, customer_authorization, bay_number
         FROM jobs
     """)
-    
+
     jobs = cursor.fetchall()
     conn.close()
-    
+
     # Add jobs to SQLAlchemy
     with app.app_context():
         for job in jobs:
@@ -236,7 +236,7 @@ def migrate_jobs():
             existing = Job.query.get(job['id'])
             if existing:
                 continue
-                
+
             new_job = Job(
                 id=job['id'],
                 job_number=job['job_number'],
@@ -261,9 +261,9 @@ def migrate_jobs():
                 bay_number=job['bay_number']
             )
             db.session.add(new_job)
-        
+
         db.session.commit()
-    
+
     print(f"✅ Migrated {len(jobs)} jobs")
 
 
@@ -272,7 +272,7 @@ def migrate_invoices():
     print("📝 Migrating invoices...")
     conn = get_sqlite_connection()
     cursor = conn.cursor()
-    
+
     # Get all invoices from SQLite
     cursor.execute("""
         SELECT id, invoice_number, job_id, customer_id, vehicle_id, amount, vat_amount, 
@@ -280,10 +280,10 @@ def migrate_invoices():
                notes, is_locked
         FROM invoices
     """)
-    
+
     invoices = cursor.fetchall()
     conn.close()
-    
+
     # Add invoices to SQLAlchemy
     with app.app_context():
         for invoice in invoices:
@@ -291,7 +291,7 @@ def migrate_invoices():
             existing = Invoice.query.get(invoice['id'])
             if existing:
                 continue
-                
+
             new_invoice = Invoice(
                 id=invoice['id'],
                 invoice_number=invoice['invoice_number'],
@@ -310,9 +310,9 @@ def migrate_invoices():
                 is_locked=bool(invoice['is_locked'])
             )
             db.session.add(new_invoice)
-        
+
         db.session.commit()
-    
+
     print(f"✅ Migrated {len(invoices)} invoices")
 
 
@@ -321,17 +321,17 @@ def migrate_job_sheet_templates():
     print("📋 Migrating job sheet templates...")
     conn = get_sqlite_connection()
     cursor = conn.cursor()
-    
+
     # Get all job sheet templates from SQLite
     cursor.execute("""
         SELECT id, name, service_type, description, default_instructions, default_safety_notes, 
                default_parts, default_tools, default_checks, estimated_time, is_active, created_date
         FROM job_sheet_templates
     """)
-    
+
     templates = cursor.fetchall()
     conn.close()
-    
+
     # Add job sheet templates to SQLAlchemy
     with app.app_context():
         for template in templates:
@@ -339,7 +339,7 @@ def migrate_job_sheet_templates():
             existing = JobSheetTemplate.query.get(template['id'])
             if existing:
                 continue
-                
+
             new_template = JobSheetTemplate(
                 id=template['id'],
                 name=template['name'],
@@ -355,9 +355,9 @@ def migrate_job_sheet_templates():
                 created_date=template['created_date']
             )
             db.session.add(new_template)
-        
+
         db.session.commit()
-    
+
     print(f"✅ Migrated {len(templates)} job sheet templates")
 
 
@@ -366,7 +366,7 @@ def migrate_job_sheets():
     print("📋 Migrating job sheets...")
     conn = get_sqlite_connection()
     cursor = conn.cursor()
-    
+
     # Get all job sheets from SQLite
     cursor.execute("""
         SELECT id, job_id, sheet_number, template_id, work_instructions, safety_notes, 
@@ -375,10 +375,10 @@ def migrate_job_sheets():
                status, created_date
         FROM job_sheets
     """)
-    
+
     job_sheets = cursor.fetchall()
     conn.close()
-    
+
     # Add job sheets to SQLAlchemy
     with app.app_context():
         for sheet in job_sheets:
@@ -386,7 +386,7 @@ def migrate_job_sheets():
             existing = JobSheet.query.get(sheet['id'])
             if existing:
                 continue
-                
+
             new_sheet = JobSheet(
                 id=sheet['id'],
                 job_id=sheet['job_id'],
@@ -406,9 +406,9 @@ def migrate_job_sheets():
                 created_date=sheet['created_date']
             )
             db.session.add(new_sheet)
-        
+
         db.session.commit()
-    
+
     print(f"✅ Migrated {len(job_sheets)} job sheets")
 
 
@@ -417,7 +417,7 @@ def migrate_quotes():
     print("💰 Migrating quotes...")
     conn = get_sqlite_connection()
     cursor = conn.cursor()
-    
+
     # Get all quotes from SQLite
     cursor.execute("""
         SELECT id, quote_number, customer_id, vehicle_id, description, labour_cost, parts_cost, 
@@ -425,10 +425,10 @@ def migrate_quotes():
                sent_date, accepted_date, notes, terms_conditions
         FROM quotes
     """)
-    
+
     quotes = cursor.fetchall()
     conn.close()
-    
+
     # Add quotes to SQLAlchemy
     with app.app_context():
         for quote in quotes:
@@ -436,7 +436,7 @@ def migrate_quotes():
             existing = Quote.query.get(quote['id'])
             if existing:
                 continue
-                
+
             new_quote = Quote(
                 id=quote['id'],
                 quote_number=quote['quote_number'],
@@ -457,9 +457,9 @@ def migrate_quotes():
                 terms_conditions=quote['terms_conditions']
             )
             db.session.add(new_quote)
-        
+
         db.session.commit()
-    
+
     print(f"✅ Migrated {len(quotes)} quotes")
 
 
@@ -468,7 +468,7 @@ def migrate_appointments():
     print("📅 Migrating appointments...")
     conn = get_sqlite_connection()
     cursor = conn.cursor()
-    
+
     # Get all appointments from SQLite
     cursor.execute("""
         SELECT id, job_id, customer_id, vehicle_id, technician_id, bay_id, appointment_date, 
@@ -476,10 +476,10 @@ def migrate_appointments():
                priority, customer_notified, reminder_sent, created_date, notes
         FROM appointments
     """)
-    
+
     appointments = cursor.fetchall()
     conn.close()
-    
+
     # Add appointments to SQLAlchemy
     with app.app_context():
         for appointment in appointments:
@@ -487,7 +487,7 @@ def migrate_appointments():
             existing = Appointment.query.get(appointment['id'])
             if existing:
                 continue
-                
+
             new_appointment = Appointment(
                 id=appointment['id'],
                 job_id=appointment['job_id'],
@@ -509,19 +509,19 @@ def migrate_appointments():
                 notes=appointment['notes']
             )
             db.session.add(new_appointment)
-        
+
         db.session.commit()
-    
+
     print(f"✅ Migrated {len(appointments)} appointments")
 
 
 def main():
     """Main function"""
     print("🚀 Migrating data from SQLite to SQLAlchemy...")
-    
+
     # Create SQLAlchemy tables
     create_sqlalchemy_tables()
-    
+
     # Migrate data
     migrate_customers()
     migrate_vehicles()
@@ -533,7 +533,7 @@ def main():
     migrate_job_sheets()
     migrate_quotes()
     migrate_appointments()
-    
+
     print("\n🎉 Data migration completed!")
     print("\nThe system now has SQLAlchemy models for:")
     print("- Customers")

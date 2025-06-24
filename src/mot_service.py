@@ -1517,6 +1517,7 @@ def health_check():
         'version': '1.0.0'
     }), 200
 
+
 @app.route('/api/mot/sms/history', methods=['GET'])
 def get_sms_history():
     """Get SMS sending history"""
@@ -1920,12 +1921,13 @@ def link_existing_vehicles():
 
 if __name__ == '__main__':
     import argparse
-    
+
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='MOT Reminder Service')
-    parser.add_argument('--port', type=int, default=5002, help='Port to run the server on')
+    parser.add_argument('--port', type=int, default=5002,
+                        help='Port to run the server on')
     args = parser.parse_args()
-    
+
     port = args.port  # Use the port from command line arguments
     print(f"🚀 Starting MOT Reminder Service on port {port}...")
     app.run(debug=True, port=port, host='127.0.0.1')

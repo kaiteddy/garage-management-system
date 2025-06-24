@@ -37,26 +37,28 @@
         padding: 1.5rem;
         border-radius: 0.5rem;
         margin-bottom: 1.5rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
       }
-      
+
       .integrated-header h1 {
         font-size: 2rem;
         font-weight: 700;
         margin-bottom: 0.5rem;
       }
-      
+
       .integrated-header p {
         font-size: 1.1rem;
         opacity: 0.9;
       }
-      
+
       .system-status {
         display: flex;
         gap: 1rem;
         margin-top: 1rem;
       }
-      
+
       .status-indicator {
         display: flex;
         align-items: center;
@@ -65,48 +67,54 @@
         padding: 0.5rem 1rem;
         border-radius: 2rem;
       }
-      
+
       .status-dot {
         width: 0.75rem;
         height: 0.75rem;
         border-radius: 50%;
       }
-      
+
       .status-dot.active {
         background-color: #10b981;
         box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
       }
-      
+
       .status-dot.inactive {
         background-color: #ef4444;
         box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
       }
-      
+
       .module-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 1.5rem;
         margin-bottom: 2rem;
       }
-      
+
       .module-card {
         background-color: white;
         border-radius: 0.5rem;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        box-shadow:
+          0 1px 3px 0 rgba(0, 0, 0, 0.1),
+          0 1px 2px 0 rgba(0, 0, 0, 0.06);
         overflow: hidden;
-        transition: transform 0.2s, box-shadow 0.2s;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
       }
-      
+
       .module-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        box-shadow:
+          0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
       }
-      
+
       .module-header {
         padding: 1.5rem;
         border-bottom: 1px solid #e5e7eb;
       }
-      
+
       .module-title {
         font-size: 1.25rem;
         font-weight: 600;
@@ -115,7 +123,7 @@
         align-items: center;
         gap: 0.5rem;
       }
-      
+
       .module-icon {
         width: 2.5rem;
         height: 2.5rem;
@@ -125,22 +133,22 @@
         border-radius: 0.5rem;
         color: white;
       }
-      
+
       .module-body {
         padding: 1.5rem;
       }
-      
+
       .module-description {
         color: #4b5563;
         margin-bottom: 1.5rem;
       }
-      
+
       .module-features {
         list-style-type: none;
         padding: 0;
         margin: 0 0 1.5rem 0;
       }
-      
+
       .module-features li {
         display: flex;
         align-items: center;
@@ -148,38 +156,38 @@
         margin-bottom: 0.5rem;
         color: #374151;
       }
-      
+
       .module-features li i {
         color: #10b981;
       }
-      
+
       .module-footer {
         padding: 1rem 1.5rem;
         background-color: #f9fafb;
         border-top: 1px solid #e5e7eb;
       }
-      
+
       .module-stats {
         display: flex;
         justify-content: space-between;
         margin-bottom: 1rem;
       }
-      
+
       .stat-item {
         text-align: center;
       }
-      
+
       .stat-value {
         font-size: 1.5rem;
         font-weight: 700;
         color: #111827;
       }
-      
+
       .stat-label {
         font-size: 0.875rem;
         color: #6b7280;
       }
-      
+
       .btn-launch {
         display: block;
         width: 100%;
@@ -194,41 +202,43 @@
         transition: background-color 0.2s;
         text-decoration: none;
       }
-      
+
       .btn-launch:hover {
         background-color: #2563eb;
       }
-      
+
       .btn-launch i {
         margin-right: 0.5rem;
       }
-      
+
       /* Module-specific colors */
       .module-icon.garage {
         background-color: #3b82f6;
       }
-      
+
       .module-icon.mot {
         background-color: #10b981;
       }
-      
+
       .module-icon.sms {
         background-color: #f59e0b;
       }
-      
+
       .module-icon.settings {
         background-color: #6366f1;
       }
-      
+
       /* Quick access section */
       .quick-access {
         background-color: white;
         border-radius: 0.5rem;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        box-shadow:
+          0 1px 3px 0 rgba(0, 0, 0, 0.1),
+          0 1px 2px 0 rgba(0, 0, 0, 0.06);
         padding: 1.5rem;
         margin-bottom: 2rem;
       }
-      
+
       .quick-access-title {
         font-size: 1.25rem;
         font-weight: 600;
@@ -238,13 +248,13 @@
         align-items: center;
         gap: 0.5rem;
       }
-      
+
       .quick-links {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1rem;
       }
-      
+
       .quick-link {
         display: flex;
         align-items: center;
@@ -256,11 +266,11 @@
         text-decoration: none;
         transition: background-color 0.2s;
       }
-      
+
       .quick-link:hover {
         background-color: #f3f4f6;
       }
-      
+
       .quick-link-icon {
         width: 2rem;
         height: 2rem;
@@ -270,19 +280,21 @@
         border-radius: 0.375rem;
         color: white;
       }
-      
+
       .quick-link-text {
         font-weight: 500;
       }
-      
+
       /* System info section */
       .system-info {
         background-color: white;
         border-radius: 0.5rem;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        box-shadow:
+          0 1px 3px 0 rgba(0, 0, 0, 0.1),
+          0 1px 2px 0 rgba(0, 0, 0, 0.06);
         padding: 1.5rem;
       }
-      
+
       .system-info-title {
         font-size: 1.25rem;
         font-weight: 600;
@@ -292,36 +304,36 @@
         align-items: center;
         gap: 0.5rem;
       }
-      
+
       .system-info-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 1rem;
       }
-      
+
       .info-item {
         padding: 1rem;
         background-color: #f9fafb;
         border-radius: 0.375rem;
       }
-      
+
       .info-label {
         font-size: 0.875rem;
         color: #6b7280;
         margin-bottom: 0.25rem;
       }
-      
+
       .info-value {
         font-weight: 500;
         color: #111827;
       }
-      
+
       /* Responsive adjustments */
       @media (max-width: 768px) {
         .module-grid {
           grid-template-columns: 1fr;
         }
-        
+
         .system-status {
           flex-direction: column;
           gap: 0.5rem;
@@ -336,9 +348,14 @@
     <div class="container mx-auto px-4 py-8">
       <!-- Integrated Header -->
       <div class="integrated-header">
-        <h1><i class="fas fa-tools mr-2"></i>Integrated Garage Management System</h1>
-        <p>Comprehensive solution for garage operations, MOT reminders, and customer communications</p>
-        
+        <h1>
+          <i class="fas fa-tools mr-2"></i>Integrated Garage Management System
+        </h1>
+        <p>
+          Comprehensive solution for garage operations, MOT reminders, and
+          customer communications
+        </p>
+
         <div class="system-status">
           <div class="status-indicator">
             <div class="status-dot active" id="main-status-dot"></div>
@@ -354,7 +371,7 @@
           </div>
         </div>
       </div>
-      
+
       <!-- Quick Access Section -->
       <div class="quick-access">
         <h2 class="quick-access-title">
@@ -363,32 +380,32 @@
         </h2>
         <div class="quick-links">
           <a href="/" class="quick-link">
-            <div class="quick-link-icon" style="background-color: #3b82f6;">
+            <div class="quick-link-icon" style="background-color: #3b82f6">
               <i class="fas fa-tachometer-alt"></i>
             </div>
             <span class="quick-link-text">Dashboard</span>
           </a>
           <a href="/mot/" class="quick-link">
-            <div class="quick-link-icon" style="background-color: #10b981;">
+            <div class="quick-link-icon" style="background-color: #10b981">
               <i class="fas fa-car"></i>
             </div>
             <span class="quick-link-text">MOT Reminders</span>
           </a>
           <a href="/mot/sms" class="quick-link">
-            <div class="quick-link-icon" style="background-color: #f59e0b;">
+            <div class="quick-link-icon" style="background-color: #f59e0b">
               <i class="fas fa-sms"></i>
             </div>
             <span class="quick-link-text">SMS Center</span>
           </a>
           <a href="/upload" class="quick-link">
-            <div class="quick-link-icon" style="background-color: #6366f1;">
+            <div class="quick-link-icon" style="background-color: #6366f1">
               <i class="fas fa-upload"></i>
             </div>
             <span class="quick-link-text">Data Upload</span>
           </a>
         </div>
       </div>
-      
+
       <!-- Module Grid -->
       <div class="module-grid">
         <!-- Main Garage Management Module -->
@@ -403,7 +420,8 @@
           </div>
           <div class="module-body">
             <p class="module-description">
-              Comprehensive garage management system for customer, vehicle, and job management.
+              Comprehensive garage management system for customer, vehicle, and
+              job management.
             </p>
             <ul class="module-features">
               <li><i class="fas fa-check"></i> Customer Management</li>
@@ -434,7 +452,7 @@
             </a>
           </div>
         </div>
-        
+
         <!-- MOT Reminder Module -->
         <div class="module-card">
           <div class="module-header">
@@ -478,7 +496,7 @@
             </a>
           </div>
         </div>
-        
+
         <!-- SMS Center Module -->
         <div class="module-card">
           <div class="module-header">
@@ -491,7 +509,8 @@
           </div>
           <div class="module-body">
             <p class="module-description">
-              Send automated SMS reminders to customers for MOT renewals and appointments.
+              Send automated SMS reminders to customers for MOT renewals and
+              appointments.
             </p>
             <ul class="module-features">
               <li><i class="fas fa-check"></i> Automated Reminders</li>
@@ -522,7 +541,7 @@
             </a>
           </div>
         </div>
-        
+
         <!-- System Settings Module -->
         <div class="module-card">
           <div class="module-header">
@@ -535,7 +554,8 @@
           </div>
           <div class="module-body">
             <p class="module-description">
-              Configure system settings, manage data imports, and monitor system health.
+              Configure system settings, manage data imports, and monitor system
+              health.
             </p>
             <ul class="module-features">
               <li><i class="fas fa-check"></i> User Management</li>
@@ -567,7 +587,7 @@
           </div>
         </div>
       </div>
-      
+
       <!-- System Information -->
       <div class="system-info">
         <h2 class="system-info-title">
@@ -597,103 +617,129 @@
 
     <!-- JavaScript for the integrated dashboard -->
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener("DOMContentLoaded", function () {
         // Set current date for last updated
         const now = new Date();
-        document.getElementById('last-updated').textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
-        
+        document.getElementById("last-updated").textContent =
+          now.toLocaleDateString() + " " + now.toLocaleTimeString();
+
         // Check system status
         checkSystemStatus();
-        
+
         // Load statistics
         loadStatistics();
-        
+
         // Set up refresh interval
         setInterval(checkSystemStatus, 60000); // Check every minute
         setInterval(loadStatistics, 300000); // Refresh stats every 5 minutes
       });
-      
+
       function checkSystemStatus() {
         // Check main system status
-        fetch('/health')
-          .then(response => {
+        fetch("/health")
+          .then((response) => {
             if (response.ok) {
-              document.getElementById('main-status-dot').className = 'status-dot active';
+              document.getElementById("main-status-dot").className =
+                "status-dot active";
             } else {
-              document.getElementById('main-status-dot').className = 'status-dot inactive';
+              document.getElementById("main-status-dot").className =
+                "status-dot inactive";
             }
           })
           .catch(() => {
-            document.getElementById('main-status-dot').className = 'status-dot inactive';
+            document.getElementById("main-status-dot").className =
+              "status-dot inactive";
           });
-        
+
         // Check MOT service status
-        fetch('/mot/api/health')
-          .then(response => {
+        fetch("/mot/api/health")
+          .then((response) => {
             if (response.ok) {
-              document.getElementById('mot-status-dot').className = 'status-dot active';
+              document.getElementById("mot-status-dot").className =
+                "status-dot active";
             } else {
-              document.getElementById('mot-status-dot').className = 'status-dot inactive';
+              document.getElementById("mot-status-dot").className =
+                "status-dot inactive";
             }
           })
           .catch(() => {
-            document.getElementById('mot-status-dot').className = 'status-dot inactive';
+            document.getElementById("mot-status-dot").className =
+              "status-dot inactive";
           });
-        
+
         // Check SMS service status
-        fetch('/mot/api/sms/status')
-          .then(response => {
+        fetch("/mot/api/sms/status")
+          .then((response) => {
             if (response.ok) {
-              document.getElementById('sms-status-dot').className = 'status-dot active';
+              document.getElementById("sms-status-dot").className =
+                "status-dot active";
             } else {
-              document.getElementById('sms-status-dot').className = 'status-dot inactive';
+              document.getElementById("sms-status-dot").className =
+                "status-dot inactive";
             }
           })
           .catch(() => {
-            document.getElementById('sms-status-dot').className = 'status-dot inactive';
+            document.getElementById("sms-status-dot").className =
+              "status-dot inactive";
           });
       }
-      
+
       function loadStatistics() {
         // Load garage management statistics
-        fetch('/api/dashboard/stats')
-          .then(response => response.json())
-          .then(data => {
+        fetch("/api/dashboard/stats")
+          .then((response) => response.json())
+          .then((data) => {
             if (data.success) {
-              document.getElementById('customer-count').textContent = data.stats.customers || 0;
-              document.getElementById('vehicle-count').textContent = data.stats.vehicles || 0;
-              document.getElementById('job-count').textContent = data.stats.jobs || 0;
+              document.getElementById("customer-count").textContent =
+                data.stats.customers || 0;
+              document.getElementById("vehicle-count").textContent =
+                data.stats.vehicles || 0;
+              document.getElementById("job-count").textContent =
+                data.stats.jobs || 0;
             }
           })
-          .catch(error => console.error('Error loading garage stats:', error));
-        
+          .catch((error) =>
+            console.error("Error loading garage stats:", error),
+          );
+
         // Load MOT statistics
-        fetch('/mot/api/mot/statistics')
-          .then(response => response.json())
-          .then(data => {
+        fetch("/mot/api/mot/statistics")
+          .then((response) => response.json())
+          .then((data) => {
             if (data.success) {
-              document.getElementById('mot-total').textContent = data.statistics.total || 0;
-              document.getElementById('mot-expired').textContent = data.statistics.expired || 0;
-              document.getElementById('mot-due-soon').textContent = data.statistics.due_soon || 0;
+              document.getElementById("mot-total").textContent =
+                data.statistics.total || 0;
+              document.getElementById("mot-expired").textContent =
+                data.statistics.expired || 0;
+              document.getElementById("mot-due-soon").textContent =
+                data.statistics.due_soon || 0;
             }
           })
-          .catch(error => console.error('Error loading MOT stats:', error));
-        
+          .catch((error) => console.error("Error loading MOT stats:", error));
+
         // Load SMS statistics
-        fetch('/mot/api/mot/sms/history')
-          .then(response => response.json())
-          .then(data => {
+        fetch("/mot/api/mot/sms/history")
+          .then((response) => response.json())
+          .then((data) => {
             if (data.success) {
               const total = data.history.length || 0;
-              const delivered = data.history.filter(sms => sms.delivery_status === 'delivered').length || 0;
-              const pending = data.history.filter(sms => sms.delivery_status === 'sent' || sms.delivery_status === 'queued').length || 0;
-              
-              document.getElementById('sms-total').textContent = total;
-              document.getElementById('sms-delivered').textContent = delivered;
-              document.getElementById('sms-pending').textContent = pending;
+              const delivered =
+                data.history.filter(
+                  (sms) => sms.delivery_status === "delivered",
+                ).length || 0;
+              const pending =
+                data.history.filter(
+                  (sms) =>
+                    sms.delivery_status === "sent" ||
+                    sms.delivery_status === "queued",
+                ).length || 0;
+
+              document.getElementById("sms-total").textContent = total;
+              document.getElementById("sms-delivered").textContent = delivered;
+              document.getElementById("sms-pending").textContent = pending;
             }
           })
-          .catch(error => console.error('Error loading SMS stats:', error));
+          .catch((error) => console.error("Error loading SMS stats:", error));
       }
     </script>
   </body>
