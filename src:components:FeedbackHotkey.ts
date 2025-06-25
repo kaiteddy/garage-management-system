@@ -25,7 +25,7 @@ export const FeedbackHotkey: React.FC = () => {
           markerArea.show();
         };
       }),
-    []
+    [],
   );
 
   const send = useCallback(async (annotated: string) => {

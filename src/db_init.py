@@ -9,6 +9,7 @@ import sqlite3
 import sys
 from pathlib import Path
 
+
 def initialize_database():
     """Initialize SQLite database and ensure it's writable"""
     # Define database directory and path
@@ -43,8 +44,10 @@ def initialize_database():
         ''')
 
         # Insert version information
-        cursor.execute("INSERT OR REPLACE INTO system_info (id, key, value) VALUES (1, 'version', '1.0.0')")
-        cursor.execute("INSERT OR REPLACE INTO system_info (id, key, value) VALUES (2, 'initialized_at', CURRENT_TIMESTAMP)")
+        cursor.execute(
+            "INSERT OR REPLACE INTO system_info (id, key, value) VALUES (1, 'version', '1.0.0')")
+        cursor.execute(
+            "INSERT OR REPLACE INTO system_info (id, key, value) VALUES (2, 'initialized_at', CURRENT_TIMESTAMP)")
 
         conn.commit()
         conn.close()
@@ -59,6 +62,7 @@ def initialize_database():
         print(f"❌ Database initialization error: {e}")
         return False
 
+
 def test_database_connection():
     """Test database connection"""
     db_path = Path('data') / 'garage.db'
@@ -71,16 +75,19 @@ def test_database_connection():
         cursor.execute("SELECT value FROM system_info WHERE key = 'version'")
         version = cursor.fetchone()[0]
 
-        cursor.execute("SELECT value FROM system_info WHERE key = 'initialized_at'")
+        cursor.execute(
+            "SELECT value FROM system_info WHERE key = 'initialized_at'")
         init_time = cursor.fetchone()[0]
 
         conn.close()
 
-        print(f"✅ Database connection successful! Version: {version}, Initialized at: {init_time}")
+        print(
+            f"✅ Database connection successful! Version: {version}, Initialized at: {init_time}")
         return True
     except Exception as e:
         print(f"❌ Database connection test failed: {e}")
         return False
+
 
 if __name__ == '__main__':
     print("🚀 Starting database initialization...")

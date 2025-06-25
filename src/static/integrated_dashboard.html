@@ -685,12 +685,14 @@
       }
 
       function loadStatistics() {
-        const container = document.getElementById('dashboard-content');
+        const container = document.getElementById("dashboard-content");
         if (!container) {
-          console.warn('Dashboard content container not found - this is normal for the integrated dashboard');
+          console.warn(
+            "Dashboard content container not found - this is normal for the integrated dashboard",
+          );
           return;
         }
-        
+
         // Load garage management statistics
         fetch("/api/stats")
           .then((response) => response.json())
@@ -699,9 +701,11 @@
               const customerCount = document.getElementById("customer-count");
               const vehicleCount = document.getElementById("vehicle-count");
               const jobCount = document.getElementById("job-count");
-              
-              if (customerCount) customerCount.textContent = data.stats.customers || 0;
-              if (vehicleCount) vehicleCount.textContent = data.stats.vehicles || 0;
+
+              if (customerCount)
+                customerCount.textContent = data.stats.customers || 0;
+              if (vehicleCount)
+                vehicleCount.textContent = data.stats.vehicles || 0;
               if (jobCount) jobCount.textContent = data.stats.jobs || 0;
             }
           })
@@ -717,10 +721,12 @@
               const motTotal = document.getElementById("mot-total");
               const motExpired = document.getElementById("mot-expired");
               const motDueSoon = document.getElementById("mot-due-soon");
-              
+
               if (motTotal) motTotal.textContent = data.statistics.total || 0;
-              if (motExpired) motExpired.textContent = data.statistics.expired || 0;
-              if (motDueSoon) motDueSoon.textContent = data.statistics.due_soon || 0;
+              if (motExpired)
+                motExpired.textContent = data.statistics.expired || 0;
+              if (motDueSoon)
+                motDueSoon.textContent = data.statistics.due_soon || 0;
             }
           })
           .catch((error) => {
@@ -747,7 +753,7 @@
               const smsTotal = document.getElementById("sms-total");
               const smsDelivered = document.getElementById("sms-delivered");
               const smsPending = document.getElementById("sms-pending");
-              
+
               if (smsTotal) smsTotal.textContent = total;
               if (smsDelivered) smsDelivered.textContent = delivered;
               if (smsPending) smsPending.textContent = pending;
@@ -762,116 +768,129 @@
     <!-- Screenshot Feedback Hotkey -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script>
-      console.log('Screenshot feedback script loading...');
-      
+      console.log("Screenshot feedback script loading...");
+
       // Check if html2canvas loaded
-      if (typeof html2canvas !== 'undefined') {
-        console.log('✅ html2canvas loaded successfully');
+      if (typeof html2canvas !== "undefined") {
+        console.log("✅ html2canvas loaded successfully");
       } else {
-        console.error('❌ html2canvas failed to load');
+        console.error("❌ html2canvas failed to load");
       }
-      
-      document.addEventListener('keydown', async function(e) {
-        console.log('Key pressed:', e.code, 'Ctrl:', e.ctrlKey, 'Shift:', e.shiftKey);
-        
+
+      document.addEventListener("keydown", async function (e) {
+        console.log(
+          "Key pressed:",
+          e.code,
+          "Ctrl:",
+          e.ctrlKey,
+          "Shift:",
+          e.shiftKey,
+        );
+
         // Use Ctrl+Shift+S (easier to test than F12)
-        if (e.ctrlKey && e.shiftKey && e.code === 'KeyS') {
-          console.log('Screenshot hotkey pressed!');
+        if (e.ctrlKey && e.shiftKey && e.code === "KeyS") {
+          console.log("Screenshot hotkey pressed!");
           e.preventDefault();
-          
+
           try {
             // Prompt for text feedback
-            const textFeedback = prompt('Add feedback (optional):', '');
+            const textFeedback = prompt("Add feedback (optional):", "");
 
             // Show loading message
-            const loadingMsg = document.createElement('div');
-            loadingMsg.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #333; color: white; padding: 20px; border-radius: 10px; z-index: 10000; font-family: Arial, sans-serif;';
-            loadingMsg.textContent = '📸 Capturing screenshot...';
+            const loadingMsg = document.createElement("div");
+            loadingMsg.style.cssText =
+              "position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #333; color: white; padding: 20px; border-radius: 10px; z-index: 10000; font-family: Arial, sans-serif;";
+            loadingMsg.textContent = "📸 Capturing screenshot...";
             document.body.appendChild(loadingMsg);
-            
+
             // Try to find the best target element for screenshot
-            const target = document.querySelector('.integrated-header') || 
-                          document.querySelector('.module-grid') || 
-                          document.querySelector('.container') || 
-                          document.body;
-            
+            const target =
+              document.querySelector(".integrated-header") ||
+              document.querySelector(".module-grid") ||
+              document.querySelector(".container") ||
+              document.body;
+
             if (!target) {
               document.body.removeChild(loadingMsg);
-              alert('No target element found for screenshot');
+              alert("No target element found for screenshot");
               return;
             }
-            
-            console.log('Capturing screenshot of:', target);
-            
-            const canvas = await html2canvas(target, { 
+
+            console.log("Capturing screenshot of:", target);
+
+            const canvas = await html2canvas(target, {
               backgroundColor: null,
               scale: 1,
               useCORS: true,
               allowTaint: true,
-              logging: true
+              logging: true,
             });
-            
-            const uri = canvas.toDataURL('image/png');
-            console.log('Screenshot captured, size:', uri.length, 'characters');
-            
+
+            const uri = canvas.toDataURL("image/png");
+            console.log("Screenshot captured, size:", uri.length, "characters");
+
             // Remove loading message
             document.body.removeChild(loadingMsg);
-            
+
             // Show success message
-            const successMsg = document.createElement('div');
-            successMsg.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #10b981; color: white; padding: 20px; border-radius: 10px; z-index: 10000; font-family: Arial, sans-serif;';
-            successMsg.textContent = '📤 Sending screenshot...';
+            const successMsg = document.createElement("div");
+            successMsg.style.cssText =
+              "position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #10b981; color: white; padding: 20px; border-radius: 10px; z-index: 10000; font-family: Arial, sans-serif;";
+            successMsg.textContent = "📤 Sending screenshot...";
             document.body.appendChild(successMsg);
-            
+
             await sendFeedback(uri, textFeedback);
-            
+
             // Remove success message
             document.body.removeChild(successMsg);
-            
           } catch (error) {
-            console.error('Error capturing screenshot:', error);
-            alert('Failed to capture screenshot: ' + error.message);
+            console.error("Error capturing screenshot:", error);
+            alert("Failed to capture screenshot: " + error.message);
           }
         }
       });
-      
+
       async function sendFeedback(imageData, textFeedback) {
         const payload = {
           image: imageData,
           route: window.location.pathname,
           time: new Date().toISOString(),
-          build: 'garage-dev',
+          build: "garage-dev",
           userAgent: navigator.userAgent,
-          feedback: textFeedback || ''
+          feedback: textFeedback || "",
         };
-        
+
         try {
-          console.log('Sending feedback to /api/feedback...');
-          const response = await fetch('/api/feedback', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+          console.log("Sending feedback to /api/feedback...");
+          const response = await fetch("/api/feedback", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
           });
-          
-          console.log('Response status:', response.status);
-          
+
+          console.log("Response status:", response.status);
+
           if (response.ok) {
             const result = await response.json();
-            console.log('✅ Screenshot sent successfully:', result);
-            alert('📸 Screenshot sent successfully!\n\nYou can find it in the feedback_screenshots folder.');
+            console.log("✅ Screenshot sent successfully:", result);
+            alert(
+              "📸 Screenshot sent successfully!\n\nYou can find it in the feedback_screenshots folder.",
+            );
           } else {
             const errorText = await response.text();
-            console.error('Server error response:', errorText);
-            throw new Error(`Server responded with ${response.status}: ${errorText}`);
+            console.error("Server error response:", errorText);
+            throw new Error(
+              `Server responded with ${response.status}: ${errorText}`,
+            );
           }
         } catch (err) {
-          console.error('Failed to send feedback:', err);
-          alert('❌ Failed to send screenshot: ' + err.message);
+          console.error("Failed to send feedback:", err);
+          alert("❌ Failed to send screenshot: " + err.message);
         }
       }
-      
-      console.log('Screenshot feedback script loaded and ready');
-      console.log('💡 Press Ctrl+Shift+S to capture and send a screenshot');
+
+      console.log("Screenshot feedback script loaded and ready");
+      console.log("💡 Press Ctrl+Shift+S to capture and send a screenshot");
     </script>
   </body>
 </html>

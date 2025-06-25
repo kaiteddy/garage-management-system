@@ -1,8 +1,8 @@
 from datetime import datetime, time, timezone
 
 from .db import db
-from .vehicle import Vehicle
 from .user import User
+from .vehicle import Vehicle
 
 # Import models after db initialization to avoid circular imports
 
