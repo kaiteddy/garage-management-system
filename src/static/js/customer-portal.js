@@ -5,25 +5,25 @@
 
 // Make CustomerPortal available globally
 window.CustomerPortal = class CustomerPortal {
-  constructor () {
-    this.currentCustomer = null
-    this.vehicles = []
-    this.serviceHistory = []
-    this.vhcReports = []
-    this.init()
+  constructor() {
+    this.currentCustomer = null;
+    this.vehicles = [];
+    this.serviceHistory = [];
+    this.vhcReports = [];
+    this.init();
   }
 
-  init () {
-    this.createPortalHTML()
-    this.setupEventListeners()
-    this.loadCustomerData()
+  init() {
+    this.createPortalHTML();
+    this.setupEventListeners();
+    this.loadCustomerData();
   }
 
-  createPortalHTML () {
-    const container = document.getElementById('customer-portal-container')
+  createPortalHTML() {
+    const container = document.getElementById("customer-portal-container");
     if (!container) {
-      console.error('Customer portal container not found')
-      return
+      console.error("Customer portal container not found");
+      return;
     }
 
     container.innerHTML = `
@@ -164,71 +164,71 @@ window.CustomerPortal = class CustomerPortal {
                     </div>
                 </div>
             </div>
-        `
+        `;
   }
 
-  async loadCustomerData () {
+  async loadCustomerData() {
     // In a real implementation, this would get customer ID from authentication
     // For demo purposes, we'll use a mock customer ID
-    const customerId = this.getCustomerIdFromURL() || 1
+    const customerId = this.getCustomerIdFromURL() || 1;
 
     try {
       // Load customer info
-      const customerResponse = await fetch(`/api/customers/${customerId}`)
+      const customerResponse = await fetch(`/api/customers/${customerId}`);
       if (customerResponse.ok) {
-        const customerResult = await customerResponse.json()
-        this.currentCustomer = customerResult.customer
-        this.renderCustomerInfo()
+        const customerResult = await customerResponse.json();
+        this.currentCustomer = customerResult.customer;
+        this.renderCustomerInfo();
       }
 
       // Load vehicles
       const vehiclesResponse = await fetch(
-        `/api/vehicles?customer_id=${customerId}`
-      )
+        `/api/vehicles?customer_id=${customerId}`,
+      );
       if (vehiclesResponse.ok) {
-        const vehiclesResult = await vehiclesResponse.json()
-        this.vehicles = vehiclesResult.vehicles || []
-        this.renderVehicles()
-        this.populateVehicleFilters()
+        const vehiclesResult = await vehiclesResponse.json();
+        this.vehicles = vehiclesResult.vehicles || [];
+        this.renderVehicles();
+        this.populateVehicleFilters();
       }
 
       // Load service history (jobs)
-      const jobsResponse = await fetch(`/api/jobs?customer_id=${customerId}`)
+      const jobsResponse = await fetch(`/api/jobs?customer_id=${customerId}`);
       if (jobsResponse.ok) {
-        const jobsResult = await jobsResponse.json()
-        this.serviceHistory = jobsResult.jobs || []
-        this.renderServiceHistory()
+        const jobsResult = await jobsResponse.json();
+        this.serviceHistory = jobsResult.jobs || [];
+        this.renderServiceHistory();
       }
 
       // Load appointments
-      this.loadAppointments(customerId)
+      this.loadAppointments(customerId);
     } catch (error) {
-      console.error('Error loading customer data:', error)
+      console.error("Error loading customer data:", error);
     }
   }
 
-  getCustomerIdFromURL () {
-    const urlParams = new URLSearchParams(window.location.search)
-    return urlParams.get('customer_id')
+  getCustomerIdFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("customer_id");
   }
 
-  renderCustomerInfo () {
-    const container = document.getElementById('customer-info')
-    if (!this.currentCustomer || !container) return
+  renderCustomerInfo() {
+    const container = document.getElementById("customer-info");
+    if (!this.currentCustomer || !container) return;
 
     container.innerHTML = `
             <div class="customer-details">
                 <h3>${this.currentCustomer.name}</h3>
                 <p><i class="fas fa-id-card"></i> Account: ${this.currentCustomer.account_number}</p>
-                <p><i class="fas fa-phone"></i> ${this.currentCustomer.phone || 'No phone'}</p>
-                <p><i class="fas fa-envelope"></i> ${this.currentCustomer.email || 'No email'}</p>
+                <p><i class="fas fa-phone"></i> ${this.currentCustomer.phone || "No phone"}</p>
+                <p><i class="fas fa-envelope"></i> ${this.currentCustomer.email || "No email"}</p>
             </div>
-        `
+        `;
   }
 
-  renderVehicles () {
-    const grid = document.getElementById('vehicles-grid')
-    if (!grid) return
+  renderVehicles() {
+    const grid = document.getElementById("vehicles-grid");
+    if (!grid) return;
 
     if (this.vehicles.length === 0) {
       grid.innerHTML = `
@@ -237,8 +237,8 @@ window.CustomerPortal = class CustomerPortal {
                     <h3>No Vehicles Registered</h3>
                     <p>Contact us to add your vehicles to your account</p>
                 </div>
-            `
-      return
+            `;
+      return;
     }
 
     grid.innerHTML = this.vehicles
@@ -253,22 +253,22 @@ window.CustomerPortal = class CustomerPortal {
                 <div class="vehicle-details">
                     <div class="detail-item">
                         <i class="fas fa-calendar"></i>
-                        <span>Year: ${vehicle.year || 'Unknown'}</span>
+                        <span>Year: ${vehicle.year || "Unknown"}</span>
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-palette"></i>
-                        <span>Color: ${vehicle.color || 'Unknown'}</span>
+                        <span>Color: ${vehicle.color || "Unknown"}</span>
                     </div>
                     <div class="detail-item">
                         <i class="fas fa-tachometer-alt"></i>
-                        <span>Mileage: ${vehicle.mileage ? vehicle.mileage.toLocaleString() + ' miles' : 'Unknown'}</span>
+                        <span>Mileage: ${vehicle.mileage ? vehicle.mileage.toLocaleString() + " miles" : "Unknown"}</span>
                     </div>
                 </div>
                 
                 <div class="vehicle-status">
                     <div class="mot-status ${this.getMOTStatus(vehicle.mot_expiry)}">
                         <i class="fas fa-certificate"></i>
-                        <span>MOT: ${vehicle.mot_expiry ? new Date(vehicle.mot_expiry).toLocaleDateString('en-GB') : 'Unknown'}</span>
+                        <span>MOT: ${vehicle.mot_expiry ? new Date(vehicle.mot_expiry).toLocaleDateString("en-GB") : "Unknown"}</span>
                     </div>
                     <div class="service-status">
                         <i class="fas fa-wrench"></i>
@@ -287,40 +287,40 @@ window.CustomerPortal = class CustomerPortal {
                     </button>
                 </div>
             </div>
-        `
+        `,
       )
-      .join('')
+      .join("");
   }
 
-  getMOTStatus (motExpiry) {
-    if (!motExpiry) return 'unknown'
+  getMOTStatus(motExpiry) {
+    if (!motExpiry) return "unknown";
 
-    const expiryDate = new Date(motExpiry)
-    const today = new Date()
+    const expiryDate = new Date(motExpiry);
+    const today = new Date();
     const daysUntilExpiry = Math.ceil(
-      (expiryDate - today) / (1000 * 60 * 60 * 24)
-    )
+      (expiryDate - today) / (1000 * 60 * 60 * 24),
+    );
 
-    if (daysUntilExpiry < 0) return 'expired'
-    if (daysUntilExpiry <= 30) return 'warning'
-    return 'valid'
+    if (daysUntilExpiry < 0) return "expired";
+    if (daysUntilExpiry <= 30) return "warning";
+    return "valid";
   }
 
-  getLastServiceDate (vehicleId) {
+  getLastServiceDate(vehicleId) {
     const vehicleServices = this.serviceHistory.filter(
-      (job) => job.vehicle_id === vehicleId
-    )
-    if (vehicleServices.length === 0) return 'No services'
+      (job) => job.vehicle_id === vehicleId,
+    );
+    if (vehicleServices.length === 0) return "No services";
 
     const lastService = vehicleServices.sort(
-      (a, b) => new Date(b.created_date) - new Date(a.created_date)
-    )[0]
-    return new Date(lastService.created_date).toLocaleDateString('en-GB')
+      (a, b) => new Date(b.created_date) - new Date(a.created_date),
+    )[0];
+    return new Date(lastService.created_date).toLocaleDateString("en-GB");
   }
 
-  renderServiceHistory () {
-    const timeline = document.getElementById('service-timeline')
-    if (!timeline) return
+  renderServiceHistory() {
+    const timeline = document.getElementById("service-timeline");
+    if (!timeline) return;
 
     if (this.serviceHistory.length === 0) {
       timeline.innerHTML = `
@@ -329,115 +329,115 @@ window.CustomerPortal = class CustomerPortal {
                     <h3>No Service History</h3>
                     <p>Your service history will appear here once you've had work done</p>
                 </div>
-            `
-      return
+            `;
+      return;
     }
 
     const sortedHistory = this.serviceHistory.sort(
-      (a, b) => new Date(b.created_date) - new Date(a.created_date)
-    )
+      (a, b) => new Date(b.created_date) - new Date(a.created_date),
+    );
 
     timeline.innerHTML = sortedHistory
       .map(
         (job) => `
             <div class="timeline-item">
                 <div class="timeline-date">
-                    ${new Date(job.created_date).toLocaleDateString('en-GB')}
+                    ${new Date(job.created_date).toLocaleDateString("en-GB")}
                 </div>
                 <div class="timeline-content">
                     <div class="service-header">
-                        <h4>${job.description || 'Service Work'}</h4>
+                        <h4>${job.description || "Service Work"}</h4>
                         <span class="job-number">${job.job_number}</span>
                     </div>
                     <div class="service-details">
                         <p><strong>Vehicle:</strong> ${this.getVehicleInfo(job.vehicle_id)}</p>
                         <p><strong>Status:</strong> <span class="status-badge ${job.status.toLowerCase()}">${job.status}</span></p>
                         <p><strong>Total:</strong> £${(job.total_amount || 0).toFixed(2)}</p>
-                        ${job.notes ? `<p><strong>Notes:</strong> ${job.notes}</p>` : ''}
+                        ${job.notes ? `<p><strong>Notes:</strong> ${job.notes}</p>` : ""}
                     </div>
                 </div>
             </div>
-        `
+        `,
       )
-      .join('')
+      .join("");
   }
 
-  getVehicleInfo (vehicleId) {
-    const vehicle = this.vehicles.find((v) => v.id === vehicleId)
+  getVehicleInfo(vehicleId) {
+    const vehicle = this.vehicles.find((v) => v.id === vehicleId);
     return vehicle
       ? `${vehicle.registration} (${vehicle.make} ${vehicle.model})`
-      : 'Unknown Vehicle'
+      : "Unknown Vehicle";
   }
 
-  populateVehicleFilters () {
-    const vehicleFilter = document.getElementById('vehicle-filter')
+  populateVehicleFilters() {
+    const vehicleFilter = document.getElementById("vehicle-filter");
     if (vehicleFilter && this.vehicles.length > 0) {
       vehicleFilter.innerHTML =
         '<option value="">All Vehicles</option>' +
         this.vehicles
           .map(
             (vehicle) =>
-              `<option value="${vehicle.id}">${vehicle.registration} (${vehicle.make} ${vehicle.model})</option>`
+              `<option value="${vehicle.id}">${vehicle.registration} (${vehicle.make} ${vehicle.model})</option>`,
           )
-          .join('')
+          .join("");
     }
 
     // Populate year filter
-    const yearFilter = document.getElementById('year-filter')
+    const yearFilter = document.getElementById("year-filter");
     if (yearFilter && this.serviceHistory.length > 0) {
       const years = [
         ...new Set(
           this.serviceHistory.map((job) =>
-            new Date(job.created_date).getFullYear()
-          )
-        )
-      ]
-      years.sort((a, b) => b - a)
+            new Date(job.created_date).getFullYear(),
+          ),
+        ),
+      ];
+      years.sort((a, b) => b - a);
 
       yearFilter.innerHTML =
         '<option value="">All Years</option>' +
         years
           .map((year) => `<option value="${year}">${year}</option>`)
-          .join('')
+          .join("");
     }
   }
 
-  async loadAppointments (customerId) {
+  async loadAppointments(customerId) {
     try {
       const response = await fetch(
-        `/api/appointments?customer_id=${customerId}`
-      )
+        `/api/appointments?customer_id=${customerId}`,
+      );
       if (response.ok) {
-        const result = await response.json()
-        const appointments = result.appointments || []
+        const result = await response.json();
+        const appointments = result.appointments || [];
 
-        const today = new Date()
+        const today = new Date();
         const upcoming = appointments.filter(
-          (apt) => new Date(apt.appointment_date) >= today
-        )
+          (apt) => new Date(apt.appointment_date) >= today,
+        );
         const past = appointments.filter(
-          (apt) => new Date(apt.appointment_date) < today
-        )
+          (apt) => new Date(apt.appointment_date) < today,
+        );
 
-        this.renderAppointments(upcoming, 'upcoming-appointments')
-        this.renderAppointments(past, 'past-appointments')
+        this.renderAppointments(upcoming, "upcoming-appointments");
+        this.renderAppointments(past, "past-appointments");
       }
     } catch (error) {
-      console.error('Error loading appointments:', error)
+      console.error("Error loading appointments:", error);
     }
   }
 
-  renderAppointments (appointments, containerId) {
-    const container = document.getElementById(containerId)
-    if (!container) return
+  renderAppointments(appointments, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
 
     if (appointments.length === 0) {
       container.innerHTML = `
                 <div class="no-appointments">
-                    <p>No ${containerId.includes('upcoming') ? 'upcoming' : 'past'} appointments</p>
+                    <p>No ${containerId.includes("upcoming") ? "upcoming" : "past"} appointments</p>
                 </div>
-            `
-      return
+            `;
+      return;
     }
 
     container.innerHTML = appointments
@@ -445,57 +445,57 @@ window.CustomerPortal = class CustomerPortal {
         (apt) => `
             <div class="appointment-card">
                 <div class="appointment-header">
-                    <h4>${apt.service_type || 'Service'}</h4>
+                    <h4>${apt.service_type || "Service"}</h4>
                     <span class="appointment-status ${apt.status.toLowerCase()}">${apt.status}</span>
                 </div>
                 <div class="appointment-details">
-                    <p><i class="fas fa-calendar"></i> ${new Date(apt.appointment_date).toLocaleDateString('en-GB')}</p>
+                    <p><i class="fas fa-calendar"></i> ${new Date(apt.appointment_date).toLocaleDateString("en-GB")}</p>
                     <p><i class="fas fa-clock"></i> ${apt.start_time} - ${apt.end_time}</p>
                     <p><i class="fas fa-car"></i> ${this.getVehicleInfo(apt.vehicle_id)}</p>
-                    ${apt.description ? `<p><i class="fas fa-info-circle"></i> ${apt.description}</p>` : ''}
+                    ${apt.description ? `<p><i class="fas fa-info-circle"></i> ${apt.description}</p>` : ""}
                 </div>
             </div>
-        `
+        `,
       )
-      .join('')
+      .join("");
   }
 
-  showSection (sectionName) {
+  showSection(sectionName) {
     // Update navigation
-    document.querySelectorAll('.nav-btn').forEach((btn) => {
-      btn.classList.remove('active')
-    })
+    document.querySelectorAll(".nav-btn").forEach((btn) => {
+      btn.classList.remove("active");
+    });
     document
       .querySelector(`[data-section="${sectionName}"]`)
-      .classList.add('active')
+      .classList.add("active");
 
     // Update content
-    document.querySelectorAll('.portal-section').forEach((section) => {
-      section.classList.remove('active')
-    })
-    document.getElementById(`${sectionName}-section`).classList.add('active')
+    document.querySelectorAll(".portal-section").forEach((section) => {
+      section.classList.remove("active");
+    });
+    document.getElementById(`${sectionName}-section`).classList.add("active");
   }
 
-  filterServiceHistory () {
-    const vehicleId = document.getElementById('vehicle-filter').value
-    const year = document.getElementById('year-filter').value
+  filterServiceHistory() {
+    const vehicleId = document.getElementById("vehicle-filter").value;
+    const year = document.getElementById("year-filter").value;
 
-    let filteredHistory = this.serviceHistory
+    let filteredHistory = this.serviceHistory;
 
     if (vehicleId) {
       filteredHistory = filteredHistory.filter(
-        (job) => job.vehicle_id == vehicleId
-      )
+        (job) => job.vehicle_id == vehicleId,
+      );
     }
 
     if (year) {
       filteredHistory = filteredHistory.filter(
-        (job) => new Date(job.created_date).getFullYear() == year
-      )
+        (job) => new Date(job.created_date).getFullYear() == year,
+      );
     }
 
     // Re-render with filtered data
-    const timeline = document.getElementById('service-timeline')
+    const timeline = document.getElementById("service-timeline");
     if (filteredHistory.length === 0) {
       timeline.innerHTML = `
                 <div class="empty-state">
@@ -503,74 +503,74 @@ window.CustomerPortal = class CustomerPortal {
                     <h3>No Results</h3>
                     <p>No service history matches your filters</p>
                 </div>
-            `
-      return
+            `;
+      return;
     }
 
     const sortedHistory = filteredHistory.sort(
-      (a, b) => new Date(b.created_date) - new Date(a.created_date)
-    )
+      (a, b) => new Date(b.created_date) - new Date(a.created_date),
+    );
 
     timeline.innerHTML = sortedHistory
       .map(
         (job) => `
             <div class="timeline-item">
                 <div class="timeline-date">
-                    ${new Date(job.created_date).toLocaleDateString('en-GB')}
+                    ${new Date(job.created_date).toLocaleDateString("en-GB")}
                 </div>
                 <div class="timeline-content">
                     <div class="service-header">
-                        <h4>${job.description || 'Service Work'}</h4>
+                        <h4>${job.description || "Service Work"}</h4>
                         <span class="job-number">${job.job_number}</span>
                     </div>
                     <div class="service-details">
                         <p><strong>Vehicle:</strong> ${this.getVehicleInfo(job.vehicle_id)}</p>
                         <p><strong>Status:</strong> <span class="status-badge ${job.status.toLowerCase()}">${job.status}</span></p>
                         <p><strong>Total:</strong> £${(job.total_amount || 0).toFixed(2)}</p>
-                        ${job.notes ? `<p><strong>Notes:</strong> ${job.notes}</p>` : ''}
+                        ${job.notes ? `<p><strong>Notes:</strong> ${job.notes}</p>` : ""}
                     </div>
                 </div>
             </div>
-        `
+        `,
       )
-      .join('')
+      .join("");
   }
 
-  viewVehicleHistory (vehicleId) {
+  viewVehicleHistory(vehicleId) {
     // Filter service history for this vehicle and show it
-    document.getElementById('vehicle-filter').value = vehicleId
-    this.filterServiceHistory()
-    this.showSection('service-history')
+    document.getElementById("vehicle-filter").value = vehicleId;
+    this.filterServiceHistory();
+    this.showSection("service-history");
   }
 
-  bookService (vehicleId) {
+  bookService(vehicleId) {
     // Open booking widget with pre-selected vehicle
-    this.openBookingWidget(vehicleId)
+    this.openBookingWidget(vehicleId);
   }
 
-  openBookingWidget (vehicleId = null) {
+  openBookingWidget(vehicleId = null) {
     // In a real implementation, this would open the booking widget
     // For now, we'll show an alert
     alert(
-      'Booking widget would open here. In a real implementation, this would redirect to the online booking system.'
-    )
+      "Booking widget would open here. In a real implementation, this would redirect to the online booking system.",
+    );
   }
 
-  closeVHCModal () {
-    document.getElementById('vhc-modal').style.display = 'none'
+  closeVHCModal() {
+    document.getElementById("vhc-modal").style.display = "none";
   }
 
-  setupEventListeners () {
+  setupEventListeners() {
     // Add any additional event listeners here
   }
-}
+};
 
 // Global portal instance
-let portal
+let portal;
 
 // Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-  if (document.getElementById('customer-portal-container')) {
-    portal = new CustomerPortal()
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.getElementById("customer-portal-container")) {
+    portal = new CustomerPortal();
   }
-})
+});

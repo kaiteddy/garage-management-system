@@ -184,53 +184,61 @@
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/markerjs3@2.18.0/dist/markerjs3.min.js"></script>
     <script>
-      console.log('Screenshot feedback script loading...');
+      console.log("Screenshot feedback script loading...");
 
       // Check if libraries loaded
-      if (typeof html2canvas !== 'undefined') {
-        console.log('✅ html2canvas loaded successfully');
+      if (typeof html2canvas !== "undefined") {
+        console.log("✅ html2canvas loaded successfully");
       } else {
-        console.error('❌ html2canvas failed to load');
+        console.error("❌ html2canvas failed to load");
       }
 
-      if (typeof markerjs3 !== 'undefined') {
-        console.log('✅ markerjs3 loaded successfully');
+      if (typeof markerjs3 !== "undefined") {
+        console.log("✅ markerjs3 loaded successfully");
       } else {
-        console.error('❌ markerjs3 failed to load');
+        console.error("❌ markerjs3 failed to load");
       }
 
-      document.addEventListener('keydown', async function(e) {
-        console.log('Key pressed:', e.code, 'Ctrl:', e.ctrlKey, 'Shift:', e.shiftKey);
+      document.addEventListener("keydown", async function (e) {
+        console.log(
+          "Key pressed:",
+          e.code,
+          "Ctrl:",
+          e.ctrlKey,
+          "Shift:",
+          e.shiftKey,
+        );
 
-        if (e.ctrlKey && e.shiftKey && e.code === 'F12') {
-          console.log('Screenshot hotkey pressed!');
+        if (e.ctrlKey && e.shiftKey && e.code === "F12") {
+          console.log("Screenshot hotkey pressed!");
           e.preventDefault();
-          const target = document.querySelector('#main-content') || document.body;
+          const target =
+            document.querySelector("#main-content") || document.body;
           if (!target) return;
           const canvas = await html2canvas(target, { backgroundColor: null });
-          const uri = canvas.toDataURL('image/png');
+          const uri = canvas.toDataURL("image/png");
           const img = new window.Image();
           img.src = uri;
-          img.onload = function() {
+          img.onload = function () {
             const markerArea = new markerjs3.MarkerArea(img);
-            markerArea.addEventListener('render', async function(event) {
+            markerArea.addEventListener("render", async function (event) {
               const annotated = event.dataUrl;
               const payload = {
                 image: annotated,
                 route: window.location.pathname,
                 time: new Date().toISOString(),
-                build: 'garage-dev',
-                userAgent: navigator.userAgent
+                build: "garage-dev",
+                userAgent: navigator.userAgent,
               };
               try {
-                await fetch('/api/feedback', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify(payload)
+                await fetch("/api/feedback", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(payload),
                 });
-                alert('Feedback sent!');
+                alert("Feedback sent!");
               } catch (err) {
-                alert('Failed to send feedback.');
+                alert("Failed to send feedback.");
               }
             });
             markerArea.show();
@@ -238,7 +246,7 @@
         }
       });
 
-      console.log('Screenshot feedback script loaded and ready');
+      console.log("Screenshot feedback script loaded and ready");
     </script>
 
     <!-- Initialize Application -->

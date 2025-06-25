@@ -22,7 +22,8 @@ def create_app():
     """Application factory pattern"""
     app = Flask(
         __name__,
-        instance_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance')
+        instance_path=os.path.join(os.path.dirname(
+            os.path.abspath(__file__)), 'instance')
     )
 
     # Configuration

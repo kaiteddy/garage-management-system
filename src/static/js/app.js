@@ -287,14 +287,14 @@ function loadPageContent(pageId) {
     "workshop-diary": loadWorkshopDiaryPage,
     "job-sheets": loadJobSheetsPage,
     quotes: loadQuotesPage,
-    "online-booking": function() {
+    "online-booking": function () {
       if (typeof window.loadOnlineBookingPage === "function") {
         window.loadOnlineBookingPage();
       } else {
         console.error("❌ Online booking function not available");
       }
     },
-    "customer-portal": function() {
+    "customer-portal": function () {
       if (typeof window.CustomerPortal === "function") {
         window.portal = new window.CustomerPortal();
       } else {

@@ -1,13 +1,16 @@
-from flask import Blueprint, request, jsonify
-import os
 import base64
+import os
 from datetime import datetime
+
+from flask import Blueprint, jsonify, request
 
 feedback_bp = Blueprint('feedback', __name__)
 
 # Use a path relative to the app directory
-FEEDBACK_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'feedback_screenshots')
+FEEDBACK_DIR = os.path.join(os.path.dirname(
+    os.path.dirname(__file__)), 'feedback_screenshots')
 os.makedirs(FEEDBACK_DIR, exist_ok=True)
+
 
 @feedback_bp.route('/api/feedback', methods=['POST'])
 def receive_feedback():
@@ -33,6 +36,7 @@ def receive_feedback():
 
     # Log metadata and feedback
     with open(os.path.join(FEEDBACK_DIR, 'feedback_log.txt'), 'a') as log:
-        log.write(f'{dt} | {route} | {build} | {user_agent} | {feedback_text}\n')
+        log.write(
+            f'{dt} | {route} | {build} | {user_agent} | {feedback_text}\n')
 
-    return jsonify({'status': 'success', 'filename': filename}) 
+    return jsonify({'status': 'success', 'filename': filename})
