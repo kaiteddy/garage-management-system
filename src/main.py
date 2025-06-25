@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 if __name__ == '__main__':
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='Garage Management System')
-    parser.add_argument('--port', type=int, default=5002,
+    parser.add_argument('--port', type=int, default=8002,
                         help='Port to run the server on')
     args = parser.parse_args()
 

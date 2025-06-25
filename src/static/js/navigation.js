@@ -56,7 +56,11 @@ window.showPage = function (pageId) {
     }
 
     // Load data for the page if needed
-    loadPageData(pageId);
+    if (typeof loadPageContent === "function") {
+      loadPageContent(pageId);
+    } else {
+      loadPageData(pageId);
+    }
   } catch (error) {
     console.error("💥 Error in navigation:", error);
   }
@@ -119,8 +123,8 @@ function loadPageData(pageId) {
       }
       break;
     case "online-booking":
-      if (typeof loadOnlineBookingPage === "function") {
-        loadOnlineBookingPage();
+      if (typeof window.loadOnlineBookingPage === "function") {
+        window.loadOnlineBookingPage();
       } else {
         console.error("❌ loadOnlineBookingPage function not found");
       }

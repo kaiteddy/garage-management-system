@@ -1,11 +1,8 @@
 from datetime import datetime, time, timezone
 
-from flask_sqlalchemy import SQLAlchemy
-
+from .db import db
 from .vehicle import Vehicle
-
-# Initialize SQLAlchemy
-db = SQLAlchemy()
+from .user import User
 
 # Import models after db initialization to avoid circular imports
 

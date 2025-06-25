@@ -1,17 +1,29 @@
 version: '3.8'
 
 services:
-  garage-management:
+  web:
     build: .
     container_name: garage-management-system
     ports:
       - "5001:5001"
+      - "8001:8001"
     volumes:
+      - ./data:/app/data
+      - ./src:/app
+      - ./feedback_screenshots:/app/feedback_screenshots
       - ./instance:/app/instance
       - ./logs:/app/logs
+    working_dir: /app
     environment:
-      - FLASK_ENV=production
-      - PORT=5001
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+      - PYTHONPATH=/app
+    command: >
+      sh -c "
+        python db_init.py &&
+        flask run --host=0.0.0.0 --port=5001
+      "
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
@@ -31,5 +43,5 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./ssl:/etc/nginx/ssl
     depends_on:
-      - garage-management
+      - web
     restart: unless-stopped

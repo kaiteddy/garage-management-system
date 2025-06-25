@@ -287,8 +287,20 @@ function loadPageContent(pageId) {
     "workshop-diary": loadWorkshopDiaryPage,
     "job-sheets": loadJobSheetsPage,
     quotes: loadQuotesPage,
-    "online-booking": loadOnlineBookingPage,
-    "customer-portal": loadCustomerPortalPage,
+    "online-booking": function() {
+      if (typeof window.loadOnlineBookingPage === "function") {
+        window.loadOnlineBookingPage();
+      } else {
+        console.error("❌ Online booking function not available");
+      }
+    },
+    "customer-portal": function() {
+      if (typeof window.CustomerPortal === "function") {
+        window.portal = new window.CustomerPortal();
+      } else {
+        console.error("❌ Customer portal class not available");
+      }
+    },
     "mot-reminders": loadMOTRemindersPage,
     parts: loadPartsPage,
     invoices: loadInvoicesPage,
@@ -594,6 +606,44 @@ function loadErrorMonitoringPage() {
   console.log("Error Monitoring page loaded (placeholder)");
 }
 
+/**
+ * Load Customer Portal page
+ */
+function loadCustomerPortalPage() {
+  console.log("👥 Loading Customer Portal page...");
+
+  const portalContainer = document.getElementById("customer-portal-container");
+  if (!portalContainer) {
+    console.error("❌ Customer portal container not found");
+    return;
+  }
+
+  // Initialize customer portal if class exists
+  if (typeof CustomerPortal === "function") {
+    if (!window.portal) {
+      window.portal = new CustomerPortal();
+    }
+  } else {
+    console.warn("⚠️ CustomerPortal class not found");
+    portalContainer.innerHTML = `
+      <div class="page-header">
+        <h1 class="page-title">
+          <i class="fas fa-user-circle"></i>
+          Customer Portal
+        </h1>
+        <p class="page-subtitle">View your vehicle service history and health reports</p>
+      </div>
+      <div class="card">
+        <div class="card-content">
+          <p>Customer Portal functionality is loading...</p>
+        </div>
+      </div>
+    `;
+  }
+
+  console.log("✅ Customer Portal page loaded");
+}
+
 // Initialize when DOM is ready
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initializeApplication);
@@ -619,5 +669,6 @@ window.loadPartsPage = loadPartsPage;
 window.loadReportsPage = loadReportsPage;
 window.loadUploadPage = loadUploadPage;
 window.loadErrorMonitoringPage = loadErrorMonitoringPage;
+window.loadCustomerPortalPage = loadCustomerPortalPage;
 
 console.log("🚀 Garage Management System - Main App Ready");

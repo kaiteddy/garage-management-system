@@ -3,8 +3,8 @@ from datetime import datetime, timezone
 import requests
 from flask import current_app
 
-# Import db from parent module
-from . import db
+# Import db from db.py to avoid circular import
+from .db import db
 
 
 def utc_now():
@@ -90,8 +90,8 @@ class Vehicle(db.Model):
             'year': self.year,
             'color': self.color,
             'fuel_type': self.fuel_type,
-            'mot_expiry': self.mot_expiry.isoformat() if self.mot_expiry and str(self.mot_expiry).strip() else None,
-            'tax_due': self.tax_due.isoformat() if self.tax_due and str(self.tax_due).strip() else None,
+            'mot_expiry': self.mot_expiry.isoformat() if self.mot_expiry else None,
+            'tax_due': self.tax_due.isoformat() if self.tax_due else None,
             'mileage': self.mileage,
             'customer_id': self.customer_id,
             'created_at': self.created_at.isoformat() if self.created_at else None,

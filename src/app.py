@@ -20,18 +20,29 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 def create_app():
     """Application factory pattern"""
-    app = Flask(__name__)
+    app = Flask(
+        __name__,
+        instance_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance')
+    )
 
     # Configuration
     app.config['SECRET_KEY'] = os.environ.get(
         'SECRET_KEY', 'dev-secret-key-change-in-production')
-    app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(os.path.dirname(__file__)), 'instance', 'garage.db')}"
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///instance/garage.db"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['MAX_CONTENT_LENGTH'] = 100 * \
         1024 * 1024  # 100MB for large file uploads
 
     # Initialize database
     db.init_app(app)
+
+    # Create database tables if they don't exist
+    with app.app_context():
+        try:
+            db.create_all()
+            print("✅ Database tables created/verified")
+        except Exception as e:
+            print(f"❌ Database initialization error: {e}")
 
     # Register blueprints
     register_blueprints(app)
@@ -75,6 +86,10 @@ def register_blueprints(app):
         app.register_blueprint(appointment_api_bp)
         app.register_blueprint(quote_api_bp)
         print("✅ API blueprints registered successfully")
+
+        # Feedback Blueprint
+        from routes.feedback_routes import feedback_bp
+        app.register_blueprint(feedback_bp)
 
         # Feature Blueprints
         from routes.audit_routes import audit_bp
@@ -176,6 +191,10 @@ def register_core_routes(app):
     @app.route('/<path:filename>')
     def serve_static_files(filename):
         """Serve static HTML files from static directory"""
+        # Don't interfere with API routes
+        if filename.startswith('api/'):
+            return "API route not found", 404
+
         if filename.endswith('.html'):
             return send_from_directory('static', filename)
         else:

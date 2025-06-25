@@ -122,8 +122,14 @@ if (
   console.log("🍎 Safari emergency fixes applied");
 
   // Force hardware acceleration for Safari
-  document.body.style.transform = "translateZ(0)";
-  document.body.style.willChange = "transform";
+  if (document.body) {
+    if (document.body) {
+      if (document.body) {
+        document.body.style.transform = "translateZ(0)";
+        document.body.style.willChange = "transform";
+      }
+    }
+  }
 
   // Ensure all pages are properly styled
   document.querySelectorAll(".page").forEach((page) => {

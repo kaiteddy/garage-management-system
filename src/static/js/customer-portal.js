@@ -3,7 +3,8 @@
  * Customer-facing portal for vehicle health checks and service tracking
  */
 
-class CustomerPortal {
+// Make CustomerPortal available globally
+window.CustomerPortal = class CustomerPortal {
   constructor () {
     this.currentCustomer = null
     this.vehicles = []

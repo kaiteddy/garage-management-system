@@ -9,6 +9,11 @@ const requestCache = new Map();
 const pendingRequests = new Map();
 const CACHE_DURATION = 30000; // 30 seconds
 
+// Base API URLs
+// Use relative URLs to avoid cross-origin issues when running in Docker
+const BASE_API_URL = '/api';
+const MOT_API_URL = '/mot/api';
+
 const API = {
   /**
    * Base API configuration
@@ -145,6 +150,49 @@ const API = {
       cacheKeys: Array.from(requestCache.keys()),
     };
   },
+
+  /**
+   * Get dashboard statistics
+   * @returns {Promise<Object>} - Dashboard statistics
+   */
+  async getDashboardStats() {
+    return this.get('/stats');
+  },
+
+  /**
+   * Get MOT reminders
+   * @returns {Promise<Object>} - MOT reminders
+   */
+  async getMOTReminders() {
+    return this.get('/mot/reminders');
+  },
+
+  /**
+   * Test connection to both APIs
+   * @returns {Promise<Object>} - Connection test results
+   */
+  async testConnections() {
+    const results = {
+      main: { success: false, message: '' },
+      mot: { success: false, message: '' }
+    };
+
+    try {
+      await this.get('/health');
+      results.main = { success: true, message: 'Connected to main API' };
+    } catch (error) {
+      results.main = { success: false, message: error.message };
+    }
+
+    try {
+      await this.get('/mot/health');
+      results.mot = { success: true, message: 'Connected to MOT API' };
+    } catch (error) {
+      results.mot = { success: false, message: error.message };
+    }
+
+    return results;
+  }
 };
 
 /**
@@ -381,3 +429,5 @@ window.loadJobsFromAPI = loadJobsFromAPI;
 window.loadInvoicesFromAPI = loadInvoicesFromAPI;
 window.loadDashboardStats = loadDashboardStats;
 window.loadRecentActivity = loadRecentActivity;
+
+console.log('🔌 API module initialized');
