@@ -3,22 +3,23 @@
 Add real vehicle with DVSA data to MOT system
 """
 
-import sqlite3
 import os
+import sqlite3
 from datetime import datetime
+
 
 def add_real_vehicle():
     """Add LN64XFG with real DVSA data"""
-    
+
     # Database path (same as MOT service)
     db_path = os.path.join('src', 'garage_management.db')
-    
+
     print(f"🔧 Adding real vehicle to database: {db_path}")
-    
+
     try:
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         # Create table if it doesn't exist
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS mot_vehicles (
@@ -46,7 +47,7 @@ def add_real_vehicle():
                 main_customer_id INTEGER
             )
         ''')
-        
+
         # Real data from DVSA API for LN64XFG
         vehicle_data = {
             'registration': 'LN64XFG',
@@ -66,7 +67,7 @@ def add_real_vehicle():
             'send_by_default': True,
             'archived': False
         }
-        
+
         # Insert vehicle using correct schema
         cursor.execute('''
             INSERT OR REPLACE INTO mot_vehicles (
@@ -85,25 +86,28 @@ def add_real_vehicle():
             vehicle_data['days_remaining'] < 0,  # is_expired
             'PASSED'  # test_result
         ))
-        
+
         conn.commit()
         conn.close()
-        
-        print(f"✅ Successfully added {vehicle_data['registration']} - {vehicle_data['make']} {vehicle_data['model']}")
+
+        print(
+            f"✅ Successfully added {vehicle_data['registration']} - {vehicle_data['make']} {vehicle_data['model']}")
         print(f"📅 MOT expires: {vehicle_data['mot_expiry']}")
-        print(f"🚗 Vehicle details: {vehicle_data['year']} {vehicle_data['colour']} {vehicle_data['fuel_type']}")
-        
+        print(
+            f"🚗 Vehicle details: {vehicle_data['year']} {vehicle_data['colour']} {vehicle_data['fuel_type']}")
+
         return True
-        
+
     except Exception as e:
         print(f"❌ Error adding vehicle: {e}")
         return False
 
+
 def add_sample_vehicles():
     """Add several sample vehicles for testing"""
-    
+
     db_path = os.path.join('src', 'garage_management.db')
-    
+
     sample_vehicles = [
         {
             'registration': 'AB12CDE',
@@ -151,11 +155,11 @@ def add_sample_vehicles():
             'days_remaining': 50,
         }
     ]
-    
+
     try:
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
-        
+
         for vehicle in sample_vehicles:
             cursor.execute('''
                 INSERT OR REPLACE INTO mot_vehicles (
@@ -174,29 +178,31 @@ def add_sample_vehicles():
                 vehicle['days_remaining'] < 0,  # is_expired
                 'PASSED' if vehicle['days_remaining'] >= 0 else 'FAILED'
             ))
-            
-            print(f"✅ Added {vehicle['registration']} - {vehicle['make']} {vehicle['model']}")
-        
+
+            print(
+                f"✅ Added {vehicle['registration']} - {vehicle['make']} {vehicle['model']}")
+
         conn.commit()
         conn.close()
-        
+
         print(f"\n📊 Added {len(sample_vehicles)} sample vehicles")
         return True
-        
+
     except Exception as e:
         print(f"❌ Error adding sample vehicles: {e}")
         return False
 
+
 if __name__ == "__main__":
     print("🚗 Adding vehicles to MOT system...")
-    
+
     # Add real vehicle with DVSA data
     if add_real_vehicle():
         print("✅ Real vehicle added successfully")
-    
+
     # Add sample vehicles for testing
     if add_sample_vehicles():
         print("✅ Sample vehicles added successfully")
-    
+
     print("\n🎉 Vehicle addition complete!")
     print("💡 You can now test the clean data presentation in the MOT system")

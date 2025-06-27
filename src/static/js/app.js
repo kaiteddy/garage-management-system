@@ -598,9 +598,10 @@ function loadInvoicesPage() {
 async function loadUploadPage() {
   console.log("📤 Loading integrated upload page...");
 
-  const el = document.getElementById("upload-container") ||
-             document.getElementById("upload-content") ||
-             document.getElementById("main-content");
+  const el =
+    document.getElementById("upload-container") ||
+    document.getElementById("upload-content") ||
+    document.getElementById("main-content");
 
   if (!el) {
     console.error("❌ Upload container not found");
@@ -609,7 +610,7 @@ async function loadUploadPage() {
 
   try {
     // Load the integrated upload template
-    const response = await fetch('/templates/dashboard/upload.html');
+    const response = await fetch("/templates/dashboard/upload.html");
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
@@ -619,8 +620,8 @@ async function loadUploadPage() {
 
     // Load the integrated upload JavaScript
     if (!document.querySelector('script[src*="integrated-upload.js"]')) {
-      const script = document.createElement('script');
-      script.src = '/js/integrated-upload.js';
+      const script = document.createElement("script");
+      script.src = "/js/integrated-upload.js";
       script.onload = () => {
         console.log("✅ Integrated upload system loaded");
         // Initialize the upload system after script loads
@@ -647,8 +648,8 @@ async function loadUploadPage() {
       } else {
         // Manually set up the browse button as fallback
         setTimeout(() => {
-          const browseBtn = document.getElementById('integratedBrowseBtn');
-          const fileInput = document.getElementById('integratedFileInput');
+          const browseBtn = document.getElementById("integratedBrowseBtn");
+          const fileInput = document.getElementById("integratedFileInput");
           if (browseBtn && fileInput) {
             browseBtn.onclick = () => {
               console.log("📁 Browse button clicked");
@@ -661,7 +662,6 @@ async function loadUploadPage() {
     }
 
     console.log("✅ Integrated upload page loaded successfully");
-
   } catch (error) {
     console.error("❌ Failed to load upload page:", error);
     el.innerHTML = `

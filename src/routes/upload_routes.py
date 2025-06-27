@@ -93,7 +93,8 @@ def upload_csv():
 
         try:
             # Import the CSV using unified database
-            db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'garage_management.db')
+            db_path = os.path.join(os.path.dirname(
+                os.path.dirname(__file__)), 'garage_management.db')
 
             if not CSVImportService:
                 return jsonify({
@@ -220,7 +221,8 @@ def upload_status():
     """Get upload status and statistics"""
     try:
         # Use unified database path
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'garage_management.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'garage_management.db')
         import sqlite3
 
         conn = sqlite3.connect(db_path)
@@ -254,7 +256,8 @@ def bulk_upload_page():
     """Get bulk upload information and available tables"""
     try:
         # Return information about bulk upload capabilities
-        available_tables = ['customers', 'vehicles', 'mot_records', 'job_sheets', 'appointments']
+        available_tables = ['customers', 'vehicles',
+                            'mot_records', 'job_sheets', 'appointments']
 
         return jsonify({
             'success': True,
@@ -290,7 +293,8 @@ def process_bulk_upload():
 
         results = []
         # Use unified database path
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'garage_management.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), 'garage_management.db')
 
         if not CSVImportService:
             return jsonify({

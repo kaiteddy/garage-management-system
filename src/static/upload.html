@@ -173,12 +173,26 @@
         <!-- Navigation Tabs -->
         <ul class="nav nav-tabs mb-4" id="uploadTabs" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="csv-upload-tab" data-bs-toggle="tab" data-bs-target="#csv-upload" type="button" role="tab">
+            <button
+              class="nav-link active"
+              id="csv-upload-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#csv-upload"
+              type="button"
+              role="tab"
+            >
               <i class="fas fa-file-csv"></i> CSV Upload
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="google-drive-tab" data-bs-toggle="tab" data-bs-target="#google-drive" type="button" role="tab">
+            <button
+              class="nav-link"
+              id="google-drive-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#google-drive"
+              type="button"
+              role="tab"
+            >
               <i class="fab fa-google-drive"></i> Google Drive
             </button>
           </li>
@@ -187,118 +201,126 @@
         <!-- Tab Content -->
         <div class="tab-content" id="uploadTabContent">
           <!-- CSV Upload Tab -->
-          <div class="tab-pane fade show active" id="csv-upload" role="tabpanel">
+          <div
+            class="tab-pane fade show active"
+            id="csv-upload"
+            role="tabpanel"
+          >
             <h3><i class="fas fa-file-csv"></i> Upload CSV Files</h3>
             <p class="text-muted">
               Select the type of data you're uploading and choose your CSV file
             </p>
 
-        <form id="uploadForm" enctype="multipart/form-data">
-          <div class="table-selector">
-            <label for="tableSelect" class="form-label">Data Type:</label>
-            <select id="tableSelect" name="table_name" class="form-select">
-              <option value="customers">Customers</option>
-              <option value="vehicles">Vehicles</option>
-              <option value="jobs">Jobs/Work Orders</option>
-              <option value="invoices">Invoices</option>
-              <option value="parts">Parts/Stock</option>
-              <option value="suppliers">Suppliers</option>
-              <option value="expenses">Expenses</option>
-              <option value="document_extras">
-                Document Extras (Job Descriptions)
-              </option>
-              <option value="documents">
-                Documents (Jobs + Invoices + Vehicles)
-              </option>
-              <option value="receipts">Receipts/Payments</option>
-            </select>
-          </div>
-
-          <div class="upload-zone" id="uploadZone">
-            <div class="upload-icon">
-              <i class="fas fa-cloud-upload-alt"></i>
-            </div>
-            <h4 id="uploadText">Drag & Drop your CSV file here</h4>
-            <p class="text-muted">
-              or click to browse files, or use Google Drive integration
-            </p>
-            <input
-              type="file"
-              id="fileInput"
-              name="file"
-              accept=".csv,.xlsx,.xls"
-              style="display: none"
-            />
-            <button type="button" class="btn btn-primary" id="browseBtn">
-              <i class="fas fa-folder-open"></i> Browse Files
-            </button>
-            <div class="btn-group ms-2" role="group">
-              <button type="button" class="btn btn-success" id="googleDriveBtn">
-                <i class="fab fa-google-drive"></i> Google Drive
-              </button>
-              <button
-                type="button"
-                class="btn btn-outline-success"
-                title="Switch to Google Drive tab"
-                onclick="document.getElementById('google-drive-tab').click()"
-              >
-                <i class="fas fa-external-link-alt"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="row mt-3">
-            <div class="col-md-6">
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="clearExisting"
-                  name="clear_existing"
-                />
-                <label class="form-check-label" for="clearExisting">
-                  Clear existing data before import
-                </label>
+            <form id="uploadForm" enctype="multipart/form-data">
+              <div class="table-selector">
+                <label for="tableSelect" class="form-label">Data Type:</label>
+                <select id="tableSelect" name="table_name" class="form-select">
+                  <option value="customers">Customers</option>
+                  <option value="vehicles">Vehicles</option>
+                  <option value="jobs">Jobs/Work Orders</option>
+                  <option value="invoices">Invoices</option>
+                  <option value="parts">Parts/Stock</option>
+                  <option value="suppliers">Suppliers</option>
+                  <option value="expenses">Expenses</option>
+                  <option value="document_extras">
+                    Document Extras (Job Descriptions)
+                  </option>
+                  <option value="documents">
+                    Documents (Jobs + Invoices + Vehicles)
+                  </option>
+                  <option value="receipts">Receipts/Payments</option>
+                </select>
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-check">
+
+              <div class="upload-zone" id="uploadZone">
+                <div class="upload-icon">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <h4 id="uploadText">Drag & Drop your CSV file here</h4>
+                <p class="text-muted">
+                  or click to browse files, or use Google Drive integration
+                </p>
                 <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="updateDuplicates"
-                  name="update_duplicates"
-                  checked
+                  type="file"
+                  id="fileInput"
+                  name="file"
+                  accept=".csv,.xlsx,.xls"
+                  style="display: none"
                 />
-                <label class="form-check-label" for="updateDuplicates">
-                  Update existing records
-                </label>
+                <button type="button" class="btn btn-primary" id="browseBtn">
+                  <i class="fas fa-folder-open"></i> Browse Files
+                </button>
+                <div class="btn-group ms-2" role="group">
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    id="googleDriveBtn"
+                  >
+                    <i class="fab fa-google-drive"></i> Google Drive
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-outline-success"
+                    title="Switch to Google Drive tab"
+                    onclick="document.getElementById('google-drive-tab').click()"
+                  >
+                    <i class="fas fa-external-link-alt"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div class="progress-container">
-            <div class="progress">
-              <div
-                class="progress-bar"
-                role="progressbar"
-                style="width: 0%"
-              ></div>
-            </div>
-            <p class="text-center mt-2">Uploading and processing...</p>
-          </div>
+              <div class="row mt-3">
+                <div class="col-md-6">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="clearExisting"
+                      name="clear_existing"
+                    />
+                    <label class="form-check-label" for="clearExisting">
+                      Clear existing data before import
+                    </label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="updateDuplicates"
+                      name="update_duplicates"
+                      checked
+                    />
+                    <label class="form-check-label" for="updateDuplicates">
+                      Update existing records
+                    </label>
+                  </div>
+                </div>
+              </div>
 
-          <div class="text-center mt-3">
-            <button
-              type="submit"
-              class="btn btn-success btn-lg"
-              id="uploadBtn"
-              disabled
-            >
-              <i class="fas fa-upload"></i> Upload Data
-            </button>
-          </div>
-        </form>
+              <div class="progress-container">
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    role="progressbar"
+                    style="width: 0%"
+                  ></div>
+                </div>
+                <p class="text-center mt-2">Uploading and processing...</p>
+              </div>
+
+              <div class="text-center mt-3">
+                <button
+                  type="submit"
+                  class="btn btn-success btn-lg"
+                  id="uploadBtn"
+                  disabled
+                >
+                  <i class="fas fa-upload"></i> Upload Data
+                </button>
+              </div>
+            </form>
 
             <div class="results-container" id="resultsContainer">
               <div class="alert" id="resultsAlert"></div>
@@ -529,10 +551,12 @@
       if (googleDriveBtn) {
         googleDriveBtn.addEventListener("click", (e) => {
           e.stopPropagation();
-          console.log("Google Drive button clicked - switching to Google Drive tab");
+          console.log(
+            "Google Drive button clicked - switching to Google Drive tab",
+          );
 
           // Switch to Google Drive tab
-          const googleDriveTab = document.getElementById('google-drive-tab');
+          const googleDriveTab = document.getElementById("google-drive-tab");
           if (googleDriveTab) {
             const tab = new bootstrap.Tab(googleDriveTab);
             tab.show();
@@ -748,7 +772,7 @@
           `;
 
           // Fetch Google Drive status first
-          const statusResponse = await fetch('/google-drive/status');
+          const statusResponse = await fetch("/google-drive/status");
           const status = await statusResponse.json();
 
           // Create embedded Google Drive interface
@@ -767,13 +791,16 @@
                     </div>
                     <div class="card-body">
                       <div id="googleDriveStatus">
-                        ${connected ?
-                          '<div class="alert alert-success"><i class="fas fa-check-circle"></i> Connected to Google Drive</div>' :
-                          '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Setup Required - You need to create Google Cloud credentials first.</div>'
+                        ${
+                          connected
+                            ? '<div class="alert alert-success"><i class="fas fa-check-circle"></i> Connected to Google Drive</div>'
+                            : '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Setup Required - You need to create Google Cloud credentials first.</div>'
                         }
                       </div>
 
-                      ${!connected ? `
+                      ${
+                        !connected
+                          ? `
                         <div class="setup-section">
                           <h6><i class="fas fa-cloud-upload-alt"></i> Setup Instructions</h6>
                           <ol class="mb-3">
@@ -793,7 +820,8 @@
                             </button>
                           </form>
                         </div>
-                      ` : `
+                      `
+                          : `
                         <div class="connected-section">
                           <div class="row">
                             <div class="col-md-6">
@@ -824,7 +852,8 @@
                             </div>
                           </div>
                         </div>
-                      `}
+                      `
+                      }
 
                       <div class="row mt-3">
                         <div class="col-md-6">
@@ -846,12 +875,17 @@
           `;
 
           // Initialize embedded form if present
-          const embeddedForm = document.getElementById('embeddedCredentialsForm');
+          const embeddedForm = document.getElementById(
+            "embeddedCredentialsForm",
+          );
           if (embeddedForm) {
-            embeddedForm.addEventListener('submit', handleEmbeddedCredentialsUpload);
+            embeddedForm.addEventListener(
+              "submit",
+              handleEmbeddedCredentialsUpload,
+            );
           }
         } catch (error) {
-          console.error('Failed to load Google Drive content:', error);
+          console.error("Failed to load Google Drive content:", error);
           contentDiv.innerHTML = `
             <div class="alert alert-warning">
               <h5><i class="fas fa-exclamation-triangle"></i> Google Drive Integration</h5>
@@ -883,25 +917,31 @@
           `;
 
           // Fetch the full Google Drive page content
-          const response = await fetch('/google-drive/');
+          const response = await fetch("/google-drive/");
           const html = await response.text();
 
           // Extract the main content
           const parser = new DOMParser();
-          const doc = parser.parseFromString(html, 'text/html');
+          const doc = parser.parseFromString(html, "text/html");
 
           // Get the main container content
-          const mainContent = doc.querySelector('.container') || doc.querySelector('main') || doc.body;
+          const mainContent =
+            doc.querySelector(".container") ||
+            doc.querySelector("main") ||
+            doc.body;
 
           if (mainContent) {
             // Remove any "Back to Dashboard" links and update them
-            const backLinks = mainContent.querySelectorAll('a[href*="dashboard"], a[href="/"]');
-            backLinks.forEach(link => {
-              link.onclick = function(e) {
+            const backLinks = mainContent.querySelectorAll(
+              'a[href*="dashboard"], a[href="/"]',
+            );
+            backLinks.forEach((link) => {
+              link.onclick = function (e) {
                 e.preventDefault();
                 loadGoogleDriveContent(); // Go back to status view
               };
-              link.innerHTML = '<i class="fas fa-arrow-left"></i> Back to Upload';
+              link.innerHTML =
+                '<i class="fas fa-arrow-left"></i> Back to Upload';
             });
 
             contentDiv.innerHTML = mainContent.innerHTML;
@@ -909,10 +949,10 @@
             // Initialize any scripts that might be needed
             initializeGoogleDriveScripts();
           } else {
-            throw new Error('Could not find main content');
+            throw new Error("Could not find main content");
           }
         } catch (error) {
-          console.error('Failed to load Google Drive setup:', error);
+          console.error("Failed to load Google Drive setup:", error);
           contentDiv.innerHTML = `
             <div class="alert alert-danger">
               <h5><i class="fas fa-exclamation-triangle"></i> Setup Error</h5>
@@ -931,18 +971,18 @@
       // Initialize Google Drive scripts and event handlers
       function initializeGoogleDriveScripts() {
         // Re-bind any form submissions to use AJAX instead of page redirects
-        const forms = document.querySelectorAll('#googleDriveContent form');
-        forms.forEach(form => {
-          form.addEventListener('submit', async function(e) {
+        const forms = document.querySelectorAll("#googleDriveContent form");
+        forms.forEach((form) => {
+          form.addEventListener("submit", async function (e) {
             e.preventDefault();
 
             const formData = new FormData(form);
-            const action = form.action || form.getAttribute('action');
+            const action = form.action || form.getAttribute("action");
 
             try {
               const response = await fetch(action, {
-                method: 'POST',
-                body: formData
+                method: "POST",
+                body: formData,
               });
 
               const result = await response.json();
@@ -951,36 +991,39 @@
                 // Refresh the Google Drive content to show updated status
                 await loadGoogleDriveContent();
               } else {
-                alert('Error: ' + (result.error || 'Unknown error occurred'));
+                alert("Error: " + (result.error || "Unknown error occurred"));
               }
             } catch (error) {
-              console.error('Form submission error:', error);
-              alert('Error submitting form. Please try again.');
+              console.error("Form submission error:", error);
+              alert("Error submitting form. Please try again.");
             }
           });
         });
 
         // Re-bind any buttons that might open new windows
-        const externalLinks = document.querySelectorAll('#googleDriveContent a[target="_blank"]');
-        externalLinks.forEach(link => {
-          link.removeAttribute('target');
-          link.onclick = function(e) {
+        const externalLinks = document.querySelectorAll(
+          '#googleDriveContent a[target="_blank"]',
+        );
+        externalLinks.forEach((link) => {
+          link.removeAttribute("target");
+          link.onclick = function (e) {
             e.preventDefault();
             // Handle the action within the current interface
             const href = link.href;
-            if (href.includes('google-drive')) {
+            if (href.includes("google-drive")) {
               // Load the content inline
               fetch(href)
-                .then(response => response.text())
-                .then(html => {
+                .then((response) => response.text())
+                .then((html) => {
                   const parser = new DOMParser();
-                  const doc = parser.parseFromString(html, 'text/html');
-                  const content = doc.querySelector('.container') || doc.body;
-                  document.getElementById('googleDriveContent').innerHTML = content.innerHTML;
+                  const doc = parser.parseFromString(html, "text/html");
+                  const content = doc.querySelector(".container") || doc.body;
+                  document.getElementById("googleDriveContent").innerHTML =
+                    content.innerHTML;
                   initializeGoogleDriveScripts();
                 })
-                .catch(error => {
-                  console.error('Error loading content:', error);
+                .catch((error) => {
+                  console.error("Error loading content:", error);
                 });
             }
           };
@@ -995,34 +1038,34 @@
       async function handleEmbeddedCredentialsUpload(e) {
         e.preventDefault();
 
-        const fileInput = document.getElementById('embeddedCredentialsFile');
+        const fileInput = document.getElementById("embeddedCredentialsFile");
         const file = fileInput.files[0];
 
         if (!file) {
-          alert('Please select a credentials file');
+          alert("Please select a credentials file");
           return;
         }
 
         const formData = new FormData();
-        formData.append('credentials', file);
+        formData.append("credentials", file);
 
         try {
-          const response = await fetch('/google-drive/upload-credentials', {
-            method: 'POST',
-            body: formData
+          const response = await fetch("/google-drive/upload-credentials", {
+            method: "POST",
+            body: formData,
           });
 
           const result = await response.json();
 
           if (result.success) {
-            alert('Credentials uploaded successfully! Refreshing status...');
+            alert("Credentials uploaded successfully! Refreshing status...");
             await loadGoogleDriveContent();
           } else {
-            alert('Error: ' + (result.error || 'Unknown error'));
+            alert("Error: " + (result.error || "Unknown error"));
           }
         } catch (error) {
-          console.error('Upload error:', error);
-          alert('Error uploading credentials. Please try again.');
+          console.error("Upload error:", error);
+          alert("Error uploading credentials. Please try again.");
         }
       }
 
@@ -1078,7 +1121,9 @@
       }
 
       function syncGoogleDriveNow() {
-        alert('Starting manual synchronization...\n\nThis would sync all configured Google Drive folders with your database.');
+        alert(
+          "Starting manual synchronization...\n\nThis would sync all configured Google Drive folders with your database.",
+        );
       }
 
       function showGoogleDriveHelp() {
@@ -1151,14 +1196,16 @@
       }
 
       function startSmartMapping() {
-        alert('Smart mapping would analyze your Google Drive folders and automatically suggest the best configuration for your data types.');
+        alert(
+          "Smart mapping would analyze your Google Drive folders and automatically suggest the best configuration for your data types.",
+        );
       }
 
       // Tab switching functionality
-      document.addEventListener('DOMContentLoaded', function() {
-        const googleDriveTab = document.getElementById('google-drive-tab');
+      document.addEventListener("DOMContentLoaded", function () {
+        const googleDriveTab = document.getElementById("google-drive-tab");
         if (googleDriveTab) {
-          googleDriveTab.addEventListener('shown.bs.tab', function() {
+          googleDriveTab.addEventListener("shown.bs.tab", function () {
             loadGoogleDriveContent();
           });
         }
@@ -1171,64 +1218,73 @@
       window.debugCommands = {
         // Generate comprehensive report
         report: () => {
-          console.log('🔧 GARAGE DEBUG REPORT:');
+          console.log("🔧 GARAGE DEBUG REPORT:");
           if (window.garageDebug) {
             const report = window.garageDebug.generateDiagnosticReport();
             console.table(report.summary);
-            console.log('Critical Issues:', report.criticalIssues);
+            console.log("Critical Issues:", report.criticalIssues);
             return report;
           }
         },
 
         // Test Google Drive button
         testGoogleDrive: () => {
-          console.log('🔍 Testing Google Drive button...');
-          const btn = document.getElementById('googleDriveBtn');
+          console.log("🔍 Testing Google Drive button...");
+          const btn = document.getElementById("googleDriveBtn");
           if (btn) {
-            console.log('Button found, simulating click...');
+            console.log("Button found, simulating click...");
             btn.click();
           } else {
-            console.error('Google Drive button not found!');
+            console.error("Google Drive button not found!");
           }
         },
 
         // Test tab switching
         testTabSwitch: () => {
-          console.log('🔍 Testing tab switching...');
-          const tab = document.getElementById('google-drive-tab');
+          console.log("🔍 Testing tab switching...");
+          const tab = document.getElementById("google-drive-tab");
           if (tab) {
-            console.log('Tab found, switching...');
+            console.log("Tab found, switching...");
             const bsTab = new bootstrap.Tab(tab);
             bsTab.show();
           } else {
-            console.error('Google Drive tab not found!');
+            console.error("Google Drive tab not found!");
           }
         },
 
         // Test upload form
         testUpload: () => {
-          console.log('🔍 Testing upload form...');
-          const form = document.getElementById('uploadForm');
+          console.log("🔍 Testing upload form...");
+          const form = document.getElementById("uploadForm");
           if (form) {
-            console.log('Form found, checking validation...');
-            console.log('Form action:', form.action);
-            console.log('Form method:', form.method);
-            console.log('Has file input:', !!form.querySelector('input[type="file"]'));
+            console.log("Form found, checking validation...");
+            console.log("Form action:", form.action);
+            console.log("Form method:", form.method);
+            console.log(
+              "Has file input:",
+              !!form.querySelector('input[type="file"]'),
+            );
           } else {
-            console.error('Upload form not found!');
+            console.error("Upload form not found!");
           }
         },
 
         // Check current state
         checkState: () => {
-          console.log('🔍 Current page state:');
-          console.log('URL:', window.location.href);
-          console.log('Active tab:', document.querySelector('.nav-link.active')?.id);
-          console.log('Google Drive button:', !!document.getElementById('googleDriveBtn'));
-          console.log('Upload form:', !!document.getElementById('uploadForm'));
-          console.log('Bootstrap loaded:', typeof bootstrap !== 'undefined');
-          console.log('Debug system:', !!window.garageDebug);
-          console.log('Issue tracker:', !!window.garageIssueTracker);
+          console.log("🔍 Current page state:");
+          console.log("URL:", window.location.href);
+          console.log(
+            "Active tab:",
+            document.querySelector(".nav-link.active")?.id,
+          );
+          console.log(
+            "Google Drive button:",
+            !!document.getElementById("googleDriveBtn"),
+          );
+          console.log("Upload form:", !!document.getElementById("uploadForm"));
+          console.log("Bootstrap loaded:", typeof bootstrap !== "undefined");
+          console.log("Debug system:", !!window.garageDebug);
+          console.log("Issue tracker:", !!window.garageIssueTracker);
         },
 
         // Export logs
@@ -1238,29 +1294,33 @@
           }
           if (window.garageIssueTracker) {
             const report = window.garageIssueTracker.generateReport();
-            const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+            const blob = new Blob([JSON.stringify(report, null, 2)], {
+              type: "application/json",
+            });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
+            const a = document.createElement("a");
             a.href = url;
             a.download = `garage-issues-${Date.now()}.json`;
             a.click();
             URL.revokeObjectURL(url);
           }
-        }
+        },
       };
 
       // Show available debug commands
-      console.log('🔧 Garage Debug System loaded!');
-      console.log('Available commands:');
-      console.log('- debugCommands.report() - Generate diagnostic report');
-      console.log('- debugCommands.testGoogleDrive() - Test Google Drive button');
-      console.log('- debugCommands.testTabSwitch() - Test tab switching');
-      console.log('- debugCommands.testUpload() - Test upload form');
-      console.log('- debugCommands.checkState() - Check current state');
-      console.log('- debugCommands.exportLogs() - Export debug logs');
-      console.log('');
-      console.log('Debug panel is visible in top-right corner');
-      console.log('Issue tracker is monitoring all interactions');
+      console.log("🔧 Garage Debug System loaded!");
+      console.log("Available commands:");
+      console.log("- debugCommands.report() - Generate diagnostic report");
+      console.log(
+        "- debugCommands.testGoogleDrive() - Test Google Drive button",
+      );
+      console.log("- debugCommands.testTabSwitch() - Test tab switching");
+      console.log("- debugCommands.testUpload() - Test upload form");
+      console.log("- debugCommands.checkState() - Check current state");
+      console.log("- debugCommands.exportLogs() - Export debug logs");
+      console.log("");
+      console.log("Debug panel is visible in top-right corner");
+      console.log("Issue tracker is monitoring all interactions");
     </script>
   </body>
 </html>

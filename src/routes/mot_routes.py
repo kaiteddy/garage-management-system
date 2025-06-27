@@ -4,10 +4,11 @@ Handles all MOT-related API endpoints within the main application
 """
 
 import os
-import sys
 import sqlite3
+import sys
 from datetime import datetime, timedelta
-from flask import Blueprint, jsonify, request, current_app
+
+from flask import Blueprint, current_app, jsonify, request
 
 # Add the src directory to the path
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
@@ -16,7 +17,8 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 mot_bp = Blueprint('mot', __name__)
 
 # Database path for unified database
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'garage_management.db')
+DB_PATH = os.path.join(os.path.dirname(
+    os.path.dirname(__file__)), 'garage_management.db')
 
 
 @mot_bp.route('/')
@@ -24,6 +26,7 @@ def mot_dashboard():
     """Main MOT dashboard page - redirect to integrated dashboard"""
     try:
         from flask import redirect
+
         # Simple redirect to integrated dashboard with MOT hash
         return redirect('/integrated#mot-reminders', code=302)
     except Exception as e:
@@ -131,7 +134,8 @@ def add_mot_vehicle():
             cursor = conn.cursor()
 
             # Parse customer name
-            names = customer_name.split(' ', 1) if customer_name else ['Unknown', '']
+            names = customer_name.split(' ', 1) if customer_name else [
+                'Unknown', '']
             first_name = names[0]
             last_name = names[1] if len(names) > 1 else ''
 

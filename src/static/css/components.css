@@ -1852,7 +1852,7 @@
 }
 
 .registration-number {
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
   font-weight: 700;
   font-size: 0.95rem;
   color: var(--gray-900);

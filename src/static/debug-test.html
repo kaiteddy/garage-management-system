@@ -1,257 +1,300 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Debug Test - Upload Integration</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <style>
-        .debug-log {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            padding: 15px;
-            font-family: monospace;
-            font-size: 12px;
-            max-height: 400px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-        }
-        .test-button {
-            margin: 5px;
-        }
+      .debug-log {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 15px;
+        font-family: monospace;
+        font-size: 12px;
+        max-height: 400px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+      }
+      .test-button {
+        margin: 5px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container mt-4">
-        <h1>🔧 Debug Test - Upload Integration</h1>
-        <p>Testing each step of the upload integration process</p>
+      <h1>🔧 Debug Test - Upload Integration</h1>
+      <p>Testing each step of the upload integration process</p>
 
-        <div class="row">
-            <div class="col-md-6">
-                <h3>Tests</h3>
-                <button class="btn btn-primary test-button" onclick="testPageNavigation()">1. Test Page Navigation</button><br>
-                <button class="btn btn-primary test-button" onclick="testUploadContainer()">2. Test Upload Container</button><br>
-                <button class="btn btn-primary test-button" onclick="testTemplateLoad()">3. Test Template Load</button><br>
-                <button class="btn btn-primary test-button" onclick="testJavaScriptLoad()">4. Test JavaScript Load</button><br>
-                <button class="btn btn-primary test-button" onclick="testGoogleDriveTab()">5. Test Google Drive Tab</button><br>
-                <button class="btn btn-success test-button" onclick="testFullFlow()">🚀 Test Full Flow</button><br>
-                <button class="btn btn-secondary test-button" onclick="clearLog()">Clear Log</button>
-            </div>
-            <div class="col-md-6">
-                <h3>Debug Log</h3>
-                <div id="debugLog" class="debug-log">Debug log will appear here...\n</div>
-            </div>
+      <div class="row">
+        <div class="col-md-6">
+          <h3>Tests</h3>
+          <button
+            class="btn btn-primary test-button"
+            onclick="testPageNavigation()"
+          >
+            1. Test Page Navigation</button
+          ><br />
+          <button
+            class="btn btn-primary test-button"
+            onclick="testUploadContainer()"
+          >
+            2. Test Upload Container</button
+          ><br />
+          <button
+            class="btn btn-primary test-button"
+            onclick="testTemplateLoad()"
+          >
+            3. Test Template Load</button
+          ><br />
+          <button
+            class="btn btn-primary test-button"
+            onclick="testJavaScriptLoad()"
+          >
+            4. Test JavaScript Load</button
+          ><br />
+          <button
+            class="btn btn-primary test-button"
+            onclick="testGoogleDriveTab()"
+          >
+            5. Test Google Drive Tab</button
+          ><br />
+          <button class="btn btn-success test-button" onclick="testFullFlow()">
+            🚀 Test Full Flow</button
+          ><br />
+          <button class="btn btn-secondary test-button" onclick="clearLog()">
+            Clear Log
+          </button>
         </div>
+        <div class="col-md-6">
+          <h3>Debug Log</h3>
+          <div id="debugLog" class="debug-log">
+            Debug log will appear here...\n
+          </div>
+        </div>
+      </div>
 
-        <div class="row mt-4">
-            <div class="col-12">
-                <h3>Current Page State</h3>
-                <div id="pageState" class="alert alert-info">
-                    <button class="btn btn-sm btn-outline-primary" onclick="checkPageState()">Check Page State</button>
-                </div>
-            </div>
+      <div class="row mt-4">
+        <div class="col-12">
+          <h3>Current Page State</h3>
+          <div id="pageState" class="alert alert-info">
+            <button
+              class="btn btn-sm btn-outline-primary"
+              onclick="checkPageState()"
+            >
+              Check Page State
+            </button>
+          </div>
         </div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function log(message, type = 'info') {
-            const timestamp = new Date().toLocaleTimeString();
-            const logDiv = document.getElementById('debugLog');
-            const icons = { info: 'ℹ️', success: '✅', error: '❌', warning: '⚠️' };
-            logDiv.textContent += `${timestamp} ${icons[type]} ${message}\n`;
-            logDiv.scrollTop = logDiv.scrollHeight;
-        }
+      function log(message, type = "info") {
+        const timestamp = new Date().toLocaleTimeString();
+        const logDiv = document.getElementById("debugLog");
+        const icons = { info: "ℹ️", success: "✅", error: "❌", warning: "⚠️" };
+        logDiv.textContent += `${timestamp} ${icons[type]} ${message}\n`;
+        logDiv.scrollTop = logDiv.scrollHeight;
+      }
 
-        function clearLog() {
-            document.getElementById('debugLog').textContent = 'Debug log cleared...\n';
-        }
+      function clearLog() {
+        document.getElementById("debugLog").textContent =
+          "Debug log cleared...\n";
+      }
 
-        // Test 1: Page Navigation
-        function testPageNavigation() {
-            log('Testing page navigation...', 'info');
-            
-            // Check if showPage function exists
-            if (typeof window.showPage === 'function') {
-                log('✓ showPage function exists', 'success');
-                
-                // Check if upload page element exists
-                const uploadPage = document.getElementById('upload');
-                if (uploadPage) {
-                    log('✓ Upload page element found', 'success');
-                    log(`Upload page classes: ${uploadPage.className}`, 'info');
-                } else {
-                    log('✗ Upload page element NOT found', 'error');
-                }
-                
-                // Test navigation
-                try {
-                    window.showPage('upload');
-                    log('✓ showPage("upload") called successfully', 'success');
-                } catch (error) {
-                    log(`✗ showPage("upload") failed: ${error.message}`, 'error');
-                }
-            } else {
-                log('✗ showPage function NOT found', 'error');
-            }
-        }
+      // Test 1: Page Navigation
+      function testPageNavigation() {
+        log("Testing page navigation...", "info");
 
-        // Test 2: Upload Container
-        function testUploadContainer() {
-            log('Testing upload container...', 'info');
-            
-            const containers = [
-                'upload-container',
-                'upload-content', 
-                'main-content'
-            ];
-            
-            containers.forEach(id => {
-                const element = document.getElementById(id);
-                if (element) {
-                    log(`✓ Found container: ${id}`, 'success');
-                } else {
-                    log(`✗ Container NOT found: ${id}`, 'error');
-                }
-            });
-        }
+        // Check if showPage function exists
+        if (typeof window.showPage === "function") {
+          log("✓ showPage function exists", "success");
 
-        // Test 3: Template Load
-        async function testTemplateLoad() {
-            log('Testing template load...', 'info');
-            
-            try {
-                const response = await fetch('/templates/dashboard/upload.html');
-                if (response.ok) {
-                    log('✓ Template fetch successful', 'success');
-                    const content = await response.text();
-                    if (content.includes('Data Upload & Management')) {
-                        log('✓ Template contains expected content', 'success');
-                    } else {
-                        log('✗ Template missing expected content', 'error');
-                    }
-                } else {
-                    log(`✗ Template fetch failed: ${response.status}`, 'error');
-                }
-            } catch (error) {
-                log(`✗ Template fetch error: ${error.message}`, 'error');
-            }
-        }
+          // Check if upload page element exists
+          const uploadPage = document.getElementById("upload");
+          if (uploadPage) {
+            log("✓ Upload page element found", "success");
+            log(`Upload page classes: ${uploadPage.className}`, "info");
+          } else {
+            log("✗ Upload page element NOT found", "error");
+          }
 
-        // Test 4: JavaScript Load
-        async function testJavaScriptLoad() {
-            log('Testing JavaScript load...', 'info');
-            
-            try {
-                const response = await fetch('/js/integrated-upload.js');
-                if (response.ok) {
-                    log('✓ JavaScript file accessible', 'success');
-                } else {
-                    log(`✗ JavaScript file not accessible: ${response.status}`, 'error');
-                }
-            } catch (error) {
-                log(`✗ JavaScript fetch error: ${error.message}`, 'error');
-            }
-            
-            // Check if loadUploadPage function exists
-            if (typeof window.loadUploadPage === 'function') {
-                log('✓ loadUploadPage function exists', 'success');
-            } else {
-                log('✗ loadUploadPage function NOT found', 'error');
-            }
+          // Test navigation
+          try {
+            window.showPage("upload");
+            log('✓ showPage("upload") called successfully', "success");
+          } catch (error) {
+            log(`✗ showPage("upload") failed: ${error.message}`, "error");
+          }
+        } else {
+          log("✗ showPage function NOT found", "error");
         }
+      }
 
-        // Test 5: Google Drive Tab
-        function testGoogleDriveTab() {
-            log('Testing Google Drive tab functionality...', 'info');
-            
-            if (typeof window.showGoogleDriveSync === 'function') {
-                log('✓ showGoogleDriveSync function exists', 'success');
-                
-                try {
-                    window.showGoogleDriveSync();
-                    log('✓ showGoogleDriveSync() called successfully', 'success');
-                } catch (error) {
-                    log(`✗ showGoogleDriveSync() failed: ${error.message}`, 'error');
-                }
-            } else {
-                log('✗ showGoogleDriveSync function NOT found', 'error');
-            }
-        }
+      // Test 2: Upload Container
+      function testUploadContainer() {
+        log("Testing upload container...", "info");
 
-        // Test Full Flow
-        async function testFullFlow() {
-            log('=== STARTING FULL FLOW TEST ===', 'info');
-            
-            // Step 1: Navigation
-            log('Step 1: Testing navigation...', 'info');
-            testPageNavigation();
-            
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            // Step 2: Container check
-            log('Step 2: Testing containers...', 'info');
-            testUploadContainer();
-            
-            await new Promise(resolve => setTimeout(resolve, 500));
-            
-            // Step 3: Template load
-            log('Step 3: Testing template load...', 'info');
-            await testTemplateLoad();
-            
-            await new Promise(resolve => setTimeout(resolve, 500));
-            
-            // Step 4: JavaScript load
-            log('Step 4: Testing JavaScript load...', 'info');
-            await testJavaScriptLoad();
-            
-            await new Promise(resolve => setTimeout(resolve, 500));
-            
-            // Step 5: Try to load upload page
-            log('Step 5: Attempting to load upload page...', 'info');
-            if (typeof window.loadUploadPage === 'function') {
-                try {
-                    await window.loadUploadPage();
-                    log('✓ loadUploadPage() completed', 'success');
-                } catch (error) {
-                    log(`✗ loadUploadPage() failed: ${error.message}`, 'error');
-                }
-            } else {
-                log('✗ loadUploadPage function not available', 'error');
-            }
-            
-            log('=== FULL FLOW TEST COMPLETE ===', 'info');
-        }
+        const containers = [
+          "upload-container",
+          "upload-content",
+          "main-content",
+        ];
 
-        // Check Page State
-        function checkPageState() {
-            const stateDiv = document.getElementById('pageState');
-            let state = '<h5>Current Page State:</h5>';
-            
-            // Check active pages
-            const pages = document.querySelectorAll('.page, .professional-page');
-            state += `<p><strong>Total pages found:</strong> ${pages.length}</p>`;
-            
-            pages.forEach((page, index) => {
-                const isActive = page.classList.contains('active');
-                state += `<p>${index + 1}. ${page.id} (${page.className}) - ${isActive ? '✅ ACTIVE' : '❌ inactive'}</p>`;
-            });
-            
-            // Check navigation functions
-            state += '<h6>Navigation Functions:</h6>';
-            state += `<p>showPage: ${typeof window.showPage === 'function' ? '✅' : '❌'}</p>`;
-            state += `<p>loadUploadPage: ${typeof window.loadUploadPage === 'function' ? '✅' : '❌'}</p>`;
-            state += `<p>showGoogleDriveSync: ${typeof window.showGoogleDriveSync === 'function' ? '✅' : '❌'}</p>`;
-            
-            stateDiv.innerHTML = state;
-        }
-
-        // Auto-check state on load
-        document.addEventListener('DOMContentLoaded', () => {
-            log('Debug test page loaded', 'success');
-            setTimeout(checkPageState, 1000);
+        containers.forEach((id) => {
+          const element = document.getElementById(id);
+          if (element) {
+            log(`✓ Found container: ${id}`, "success");
+          } else {
+            log(`✗ Container NOT found: ${id}`, "error");
+          }
         });
+      }
+
+      // Test 3: Template Load
+      async function testTemplateLoad() {
+        log("Testing template load...", "info");
+
+        try {
+          const response = await fetch("/templates/dashboard/upload.html");
+          if (response.ok) {
+            log("✓ Template fetch successful", "success");
+            const content = await response.text();
+            if (content.includes("Data Upload & Management")) {
+              log("✓ Template contains expected content", "success");
+            } else {
+              log("✗ Template missing expected content", "error");
+            }
+          } else {
+            log(`✗ Template fetch failed: ${response.status}`, "error");
+          }
+        } catch (error) {
+          log(`✗ Template fetch error: ${error.message}`, "error");
+        }
+      }
+
+      // Test 4: JavaScript Load
+      async function testJavaScriptLoad() {
+        log("Testing JavaScript load...", "info");
+
+        try {
+          const response = await fetch("/js/integrated-upload.js");
+          if (response.ok) {
+            log("✓ JavaScript file accessible", "success");
+          } else {
+            log(
+              `✗ JavaScript file not accessible: ${response.status}`,
+              "error",
+            );
+          }
+        } catch (error) {
+          log(`✗ JavaScript fetch error: ${error.message}`, "error");
+        }
+
+        // Check if loadUploadPage function exists
+        if (typeof window.loadUploadPage === "function") {
+          log("✓ loadUploadPage function exists", "success");
+        } else {
+          log("✗ loadUploadPage function NOT found", "error");
+        }
+      }
+
+      // Test 5: Google Drive Tab
+      function testGoogleDriveTab() {
+        log("Testing Google Drive tab functionality...", "info");
+
+        if (typeof window.showGoogleDriveSync === "function") {
+          log("✓ showGoogleDriveSync function exists", "success");
+
+          try {
+            window.showGoogleDriveSync();
+            log("✓ showGoogleDriveSync() called successfully", "success");
+          } catch (error) {
+            log(`✗ showGoogleDriveSync() failed: ${error.message}`, "error");
+          }
+        } else {
+          log("✗ showGoogleDriveSync function NOT found", "error");
+        }
+      }
+
+      // Test Full Flow
+      async function testFullFlow() {
+        log("=== STARTING FULL FLOW TEST ===", "info");
+
+        // Step 1: Navigation
+        log("Step 1: Testing navigation...", "info");
+        testPageNavigation();
+
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        // Step 2: Container check
+        log("Step 2: Testing containers...", "info");
+        testUploadContainer();
+
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        // Step 3: Template load
+        log("Step 3: Testing template load...", "info");
+        await testTemplateLoad();
+
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        // Step 4: JavaScript load
+        log("Step 4: Testing JavaScript load...", "info");
+        await testJavaScriptLoad();
+
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        // Step 5: Try to load upload page
+        log("Step 5: Attempting to load upload page...", "info");
+        if (typeof window.loadUploadPage === "function") {
+          try {
+            await window.loadUploadPage();
+            log("✓ loadUploadPage() completed", "success");
+          } catch (error) {
+            log(`✗ loadUploadPage() failed: ${error.message}`, "error");
+          }
+        } else {
+          log("✗ loadUploadPage function not available", "error");
+        }
+
+        log("=== FULL FLOW TEST COMPLETE ===", "info");
+      }
+
+      // Check Page State
+      function checkPageState() {
+        const stateDiv = document.getElementById("pageState");
+        let state = "<h5>Current Page State:</h5>";
+
+        // Check active pages
+        const pages = document.querySelectorAll(".page, .professional-page");
+        state += `<p><strong>Total pages found:</strong> ${pages.length}</p>`;
+
+        pages.forEach((page, index) => {
+          const isActive = page.classList.contains("active");
+          state += `<p>${index + 1}. ${page.id} (${page.className}) - ${isActive ? "✅ ACTIVE" : "❌ inactive"}</p>`;
+        });
+
+        // Check navigation functions
+        state += "<h6>Navigation Functions:</h6>";
+        state += `<p>showPage: ${typeof window.showPage === "function" ? "✅" : "❌"}</p>`;
+        state += `<p>loadUploadPage: ${typeof window.loadUploadPage === "function" ? "✅" : "❌"}</p>`;
+        state += `<p>showGoogleDriveSync: ${typeof window.showGoogleDriveSync === "function" ? "✅" : "❌"}</p>`;
+
+        stateDiv.innerHTML = state;
+      }
+
+      // Auto-check state on load
+      document.addEventListener("DOMContentLoaded", () => {
+        log("Debug test page loaded", "success");
+        setTimeout(checkPageState, 1000);
+      });
     </script>
-</body>
+  </body>
 </html>
