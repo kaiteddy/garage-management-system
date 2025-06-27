@@ -581,7 +581,7 @@
           </div>
           <div class="module-footer">
             <a href="/settings" class="btn-launch">
-              <i class="fas fa-external-link-alt"></i>
+              <i class="fas fa-cogs"></i>
               Launch Settings
             </a>
           </div>
@@ -892,5 +892,45 @@
       console.log("Screenshot feedback script loaded and ready");
       console.log("💡 Press Ctrl+Shift+S to capture and send a screenshot");
     </script>
+
+    <!-- Hash Navigation Script -->
+    <script>
+      // Handle hash navigation for direct links to specific sections
+      function handleHashNavigation() {
+        const hash = window.location.hash.substring(1); // Remove the # symbol
+
+        if (hash) {
+          console.log(`🔗 Navigating to section: ${hash}`);
+
+          // Wait for the page to fully load before navigating
+          setTimeout(() => {
+            if (typeof showPage === 'function') {
+              showPage(hash);
+            } else {
+              console.warn(`⚠️ showPage function not available, trying to click nav item for: ${hash}`);
+
+              // Fallback: try to click the navigation item
+              const navItem = document.querySelector(`[onclick="showPage('${hash}')"]`);
+              if (navItem) {
+                navItem.click();
+              } else {
+                console.warn(`⚠️ Navigation item not found for: ${hash}`);
+              }
+            }
+          }, 500); // Wait 500ms for page initialization
+        }
+      }
+
+      // Handle hash navigation on page load
+      document.addEventListener('DOMContentLoaded', handleHashNavigation);
+
+      // Handle hash changes (back/forward navigation)
+      window.addEventListener('hashchange', handleHashNavigation);
+
+      console.log("🔗 Hash navigation script loaded");
+    </script>
+
+    <!-- Debug System -->
+    <script src="/js/debug-system.js"></script>
   </body>
 </html>

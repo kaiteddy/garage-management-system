@@ -543,21 +543,12 @@ def initialize_services(app):
         app.google_drive_service = None
 
     try:
-        # Register MOT blueprint
-        mot_reminder_path = os.path.join(os.path.dirname(
-            os.path.dirname(__file__)), 'mot_reminder')
-        sys.path.insert(0, mot_reminder_path)
-        import importlib.util
-        spec = importlib.util.spec_from_file_location(
-            "mot_app", os.path.join(mot_reminder_path, "app.py"))
-        mot_app_module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mot_app_module)
-
-        mot_app_module.init_mot_blueprint(app)
-        app.register_blueprint(mot_app_module.mot_bp, url_prefix='/mot')
-        print("✅ MOT blueprint registered successfully")
+        # Register integrated MOT routes
+        from routes.mot_routes import mot_bp
+        app.register_blueprint(mot_bp, url_prefix='/mot')
+        print("✅ Integrated MOT routes registered successfully")
     except Exception as e:
-        print(f"❌ Failed to register MOT blueprint: {e}")
+        print(f"❌ Failed to register MOT routes: {e}")
 
 
 def create_tables():

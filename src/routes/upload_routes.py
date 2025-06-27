@@ -5,7 +5,10 @@ from flask import (Blueprint, flash, jsonify, redirect, render_template,
                    request, url_for)
 from werkzeug.utils import secure_filename
 
-from services.csv_import_service import CSVImportService
+try:
+    from services.csv_import_service import CSVImportService
+except ImportError:
+    CSVImportService = None
 
 upload_bp = Blueprint('upload', __name__)
 
@@ -19,6 +22,17 @@ MAX_FILE_SIZE = 100 * 1024 * 1024
 def test_route():
     """Test route to verify blueprint is working"""
     return jsonify({'message': 'Upload blueprint is working!', 'success': True})
+
+
+@upload_bp.route('/debug')
+def debug_route():
+    """Debug route to check blueprint registration"""
+    return jsonify({
+        'message': 'Upload blueprint debug endpoint',
+        'blueprint_name': 'upload',
+        'success': True,
+        'csv_service_available': CSVImportService is not None
+    })
 
 
 def allowed_file(filename):
@@ -78,9 +92,15 @@ def upload_csv():
         file.save(temp_path)
 
         try:
-            # Import the CSV
-            db_path = os.path.join(os.path.dirname(os.path.dirname(
-                os.path.dirname(__file__))), 'instance', 'garage.db')
+            # Import the CSV using unified database
+            db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'garage_management.db')
+
+            if not CSVImportService:
+                return jsonify({
+                    'success': False,
+                    'error': 'CSV import service not available'
+                }), 503
+
             import_service = CSVImportService(db_path)
 
             # Get import options from form
@@ -199,16 +219,16 @@ def download_template(table_name):
 def upload_status():
     """Get upload status and statistics"""
     try:
-        db_path = os.path.join(os.path.dirname(os.path.dirname(
-            os.path.dirname(__file__))), 'instance', 'garage.db')
+        # Use unified database path
+        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'garage_management.db')
         import sqlite3
 
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
-        # Get table counts
-        tables = ['customers', 'vehicles', 'jobs',
-                  'invoices', 'parts', 'suppliers', 'expenses']
+        # Get table counts for unified database
+        tables = ['customers', 'vehicles', 'mot_records', 'job_sheets',
+                  'appointments', 'sms_communications', 'parts_inventory']
         counts = {}
 
         for table in tables:
@@ -231,8 +251,28 @@ def upload_status():
 
 @upload_bp.route('/bulk')
 def bulk_upload_page():
-    """Display bulk upload page for multiple files"""
-    return render_template('bulk_upload.html')
+    """Get bulk upload information and available tables"""
+    try:
+        # Return information about bulk upload capabilities
+        available_tables = ['customers', 'vehicles', 'mot_records', 'job_sheets', 'appointments']
+
+        return jsonify({
+            'success': True,
+            'message': 'Bulk upload endpoint available',
+            'available_tables': available_tables,
+            'max_files': 10,
+            'supported_formats': ['csv'],
+            'endpoints': {
+                'upload': '/api/bulk/process',
+                'templates': '/api/templates/<table_name>',
+                'status': '/api/status'
+            }
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
 
 
 @upload_bp.route('/bulk/process', methods=['POST'])
@@ -249,8 +289,15 @@ def process_bulk_upload():
             }), 400
 
         results = []
-        db_path = os.path.join(os.path.dirname(os.path.dirname(
-            os.path.dirname(__file__))), 'instance', 'garage.db')
+        # Use unified database path
+        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'garage_management.db')
+
+        if not CSVImportService:
+            return jsonify({
+                'success': False,
+                'error': 'CSV import service not available'
+            }), 503
+
         import_service = CSVImportService(db_path)
 
         for i, file in enumerate(files):

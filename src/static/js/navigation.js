@@ -30,7 +30,7 @@ window.showPage = function (pageId) {
     localStorage.setItem("currentPage", pageId);
 
     // Hide all pages
-    document.querySelectorAll(".page").forEach((page) => {
+    document.querySelectorAll(".page, .professional-page").forEach((page) => {
       page.classList.remove("active");
     });
 
@@ -553,172 +553,1235 @@ function loadJobSheetsPage() {
 function loadMOTRemindersPage() {
   console.log("🚗 Loading MOT Reminders page...");
 
-  const motContent = document.getElementById("mot-reminders-content");
-  if (!motContent) {
-    console.error("❌ MOT reminders content container not found");
+  // Use the correct container ID that exists in the HTML
+  const motPage = document.getElementById("mot-reminders");
+  if (!motPage) {
+    console.error("❌ MOT reminders page container not found");
     return;
   }
 
-  // Create MOT reminders page HTML content
+  // Clear existing content and show loading
+  motPage.innerHTML = `
+    <div class="professional-page-header">
+      <div>
+        <h1 class="professional-page-title">
+          <i class="fas fa-calendar-check"></i>
+          MOT Reminders
+        </h1>
+        <p class="professional-page-subtitle">
+          Monitor vehicle MOT expiry dates and send reminders
+        </p>
+      </div>
+      <div class="professional-page-actions">
+        <button id="refresh-mot-data" class="professional-btn professional-btn-secondary">
+          <i class="fas fa-sync-alt"></i>
+          Refresh Data
+        </button>
+        <button id="bulk-upload-mot" class="professional-btn professional-btn-primary">
+          <i class="fas fa-upload"></i>
+          Bulk Upload
+        </button>
+      </div>
+    </div>
+    <div class="professional-loading">
+      <div class="professional-loading-spinner"></div>
+      <p>Loading MOT data...</p>
+    </div>
+  `;
+
+  // Initialize MOT dashboard after a short delay to ensure DOM is ready
+  setTimeout(() => {
+    initializeMOTRemindersPage();
+  }, 100);
+
+  console.log("✅ MOT Reminders page loading initiated");
+}
+
+/**
+ * Initialize MOT Reminders page with proper content and functionality
+ */
+async function initializeMOTRemindersPage() {
+  console.log("🔧 Initializing MOT Reminders page...");
+
+  const motPage = document.getElementById("mot-reminders");
+  if (!motPage) {
+    console.error("❌ MOT reminders page container not found during initialization");
+    return;
+  }
+
+  // Create the complete MOT reminders page HTML content using professional styling
   const motHTML = `
-        <div class="page-header">
-            <div>
-                <h1 class="page-title">
-                    <i class="fas fa-car-crash"></i>
-                    MOT Reminders
-                </h1>
-                <p class="page-subtitle">Monitor vehicle MOT expiry dates and send reminders</p>
-            </div>
-            <div class="page-actions">
-                <button class="btn btn-primary" onclick="openAddVehicleModal()">
-                    <i class="fas fa-plus"></i>
-                    Add Vehicle
-                </button>
-                <button class="btn btn-secondary" onclick="refreshMOTData()">
-                    <i class="fas fa-sync"></i>
-                    Refresh Data
-                </button>
-            </div>
+    <div class="professional-page-header">
+      <div>
+        <h1 class="professional-page-title">
+          <i class="fas fa-calendar-check"></i>
+          MOT Reminders
+        </h1>
+        <p class="professional-page-subtitle">
+          Monitor vehicle MOT expiry dates and send reminders
+        </p>
+      </div>
+      <div class="professional-page-actions">
+        <button id="refresh-mot-data" class="professional-btn professional-btn-secondary">
+          <i class="fas fa-sync-alt"></i>
+          Refresh Data
+        </button>
+        <button id="bulk-upload-mot" class="professional-btn professional-btn-primary">
+          <i class="fas fa-upload"></i>
+          Bulk Upload
+        </button>
+      </div>
+    </div>
+
+    <!-- MOT Stats Cards -->
+    <div class="professional-stats-grid">
+      <div class="professional-stat-card">
+        <div class="professional-stat-icon" style="background: linear-gradient(135deg, var(--error-500) 0%, var(--error-600) 100%);">
+          <i class="fas fa-exclamation-triangle"></i>
         </div>
-
-        <!-- MOT Statistics -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon expired">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 id="expired-count">0</h3>
-                    <p>Expired MOTs</p>
-                    <small>Immediate attention</small>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon critical">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 id="critical-count">0</h3>
-                    <p>Due Soon</p>
-                    <small>Within 7 days</small>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon warning">
-                    <i class="fas fa-calendar-alt"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 id="due-soon-count">0</h3>
-                    <p>Due This Month</p>
-                    <small>8-30 days</small>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon valid">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 id="valid-count">0</h3>
-                    <p>Valid MOTs</p>
-                    <small>Over 30 days</small>
-                </div>
-            </div>
+        <div class="professional-stat-header">
+          <h3 class="professional-stat-value" id="expired-count">0</h3>
+          <p class="professional-stat-label">Expired MOTs</p>
         </div>
+        <p class="professional-stat-description">Immediate attention</p>
+      </div>
 
-        <!-- Filter Buttons -->
-        <div class="card">
-            <div class="card-header">
-                <div class="flex justify-between items-center">
-                    <h3>Vehicle MOT Status</h3>
-                    <div class="flex gap-2">
-                        <button class="btn btn-sm btn-secondary active" data-filter="all" onclick="filterMOTVehicles('all')">
-                            All Vehicles
-                        </button>
-                        <button class="btn btn-sm btn-danger" data-filter="expired" onclick="filterMOTVehicles('expired')">
-                            Expired
-                        </button>
-                        <button class="btn btn-sm btn-warning" data-filter="critical" onclick="filterMOTVehicles('critical')">
-                            Critical
-                        </button>
-                        <button class="btn btn-sm btn-info" data-filter="due_soon" onclick="filterMOTVehicles('due_soon')">
-                            Due Soon
-                        </button>
-                        <button class="btn btn-sm btn-success" data-filter="valid" onclick="filterMOTVehicles('valid')">
-                            Valid
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="card-content">
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Registration</th>
-                                <th>Customer</th>
-                                <th>Make/Model</th>
-                                <th>MOT Expiry</th>
-                                <th>Days Remaining</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="mot-vehicles-table-body">
-                            <tr>
-                                <td colspan="7" class="text-center py-4">
-                                    <div class="loading-spinner"></div>
-                                    <p>Loading MOT data...</p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div id="mot-pagination" class="pagination-container"></div>
-            </div>
+      <div class="professional-stat-card">
+        <div class="professional-stat-icon" style="background: linear-gradient(135deg, var(--warning-500) 0%, var(--warning-600) 100%);">
+          <i class="fas fa-clock"></i>
         </div>
+        <div class="professional-stat-header">
+          <h3 class="professional-stat-value" id="expiring-soon-count">0</h3>
+          <p class="professional-stat-label">Expiring Soon</p>
+        </div>
+        <p class="professional-stat-description">Next 30 days</p>
+      </div>
 
-        <!-- SMS Sending Section -->
-        <div class="card">
-            <div class="card-header">
-                <h3>
-                    <i class="fas fa-sms"></i>
-                    Send MOT Reminders
-                </h3>
-            </div>
-            <div class="card-content">
-                <div class="flex gap-4 items-center">
-                    <div class="flex-1">
-                        <p class="text-sm text-gray-600 mb-2">
-                            Select vehicles from the table above to send SMS reminders
-                        </p>
-                        <div id="selected-vehicles-info" class="text-sm text-blue-600">
-                            No vehicles selected
-                        </div>
-                    </div>
-                    <div class="flex gap-2">
-                        <button class="btn btn-secondary" onclick="selectAllExpired()">
-                            Select All Expired
-                        </button>
-                        <button class="btn btn-primary" onclick="sendSelectedReminders()" disabled id="send-reminders-btn">
-                            <i class="fas fa-paper-plane"></i>
-                            Send Reminders
-                        </button>
-                    </div>
-                </div>
-            </div>
+      <div class="professional-stat-card">
+        <div class="professional-stat-icon" style="background: linear-gradient(135deg, var(--info-500) 0%, var(--info-600) 100%);">
+          <i class="fas fa-calendar"></i>
         </div>
+        <div class="professional-stat-header">
+          <h3 class="professional-stat-value" id="due-month-count">0</h3>
+          <p class="professional-stat-label">Due This Month</p>
+        </div>
+        <p class="professional-stat-description">8-30 days</p>
+      </div>
+
+      <div class="professional-stat-card">
+        <div class="professional-stat-icon" style="background: linear-gradient(135deg, var(--success-500) 0%, var(--success-600) 100%);">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="professional-stat-header">
+          <h3 class="professional-stat-value" id="valid-count">0</h3>
+          <p class="professional-stat-label">Valid MOTs</p>
+        </div>
+        <p class="professional-stat-description">Over 30 days</p>
+      </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="filter-section">
+      <h3>Vehicle MOT Status</h3>
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all" onclick="filterMOTVehicles('all')">
+          All Vehicles
+          <span class="filter-count" id="all-count">0</span>
+        </button>
+        <button class="filter-btn" data-filter="expired" onclick="filterMOTVehicles('expired')">
+          Expired
+          <span class="filter-count" id="expired-filter-count">0</span>
+        </button>
+        <button class="filter-btn" data-filter="critical" onclick="filterMOTVehicles('critical')">
+          Critical
+          <span class="filter-count" id="critical-filter-count">0</span>
+        </button>
+        <button class="filter-btn" data-filter="warning" onclick="filterMOTVehicles('warning')">
+          Warning
+          <span class="filter-count" id="warning-count">0</span>
+        </button>
+        <button class="filter-btn" data-filter="valid" onclick="filterMOTVehicles('valid')">
+          Valid
+          <span class="filter-count" id="valid-filter-count">0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- MOT Vehicles Table -->
+    <div class="table-container">
+      <div class="table-header">
+        <h4>Vehicle MOT Status</h4>
+        <div class="table-actions">
+          <input type="text" class="search-input" placeholder="Search vehicles..." id="mot-search" />
+          <button class="btn btn-primary" id="send-reminders-btn" disabled>
+            <i class="fas fa-envelope"></i>
+            Send Reminders
+          </button>
+        </div>
+      </div>
+      <div class="table-wrapper">
+        <table class="data-table" id="mot-vehicles-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="select-all-mot" /></th>
+              <th>Registration</th>
+              <th>Make/Model</th>
+              <th>Customer</th>
+              <th>MOT Expiry</th>
+              <th>Days Remaining</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="mot-vehicles-tbody">
+            <tr>
+              <td colspan="8" class="empty-state">
+                <div class="empty-state-content">
+                  <i class="fas fa-spinner fa-spin"></i>
+                  <h4>Loading MOT data...</h4>
+                  <p>Please wait while we fetch vehicle information</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  `;
+
+  // Insert the HTML content into the page
+  motPage.innerHTML = motHTML;
+
+  // Initialize event listeners
+  initializeMOTEventListeners();
+
+  // Load MOT data using the correct API endpoint
+  await loadMOTData();
+
+  console.log("✅ MOT Reminders page initialized successfully");
+}
+
+/**
+ * Initialize event listeners for MOT reminders page
+ */
+function initializeMOTEventListeners() {
+  console.log("🔧 Setting up MOT event listeners...");
+
+  // Refresh data button
+  const refreshBtn = document.getElementById('refresh-mot-data');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => {
+      console.log("🔄 Refreshing MOT data...");
+      loadMOTData();
+    });
+  }
+
+  // Bulk upload button
+  const uploadBtn = document.getElementById('bulk-upload-mot');
+  if (uploadBtn) {
+    uploadBtn.addEventListener('click', () => {
+      console.log("📤 Opening bulk upload...");
+      showPage('settings');
+      setTimeout(() => {
+        const uploadTab = document.querySelector('[data-tab="data-upload"]');
+        if (uploadTab) uploadTab.click();
+      }, 100);
+    });
+  }
+
+  // Search input
+  const searchInput = document.getElementById('mot-search');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      filterMOTVehiclesBySearch(e.target.value);
+    });
+  }
+
+  // Select all checkbox
+  const selectAllCheckbox = document.getElementById('select-all-mot');
+  if (selectAllCheckbox) {
+    selectAllCheckbox.addEventListener('change', (e) => {
+      toggleAllVehicleSelection(e.target.checked);
+    });
+  }
+
+  console.log("✅ MOT event listeners initialized");
+}
+
+/**
+ * Load MOT data from the API and populate the table
+ */
+async function loadMOTData() {
+  console.log("📊 Loading MOT data from API...");
+
+  try {
+    // Show loading state
+    const tbody = document.getElementById('mot-vehicles-tbody');
+    if (tbody) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" class="empty-state">
+            <div class="empty-state-content">
+              <i class="fas fa-spinner fa-spin"></i>
+              <h4>Loading MOT data...</h4>
+              <p>Fetching vehicle information from the database</p>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
+
+    // Use the correct API endpoint (MOT blueprint is registered with /mot prefix)
+    const response = await fetch('/mot/api/vehicles', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("📊 MOT data received:", data);
+
+    // Process and display the data
+    if (data.success && data.vehicles) {
+      displayMOTVehicles(data.vehicles);
+      updateMOTStatistics(data.vehicles);
+    } else {
+      throw new Error(data.message || 'Failed to load MOT data');
+    }
+
+  } catch (error) {
+    console.error("❌ Error loading MOT data:", error);
+
+    // Show error state
+    const tbody = document.getElementById('mot-vehicles-tbody');
+    if (tbody) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" class="empty-state">
+            <div class="empty-state-content">
+              <i class="fas fa-exclamation-triangle" style="color: var(--error-500);"></i>
+              <h4>Error Loading Data</h4>
+              <p>${error.message}</p>
+              <button class="btn btn-primary" onclick="loadMOTData()">
+                <i class="fas fa-retry"></i>
+                Try Again
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
+  }
+}
+
+/**
+ * Display MOT vehicles in the table with clean formatting
+ */
+function displayMOTVehicles(vehicles) {
+  console.log(`📋 Displaying ${vehicles.length} MOT vehicles...`);
+
+  const tbody = document.getElementById('mot-vehicles-tbody');
+  if (!tbody) {
+    console.error("❌ MOT vehicles table body not found");
+    return;
+  }
+
+  if (!vehicles || vehicles.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" class="empty-state">
+          <div class="empty-state-content">
+            <i class="fas fa-car"></i>
+            <h4>No Vehicles Found</h4>
+            <p>No MOT data available. Upload vehicle data to get started.</p>
+            <button class="btn btn-primary" onclick="showPage('settings')">
+              <i class="fas fa-upload"></i>
+              Upload Vehicle Data
+            </button>
+          </div>
+        </td>
+      </tr>
     `;
+    return;
+  }
 
-  // Insert the HTML content
-  motContent.innerHTML = motHTML;
+  // Sort vehicles by urgency (expired first, then by days remaining)
+  const sortedVehicles = [...vehicles].sort((a, b) => {
+    const statusA = getMOTStatus(a);
+    const statusB = getMOTStatus(b);
+    const daysA = calculateDaysRemainingNumeric(a.mot_expiry);
+    const daysB = calculateDaysRemainingNumeric(b.mot_expiry);
 
-  // Load MOT data
-  loadMOTData();
+    // Expired vehicles first
+    if (statusA.class === 'expired' && statusB.class !== 'expired') return -1;
+    if (statusB.class === 'expired' && statusA.class !== 'expired') return 1;
 
-  console.log("✅ MOT Reminders page content loaded");
+    // Then by days remaining (ascending)
+    return daysA - daysB;
+  });
+
+  // Generate clean table rows
+  const rows = sortedVehicles.map((vehicle, index) => {
+    const status = getMOTStatus(vehicle);
+    const daysRemaining = calculateDaysRemaining(vehicle.mot_expiry);
+    const urgencyClass = getUrgencyClass(status.class);
+
+    return `
+      <tr class="vehicle-row ${urgencyClass}" data-status="${status.class}" data-registration="${vehicle.registration}">
+        <td class="checkbox-cell">
+          <input type="checkbox" class="vehicle-checkbox" value="${vehicle.registration}" onchange="updateSendRemindersButton()" />
+        </td>
+        <td class="registration-cell">
+          <span class="registration-number">${cleanRegistration(vehicle.registration)}</span>
+        </td>
+        <td class="vehicle-cell">
+          <div class="vehicle-info">
+            <div class="vehicle-primary">${cleanVehicleName(vehicle.make, vehicle.model)}</div>
+            <div class="vehicle-secondary">${formatVehicleDetails(vehicle)}</div>
+          </div>
+        </td>
+        <td class="customer-cell">
+          <div class="customer-info">
+            <div class="customer-name">${cleanCustomerName(vehicle.customer_name)}</div>
+            <div class="customer-contact">${formatContactInfo(vehicle)}</div>
+          </div>
+        </td>
+        <td class="date-cell">
+          <div class="mot-date">
+            <div class="date-primary">${formatDateClean(vehicle.mot_expiry)}</div>
+            <div class="date-secondary">${formatDateRelative(vehicle.mot_expiry)}</div>
+          </div>
+        </td>
+        <td class="days-cell">
+          <span class="days-remaining ${status.class}">${daysRemaining}</span>
+        </td>
+        <td class="status-cell">
+          <span class="status-badge ${status.class}">
+            <i class="fas fa-${getStatusIcon(status.class)}"></i>
+            ${status.text}
+          </span>
+        </td>
+        <td class="actions-cell">
+          <div class="action-buttons">
+            <button class="btn btn-sm btn-primary" onclick="viewVehicleHistory('${vehicle.registration}')" title="View MOT History">
+              <i class="fas fa-history"></i>
+            </button>
+            <button class="btn btn-sm btn-secondary" onclick="sendSingleReminder('${vehicle.registration}')" title="Send Reminder">
+              <i class="fas fa-envelope"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  tbody.innerHTML = rows;
+
+  // Store vehicles data globally for filtering
+  window.motVehiclesData = sortedVehicles;
+
+  // Update row numbers and alternating colors
+  updateTableStyling();
+
+  console.log("✅ MOT vehicles displayed with clean formatting");
+}
+
+/**
+ * Calculate MOT status based on expiry date
+ */
+function getMOTStatus(vehicle) {
+  const daysRemaining = calculateDaysRemaining(vehicle.mot_expiry);
+
+  if (daysRemaining < 0) {
+    return { class: 'expired', text: 'Expired' };
+  } else if (daysRemaining <= 7) {
+    return { class: 'critical', text: 'Critical' };
+  } else if (daysRemaining <= 30) {
+    return { class: 'warning', text: 'Due Soon' };
+  } else {
+    return { class: 'valid', text: 'Valid' };
+  }
+}
+
+/**
+ * Calculate days remaining until MOT expiry (numeric for sorting)
+ */
+function calculateDaysRemainingNumeric(motExpiry) {
+  if (!motExpiry) return 999;
+
+  const today = new Date();
+  const expiryDate = new Date(motExpiry);
+  const diffTime = expiryDate - today;
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+}
+
+/**
+ * Calculate days remaining until MOT expiry (formatted for display)
+ */
+function calculateDaysRemaining(motExpiry) {
+  if (!motExpiry) return 'N/A';
+
+  const diffDays = calculateDaysRemainingNumeric(motExpiry);
+
+  if (diffDays < 0) {
+    const absDays = Math.abs(diffDays);
+    if (absDays === 1) return '1 day ago';
+    return `${absDays} days ago`;
+  } else if (diffDays === 0) {
+    return 'Today';
+  } else if (diffDays === 1) {
+    return 'Tomorrow';
+  } else {
+    return `${diffDays} days`;
+  }
+}
+
+/**
+ * Format date for display (legacy function)
+ */
+function formatDate(dateString) {
+  return formatDateClean(dateString);
+}
+
+/**
+ * Format date cleanly for primary display
+ */
+function formatDateClean(dateString) {
+  if (!dateString) return 'Not Set';
+
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+  } catch (error) {
+    return 'Invalid Date';
+  }
+}
+
+/**
+ * Format date with relative context
+ */
+function formatDateRelative(dateString) {
+  if (!dateString) return '';
+
+  try {
+    const date = new Date(dateString);
+    const today = new Date();
+    const diffDays = calculateDaysRemainingNumeric(dateString);
+
+    if (diffDays < 0) {
+      return 'Expired';
+    } else if (diffDays <= 7) {
+      return 'This week';
+    } else if (diffDays <= 30) {
+      return 'This month';
+    } else if (diffDays <= 90) {
+      return 'Next 3 months';
+    } else {
+      return 'Future';
+    }
+  } catch (error) {
+    return '';
+  }
+}
+
+/**
+ * Clean registration number formatting
+ */
+function cleanRegistration(registration) {
+  if (!registration) return 'N/A';
+
+  // Format UK registration with proper spacing
+  const reg = registration.replace(/\s+/g, '').toUpperCase();
+  if (reg.length >= 7) {
+    // Standard UK format: AB12 CDE
+    return `${reg.slice(0, 2)}${reg.slice(2, 4)} ${reg.slice(4)}`;
+  }
+  return reg;
+}
+
+/**
+ * Clean vehicle name formatting
+ */
+function cleanVehicleName(make, model) {
+  const cleanMake = make && make !== 'Unknown' ? make.trim() : '';
+  const cleanModel = model && model !== '' ? model.trim() : '';
+
+  if (!cleanMake && !cleanModel) return 'Unknown Vehicle';
+  if (!cleanMake) return cleanModel;
+  if (!cleanModel) return cleanMake;
+
+  // Avoid duplication if model starts with make
+  if (cleanModel.toLowerCase().startsWith(cleanMake.toLowerCase())) {
+    return cleanModel;
+  }
+
+  return `${cleanMake} ${cleanModel}`;
+}
+
+/**
+ * Format vehicle details (year, engine, etc.)
+ */
+function formatVehicleDetails(vehicle) {
+  const details = [];
+
+  if (vehicle.year && vehicle.year !== 'Unknown') {
+    details.push(vehicle.year);
+  }
+
+  if (vehicle.engine_size) {
+    details.push(`${vehicle.engine_size}cc`);
+  }
+
+  if (vehicle.fuel_type && vehicle.fuel_type !== 'Unknown') {
+    details.push(vehicle.fuel_type);
+  }
+
+  if (vehicle.colour && vehicle.colour !== 'Unknown') {
+    details.push(vehicle.colour);
+  }
+
+  return details.length > 0 ? details.join(' • ') : 'Details not available';
+}
+
+/**
+ * Clean customer name formatting
+ */
+function cleanCustomerName(customerName) {
+  if (!customerName || customerName === 'Unknown' || customerName.trim() === '') {
+    return 'Unknown Customer';
+  }
+
+  // Capitalize first letter of each word
+  return customerName.trim()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+}
+
+/**
+ * Format contact information cleanly
+ */
+function formatContactInfo(vehicle) {
+  const contacts = [];
+
+  if (vehicle.mobile && vehicle.mobile !== 'No contact') {
+    // Format UK mobile number
+    const mobile = vehicle.mobile.replace(/\s+/g, '');
+    if (mobile.startsWith('07') && mobile.length === 11) {
+      contacts.push(`${mobile.slice(0, 5)} ${mobile.slice(5, 8)} ${mobile.slice(8)}`);
+    } else {
+      contacts.push(mobile);
+    }
+  }
+
+  if (vehicle.email && vehicle.email !== 'No contact' && vehicle.email.includes('@')) {
+    contacts.push(vehicle.email.toLowerCase());
+  }
+
+  return contacts.length > 0 ? contacts.join(' • ') : 'No contact details';
+}
+
+/**
+ * Get urgency class for row styling
+ */
+function getUrgencyClass(statusClass) {
+  switch (statusClass) {
+    case 'expired': return 'urgency-critical';
+    case 'critical': return 'urgency-high';
+    case 'warning': return 'urgency-medium';
+    case 'valid': return 'urgency-low';
+    default: return '';
+  }
+}
+
+/**
+ * Get status icon
+ */
+function getStatusIcon(statusClass) {
+  switch (statusClass) {
+    case 'expired': return 'exclamation-triangle';
+    case 'critical': return 'clock';
+    case 'warning': return 'calendar-alt';
+    case 'valid': return 'check-circle';
+    default: return 'question-circle';
+  }
+}
+
+/**
+ * Update table styling with alternating rows and numbering
+ */
+function updateTableStyling() {
+  const rows = document.querySelectorAll('.vehicle-row');
+  rows.forEach((row, index) => {
+    // Add row number
+    row.setAttribute('data-row-number', index + 1);
+
+    // Add alternating row class
+    if (index % 2 === 0) {
+      row.classList.add('even-row');
+    } else {
+      row.classList.add('odd-row');
+    }
+  });
+}
+
+/**
+ * Update send reminders button state based on selected vehicles
+ */
+function updateSendRemindersButton() {
+  const checkboxes = document.querySelectorAll('.vehicle-checkbox:checked');
+  const sendButton = document.getElementById('send-reminders-btn');
+
+  if (sendButton) {
+    if (checkboxes.length > 0) {
+      sendButton.disabled = false;
+      sendButton.innerHTML = `
+        <i class="fas fa-envelope"></i>
+        Send Reminders (${checkboxes.length})
+      `;
+    } else {
+      sendButton.disabled = true;
+      sendButton.innerHTML = `
+        <i class="fas fa-envelope"></i>
+        Send Reminders
+      `;
+    }
+  }
+}
+
+/**
+ * Update MOT statistics cards
+ */
+function updateMOTStatistics(vehicles) {
+  console.log("📊 Updating MOT statistics...");
+
+  const stats = {
+    expired: 0,
+    critical: 0,
+    warning: 0,
+    valid: 0,
+    total: vehicles.length
+  };
+
+  vehicles.forEach(vehicle => {
+    const status = getMOTStatus(vehicle);
+    stats[status.class]++;
+  });
+
+  // Update stat cards
+  const updateStat = (id, value) => {
+    const element = document.getElementById(id);
+    if (element) element.textContent = value;
+  };
+
+  updateStat('expired-count', stats.expired);
+  updateStat('expiring-soon-count', stats.critical);
+  updateStat('due-month-count', stats.warning);
+  updateStat('valid-count', stats.valid);
+
+  // Update filter counts
+  updateStat('all-count', stats.total);
+  updateStat('expired-filter-count', stats.expired);
+  updateStat('critical-filter-count', stats.critical);
+  updateStat('warning-count', stats.warning);
+  updateStat('valid-filter-count', stats.valid);
+
+  console.log("✅ MOT statistics updated:", stats);
+}
+
+/**
+ * Filter MOT vehicles by status
+ */
+function filterMOTVehicles(status) {
+  console.log(`🔍 Filtering MOT vehicles by status: ${status}`);
+
+  // Update active filter button
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  document.querySelector(`[data-filter="${status}"]`).classList.add('active');
+
+  // Filter table rows
+  const rows = document.querySelectorAll('.vehicle-row');
+  rows.forEach(row => {
+    const rowStatus = row.dataset.status;
+    if (status === 'all' || rowStatus === status) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
+/**
+ * Filter MOT vehicles by search term
+ */
+function filterMOTVehiclesBySearch(searchTerm) {
+  const rows = document.querySelectorAll('.vehicle-row');
+  const term = searchTerm.toLowerCase();
+
+  rows.forEach(row => {
+    const registration = row.dataset.registration.toLowerCase();
+    const text = row.textContent.toLowerCase();
+
+    if (registration.includes(term) || text.includes(term)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
+/**
+ * Toggle all vehicle selection
+ */
+function toggleAllVehicleSelection(checked) {
+  const checkboxes = document.querySelectorAll('.vehicle-checkbox');
+  checkboxes.forEach(checkbox => {
+    checkbox.checked = checked;
+  });
+  updateSendRemindersButton();
+}
+
+/**
+ * Update send reminders button state
+ */
+function updateSendRemindersButton() {
+  const selectedCheckboxes = document.querySelectorAll('.vehicle-checkbox:checked');
+  const sendBtn = document.getElementById('send-reminders-btn');
+
+  if (sendBtn) {
+    sendBtn.disabled = selectedCheckboxes.length === 0;
+    sendBtn.textContent = selectedCheckboxes.length > 0
+      ? `Send Reminders (${selectedCheckboxes.length})`
+      : 'Send Reminders';
+  }
+}
+
+/**
+ * View vehicle MOT history
+ */
+async function viewVehicleHistory(registration) {
+  console.log(`📋 Viewing MOT history for: ${registration}`);
+
+  try {
+    // Show loading modal
+    showMOTHistoryModal(registration, null, true);
+
+    // Try to get MOT history from DVSA API first
+    let motData = null;
+    let errorMessage = null;
+
+    try {
+      const dvsaResponse = await fetch(`/api/dvsa/vehicle/${registration}/mot`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (dvsaResponse.ok) {
+        const dvsaData = await dvsaResponse.json();
+        if (dvsaData.success && dvsaData.mot_data) {
+          motData = dvsaData.mot_data;
+        }
+      }
+    } catch (dvsaError) {
+      console.warn("⚠️ DVSA API not available, trying garage database:", dvsaError);
+    }
+
+    // If DVSA data not available, try garage database
+    if (!motData) {
+      try {
+        const garageResponse = await fetch(`/mot/api/vehicles/${registration}/history`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (garageResponse.ok) {
+          const garageData = await garageResponse.json();
+          if (garageData.success) {
+            motData = generateMockMOTData(registration, garageData);
+          }
+        }
+      } catch (garageError) {
+        console.warn("⚠️ Garage database not available:", garageError);
+      }
+    }
+
+    // If still no data, generate sample data for demonstration
+    if (!motData) {
+      motData = generateSampleMOTData(registration);
+      errorMessage = "Using sample data - DVSA API not available";
+    }
+
+    showMOTHistoryModal(registration, motData, false, errorMessage);
+
+  } catch (error) {
+    console.error("❌ Error loading MOT history:", error);
+    showMOTHistoryModal(registration, null, false, error.message);
+  }
+}
+
+/**
+ * Generate sample MOT data for demonstration
+ */
+function generateSampleMOTData(registration) {
+  const currentDate = new Date();
+  const lastYear = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
+  const twoYearsAgo = new Date(currentDate.getFullYear() - 2, currentDate.getMonth(), currentDate.getDate());
+
+  return {
+    registration: registration,
+    make: "Sample",
+    model: "Vehicle",
+    primaryColour: "Blue",
+    fuelType: "Petrol",
+    engineSize: "1600",
+    motTests: [
+      {
+        completedDate: currentDate.toISOString().split('T')[0],
+        testResult: "PASSED",
+        expiryDate: new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate()).toISOString().split('T')[0],
+        motTestNumber: "123456789",
+        odometerValue: 45000,
+        odometerUnit: "mi",
+        testStationName: "Sample MOT Centre",
+        rfrAndComments: [
+          {
+            type: "ADVISORY",
+            text: "Tyre worn close to legal limit on front axle",
+            dangerous: false
+          }
+        ]
+      },
+      {
+        completedDate: lastYear.toISOString().split('T')[0],
+        testResult: "PASSED",
+        expiryDate: currentDate.toISOString().split('T')[0],
+        motTestNumber: "987654321",
+        odometerValue: 42000,
+        odometerUnit: "mi",
+        testStationName: "Sample MOT Centre",
+        rfrAndComments: []
+      },
+      {
+        completedDate: twoYearsAgo.toISOString().split('T')[0],
+        testResult: "FAILED",
+        expiryDate: null,
+        motTestNumber: "456789123",
+        odometerValue: 39000,
+        odometerUnit: "mi",
+        testStationName: "Sample MOT Centre",
+        rfrAndComments: [
+          {
+            type: "FAIL",
+            text: "Brake disc worn beyond manufacturer's specification on front axle",
+            dangerous: true
+          },
+          {
+            type: "ADVISORY",
+            text: "Oil leak from engine",
+            dangerous: false
+          }
+        ]
+      }
+    ]
+  };
+}
+
+/**
+ * Show MOT history modal
+ */
+function showMOTHistoryModal(registration, motData, isLoading, errorMessage) {
+  console.log(`📋 Showing MOT history modal for: ${registration}`);
+
+  // Remove existing modal if any
+  const existingModal = document.getElementById('mot-history-modal');
+  if (existingModal) {
+    existingModal.remove();
+  }
+
+  // Create modal HTML
+  const modalHTML = `
+    <div id="mot-history-modal" class="modal-backdrop">
+      <div class="modal" style="max-width: 800px;">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <i class="fas fa-history"></i>
+            MOT History - ${registration}
+          </h3>
+          <button class="modal-close" onclick="closeMOTHistoryModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          ${isLoading ? generateLoadingContent() :
+            errorMessage && !motData ? generateErrorContent(errorMessage) :
+            generateMOTHistoryContent(motData, errorMessage)}
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" onclick="closeMOTHistoryModal()">
+            Close
+          </button>
+          ${!isLoading && !errorMessage ? `
+            <button class="btn btn-primary" onclick="printMOTHistory('${registration}')">
+              <i class="fas fa-print"></i>
+              Print History
+            </button>
+          ` : ''}
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Add modal to page
+  document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+  // Add click outside to close
+  const modal = document.getElementById('mot-history-modal');
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeMOTHistoryModal();
+    }
+  });
+}
+
+/**
+ * Generate loading content for MOT history modal
+ */
+function generateLoadingContent() {
+  return `
+    <div class="empty-state">
+      <div class="empty-state-content">
+        <i class="fas fa-spinner fa-spin"></i>
+        <h4>Loading MOT History</h4>
+        <p>Fetching data from DVSA database...</p>
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Generate error content for MOT history modal
+ */
+function generateErrorContent(errorMessage) {
+  return `
+    <div class="empty-state">
+      <div class="empty-state-content">
+        <i class="fas fa-exclamation-triangle" style="color: var(--error-500);"></i>
+        <h4>Error Loading MOT History</h4>
+        <p>${errorMessage}</p>
+        <button class="btn btn-primary" onclick="closeMOTHistoryModal()">
+          <i class="fas fa-times"></i>
+          Close
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Generate MOT history content
+ */
+function generateMOTHistoryContent(motData, warningMessage) {
+  if (!motData || !motData.motTests || motData.motTests.length === 0) {
+    return `
+      <div class="empty-state">
+        <div class="empty-state-content">
+          <i class="fas fa-car"></i>
+          <h4>No MOT History Found</h4>
+          <p>No MOT test records found for this vehicle.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  const warningBanner = warningMessage ? `
+    <div class="alert alert-warning" style="margin-bottom: var(--space-4);">
+      <i class="fas fa-info-circle"></i>
+      ${warningMessage}
+    </div>
+  ` : '';
+
+  // Sort MOT tests by date (newest first)
+  const sortedTests = motData.motTests.sort((a, b) =>
+    new Date(b.completedDate) - new Date(a.completedDate)
+  );
+
+  const vehicleInfo = `
+    <div class="vehicle-info-card">
+      <h4>Vehicle Information</h4>
+      <div class="vehicle-details">
+        <div class="detail-item">
+          <span class="label">Registration:</span>
+          <span class="value">${motData.registration || 'N/A'}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Make:</span>
+          <span class="value">${motData.make || 'N/A'}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Model:</span>
+          <span class="value">${motData.model || 'N/A'}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Colour:</span>
+          <span class="value">${motData.primaryColour || 'N/A'}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Fuel Type:</span>
+          <span class="value">${motData.fuelType || 'N/A'}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Engine Size:</span>
+          <span class="value">${motData.engineSize || 'N/A'}cc</span>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const motHistory = `
+    <div class="mot-history-timeline">
+      <h4>MOT Test History (${sortedTests.length} tests)</h4>
+      ${sortedTests.map((test, index) => generateMOTTestCard(test, index === 0)).join('')}
+    </div>
+  `;
+
+  return warningBanner + vehicleInfo + motHistory;
+}
+
+/**
+ * Generate individual MOT test card
+ */
+function generateMOTTestCard(test, isLatest) {
+  const testDate = new Date(test.completedDate).toLocaleDateString('en-GB');
+  const expiryDate = test.expiryDate ? new Date(test.expiryDate).toLocaleDateString('en-GB') : 'N/A';
+
+  const statusClass = test.testResult === 'PASSED' ? 'success' :
+                     test.testResult === 'FAILED' ? 'error' : 'warning';
+
+  const statusIcon = test.testResult === 'PASSED' ? 'check-circle' :
+                    test.testResult === 'FAILED' ? 'times-circle' : 'exclamation-triangle';
+
+  return `
+    <div class="mot-test-card ${isLatest ? 'latest' : ''}">
+      <div class="test-header">
+        <div class="test-date">
+          <i class="fas fa-calendar"></i>
+          ${testDate}
+          ${isLatest ? '<span class="latest-badge">Latest</span>' : ''}
+        </div>
+        <div class="test-result">
+          <span class="status-badge status-${statusClass}">
+            <i class="fas fa-${statusIcon}"></i>
+            ${test.testResult}
+          </span>
+        </div>
+      </div>
+
+      <div class="test-details">
+        <div class="detail-row">
+          <span class="label">Test Number:</span>
+          <span class="value">${test.motTestNumber || 'N/A'}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Expiry Date:</span>
+          <span class="value">${expiryDate}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Odometer:</span>
+          <span class="value">${test.odometerValue ? test.odometerValue.toLocaleString() : 'N/A'} ${test.odometerUnit || 'miles'}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Test Station:</span>
+          <span class="value">${test.testStationName || 'N/A'}</span>
+        </div>
+      </div>
+
+      ${test.rfrAndComments && test.rfrAndComments.length > 0 ? `
+        <div class="test-issues">
+          <h5>Issues & Comments</h5>
+          ${test.rfrAndComments.map(item => `
+            <div class="issue-item ${item.type.toLowerCase()}">
+              <div class="issue-type">${item.type}</div>
+              <div class="issue-text">${item.text}</div>
+              ${item.dangerous ? '<span class="dangerous-badge">DANGEROUS</span>' : ''}
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+/**
+ * Close MOT history modal
+ */
+function closeMOTHistoryModal() {
+  const modal = document.getElementById('mot-history-modal');
+  if (modal) {
+    modal.remove();
+  }
+}
+
+/**
+ * Print MOT history
+ */
+function printMOTHistory(registration) {
+  console.log(`🖨️ Printing MOT history for: ${registration}`);
+
+  const modalContent = document.querySelector('#mot-history-modal .modal-body');
+  if (!modalContent) return;
+
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>MOT History - ${registration}</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          .vehicle-info-card, .mot-test-card { margin-bottom: 20px; border: 1px solid #ddd; padding: 15px; }
+          .status-badge { padding: 5px 10px; border-radius: 5px; }
+          .status-success { background: #d4edda; color: #155724; }
+          .status-error { background: #f8d7da; color: #721c24; }
+          .status-warning { background: #fff3cd; color: #856404; }
+          .latest-badge { background: #007bff; color: white; padding: 2px 8px; border-radius: 3px; font-size: 12px; }
+          .dangerous-badge { background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; }
+          @media print { body { margin: 0; } }
+        </style>
+      </head>
+      <body>
+        <h1>MOT History Report - ${registration}</h1>
+        <p>Generated on: ${new Date().toLocaleDateString('en-GB')}</p>
+        ${modalContent.innerHTML}
+      </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+  printWindow.print();
+}
+
+/**
+ * Send single MOT reminder
+ */
+function sendSingleReminder(registration) {
+  console.log(`📱 Sending MOT reminder for: ${registration}`);
+  // TODO: Implement single SMS sending
+  alert(`Sending MOT reminder for ${registration}\n\nThis feature will be implemented next.`);
 }
 
 /**
@@ -1424,7 +2487,7 @@ window.emergencyShowPage = function (pageId) {
   console.log("🚨 Emergency navigation to:", pageId);
 
   // Hide all pages
-  document.querySelectorAll(".page").forEach((page) => {
+  document.querySelectorAll(".page, .professional-page").forEach((page) => {
     page.classList.remove("active");
   });
 
@@ -1514,6 +2577,26 @@ if (typeof module !== "undefined" && module.exports) {
     initializeNavigation,
   };
 }
+
+// Google Drive sync function
+window.showGoogleDriveSync = function() {
+  console.log("📤 Opening Google Drive sync within upload page...");
+
+  // Navigate to upload page first
+  showPage('upload');
+
+  // Then switch to Google Drive tab after a short delay
+  setTimeout(() => {
+    const googleDriveTab = document.getElementById('google-drive-tab');
+    if (googleDriveTab) {
+      const tab = new bootstrap.Tab(googleDriveTab);
+      tab.show();
+      console.log("✅ Switched to Google Drive tab");
+    } else {
+      console.warn("⚠️ Google Drive tab not found, loading upload page");
+    }
+  }, 500);
+};
 
 // Make key functions globally available
 window.loadDashboardContent = loadDashboardContent;

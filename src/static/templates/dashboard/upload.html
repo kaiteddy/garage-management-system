@@ -1,0 +1,406 @@
+<!-- Data Upload Page - Integrated into Main System -->
+<div class="page-header">
+  <div class="page-title">
+    <h1><i class="fas fa-upload"></i> Data Upload & Management</h1>
+    <p>Import data from CSV files or sync with Google Drive</p>
+  </div>
+  <div class="page-actions">
+    <button class="btn btn-outline-primary" onclick="refreshUploadStats()">
+      <i class="fas fa-refresh"></i> Refresh
+    </button>
+  </div>
+</div>
+
+<div class="page-content">
+  <!-- Upload Methods Tabs -->
+  <div class="card">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs" id="uploadTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="csv-upload-tab" data-bs-toggle="tab" data-bs-target="#csv-upload" type="button" role="tab">
+            <i class="fas fa-file-csv"></i> CSV Upload
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="google-drive-tab" data-bs-toggle="tab" data-bs-target="#google-drive" type="button" role="tab">
+            <i class="fab fa-google-drive"></i> Google Drive Sync
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="bulk-operations-tab" data-bs-toggle="tab" data-bs-target="#bulk-operations" type="button" role="tab">
+            <i class="fas fa-tasks"></i> Bulk Operations
+          </button>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="card-body">
+      <div class="tab-content" id="uploadTabContent">
+        <!-- CSV Upload Tab -->
+        <div class="tab-pane fade show active" id="csv-upload" role="tabpanel">
+          <div class="row">
+            <div class="col-lg-8">
+              <!-- Upload Form -->
+              <form id="integratedUploadForm" enctype="multipart/form-data">
+                <div class="mb-4">
+                  <label for="dataType" class="form-label">Data Type</label>
+                  <select class="form-select" id="dataType" name="data_type" required>
+                    <option value="">Select data type to upload</option>
+                    <option value="customers">Customers</option>
+                    <option value="vehicles">Vehicles</option>
+                    <option value="jobs">Jobs</option>
+                    <option value="parts">Parts</option>
+                    <option value="invoices">Invoices</option>
+                    <option value="mot_vehicles">MOT Vehicles</option>
+                  </select>
+                </div>
+
+                <div class="upload-zone" id="integratedUploadZone">
+                  <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                  </div>
+                  <h5>Drag & Drop your CSV file here</h5>
+                  <p class="text-muted">or click to browse files</p>
+                  <input type="file" id="integratedFileInput" name="file" accept=".csv,.xlsx,.xls" style="display: none" />
+                  <button type="button" class="btn btn-primary" id="integratedBrowseBtn">
+                    <i class="fas fa-folder-open"></i> Browse Files
+                  </button>
+                </div>
+
+                <div class="row mt-3">
+                  <div class="col-md-6">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="integratedClearExisting" name="clear_existing">
+                      <label class="form-check-label" for="integratedClearExisting">
+                        Clear existing data before import
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="integratedUpdateDuplicates" name="update_duplicates" checked>
+                      <label class="form-check-label" for="integratedUpdateDuplicates">
+                        Update existing records
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="progress-container mt-3" style="display: none;">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                  </div>
+                  <p class="text-center mt-2">Uploading and processing...</p>
+                </div>
+
+                <div class="text-center mt-3">
+                  <button type="submit" class="btn btn-success btn-lg" id="integratedUploadBtn" disabled>
+                    <i class="fas fa-upload"></i> Upload Data
+                  </button>
+                </div>
+              </form>
+
+              <!-- Results -->
+              <div class="results-container mt-4" id="integratedResultsContainer" style="display: none;">
+                <div class="alert" id="integratedResultsAlert"></div>
+                <div id="integratedResultsDetails"></div>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <!-- Quick Templates -->
+              <div class="card">
+                <div class="card-header">
+                  <h6><i class="fas fa-download"></i> Download Templates</h6>
+                </div>
+                <div class="card-body">
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-outline-primary btn-sm" onclick="downloadTemplate('customers')">
+                      <i class="fas fa-users"></i> Customers Template
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="downloadTemplate('vehicles')">
+                      <i class="fas fa-car"></i> Vehicles Template
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="downloadTemplate('jobs')">
+                      <i class="fas fa-wrench"></i> Jobs Template
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="downloadTemplate('parts')">
+                      <i class="fas fa-cogs"></i> Parts Template
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" onclick="downloadTemplate('mot_vehicles')">
+                      <i class="fas fa-calendar-check"></i> MOT Vehicles Template
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Upload Tips -->
+              <div class="card mt-3">
+                <div class="card-header">
+                  <h6><i class="fas fa-lightbulb"></i> Upload Tips</h6>
+                </div>
+                <div class="card-body">
+                  <ul class="list-unstyled small">
+                    <li><i class="fas fa-check text-success"></i> Use provided templates for best results</li>
+                    <li><i class="fas fa-check text-success"></i> CSV files should have headers in first row</li>
+                    <li><i class="fas fa-check text-success"></i> Date format: YYYY-MM-DD</li>
+                    <li><i class="fas fa-check text-success"></i> Maximum file size: 10MB</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Google Drive Tab -->
+        <div class="tab-pane fade" id="google-drive" role="tabpanel">
+          <div id="integratedGoogleDriveContent">
+            <div class="text-center">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2">Loading Google Drive integration...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bulk Operations Tab -->
+        <div class="tab-pane fade" id="bulk-operations" role="tabpanel">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h6><i class="fas fa-database"></i> Data Management</h6>
+                </div>
+                <div class="card-body">
+                  <button class="btn btn-warning w-100 mb-2" onclick="confirmBulkOperation('backup')">
+                    <i class="fas fa-download"></i> Backup All Data
+                  </button>
+                  <button class="btn btn-info w-100 mb-2" onclick="confirmBulkOperation('export')">
+                    <i class="fas fa-file-export"></i> Export to CSV
+                  </button>
+                  <button class="btn btn-danger w-100" onclick="confirmBulkOperation('clear')">
+                    <i class="fas fa-trash"></i> Clear All Data
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h6><i class="fas fa-sync"></i> Synchronization</h6>
+                </div>
+                <div class="card-body">
+                  <button class="btn btn-primary w-100 mb-2" onclick="syncWithGoogleDrive()">
+                    <i class="fab fa-google-drive"></i> Sync with Google Drive
+                  </button>
+                  <button class="btn btn-secondary w-100 mb-2" onclick="validateData()">
+                    <i class="fas fa-check-circle"></i> Validate Data Integrity
+                  </button>
+                  <button class="btn btn-success w-100" onclick="optimizeDatabase()">
+                    <i class="fas fa-database"></i> Optimize Database
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Database Statistics -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h6><i class="fas fa-chart-bar"></i> Database Statistics</h6>
+        </div>
+        <div class="card-body">
+          <div class="row" id="integratedStatsGrid">
+            <!-- Stats will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.upload-zone {
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.upload-zone:hover {
+  border-color: #0d6efd;
+  background-color: #f8f9fa;
+}
+
+.upload-zone.dragover {
+  border-color: #0d6efd;
+  background-color: #e7f3ff;
+}
+
+.upload-icon {
+  font-size: 3rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+}
+
+.progress-container {
+  margin-top: 1rem;
+}
+
+.results-container {
+  margin-top: 1rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #0d6efd;
+}
+
+.stat-label {
+  color: #6c757d;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+</style>
+
+<script>
+// Immediate initialization for upload functionality
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('🔧 Initializing upload page functionality...');
+
+  // Set up browse button immediately
+  const browseBtn = document.getElementById('integratedBrowseBtn');
+  const fileInput = document.getElementById('integratedFileInput');
+  const uploadZone = document.getElementById('integratedUploadZone');
+
+  if (browseBtn && fileInput) {
+    browseBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('📁 Browse button clicked - opening file dialog');
+      fileInput.click();
+    });
+    console.log('✅ Browse button connected');
+  }
+
+  if (fileInput) {
+    fileInput.addEventListener('change', function(e) {
+      if (e.target.files.length > 0) {
+        const file = e.target.files[0];
+        console.log('📁 File selected:', file.name);
+
+        // Update upload zone to show selected file
+        if (uploadZone) {
+          uploadZone.innerHTML = `
+            <div class="upload-icon">
+              <i class="fas fa-file-csv text-success"></i>
+            </div>
+            <h5>${file.name}</h5>
+            <p class="text-muted">File size: ${formatFileSize(file.size)}</p>
+            <button type="button" class="btn btn-outline-secondary" onclick="clearFileSelection()">
+              <i class="fas fa-times"></i> Clear
+            </button>
+          `;
+        }
+
+        // Enable upload button
+        const uploadBtn = document.getElementById('integratedUploadBtn');
+        const dataType = document.getElementById('dataType');
+        if (uploadBtn && dataType && dataType.value) {
+          uploadBtn.disabled = false;
+        }
+      }
+    });
+    console.log('✅ File input connected');
+  }
+
+  if (uploadZone) {
+    uploadZone.addEventListener('click', function() {
+      if (fileInput) {
+        fileInput.click();
+      }
+    });
+    console.log('✅ Upload zone click connected');
+  }
+
+  // Data type selection
+  const dataType = document.getElementById('dataType');
+  if (dataType) {
+    dataType.addEventListener('change', function() {
+      const uploadBtn = document.getElementById('integratedUploadBtn');
+      const hasFile = fileInput && fileInput.files.length > 0;
+      const hasDataType = dataType.value !== '';
+
+      if (uploadBtn) {
+        uploadBtn.disabled = !(hasFile && hasDataType);
+      }
+    });
+    console.log('✅ Data type selection connected');
+  }
+});
+
+// Helper functions
+function formatFileSize(bytes) {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+function clearFileSelection() {
+  const fileInput = document.getElementById('integratedFileInput');
+  const uploadZone = document.getElementById('integratedUploadZone');
+  const uploadBtn = document.getElementById('integratedUploadBtn');
+
+  if (fileInput) fileInput.value = '';
+  if (uploadBtn) uploadBtn.disabled = true;
+
+  if (uploadZone) {
+    uploadZone.innerHTML = `
+      <div class="upload-icon">
+        <i class="fas fa-cloud-upload-alt"></i>
+      </div>
+      <h5>Drag & Drop your CSV file here</h5>
+      <p class="text-muted">or click to browse files</p>
+      <button type="button" class="btn btn-primary" id="integratedBrowseBtn">
+        <i class="fas fa-folder-open"></i> Browse Files
+      </button>
+    `;
+
+    // Re-attach browse button event
+    const newBrowseBtn = document.getElementById('integratedBrowseBtn');
+    if (newBrowseBtn && fileInput) {
+      newBrowseBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        fileInput.click();
+      });
+    }
+  }
+}
+</script>

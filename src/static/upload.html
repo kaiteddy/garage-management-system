@@ -170,10 +170,28 @@
 
       <!-- Upload Section -->
       <div class="upload-card">
-        <h3><i class="fas fa-file-csv"></i> Upload CSV Files</h3>
-        <p class="text-muted">
-          Select the type of data you're uploading and choose your CSV file
-        </p>
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-tabs mb-4" id="uploadTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="csv-upload-tab" data-bs-toggle="tab" data-bs-target="#csv-upload" type="button" role="tab">
+              <i class="fas fa-file-csv"></i> CSV Upload
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="google-drive-tab" data-bs-toggle="tab" data-bs-target="#google-drive" type="button" role="tab">
+              <i class="fab fa-google-drive"></i> Google Drive
+            </button>
+          </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="uploadTabContent">
+          <!-- CSV Upload Tab -->
+          <div class="tab-pane fade show active" id="csv-upload" role="tabpanel">
+            <h3><i class="fas fa-file-csv"></i> Upload CSV Files</h3>
+            <p class="text-muted">
+              Select the type of data you're uploading and choose your CSV file
+            </p>
 
         <form id="uploadForm" enctype="multipart/form-data">
           <div class="table-selector">
@@ -218,14 +236,14 @@
               <button type="button" class="btn btn-success" id="googleDriveBtn">
                 <i class="fab fa-google-drive"></i> Google Drive
               </button>
-              <a
-                href="/google-drive"
-                target="_blank"
+              <button
+                type="button"
                 class="btn btn-outline-success"
-                title="Open Google Drive in new tab"
+                title="Switch to Google Drive tab"
+                onclick="document.getElementById('google-drive-tab').click()"
               >
                 <i class="fas fa-external-link-alt"></i>
-              </a>
+              </button>
             </div>
           </div>
 
@@ -282,10 +300,28 @@
           </div>
         </form>
 
-        <div class="results-container" id="resultsContainer">
-          <div class="alert" id="resultsAlert"></div>
-          <div id="resultsDetails"></div>
+            <div class="results-container" id="resultsContainer">
+              <div class="alert" id="resultsAlert"></div>
+              <div id="resultsDetails"></div>
+            </div>
+          </div>
+          <!-- End CSV Upload Tab -->
+
+          <!-- Google Drive Tab -->
+          <div class="tab-pane fade" id="google-drive" role="tabpanel">
+            <div id="googleDriveContent">
+              <!-- Google Drive content will be loaded here -->
+              <div class="text-center">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Loading Google Drive integration...</p>
+              </div>
+            </div>
+          </div>
+          <!-- End Google Drive Tab -->
         </div>
+        <!-- End Tab Content -->
       </div>
 
       <!-- Templates Section -->
@@ -303,7 +339,7 @@
             <h5>Customers</h5>
             <p class="text-muted">Customer information and contact details</p>
             <a
-              href="/upload/templates/customers"
+              href="/api/templates/customers"
               class="btn btn-outline-primary btn-sm"
             >
               <i class="fas fa-download"></i> Download
@@ -317,7 +353,7 @@
             <h5>Vehicles</h5>
             <p class="text-muted">Vehicle registrations and details</p>
             <a
-              href="/upload/templates/vehicles"
+              href="/api/templates/vehicles"
               class="btn btn-outline-primary btn-sm"
             >
               <i class="fas fa-download"></i> Download
@@ -331,7 +367,7 @@
             <h5>Jobs</h5>
             <p class="text-muted">Work orders and job records</p>
             <a
-              href="/upload/templates/jobs"
+              href="/api/templates/jobs"
               class="btn btn-outline-primary btn-sm"
             >
               <i class="fas fa-download"></i> Download
@@ -345,7 +381,7 @@
             <h5>Invoices</h5>
             <p class="text-muted">Invoice and billing records</p>
             <a
-              href="/upload/templates/invoices"
+              href="/api/templates/invoices"
               class="btn btn-outline-primary btn-sm"
             >
               <i class="fas fa-download"></i> Download
@@ -359,7 +395,7 @@
             <h5>Parts</h5>
             <p class="text-muted">Parts inventory and stock</p>
             <a
-              href="/upload/templates/parts"
+              href="/api/templates/parts"
               class="btn btn-outline-primary btn-sm"
             >
               <i class="fas fa-download"></i> Download
@@ -373,7 +409,7 @@
             <h5>Suppliers</h5>
             <p class="text-muted">Supplier contact information</p>
             <a
-              href="/upload/templates/suppliers"
+              href="/api/templates/suppliers"
               class="btn btn-outline-primary btn-sm"
             >
               <i class="fas fa-download"></i> Download
@@ -387,7 +423,7 @@
             <h5>Expenses</h5>
             <p class="text-muted">Business expenses and costs</p>
             <a
-              href="/upload/templates/expenses"
+              href="/api/templates/expenses"
               class="btn btn-outline-primary btn-sm"
             >
               <i class="fas fa-download"></i> Download
@@ -401,7 +437,7 @@
             <h5>Document Extras</h5>
             <p class="text-muted">Job descriptions and service notes</p>
             <a
-              href="/upload/templates/document_extras"
+              href="/api/templates/document_extras"
               class="btn btn-outline-primary btn-sm"
             >
               <i class="fas fa-download"></i> Download
@@ -415,7 +451,7 @@
             <h5>Documents</h5>
             <p class="text-muted">Complete job, invoice & vehicle data</p>
             <a
-              href="/upload/templates/documents"
+              href="/api/templates/documents"
               class="btn btn-outline-primary btn-sm"
             >
               <i class="fas fa-download"></i> Download
@@ -429,7 +465,7 @@
             <h5>Receipts</h5>
             <p class="text-muted">Payment records and transactions</p>
             <a
-              href="/upload/templates/receipts"
+              href="/api/templates/receipts"
               class="btn btn-outline-primary btn-sm"
             >
               <i class="fas fa-download"></i> Download
@@ -450,6 +486,11 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Debug System -->
+    <script src="/js/debug-system.js"></script>
+    <script src="/js/garage-issue-tracker.js"></script>
+
     <script>
       // Upload functionality
       const uploadZone = document.getElementById("uploadZone");
@@ -488,8 +529,14 @@
       if (googleDriveBtn) {
         googleDriveBtn.addEventListener("click", (e) => {
           e.stopPropagation();
-          console.log("Google Drive button clicked");
-          openGoogleDriveInterface();
+          console.log("Google Drive button clicked - switching to Google Drive tab");
+
+          // Switch to Google Drive tab
+          const googleDriveTab = document.getElementById('google-drive-tab');
+          if (googleDriveTab) {
+            const tab = new bootstrap.Tab(googleDriveTab);
+            tab.show();
+          }
         });
         console.log("Google Drive button event listener added");
       } else {
@@ -601,7 +648,7 @@
         resultsContainer.style.display = "none";
 
         try {
-          const response = await fetch("/upload/csv", {
+          const response = await fetch("/api/csv", {
             method: "POST",
             body: formData,
           });
@@ -659,7 +706,7 @@
       // Load statistics
       async function loadStats() {
         try {
-          const response = await fetch("/upload/status");
+          const response = await fetch("/api/status");
           const result = await response.json();
 
           if (result.success) {
@@ -683,52 +730,537 @@
       }
 
       // Google Drive integration
-      function openGoogleDriveInterface() {
-        console.log("Opening Google Drive interface...");
+      async function loadGoogleDriveContent() {
+        console.log("Loading Google Drive content...");
 
-        // Add visual feedback
-        const btn = document.getElementById("googleDriveBtn");
-        if (btn) {
-          btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Opening...';
-          btn.disabled = true;
-        }
+        const contentDiv = document.getElementById("googleDriveContent");
+        if (!contentDiv) return;
 
-        // Try to open in a new window first with proper positioning
-        const googleDriveWindow = Utils.openCenteredWindow(
-          "/google-drive/",
-          "googleDrive",
-          1200,
-          800,
-        );
+        try {
+          // Show loading state
+          contentDiv.innerHTML = `
+            <div class="text-center">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2">Loading Google Drive integration...</p>
+            </div>
+          `;
 
-        // Reset button after a short delay
-        setTimeout(() => {
-          if (btn) {
-            btn.innerHTML = '<i class="fab fa-google-drive"></i> Google Drive';
-            btn.disabled = false;
+          // Fetch Google Drive status first
+          const statusResponse = await fetch('/google-drive/status');
+          const status = await statusResponse.json();
+
+          // Create embedded Google Drive interface
+          const connected = status.status.connected;
+
+          contentDiv.innerHTML = `
+            <div class="google-drive-integration">
+              <div class="row">
+                <div class="col-12">
+                  <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                      <h5 class="mb-0">
+                        <i class="fab fa-google-drive"></i> Google Drive Integration
+                      </h5>
+                      <small>Automatic synchronization with Google Drive folders for real-time data updates</small>
+                    </div>
+                    <div class="card-body">
+                      <div id="googleDriveStatus">
+                        ${connected ?
+                          '<div class="alert alert-success"><i class="fas fa-check-circle"></i> Connected to Google Drive</div>' :
+                          '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Setup Required - You need to create Google Cloud credentials first.</div>'
+                        }
+                      </div>
+
+                      ${!connected ? `
+                        <div class="setup-section">
+                          <h6><i class="fas fa-cloud-upload-alt"></i> Setup Instructions</h6>
+                          <ol class="mb-3">
+                            <li>Create Google Cloud credentials (JSON file)</li>
+                            <li>Upload credentials using the form below</li>
+                            <li>Authorize access to your Google Drive</li>
+                            <li>Configure folder mappings for automatic sync</li>
+                          </ol>
+
+                          <form id="embeddedCredentialsForm" class="mt-3">
+                            <div class="mb-3">
+                              <label for="embeddedCredentialsFile" class="form-label">Google Cloud Credentials (JSON)</label>
+                              <input type="file" class="form-control" id="embeddedCredentialsFile" accept=".json" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                              <i class="fas fa-upload"></i> Upload Credentials
+                            </button>
+                          </form>
+                        </div>
+                      ` : `
+                        <div class="connected-section">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="card">
+                                <div class="card-header">
+                                  <h6><i class="fas fa-folder"></i> Folder Configuration</h6>
+                                </div>
+                                <div class="card-body">
+                                  <p>Configure which Google Drive folders contain your data files.</p>
+                                  <button class="btn btn-primary" onclick="showFolderConfig()">
+                                    <i class="fas fa-cog"></i> Configure Folders
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="card">
+                                <div class="card-header">
+                                  <h6><i class="fas fa-sync"></i> Synchronization</h6>
+                                </div>
+                                <div class="card-body">
+                                  <p>Manually sync data or enable automatic synchronization.</p>
+                                  <button class="btn btn-success" onclick="syncGoogleDriveNow()">
+                                    <i class="fas fa-sync"></i> Sync Now
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      `}
+
+                      <div class="row mt-3">
+                        <div class="col-md-6">
+                          <button class="btn btn-outline-primary w-100" onclick="checkGoogleDriveStatus()">
+                            <i class="fas fa-refresh"></i> Refresh Status
+                          </button>
+                        </div>
+                        <div class="col-md-6">
+                          <button class="btn btn-outline-secondary w-100" onclick="showGoogleDriveHelp()">
+                            <i class="fas fa-question-circle"></i> Help & Documentation
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+
+          // Initialize embedded form if present
+          const embeddedForm = document.getElementById('embeddedCredentialsForm');
+          if (embeddedForm) {
+            embeddedForm.addEventListener('submit', handleEmbeddedCredentialsUpload);
           }
-        }, 2000);
-
-        if (
-          !googleDriveWindow ||
-          googleDriveWindow.closed ||
-          typeof googleDriveWindow.closed == "undefined"
-        ) {
-          // Popup was blocked, open in same tab
-          if (
-            confirm(
-              "Popup blocked. Open Google Drive interface in this tab? (You can use the back button to return)",
-            )
-          ) {
-            window.location.href = "/google-drive/";
-          }
-        } else {
-          console.log("Google Drive window opened successfully");
+        } catch (error) {
+          console.error('Failed to load Google Drive content:', error);
+          contentDiv.innerHTML = `
+            <div class="alert alert-warning">
+              <h5><i class="fas fa-exclamation-triangle"></i> Google Drive Integration</h5>
+              <p>Unable to load Google Drive interface. Please try refreshing the page.</p>
+              <button class="btn btn-primary" onclick="loadGoogleDriveContent()">
+                <i class="fas fa-refresh"></i> Retry
+              </button>
+            </div>
+          `;
         }
       }
 
+      // Google Drive helper functions
+      async function setupGoogleDrive() {
+        console.log("Setting up Google Drive credentials...");
+
+        const contentDiv = document.getElementById("googleDriveContent");
+        if (!contentDiv) return;
+
+        try {
+          // Show loading state
+          contentDiv.innerHTML = `
+            <div class="text-center">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2">Loading Google Drive setup...</p>
+            </div>
+          `;
+
+          // Fetch the full Google Drive page content
+          const response = await fetch('/google-drive/');
+          const html = await response.text();
+
+          // Extract the main content
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+
+          // Get the main container content
+          const mainContent = doc.querySelector('.container') || doc.querySelector('main') || doc.body;
+
+          if (mainContent) {
+            // Remove any "Back to Dashboard" links and update them
+            const backLinks = mainContent.querySelectorAll('a[href*="dashboard"], a[href="/"]');
+            backLinks.forEach(link => {
+              link.onclick = function(e) {
+                e.preventDefault();
+                loadGoogleDriveContent(); // Go back to status view
+              };
+              link.innerHTML = '<i class="fas fa-arrow-left"></i> Back to Upload';
+            });
+
+            contentDiv.innerHTML = mainContent.innerHTML;
+
+            // Initialize any scripts that might be needed
+            initializeGoogleDriveScripts();
+          } else {
+            throw new Error('Could not find main content');
+          }
+        } catch (error) {
+          console.error('Failed to load Google Drive setup:', error);
+          contentDiv.innerHTML = `
+            <div class="alert alert-danger">
+              <h5><i class="fas fa-exclamation-triangle"></i> Setup Error</h5>
+              <p>Unable to load Google Drive setup interface. Please try again.</p>
+              <button class="btn btn-primary" onclick="setupGoogleDrive()">
+                <i class="fas fa-refresh"></i> Retry Setup
+              </button>
+              <button class="btn btn-secondary ms-2" onclick="loadGoogleDriveContent()">
+                <i class="fas fa-arrow-left"></i> Back
+              </button>
+            </div>
+          `;
+        }
+      }
+
+      // Initialize Google Drive scripts and event handlers
+      function initializeGoogleDriveScripts() {
+        // Re-bind any form submissions to use AJAX instead of page redirects
+        const forms = document.querySelectorAll('#googleDriveContent form');
+        forms.forEach(form => {
+          form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const action = form.action || form.getAttribute('action');
+
+            try {
+              const response = await fetch(action, {
+                method: 'POST',
+                body: formData
+              });
+
+              const result = await response.json();
+
+              if (result.success) {
+                // Refresh the Google Drive content to show updated status
+                await loadGoogleDriveContent();
+              } else {
+                alert('Error: ' + (result.error || 'Unknown error occurred'));
+              }
+            } catch (error) {
+              console.error('Form submission error:', error);
+              alert('Error submitting form. Please try again.');
+            }
+          });
+        });
+
+        // Re-bind any buttons that might open new windows
+        const externalLinks = document.querySelectorAll('#googleDriveContent a[target="_blank"]');
+        externalLinks.forEach(link => {
+          link.removeAttribute('target');
+          link.onclick = function(e) {
+            e.preventDefault();
+            // Handle the action within the current interface
+            const href = link.href;
+            if (href.includes('google-drive')) {
+              // Load the content inline
+              fetch(href)
+                .then(response => response.text())
+                .then(html => {
+                  const parser = new DOMParser();
+                  const doc = parser.parseFromString(html, 'text/html');
+                  const content = doc.querySelector('.container') || doc.body;
+                  document.getElementById('googleDriveContent').innerHTML = content.innerHTML;
+                  initializeGoogleDriveScripts();
+                })
+                .catch(error => {
+                  console.error('Error loading content:', error);
+                });
+            }
+          };
+        });
+      }
+
+      async function checkGoogleDriveStatus() {
+        await loadGoogleDriveContent();
+      }
+
+      // Embedded Google Drive helper functions
+      async function handleEmbeddedCredentialsUpload(e) {
+        e.preventDefault();
+
+        const fileInput = document.getElementById('embeddedCredentialsFile');
+        const file = fileInput.files[0];
+
+        if (!file) {
+          alert('Please select a credentials file');
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('credentials', file);
+
+        try {
+          const response = await fetch('/google-drive/upload-credentials', {
+            method: 'POST',
+            body: formData
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            alert('Credentials uploaded successfully! Refreshing status...');
+            await loadGoogleDriveContent();
+          } else {
+            alert('Error: ' + (result.error || 'Unknown error'));
+          }
+        } catch (error) {
+          console.error('Upload error:', error);
+          alert('Error uploading credentials. Please try again.');
+        }
+      }
+
+      function showFolderConfig() {
+        const contentDiv = document.getElementById("googleDriveContent");
+        contentDiv.innerHTML = `
+          <div class="folder-config">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5><i class="fas fa-folder"></i> Folder Configuration</h5>
+              <button class="btn btn-secondary" onclick="loadGoogleDriveContent()">
+                <i class="fas fa-arrow-left"></i> Back
+              </button>
+            </div>
+
+            <div class="alert alert-info">
+              <i class="fas fa-info-circle"></i> Configure which Google Drive folders contain your data files for automatic synchronization.
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h6>Available Data Types</h6>
+                  </div>
+                  <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">Customers</li>
+                      <li class="list-group-item">Vehicles</li>
+                      <li class="list-group-item">Jobs</li>
+                      <li class="list-group-item">Invoices</li>
+                      <li class="list-group-item">Parts</li>
+                      <li class="list-group-item">MOT Records</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h6>Quick Setup</h6>
+                  </div>
+                  <div class="card-body">
+                    <p>Use smart mapping to automatically detect and configure folders.</p>
+                    <button class="btn btn-primary w-100" onclick="startSmartMapping()">
+                      <i class="fas fa-magic"></i> Smart Setup
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function syncGoogleDriveNow() {
+        alert('Starting manual synchronization...\n\nThis would sync all configured Google Drive folders with your database.');
+      }
+
+      function showGoogleDriveHelp() {
+        const contentDiv = document.getElementById("googleDriveContent");
+        contentDiv.innerHTML = `
+          <div class="help-section">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5><i class="fas fa-question-circle"></i> Google Drive Help</h5>
+              <button class="btn btn-secondary" onclick="loadGoogleDriveContent()">
+                <i class="fas fa-arrow-left"></i> Back
+              </button>
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h6>How Google Drive Integration Works</h6>
+                  </div>
+                  <div class="card-body">
+                    <ol>
+                      <li><strong>One-time setup:</strong> Connect your Google Drive account (like signing into Gmail)</li>
+                      <li><strong>Choose folders:</strong> Tell us which Google Drive folders contain your data files</li>
+                      <li><strong>Automatic sync:</strong> We'll check for updates every 30 minutes and import new data</li>
+                    </ol>
+
+                    <div class="alert alert-success mt-3">
+                      <i class="fas fa-shield-alt"></i> <strong>Secure:</strong> We only read your files, never modify or delete them.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h6>Getting Google Cloud Credentials</h6>
+                  </div>
+                  <div class="card-body">
+                    <ol>
+                      <li>Go to Google Cloud Console</li>
+                      <li>Create a new project or select existing</li>
+                      <li>Enable Google Drive API</li>
+                      <li>Create service account credentials</li>
+                      <li>Download JSON credentials file</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h6>Supported File Types</h6>
+                  </div>
+                  <div class="card-body">
+                    <ul>
+                      <li>CSV files (.csv)</li>
+                      <li>Excel files (.xlsx, .xls)</li>
+                      <li>Text files (.txt)</li>
+                    </ul>
+                    <p class="text-muted">Files are automatically detected and categorized based on content and folder structure.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function startSmartMapping() {
+        alert('Smart mapping would analyze your Google Drive folders and automatically suggest the best configuration for your data types.');
+      }
+
+      // Tab switching functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const googleDriveTab = document.getElementById('google-drive-tab');
+        if (googleDriveTab) {
+          googleDriveTab.addEventListener('shown.bs.tab', function() {
+            loadGoogleDriveContent();
+          });
+        }
+      });
+
       // Load stats on page load
       loadStats();
+
+      // Debug commands for console
+      window.debugCommands = {
+        // Generate comprehensive report
+        report: () => {
+          console.log('🔧 GARAGE DEBUG REPORT:');
+          if (window.garageDebug) {
+            const report = window.garageDebug.generateDiagnosticReport();
+            console.table(report.summary);
+            console.log('Critical Issues:', report.criticalIssues);
+            return report;
+          }
+        },
+
+        // Test Google Drive button
+        testGoogleDrive: () => {
+          console.log('🔍 Testing Google Drive button...');
+          const btn = document.getElementById('googleDriveBtn');
+          if (btn) {
+            console.log('Button found, simulating click...');
+            btn.click();
+          } else {
+            console.error('Google Drive button not found!');
+          }
+        },
+
+        // Test tab switching
+        testTabSwitch: () => {
+          console.log('🔍 Testing tab switching...');
+          const tab = document.getElementById('google-drive-tab');
+          if (tab) {
+            console.log('Tab found, switching...');
+            const bsTab = new bootstrap.Tab(tab);
+            bsTab.show();
+          } else {
+            console.error('Google Drive tab not found!');
+          }
+        },
+
+        // Test upload form
+        testUpload: () => {
+          console.log('🔍 Testing upload form...');
+          const form = document.getElementById('uploadForm');
+          if (form) {
+            console.log('Form found, checking validation...');
+            console.log('Form action:', form.action);
+            console.log('Form method:', form.method);
+            console.log('Has file input:', !!form.querySelector('input[type="file"]'));
+          } else {
+            console.error('Upload form not found!');
+          }
+        },
+
+        // Check current state
+        checkState: () => {
+          console.log('🔍 Current page state:');
+          console.log('URL:', window.location.href);
+          console.log('Active tab:', document.querySelector('.nav-link.active')?.id);
+          console.log('Google Drive button:', !!document.getElementById('googleDriveBtn'));
+          console.log('Upload form:', !!document.getElementById('uploadForm'));
+          console.log('Bootstrap loaded:', typeof bootstrap !== 'undefined');
+          console.log('Debug system:', !!window.garageDebug);
+          console.log('Issue tracker:', !!window.garageIssueTracker);
+        },
+
+        // Export logs
+        exportLogs: () => {
+          if (window.garageDebug) {
+            window.garageDebug.exportLogs();
+          }
+          if (window.garageIssueTracker) {
+            const report = window.garageIssueTracker.generateReport();
+            const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `garage-issues-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+          }
+        }
+      };
+
+      // Show available debug commands
+      console.log('🔧 Garage Debug System loaded!');
+      console.log('Available commands:');
+      console.log('- debugCommands.report() - Generate diagnostic report');
+      console.log('- debugCommands.testGoogleDrive() - Test Google Drive button');
+      console.log('- debugCommands.testTabSwitch() - Test tab switching');
+      console.log('- debugCommands.testUpload() - Test upload form');
+      console.log('- debugCommands.checkState() - Check current state');
+      console.log('- debugCommands.exportLogs() - Export debug logs');
+      console.log('');
+      console.log('Debug panel is visible in top-right corner');
+      console.log('Issue tracker is monitoring all interactions');
     </script>
   </body>
 </html>

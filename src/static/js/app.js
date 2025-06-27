@@ -585,15 +585,99 @@ function loadReportsPage() {
   }
   console.log("Reports page loaded (placeholder)");
 }
-function loadUploadPage() {
+function loadInvoicesPage() {
   const el =
-    document.getElementById("upload-container") ||
-    document.getElementById("upload-content");
+    document.getElementById("invoices-container") ||
+    document.getElementById("invoices-content");
   if (el) {
     el.innerHTML =
-      "<div class='page-header'><h1 class='page-title'><i class='fas fa-upload'></i> Data Import</h1><p class='page-subtitle'>Upload page is under construction.</p></div>";
+      "<div class='page-header'><h1 class='page-title'><i class='fas fa-file-invoice'></i> Invoices</h1><p class='page-subtitle'>Invoices page is under construction.</p></div>";
   }
-  console.log("Upload page loaded (placeholder)");
+  console.log("Invoices page loaded (placeholder)");
+}
+async function loadUploadPage() {
+  console.log("📤 Loading integrated upload page...");
+
+  const el = document.getElementById("upload-container") ||
+             document.getElementById("upload-content") ||
+             document.getElementById("main-content");
+
+  if (!el) {
+    console.error("❌ Upload container not found");
+    return;
+  }
+
+  try {
+    // Load the integrated upload template
+    const response = await fetch('/templates/dashboard/upload.html');
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const content = await response.text();
+    el.innerHTML = content;
+
+    // Load the integrated upload JavaScript
+    if (!document.querySelector('script[src*="integrated-upload.js"]')) {
+      const script = document.createElement('script');
+      script.src = '/js/integrated-upload.js';
+      script.onload = () => {
+        console.log("✅ Integrated upload system loaded");
+        // Initialize the upload system after script loads
+        setTimeout(() => {
+          if (window.IntegratedUploadSystem) {
+            window.integratedUpload = new window.IntegratedUploadSystem();
+            console.log("✅ Integrated upload system initialized");
+          }
+        }, 100);
+      };
+      script.onerror = () => {
+        console.error("❌ Failed to load integrated upload system");
+      };
+      document.head.appendChild(script);
+    } else {
+      // If script already loaded, reinitialize
+      console.log("🔄 Reinitializing integrated upload system...");
+      if (window.IntegratedUploadSystem) {
+        window.integratedUpload = new window.IntegratedUploadSystem();
+        console.log("✅ Integrated upload system reinitialized");
+      } else if (window.integratedUpload && window.integratedUpload.init) {
+        window.integratedUpload.init();
+        console.log("✅ Existing integrated upload system reinitialized");
+      } else {
+        // Manually set up the browse button as fallback
+        setTimeout(() => {
+          const browseBtn = document.getElementById('integratedBrowseBtn');
+          const fileInput = document.getElementById('integratedFileInput');
+          if (browseBtn && fileInput) {
+            browseBtn.onclick = () => {
+              console.log("📁 Browse button clicked");
+              fileInput.click();
+            };
+            console.log("✅ Browse button manually connected");
+          }
+        }, 100);
+      }
+    }
+
+    console.log("✅ Integrated upload page loaded successfully");
+
+  } catch (error) {
+    console.error("❌ Failed to load upload page:", error);
+    el.innerHTML = `
+      <div class="page-header">
+        <h1 class="page-title"><i class="fas fa-upload"></i> Data Upload & Management</h1>
+        <p class="page-subtitle">Import data from CSV files or sync with Google Drive</p>
+      </div>
+      <div class="alert alert-danger">
+        <h6><i class="fas fa-exclamation-triangle"></i> Error Loading Upload Page</h6>
+        <p>Unable to load the upload interface. Please try refreshing the page.</p>
+        <button class="btn btn-primary" onclick="loadUploadPage()">
+          <i class="fas fa-refresh"></i> Retry
+        </button>
+      </div>
+    `;
+  }
 }
 function loadErrorMonitoringPage() {
   const el =

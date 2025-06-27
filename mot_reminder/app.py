@@ -390,46 +390,64 @@ except Exception as e:
 
 @mot_bp.route('/')
 def index():
+    """Show the integrated MOT Reminder Page"""
     try:
-        # Get vehicles from the integrated MOT service if available
-        global vehicles
-        if integrated_mot_service:
-            try:
-                # Load vehicles from database
-                db_vehicles = integrated_mot_service.get_all_mot_vehicles(
-                    include_flagged=True, include_archived=False)
-                # Update the global vehicles list with database data
-                vehicles = db_vehicles
-                print(f"Loaded {len(vehicles)} vehicles from database")
-            except Exception as e:
-                print(f"Error loading vehicles from database: {e}")
-                # Fall back to existing vehicles list
-
-        # Sort vehicles by urgency (expired first, then by days until expiry)
-        sorted_vehicles = sorted(vehicles, key=lambda v: (
-            0 if v['is_expired'] else 1,  # Expired vehicles first
-            v['days_until_expiry'] if not v['is_expired'] else -
-            v['days_until_expiry']
-        ))
-
-        # Calculate statistics
-        stats = {
-            'total': len(sorted_vehicles),
-            'expired': len([v for v in sorted_vehicles if v['is_expired']]),
-            'critical': len([v for v in sorted_vehicles if not v['is_expired'] and v['days_until_expiry'] <= 7]),
-            'due_soon': len([v for v in sorted_vehicles if not v['is_expired'] and 7 < v['days_until_expiry'] <= 30]),
-            'valid': len([v for v in sorted_vehicles if not v['is_expired'] and v['days_until_expiry'] > 30]),
-            'with_customer_data': len([v for v in sorted_vehicles if v.get('customer_name')]),
-            'with_mobile': len([v for v in sorted_vehicles if v.get('mobile_number')]),
-            'complete_data': len([v for v in sorted_vehicles if v.get('customer_name') and v.get('mobile_number')])
+        # Create a custom HTML page that loads the integrated dashboard
+        # and automatically navigates to the MOT section
+        mot_page_html = '''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOT Reminders - Garage Management System</title>
+    <script>
+        // Redirect to integrated dashboard with MOT section
+        window.location.href = '/integrated#mot-reminders';
+    </script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f8fafc;
         }
-
-        print(f"Rendering index template with {len(sorted_vehicles)} vehicles")
-        print(f"Stats: {stats}")
-        return render_template('index.html', vehicles=sorted_vehicles, stats=stats)
+        .loading {
+            text-align: center;
+            color: #64748b;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e2e8f0;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">
+        <div class="spinner"></div>
+        <p>Loading MOT Reminder Page...</p>
+        <p><small>If you are not redirected automatically, <a href="/integrated#mot-reminders">click here</a>.</small></p>
+    </div>
+</body>
+</html>
+        '''
+        return mot_page_html
     except Exception as e:
-        print(f"Error rendering template: {str(e)}")
-        return f"Error: {str(e)}", 500
+        print(f"Error loading MOT page: {e}")
+        # Fallback to old interface if redirect fails
+        return render_template('index.html', vehicles=[], stats={})
 
 
 @mot_bp.route('/test')
