@@ -4,12 +4,16 @@ Unified Garage Management System
 Single integrated application with all functionality consolidated
 """
 
+import logging
 import os
 import sys
-import logging
-from flask import Flask, render_template, send_from_directory, jsonify
+
+from flask import Flask, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
+
+from routes.mot_routes import mot_bp
+from unified_database import UnifiedDatabase
 
 # Add current directory to path for imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -57,36 +61,37 @@ except ImportError:
     google_drive_bp = None
 
 # Import integrated MOT routes
-from routes.mot_routes import mot_bp
 
 # Import unified database
-from unified_database import UnifiedDatabase
+
 
 def create_unified_app():
     """Create the unified Garage Management System application"""
-    
-    app = Flask(__name__, 
-                static_folder='static', 
+
+    app = Flask(__name__,
+                static_folder='static',
                 template_folder='templates')
-    
+
     # Configure app
-    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
+    app.config['SECRET_KEY'] = os.environ.get(
+        'SECRET_KEY', 'dev-secret-key-change-in-production')
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
-    
+
     # Enable CORS for all routes
     CORS(app)
-    
+
     # Handle proxy headers if behind reverse proxy
-    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
-    
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1,
+                            x_proto=1, x_host=1, x_prefix=1)
+
     # Configure logging
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
-    
+
     print("🚀 Initializing Unified Garage Management System...")
-    
+
     # Initialize core services
     services = {}
 
@@ -111,7 +116,7 @@ def create_unified_app():
 
     # Store services in app context
     app.services = services
-    
+
     # Register available blueprints
     print("📋 Registering application blueprints...")
 
@@ -134,7 +139,8 @@ def create_unified_app():
                 print(f"✅ {name} blueprint registered at {prefix}")
                 # Debug: Print blueprint routes
                 if hasattr(blueprint, 'deferred_functions'):
-                    print(f"   Routes: {len(blueprint.deferred_functions)} functions")
+                    print(
+                        f"   Routes: {len(blueprint.deferred_functions)} functions")
                 registered_count += 1
             except Exception as e:
                 print(f"⚠️ Failed to register {name} blueprint: {e}")
@@ -144,18 +150,18 @@ def create_unified_app():
             print(f"⚠️ {name} blueprint not available")
 
     print(f"✅ {registered_count} blueprints registered successfully")
-    
+
     # Main application routes
     @app.route('/')
     def index():
         """Main dashboard"""
         return send_from_directory('static', 'index.html')
-    
+
     @app.route('/integrated')
     def integrated_dashboard():
         """Integrated dashboard"""
         return send_from_directory('static', 'integrated_dashboard.html')
-    
+
     @app.route('/upload')
     def upload_page():
         """Upload interface"""
@@ -165,7 +171,8 @@ def create_unified_app():
     def serve_templates(filename):
         """Serve template files"""
         import os
-        template_path = os.path.join(os.path.dirname(__file__), 'static', 'templates')
+        template_path = os.path.join(
+            os.path.dirname(__file__), 'static', 'templates')
         return send_from_directory(template_path, filename)
 
     @app.route('/<path:filename>')
@@ -180,7 +187,7 @@ def create_unified_app():
     def settings_page():
         """Settings page with Data Upload tab"""
         return send_from_directory('static', 'settings.html')
-    
+
     @app.route('/health')
     def health_check():
         """Unified health check for all services"""
@@ -197,9 +204,11 @@ def create_unified_app():
                 if hasattr(service, 'health_check'):
                     health_status['services'][service_name] = service.health_check()
                 else:
-                    health_status['services'][service_name] = {'status': 'available'}
+                    health_status['services'][service_name] = {
+                        'status': 'available'}
             except Exception as e:
-                health_status['services'][service_name] = {'status': 'error', 'error': str(e)}
+                health_status['services'][service_name] = {
+                    'status': 'error', 'error': str(e)}
 
         return jsonify(health_status)
 
@@ -218,56 +227,61 @@ def create_unified_app():
             'total_routes': len(routes),
             'routes': sorted(routes, key=lambda x: x['rule'])
         })
-    
+
     # Static file serving
     @app.route('/css/<path:filename>')
     def css_files(filename):
         return send_from_directory('static/css', filename)
-    
+
     @app.route('/js/<path:filename>')
     def js_files(filename):
         return send_from_directory('static/js', filename)
-    
+
     @app.route('/components/<path:filename>')
     def component_files(filename):
         return send_from_directory('static/components', filename)
-    
+
     @app.route('/assets/<path:filename>')
     def asset_files(filename):
         return send_from_directory('static/assets', filename)
-    
+
     # Error handlers
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({'error': 'Not found'}), 404
-    
+
     @app.errorhandler(500)
     def internal_error(error):
         return jsonify({'error': 'Internal server error'}), 500
-    
+
     return app
+
 
 def main():
     """Main entry point for the unified application"""
     import argparse
-    
-    parser = argparse.ArgumentParser(description='Unified Garage Management System')
-    parser.add_argument('--port', type=int, default=8000, help='Port to run the application on')
-    parser.add_argument('--host', default='0.0.0.0', help='Host to bind the application to')
-    parser.add_argument('--debug', action='store_true', help='Enable debug mode')
-    
+
+    parser = argparse.ArgumentParser(
+        description='Unified Garage Management System')
+    parser.add_argument('--port', type=int, default=8000,
+                        help='Port to run the application on')
+    parser.add_argument('--host', default='0.0.0.0',
+                        help='Host to bind the application to')
+    parser.add_argument('--debug', action='store_true',
+                        help='Enable debug mode')
+
     args = parser.parse_args()
-    
+
     # Create the unified application
     app = create_unified_app()
-    
+
     print(f"🚀 Starting Unified Garage Management System...")
     print(f"📊 Main interface: http://{args.host}:{args.port}")
     print(f"🔧 Integrated dashboard: http://{args.host}:{args.port}/integrated")
     print(f"🚗 MOT system: http://{args.host}:{args.port}/mot")
     print(f"📤 Upload interface: http://{args.host}:{args.port}/upload")
     print(f"✅ All systems unified and ready!")
-    
+
     # Run the application
     app.run(
         host=args.host,
@@ -275,6 +289,7 @@ def main():
         debug=args.debug,
         threaded=True
     )
+
 
 if __name__ == '__main__':
     main()

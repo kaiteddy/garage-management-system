@@ -3,10 +3,11 @@
 Add sample MOT data for testing
 """
 
-import requests
 import json
-from datetime import datetime, timedelta
 import random
+from datetime import datetime, timedelta
+
+import requests
 
 # Sample vehicle data
 sample_vehicles = [
@@ -17,16 +18,18 @@ sample_vehicles = [
         "customer_name": "John Smith",
         "mobile": "07700900123",
         "email": "john.smith@email.com",
-        "mot_expiry": (datetime.now() + timedelta(days=-5)).strftime("%Y-%m-%d"),  # Expired
+        # Expired
+        "mot_expiry": (datetime.now() + timedelta(days=-5)).strftime("%Y-%m-%d"),
     },
     {
         "registration": "FG34HIJ",
-        "make": "Vauxhall", 
+        "make": "Vauxhall",
         "model": "Astra",
         "customer_name": "Sarah Johnson",
         "mobile": "07700900456",
         "email": "sarah.johnson@email.com",
-        "mot_expiry": (datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d"),  # Critical
+        # Critical
+        "mot_expiry": (datetime.now() + timedelta(days=3)).strftime("%Y-%m-%d"),
     },
     {
         "registration": "KL56MNO",
@@ -35,7 +38,8 @@ sample_vehicles = [
         "customer_name": "Mike Wilson",
         "mobile": "07700900789",
         "email": "mike.wilson@email.com",
-        "mot_expiry": (datetime.now() + timedelta(days=15)).strftime("%Y-%m-%d"),  # Due Soon
+        # Due Soon
+        "mot_expiry": (datetime.now() + timedelta(days=15)).strftime("%Y-%m-%d"),
     },
     {
         "registration": "PQ78RST",
@@ -44,7 +48,8 @@ sample_vehicles = [
         "customer_name": "Emma Davis",
         "mobile": "07700900012",
         "email": "emma.davis@email.com",
-        "mot_expiry": (datetime.now() + timedelta(days=45)).strftime("%Y-%m-%d"),  # Valid
+        # Valid
+        "mot_expiry": (datetime.now() + timedelta(days=45)).strftime("%Y-%m-%d"),
     },
     {
         "registration": "UV90WXY",
@@ -53,7 +58,8 @@ sample_vehicles = [
         "customer_name": "David Brown",
         "mobile": "07700900345",
         "email": "david.brown@email.com",
-        "mot_expiry": (datetime.now() + timedelta(days=120)).strftime("%Y-%m-%d"),  # Valid
+        # Valid
+        "mot_expiry": (datetime.now() + timedelta(days=120)).strftime("%Y-%m-%d"),
     },
     {
         "registration": "ZA12BCD",
@@ -62,7 +68,8 @@ sample_vehicles = [
         "customer_name": "Lisa Taylor",
         "mobile": "07700900678",
         "email": "lisa.taylor@email.com",
-        "mot_expiry": (datetime.now() + timedelta(days=-15)).strftime("%Y-%m-%d"),  # Expired
+        # Expired
+        "mot_expiry": (datetime.now() + timedelta(days=-15)).strftime("%Y-%m-%d"),
     },
     {
         "registration": "EF34GHI",
@@ -71,7 +78,8 @@ sample_vehicles = [
         "customer_name": "Robert Miller",
         "mobile": "07700900901",
         "email": "robert.miller@email.com",
-        "mot_expiry": (datetime.now() + timedelta(days=6)).strftime("%Y-%m-%d"),  # Critical
+        # Critical
+        "mot_expiry": (datetime.now() + timedelta(days=6)).strftime("%Y-%m-%d"),
     },
     {
         "registration": "JK56LMN",
@@ -80,16 +88,18 @@ sample_vehicles = [
         "customer_name": "Amanda White",
         "mobile": "07700900234",
         "email": "amanda.white@email.com",
-        "mot_expiry": (datetime.now() + timedelta(days=25)).strftime("%Y-%m-%d"),  # Due Soon
+        # Due Soon
+        "mot_expiry": (datetime.now() + timedelta(days=25)).strftime("%Y-%m-%d"),
     }
 ]
+
 
 def add_sample_data():
     """Add sample MOT vehicles to the system"""
     base_url = "http://localhost:8001"  # Use MOT service directly
-    
+
     print("🚗 Adding sample MOT data...")
-    
+
     for vehicle in sample_vehicles:
         try:
             # Try to add vehicle via MOT API (using correct parameter names)
@@ -103,21 +113,24 @@ def add_sample_data():
                 json=mot_data,
                 headers={"Content-Type": "application/json"}
             )
-            
+
             if response.status_code == 200:
                 result = response.json()
                 if result.get("success"):
-                    print(f"✅ Added vehicle: {vehicle['registration']} - {vehicle['make']} {vehicle['model']}")
+                    print(
+                        f"✅ Added vehicle: {vehicle['registration']} - {vehicle['make']} {vehicle['model']}")
                 else:
-                    print(f"❌ Failed to add {vehicle['registration']}: {result.get('error', 'Unknown error')}")
+                    print(
+                        f"❌ Failed to add {vehicle['registration']}: {result.get('error', 'Unknown error')}")
             else:
-                print(f"❌ HTTP error for {vehicle['registration']}: {response.status_code}")
-                
+                print(
+                    f"❌ HTTP error for {vehicle['registration']}: {response.status_code}")
+
         except Exception as e:
             print(f"❌ Error adding {vehicle['registration']}: {e}")
-    
+
     print("\n📊 Sample data addition complete!")
-    
+
     # Check final count
     try:
         response = requests.get(f"{base_url}/api/mot/vehicles")
@@ -128,6 +141,7 @@ def add_sample_data():
             print("❌ Could not verify vehicle count")
     except Exception as e:
         print(f"❌ Error checking vehicle count: {e}")
+
 
 if __name__ == "__main__":
     add_sample_data()
