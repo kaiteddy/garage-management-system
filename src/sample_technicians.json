@@ -1,0 +1,10 @@
+[
+  {
+    "first_name": "James",
+    "last_name": "Wilson",
+    "email": "james.wilson@garage.com",
+    "phone": "07111222333",
+    "specializations": "Engine Repair,Diagnostics,MOT Testing",
+    "hourly_rate": 25.5
+  }
+]

@@ -781,12 +781,8 @@ function initializeMOTEventListeners() {
   const uploadBtn = document.getElementById('bulk-upload-mot');
   if (uploadBtn) {
     uploadBtn.addEventListener('click', () => {
-      console.log("📤 Opening bulk upload...");
-      showPage('settings');
-      setTimeout(() => {
-        const uploadTab = document.querySelector('[data-tab="data-upload"]');
-        if (uploadTab) uploadTab.click();
-      }, 100);
+      console.log("📤 Opening MOT bulk upload page...");
+      showPage('upload');
     });
   }
 

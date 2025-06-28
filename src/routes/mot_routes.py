@@ -38,6 +38,41 @@ def mot_upload_page():
     return send_from_directory('static', 'upload.html')
 
 
+@mot_bp.route('/sms')
+def sms_center():
+    """SMS Center page for MOT reminders"""
+    try:
+        from flask import render_template
+        return render_template('sms_centre.html')
+    except Exception as e:
+        print(f"Error rendering SMS centre: {e}")
+        # Fallback to a simple HTML page
+        return f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>SMS Centre - Garage Management System</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        </head>
+        <body>
+            <div class="container mt-4">
+                <h1><i class="fas fa-sms"></i> SMS Centre</h1>
+                <p>SMS functionality is being integrated into the main system.</p>
+                <div class="alert alert-info">
+                    <strong>Note:</strong> SMS features are available through the integrated dashboard.
+                </div>
+                <a href="/integrated" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i> Back to Integrated Dashboard
+                </a>
+            </div>
+        </body>
+        </html>
+        """, 200
+
+
 @mot_bp.route('/api/vehicles')
 def get_mot_vehicles():
     """Get all MOT vehicles from unified database"""
@@ -46,22 +81,33 @@ def get_mot_vehicles():
             cursor = conn.cursor()
 
             # Get vehicles with MOT data and customer information
+            # Handle both colour and color columns for compatibility
             cursor.execute('''
                 SELECT
-                    v.id, v.registration, v.make, v.model, v.year, v.colour, v.fuel_type,
-                    c.first_name, c.last_name, c.phone_primary,
+                    v.id, v.registration, v.make, v.model,
+                    COALESCE(v.year, 0) as year,
+                    COALESCE(v.colour, v.color, '') as colour,
+                    COALESCE(v.fuel_type, '') as fuel_type,
+                    COALESCE(c.first_name, '') as first_name,
+                    COALESCE(c.last_name, '') as last_name,
+                    COALESCE(c.phone_primary, c.mobile, '') as phone_primary,
                     m.expiry_date, m.test_result,
                     CASE
                         WHEN m.expiry_date < date('now') THEN 'expired'
                         WHEN m.expiry_date <= date('now', '+7 days') THEN 'critical'
                         WHEN m.expiry_date <= date('now', '+30 days') THEN 'due_soon'
+                        WHEN m.expiry_date IS NULL THEN 'unknown'
                         ELSE 'valid'
                     END as status,
-                    CAST(julianday(m.expiry_date) - julianday('now') AS INTEGER) as days_remaining
+                    CASE
+                        WHEN m.expiry_date IS NOT NULL
+                        THEN CAST(julianday(m.expiry_date) - julianday('now') AS INTEGER)
+                        ELSE NULL
+                    END as days_remaining
                 FROM vehicles v
                 LEFT JOIN customers c ON v.customer_id = c.id
                 LEFT JOIN mot_records m ON v.id = m.vehicle_id AND m.is_current = 1
-                WHERE v.is_active = 1
+                WHERE COALESCE(v.is_active, 1) = 1
                 ORDER BY
                     CASE
                         WHEN m.expiry_date < date('now') THEN 1

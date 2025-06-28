@@ -91,13 +91,16 @@ def create_unified_app():
     services = {}
 
     try:
+        # Define database path for services
+        db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'garage_management.db')
+
         # Initialize only available services
         if EnhancedDVSAService:
-            services['dvsa'] = EnhancedDVSAService()
+            services['dvsa'] = EnhancedDVSAService(db_path)
             print("✅ DVSA service integrated successfully")
 
         if UnifiedSMSService:
-            services['sms'] = UnifiedSMSService()
+            services['sms'] = UnifiedSMSService(db_path)
             print("✅ SMS service integrated successfully")
 
         # Initialize unified database
@@ -125,6 +128,13 @@ def create_unified_app():
         (google_drive_bp, '/google-drive', 'Google Drive'),
         (mot_bp, '/mot', 'MOT')
     ]
+
+    # Add unified API routes for missing endpoints
+    try:
+        from routes.unified_api_routes import unified_api_bp
+        blueprints.append((unified_api_bp, '', 'Unified API'))
+    except ImportError as e:
+        print(f"⚠️ Unified API routes not available: {e}")
 
     registered_count = 0
     for blueprint, prefix, name in blueprints:

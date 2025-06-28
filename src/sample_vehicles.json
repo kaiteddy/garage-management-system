@@ -1,0 +1,24 @@
+[
+  {
+    "registration": "AB12 CDE",
+    "customer_id": 1,
+    "make": "Ford",
+    "model": "Focus",
+    "year": 2018,
+    "colour": "Blue",
+    "fuel_type": "Petrol",
+    "mot_expiry": "2025-03-15",
+    "mileage": 45000
+  },
+  {
+    "registration": "FG34 HIJ",
+    "customer_id": 2,
+    "make": "Toyota",
+    "model": "Corolla",
+    "year": 2020,
+    "colour": "Silver",
+    "fuel_type": "Hybrid",
+    "mot_expiry": "2025-08-22",
+    "mileage": 32000
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "first_name": "John",
+    "last_name": "Smith",
+    "phone_primary": "07123456789",
+    "email": "john.smith@email.com",
+    "address_line1": "123 Main Street",
+    "city": "London",
+    "postcode": "SW1A 1AA"
+  },
+  {
+    "first_name": "Sarah",
+    "last_name": "Johnson",
+    "phone_primary": "07987654321",
+    "email": "sarah.j@email.com",
+    "address_line1": "456 Oak Avenue",
+    "city": "Manchester",
+    "postcode": "M1 1AA"
+  }
+]

@@ -1,50 +1,49 @@
 <!-- Data Upload Page - Integrated into Main System -->
-<div class="page-header">
-  <div class="page-title">
-    <h1><i class="fas fa-upload"></i> Data Upload & Management</h1>
-    <p>Import data from CSV files or sync with Google Drive</p>
+<div class="professional-page-header">
+  <div>
+    <h1 class="professional-page-title">
+      <i class="fas fa-upload"></i>
+      Data Upload & Management
+    </h1>
+    <p class="professional-page-subtitle">
+      Import data from CSV files or sync with Google Drive
+    </p>
   </div>
-  <div class="page-actions">
-    <button class="btn btn-outline-primary" onclick="refreshUploadStats()">
+  <div class="professional-page-actions">
+    <button class="professional-btn professional-btn-secondary" onclick="refreshUploadStats()">
       <i class="fas fa-refresh"></i> Refresh
     </button>
   </div>
 </div>
 
-<div class="page-content">
+<div class="professional-page-content">
   <!-- Upload Methods Tabs -->
-  <div class="card">
-    <div class="card-header">
-      <ul class="nav nav-tabs card-header-tabs" id="uploadTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="csv-upload-tab" data-bs-toggle="tab" data-bs-target="#csv-upload" type="button" role="tab">
-            <i class="fas fa-file-csv"></i> CSV Upload
-          </button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="google-drive-tab" data-bs-toggle="tab" data-bs-target="#google-drive" type="button" role="tab">
-            <i class="fab fa-google-drive"></i> Google Drive Sync
-          </button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="bulk-operations-tab" data-bs-toggle="tab" data-bs-target="#bulk-operations" type="button" role="tab">
-            <i class="fas fa-tasks"></i> Bulk Operations
-          </button>
-        </li>
-      </ul>
+  <div class="professional-card">
+    <div class="professional-card-header">
+      <div class="professional-tabs" id="uploadTabs" role="tablist">
+        <button class="professional-tab professional-tab-active" id="csv-upload-tab" data-bs-toggle="tab" data-bs-target="#csv-upload" type="button" role="tab">
+          <i class="fas fa-file-csv"></i> CSV Upload
+        </button>
+        <button class="professional-tab" id="google-drive-tab" data-bs-toggle="tab" data-bs-target="#google-drive" type="button" role="tab">
+          <i class="fab fa-google-drive"></i> Google Drive Sync
+        </button>
+        <button class="professional-tab" id="bulk-operations-tab" data-bs-toggle="tab" data-bs-target="#bulk-operations" type="button" role="tab">
+          <i class="fas fa-tasks"></i> Bulk Operations
+        </button>
+      </div>
     </div>
-    
-    <div class="card-body">
-      <div class="tab-content" id="uploadTabContent">
+
+    <div class="professional-card-content">
+      <div class="professional-tab-content" id="uploadTabContent">
         <!-- CSV Upload Tab -->
-        <div class="tab-pane fade show active" id="csv-upload" role="tabpanel">
-          <div class="row">
-            <div class="col-lg-8">
+        <div class="professional-tab-pane professional-tab-pane-active" id="csv-upload" role="tabpanel">
+          <div class="professional-grid">
+            <div class="professional-grid-col-8">
               <!-- Upload Form -->
               <form id="integratedUploadForm" enctype="multipart/form-data">
-                <div class="mb-4">
-                  <label for="dataType" class="form-label">Data Type</label>
-                  <select class="form-select" id="dataType" name="data_type" required>
+                <div class="professional-form-group">
+                  <label for="dataType" class="professional-form-label">Data Type</label>
+                  <select class="professional-form-select" id="dataType" name="data_type" required>
                     <option value="">Select data type to upload</option>
                     <option value="customers">Customers</option>
                     <option value="vehicles">Vehicles</option>
@@ -55,59 +54,59 @@
                   </select>
                 </div>
 
-                <div class="upload-zone" id="integratedUploadZone">
-                  <div class="upload-icon">
+                <div class="professional-upload-zone" id="integratedUploadZone">
+                  <div class="professional-upload-icon">
                     <i class="fas fa-cloud-upload-alt"></i>
                   </div>
-                  <h5>Drag & Drop your CSV file here</h5>
-                  <p class="text-muted">or click to browse files</p>
+                  <h5 class="professional-upload-title">Drag & Drop your CSV file here</h5>
+                  <p class="professional-upload-subtitle">or click to browse files</p>
                   <input type="file" id="integratedFileInput" name="file" accept=".csv,.xlsx,.xls" style="display: none" />
-                  <button type="button" class="btn btn-primary" id="integratedBrowseBtn">
+                  <button type="button" class="professional-btn professional-btn-primary" id="integratedBrowseBtn">
                     <i class="fas fa-folder-open"></i> Browse Files
                   </button>
                 </div>
 
-                <div class="row mt-3">
-                  <div class="col-md-6">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="integratedClearExisting" name="clear_existing">
-                      <label class="form-check-label" for="integratedClearExisting">
+                <div class="professional-grid professional-grid-options">
+                  <div class="professional-grid-col-6">
+                    <div class="professional-checkbox-group">
+                      <input class="professional-checkbox" type="checkbox" id="integratedClearExisting" name="clear_existing">
+                      <label class="professional-checkbox-label" for="integratedClearExisting">
                         Clear existing data before import
                       </label>
                     </div>
                   </div>
-                  <div class="col-md-6">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="integratedUpdateDuplicates" name="update_duplicates" checked>
-                      <label class="form-check-label" for="integratedUpdateDuplicates">
+                  <div class="professional-grid-col-6">
+                    <div class="professional-checkbox-group">
+                      <input class="professional-checkbox" type="checkbox" id="integratedUpdateDuplicates" name="update_duplicates" checked>
+                      <label class="professional-checkbox-label" for="integratedUpdateDuplicates">
                         Update existing records
                       </label>
                     </div>
                   </div>
                 </div>
 
-                <div class="progress-container mt-3" style="display: none;">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                <div class="professional-progress-container" style="display: none;">
+                  <div class="professional-progress">
+                    <div class="professional-progress-bar" role="progressbar" style="width: 0%"></div>
                   </div>
-                  <p class="text-center mt-2">Uploading and processing...</p>
+                  <p class="professional-progress-text">Uploading and processing...</p>
                 </div>
 
-                <div class="text-center mt-3">
-                  <button type="submit" class="btn btn-success btn-lg" id="integratedUploadBtn" disabled>
+                <div class="professional-form-actions">
+                  <button type="submit" class="professional-btn professional-btn-success professional-btn-lg" id="integratedUploadBtn" disabled>
                     <i class="fas fa-upload"></i> Upload Data
                   </button>
                 </div>
               </form>
 
               <!-- Results -->
-              <div class="results-container mt-4" id="integratedResultsContainer" style="display: none;">
-                <div class="alert" id="integratedResultsAlert"></div>
+              <div class="professional-results-container" id="integratedResultsContainer" style="display: none;">
+                <div class="professional-alert" id="integratedResultsAlert"></div>
                 <div id="integratedResultsDetails"></div>
               </div>
             </div>
 
-            <div class="col-lg-4">
+            <div class="professional-grid-col-4">
               <!-- Quick Templates -->
               <div class="card">
                 <div class="card-header">
