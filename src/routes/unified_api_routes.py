@@ -6,13 +6,16 @@ Provides missing API endpoints for the integrated system
 import os
 import sqlite3
 from datetime import datetime
+
 from flask import Blueprint, jsonify, request
 
 unified_api_bp = Blueprint('unified_api', __name__)
 
+
 def get_unified_db_path():
     """Get the unified database path"""
     return os.path.join(os.path.dirname(os.path.dirname(__file__)), 'garage_management.db')
+
 
 @unified_api_bp.route('/api/customers')
 def get_customers():
@@ -21,7 +24,7 @@ def get_customers():
         db_path = get_unified_db_path()
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
-            
+
             # Get customers with proper column handling for actual schema
             cursor.execute('''
                 SELECT
@@ -40,12 +43,13 @@ def get_customers():
                 ORDER BY id DESC
                 LIMIT 100
             ''')
-            
+
             customers = []
             for row in cursor.fetchall():
                 customers.append({
                     'id': row[0],
-                    'account_number': f"CUST{row[0]:04d}",  # Generate account number
+                    # Generate account number
+                    'account_number': f"CUST{row[0]:04d}",
                     'first_name': row[1],
                     'last_name': row[2],
                     'name': row[3],
@@ -56,19 +60,20 @@ def get_customers():
                     'is_active': bool(row[8]),
                     'created_at': row[9]
                 })
-            
+
             return jsonify({
                 'success': True,
                 'customers': customers,
                 'count': len(customers)
             })
-            
+
     except Exception as e:
         print(f"Error getting customers: {e}")
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
 
 @unified_api_bp.route('/api/vehicles')
 def get_vehicles():
@@ -77,7 +82,7 @@ def get_vehicles():
         db_path = get_unified_db_path()
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
-            
+
             # Get vehicles with customer information
             cursor.execute('''
                 SELECT 
@@ -101,7 +106,7 @@ def get_vehicles():
                 ORDER BY v.id DESC
                 LIMIT 100
             ''')
-            
+
             vehicles = []
             for row in cursor.fetchall():
                 vehicles.append({
@@ -120,19 +125,20 @@ def get_vehicles():
                     'customer_name': row[12],
                     'customer_account': row[13]
                 })
-            
+
             return jsonify({
                 'success': True,
                 'vehicles': vehicles,
                 'count': len(vehicles)
             })
-            
+
     except Exception as e:
         print(f"Error getting vehicles: {e}")
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
 
 @unified_api_bp.route('/api/customers/<int:customer_id>')
 def get_customer(customer_id):
@@ -141,7 +147,7 @@ def get_customer(customer_id):
         db_path = get_unified_db_path()
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
-            
+
             # Get customer details
             cursor.execute('''
                 SELECT
@@ -151,17 +157,18 @@ def get_customer(customer_id):
                 FROM customers
                 WHERE id = ?
             ''', (customer_id,))
-            
+
             row = cursor.fetchone()
             if not row:
                 return jsonify({
                     'success': False,
                     'error': 'Customer not found'
                 }), 404
-            
+
             customer = {
                 'id': row[0],
-                'account_number': f"CUST{row[0]:04d}",  # Generate account number
+                # Generate account number
+                'account_number': f"CUST{row[0]:04d}",
                 'first_name': row[1] or '',
                 'last_name': row[2] or '',
                 'name': row[3] or f"{row[1] or ''} {row[2] or ''}".strip(),
@@ -172,14 +179,14 @@ def get_customer(customer_id):
                 'is_active': bool(row[10] if row[10] is not None else 1),
                 'created_at': row[11]
             }
-            
+
             # Get customer's vehicles
             cursor.execute('''
                 SELECT id, registration, make, model, year, colour, color
                 FROM vehicles 
                 WHERE customer_id = ? AND COALESCE(is_active, 1) = 1
             ''', (customer_id,))
-            
+
             vehicles = []
             for v_row in cursor.fetchall():
                 vehicles.append({
@@ -190,19 +197,20 @@ def get_customer(customer_id):
                     'year': v_row[4] or 0,
                     'colour': v_row[5] or v_row[6] or ''
                 })
-            
+
             return jsonify({
                 'success': True,
                 'customer': customer,
                 'vehicles': vehicles
             })
-            
+
     except Exception as e:
         print(f"Error getting customer {customer_id}: {e}")
         return jsonify({
             'success': False,
             'error': str(e)
         }), 500
+
 
 @unified_api_bp.route('/api/vehicles/<int:vehicle_id>')
 def get_vehicle(vehicle_id):
@@ -211,7 +219,7 @@ def get_vehicle(vehicle_id):
         db_path = get_unified_db_path()
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
-            
+
             # Get vehicle details with customer info
             cursor.execute('''
                 SELECT 
@@ -223,14 +231,14 @@ def get_vehicle(vehicle_id):
                 LEFT JOIN customers c ON v.customer_id = c.id
                 WHERE v.id = ?
             ''', (vehicle_id,))
-            
+
             row = cursor.fetchone()
             if not row:
                 return jsonify({
                     'success': False,
                     'error': 'Vehicle not found'
                 }), 404
-            
+
             vehicle = {
                 'id': row[0],
                 'registration': row[1],
@@ -252,12 +260,12 @@ def get_vehicle(vehicle_id):
                     'phone': row[19] or row[20] or ''
                 } if row[11] else None
             }
-            
+
             return jsonify({
                 'success': True,
                 'vehicle': vehicle
             })
-            
+
     except Exception as e:
         print(f"Error getting vehicle {vehicle_id}: {e}")
         return jsonify({
@@ -269,6 +277,7 @@ def get_vehicle(vehicle_id):
 # JOBS API ENDPOINTS
 # ============================================================================
 
+
 @unified_api_bp.route('/api/jobs')
 def get_jobs():
     """Get all jobs from unified database"""
@@ -278,7 +287,8 @@ def get_jobs():
             cursor = conn.cursor()
 
             # Check if jobs table exists, create if not
-            cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='jobs'")
+            cursor.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name='jobs'")
             if not cursor.fetchone():
                 cursor.execute('''
                     CREATE TABLE jobs (
@@ -373,6 +383,7 @@ def get_jobs():
             'error': str(e)
         }), 500
 
+
 @unified_api_bp.route('/api/jobs/<int:job_id>')
 def get_job(job_id):
     """Get specific job details"""
@@ -457,6 +468,7 @@ def get_job(job_id):
             'error': str(e)
         }), 500
 
+
 @unified_api_bp.route('/api/health')
 def api_health():
     """API health check"""
@@ -496,6 +508,7 @@ def api_health():
 # ============================================================================
 # APPOINTMENTS API ENDPOINTS
 # ============================================================================
+
 
 @unified_api_bp.route('/api/appointments')
 def get_appointments():
@@ -589,6 +602,7 @@ def get_appointments():
 # TECHNICIANS API ENDPOINTS
 # ============================================================================
 
+
 @unified_api_bp.route('/api/technicians')
 def get_technicians():
     """Get all technicians"""
@@ -638,6 +652,7 @@ def get_technicians():
 # WORKSHOP BAYS API ENDPOINTS
 # ============================================================================
 
+
 @unified_api_bp.route('/api/workshop-bays')
 def get_workshop_bays():
     """Get all workshop bays"""
@@ -684,6 +699,7 @@ def get_workshop_bays():
 # QUOTES API ENDPOINTS
 # ============================================================================
 
+
 @unified_api_bp.route('/api/quotes')
 def get_quotes():
     """Get all quotes"""
@@ -693,7 +709,8 @@ def get_quotes():
             cursor = conn.cursor()
 
             # Check if quotes table exists, create if not
-            cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='quotes'")
+            cursor.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name='quotes'")
             if not cursor.fetchone():
                 cursor.execute('''
                     CREATE TABLE quotes (
@@ -767,6 +784,7 @@ def get_quotes():
 # JOB SHEETS API ENDPOINTS
 # ============================================================================
 
+
 @unified_api_bp.route('/api/job-sheets')
 def get_job_sheets():
     """Get all job sheets"""
@@ -829,6 +847,7 @@ def get_job_sheets():
             'error': str(e)
         }), 500
 
+
 @unified_api_bp.route('/api/job-sheet-templates')
 def get_job_sheet_templates():
     """Get job sheet templates"""
@@ -838,7 +857,8 @@ def get_job_sheet_templates():
             cursor = conn.cursor()
 
             # Check if job_sheet_templates table exists, create if not
-            cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='job_sheet_templates'")
+            cursor.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name='job_sheet_templates'")
             if not cursor.fetchone():
                 cursor.execute('''
                     CREATE TABLE job_sheet_templates (
@@ -912,6 +932,7 @@ def get_job_sheet_templates():
 # PARTS/INVENTORY API ENDPOINTS
 # ============================================================================
 
+
 @unified_api_bp.route('/api/parts')
 def get_parts():
     """Get parts/inventory"""
@@ -921,7 +942,8 @@ def get_parts():
             cursor = conn.cursor()
 
             # Check if parts table exists, create if not
-            cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='parts'")
+            cursor.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name='parts'")
             if not cursor.fetchone():
                 cursor.execute('''
                     CREATE TABLE parts (
@@ -989,6 +1011,7 @@ def get_parts():
 # SERVICES API ENDPOINTS
 # ============================================================================
 
+
 @unified_api_bp.route('/api/services')
 def get_services():
     """Get available services"""
@@ -998,7 +1021,8 @@ def get_services():
             cursor = conn.cursor()
 
             # Check if services table exists, create if not
-            cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='services'")
+            cursor.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name='services'")
             if not cursor.fetchone():
                 cursor.execute('''
                     CREATE TABLE services (
@@ -1064,6 +1088,7 @@ def get_services():
 # DASHBOARD STATISTICS API ENDPOINT
 # ============================================================================
 
+
 @unified_api_bp.route('/api/dashboard/stats')
 def get_dashboard_stats():
     """Get dashboard statistics"""
@@ -1076,11 +1101,13 @@ def get_dashboard_stats():
             stats = {}
 
             # Customer count
-            cursor.execute("SELECT COUNT(*) FROM customers WHERE COALESCE(is_active, 1) = 1")
+            cursor.execute(
+                "SELECT COUNT(*) FROM customers WHERE COALESCE(is_active, 1) = 1")
             stats['customers'] = cursor.fetchone()[0]
 
             # Vehicle count
-            cursor.execute("SELECT COUNT(*) FROM vehicles WHERE COALESCE(is_active, 1) = 1")
+            cursor.execute(
+                "SELECT COUNT(*) FROM vehicles WHERE COALESCE(is_active, 1) = 1")
             stats['vehicles'] = cursor.fetchone()[0]
 
             # Jobs count by status
@@ -1094,7 +1121,8 @@ def get_dashboard_stats():
             }
 
             # Appointments today
-            cursor.execute("SELECT COUNT(*) FROM appointments WHERE appointment_date = date('now')")
+            cursor.execute(
+                "SELECT COUNT(*) FROM appointments WHERE appointment_date = date('now')")
             stats['appointments_today'] = cursor.fetchone()[0]
 
             # MOT expiring soon (next 30 days)
