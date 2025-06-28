@@ -97,7 +97,8 @@ def create_unified_app():
 
     try:
         # Define database path for services
-        db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'garage_management.db')
+        db_path = os.path.join(os.path.dirname(
+            os.path.abspath(__file__)), 'garage_management.db')
 
         # Initialize only available services
         if EnhancedDVSAService:

@@ -9,9 +9,11 @@ import sqlite3
 import sys
 from datetime import datetime
 
+
 def get_database_path():
     """Get the unified database path"""
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), 'garage_management.db')
+
 
 def backup_database():
     """Create a backup of the current database"""
@@ -24,20 +26,22 @@ def backup_database():
         return backup_path
     return None
 
+
 def check_column_exists(cursor, table_name, column_name):
     """Check if a column exists in a table"""
     cursor.execute(f"PRAGMA table_info({table_name})")
     columns = [row[1] for row in cursor.fetchall()]
     return column_name in columns
 
+
 def migrate_vehicles_table(cursor):
     """Migrate vehicles table to include all required columns"""
     print("🔧 Migrating vehicles table...")
-    
+
     # Check existing columns
     cursor.execute("PRAGMA table_info(vehicles)")
     existing_columns = {row[1]: row[2] for row in cursor.fetchall()}
-    
+
     # Required columns with their types
     required_columns = {
         'year': 'INTEGER',
@@ -51,22 +55,25 @@ def migrate_vehicles_table(cursor):
         'vin': 'TEXT',
         'engine_size': 'TEXT'
     }
-    
+
     # Add missing columns
     for column, column_type in required_columns.items():
         if column not in existing_columns:
             try:
-                cursor.execute(f"ALTER TABLE vehicles ADD COLUMN {column} {column_type}")
+                cursor.execute(
+                    f"ALTER TABLE vehicles ADD COLUMN {column} {column_type}")
                 print(f"  ✅ Added column: {column}")
             except sqlite3.OperationalError as e:
                 print(f"  ⚠️ Column {column} might already exist: {e}")
 
+
 def migrate_customers_table(cursor):
     """Ensure customers table has all required columns"""
     print("🔧 Migrating customers table...")
-    
+
     # Check if customers table exists
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='customers'")
+    cursor.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='customers'")
     if not cursor.fetchone():
         # Create customers table
         cursor.execute('''
@@ -112,23 +119,26 @@ def migrate_customers_table(cursor):
             'date_of_birth': 'DATE',
             'notes': 'TEXT'
         }
-        
+
         cursor.execute("PRAGMA table_info(customers)")
         existing_columns = {row[1]: row[2] for row in cursor.fetchall()}
-        
+
         for column, column_type in required_columns.items():
             if column not in existing_columns:
                 try:
-                    cursor.execute(f"ALTER TABLE customers ADD COLUMN {column} {column_type}")
+                    cursor.execute(
+                        f"ALTER TABLE customers ADD COLUMN {column} {column_type}")
                     print(f"  ✅ Added column: {column}")
                 except sqlite3.OperationalError as e:
                     print(f"  ⚠️ Column {column} might already exist: {e}")
 
+
 def migrate_mot_records_table(cursor):
     """Ensure MOT records table exists with proper structure"""
     print("🔧 Migrating MOT records table...")
-    
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='mot_records'")
+
+    cursor.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='mot_records'")
     if not cursor.fetchone():
         cursor.execute('''
             CREATE TABLE mot_records (
@@ -154,10 +164,11 @@ def migrate_mot_records_table(cursor):
         ''')
         print("  ✅ Created mot_records table")
 
+
 def create_indexes(cursor):
     """Create performance indexes"""
     print("🔧 Creating database indexes...")
-    
+
     indexes = [
         "CREATE INDEX IF NOT EXISTS idx_vehicles_registration ON vehicles (registration)",
         "CREATE INDEX IF NOT EXISTS idx_vehicles_customer_id ON vehicles (customer_id)",
@@ -168,7 +179,7 @@ def create_indexes(cursor):
         "CREATE INDEX IF NOT EXISTS idx_mot_records_expiry_date ON mot_records (expiry_date)",
         "CREATE INDEX IF NOT EXISTS idx_mot_records_current ON mot_records (is_current)"
     ]
-    
+
     for index_sql in indexes:
         try:
             cursor.execute(index_sql)
@@ -176,43 +187,44 @@ def create_indexes(cursor):
         except sqlite3.OperationalError as e:
             print(f"  ⚠️ Index might already exist: {e}")
 
+
 def run_migration():
     """Run the complete database migration"""
     print("🚀 Starting Database Schema Migration")
     print("=" * 50)
-    
+
     # Backup database
     backup_path = backup_database()
-    
+
     # Connect to database
     db_path = get_database_path()
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-    
+
     try:
         # Enable foreign keys
         cursor.execute("PRAGMA foreign_keys = ON")
-        
+
         # Run migrations
         migrate_customers_table(cursor)
         migrate_vehicles_table(cursor)
         migrate_mot_records_table(cursor)
         create_indexes(cursor)
-        
+
         # Commit changes
         conn.commit()
         print("\n✅ Database migration completed successfully!")
-        
+
         # Verify schema
         print("\n📊 Verifying schema...")
         cursor.execute("PRAGMA table_info(vehicles)")
         vehicle_columns = [row[1] for row in cursor.fetchall()]
         print(f"  Vehicles table columns: {', '.join(vehicle_columns)}")
-        
+
         cursor.execute("PRAGMA table_info(customers)")
         customer_columns = [row[1] for row in cursor.fetchall()]
         print(f"  Customers table columns: {', '.join(customer_columns)}")
-        
+
     except Exception as e:
         print(f"❌ Migration failed: {e}")
         conn.rollback()
@@ -221,6 +233,7 @@ def run_migration():
         raise
     finally:
         conn.close()
+
 
 if __name__ == "__main__":
     run_migration()
