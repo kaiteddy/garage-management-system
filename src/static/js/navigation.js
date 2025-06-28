@@ -605,7 +605,9 @@ async function initializeMOTRemindersPage() {
 
   const motPage = document.getElementById("mot-reminders");
   if (!motPage) {
-    console.error("❌ MOT reminders page container not found during initialization");
+    console.error(
+      "❌ MOT reminders page container not found during initialization",
+    );
     return;
   }
 
@@ -769,35 +771,39 @@ function initializeMOTEventListeners() {
   console.log("🔧 Setting up MOT event listeners...");
 
   // Refresh data button
-  const refreshBtn = document.getElementById('refresh-mot-data');
+  const refreshBtn = document.getElementById("refresh-mot-data");
   if (refreshBtn) {
-    refreshBtn.addEventListener('click', () => {
+    refreshBtn.addEventListener("click", () => {
       console.log("🔄 Refreshing MOT data...");
       loadMOTData();
     });
   }
 
   // Bulk upload button
-  const uploadBtn = document.getElementById('bulk-upload-mot');
+  const uploadBtn = document.getElementById("bulk-upload-mot");
   if (uploadBtn) {
-    uploadBtn.addEventListener('click', () => {
-      console.log("📤 Opening MOT bulk upload page...");
-      showPage('upload');
+    uploadBtn.addEventListener("click", () => {
+      console.log("📤 Opening bulk upload...");
+      showPage("settings");
+      setTimeout(() => {
+        const uploadTab = document.querySelector('[data-tab="data-upload"]');
+        if (uploadTab) uploadTab.click();
+      }, 100);
     });
   }
 
   // Search input
-  const searchInput = document.getElementById('mot-search');
+  const searchInput = document.getElementById("mot-search");
   if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
+    searchInput.addEventListener("input", (e) => {
       filterMOTVehiclesBySearch(e.target.value);
     });
   }
 
   // Select all checkbox
-  const selectAllCheckbox = document.getElementById('select-all-mot');
+  const selectAllCheckbox = document.getElementById("select-all-mot");
   if (selectAllCheckbox) {
-    selectAllCheckbox.addEventListener('change', (e) => {
+    selectAllCheckbox.addEventListener("change", (e) => {
       toggleAllVehicleSelection(e.target.checked);
     });
   }
@@ -813,7 +819,7 @@ async function loadMOTData() {
 
   try {
     // Show loading state
-    const tbody = document.getElementById('mot-vehicles-tbody');
+    const tbody = document.getElementById("mot-vehicles-tbody");
     if (tbody) {
       tbody.innerHTML = `
         <tr>
@@ -829,11 +835,11 @@ async function loadMOTData() {
     }
 
     // Use the correct API endpoint (MOT blueprint is registered with /mot prefix)
-    const response = await fetch('/mot/api/vehicles', {
-      method: 'GET',
+    const response = await fetch("/mot/api/vehicles", {
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-      }
+        "Content-Type": "application/json",
+      },
     });
 
     if (!response.ok) {
@@ -848,14 +854,13 @@ async function loadMOTData() {
       displayMOTVehicles(data.vehicles);
       updateMOTStatistics(data.vehicles);
     } else {
-      throw new Error(data.message || 'Failed to load MOT data');
+      throw new Error(data.message || "Failed to load MOT data");
     }
-
   } catch (error) {
     console.error("❌ Error loading MOT data:", error);
 
     // Show error state
-    const tbody = document.getElementById('mot-vehicles-tbody');
+    const tbody = document.getElementById("mot-vehicles-tbody");
     if (tbody) {
       tbody.innerHTML = `
         <tr>
@@ -882,7 +887,7 @@ async function loadMOTData() {
 function displayMOTVehicles(vehicles) {
   console.log(`📋 Displaying ${vehicles.length} MOT vehicles...`);
 
-  const tbody = document.getElementById('mot-vehicles-tbody');
+  const tbody = document.getElementById("mot-vehicles-tbody");
   if (!tbody) {
     console.error("❌ MOT vehicles table body not found");
     return;
@@ -915,20 +920,21 @@ function displayMOTVehicles(vehicles) {
     const daysB = calculateDaysRemainingNumeric(b.mot_expiry);
 
     // Expired vehicles first
-    if (statusA.class === 'expired' && statusB.class !== 'expired') return -1;
-    if (statusB.class === 'expired' && statusA.class !== 'expired') return 1;
+    if (statusA.class === "expired" && statusB.class !== "expired") return -1;
+    if (statusB.class === "expired" && statusA.class !== "expired") return 1;
 
     // Then by days remaining (ascending)
     return daysA - daysB;
   });
 
   // Generate clean table rows
-  const rows = sortedVehicles.map((vehicle, index) => {
-    const status = getMOTStatus(vehicle);
-    const daysRemaining = calculateDaysRemaining(vehicle.mot_expiry);
-    const urgencyClass = getUrgencyClass(status.class);
+  const rows = sortedVehicles
+    .map((vehicle, index) => {
+      const status = getMOTStatus(vehicle);
+      const daysRemaining = calculateDaysRemaining(vehicle.mot_expiry);
+      const urgencyClass = getUrgencyClass(status.class);
 
-    return `
+      return `
       <tr class="vehicle-row ${urgencyClass}" data-status="${status.class}" data-registration="${vehicle.registration}">
         <td class="checkbox-cell">
           <input type="checkbox" class="vehicle-checkbox" value="${vehicle.registration}" onchange="updateSendRemindersButton()" />
@@ -975,7 +981,8 @@ function displayMOTVehicles(vehicles) {
         </td>
       </tr>
     `;
-  }).join('');
+    })
+    .join("");
 
   tbody.innerHTML = rows;
 
@@ -995,13 +1002,13 @@ function getMOTStatus(vehicle) {
   const daysRemaining = calculateDaysRemaining(vehicle.mot_expiry);
 
   if (daysRemaining < 0) {
-    return { class: 'expired', text: 'Expired' };
+    return { class: "expired", text: "Expired" };
   } else if (daysRemaining <= 7) {
-    return { class: 'critical', text: 'Critical' };
+    return { class: "critical", text: "Critical" };
   } else if (daysRemaining <= 30) {
-    return { class: 'warning', text: 'Due Soon' };
+    return { class: "warning", text: "Due Soon" };
   } else {
-    return { class: 'valid', text: 'Valid' };
+    return { class: "valid", text: "Valid" };
   }
 }
 
@@ -1021,18 +1028,18 @@ function calculateDaysRemainingNumeric(motExpiry) {
  * Calculate days remaining until MOT expiry (formatted for display)
  */
 function calculateDaysRemaining(motExpiry) {
-  if (!motExpiry) return 'N/A';
+  if (!motExpiry) return "N/A";
 
   const diffDays = calculateDaysRemainingNumeric(motExpiry);
 
   if (diffDays < 0) {
     const absDays = Math.abs(diffDays);
-    if (absDays === 1) return '1 day ago';
+    if (absDays === 1) return "1 day ago";
     return `${absDays} days ago`;
   } else if (diffDays === 0) {
-    return 'Today';
+    return "Today";
   } else if (diffDays === 1) {
-    return 'Tomorrow';
+    return "Tomorrow";
   } else {
     return `${diffDays} days`;
   }
@@ -1049,17 +1056,17 @@ function formatDate(dateString) {
  * Format date cleanly for primary display
  */
 function formatDateClean(dateString) {
-  if (!dateString) return 'Not Set';
+  if (!dateString) return "Not Set";
 
   try {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
     });
   } catch (error) {
-    return 'Invalid Date';
+    return "Invalid Date";
   }
 }
 
@@ -1067,7 +1074,7 @@ function formatDateClean(dateString) {
  * Format date with relative context
  */
 function formatDateRelative(dateString) {
-  if (!dateString) return '';
+  if (!dateString) return "";
 
   try {
     const date = new Date(dateString);
@@ -1075,18 +1082,18 @@ function formatDateRelative(dateString) {
     const diffDays = calculateDaysRemainingNumeric(dateString);
 
     if (diffDays < 0) {
-      return 'Expired';
+      return "Expired";
     } else if (diffDays <= 7) {
-      return 'This week';
+      return "This week";
     } else if (diffDays <= 30) {
-      return 'This month';
+      return "This month";
     } else if (diffDays <= 90) {
-      return 'Next 3 months';
+      return "Next 3 months";
     } else {
-      return 'Future';
+      return "Future";
     }
   } catch (error) {
-    return '';
+    return "";
   }
 }
 
@@ -1094,10 +1101,10 @@ function formatDateRelative(dateString) {
  * Clean registration number formatting
  */
 function cleanRegistration(registration) {
-  if (!registration) return 'N/A';
+  if (!registration) return "N/A";
 
   // Format UK registration with proper spacing
-  const reg = registration.replace(/\s+/g, '').toUpperCase();
+  const reg = registration.replace(/\s+/g, "").toUpperCase();
   if (reg.length >= 7) {
     // Standard UK format: AB12 CDE
     return `${reg.slice(0, 2)}${reg.slice(2, 4)} ${reg.slice(4)}`;
@@ -1109,10 +1116,10 @@ function cleanRegistration(registration) {
  * Clean vehicle name formatting
  */
 function cleanVehicleName(make, model) {
-  const cleanMake = make && make !== 'Unknown' ? make.trim() : '';
-  const cleanModel = model && model !== '' ? model.trim() : '';
+  const cleanMake = make && make !== "Unknown" ? make.trim() : "";
+  const cleanModel = model && model !== "" ? model.trim() : "";
 
-  if (!cleanMake && !cleanModel) return 'Unknown Vehicle';
+  if (!cleanMake && !cleanModel) return "Unknown Vehicle";
   if (!cleanMake) return cleanModel;
   if (!cleanModel) return cleanMake;
 
@@ -1130,7 +1137,7 @@ function cleanVehicleName(make, model) {
 function formatVehicleDetails(vehicle) {
   const details = [];
 
-  if (vehicle.year && vehicle.year !== 'Unknown') {
+  if (vehicle.year && vehicle.year !== "Unknown") {
     details.push(vehicle.year);
   }
 
@@ -1138,30 +1145,35 @@ function formatVehicleDetails(vehicle) {
     details.push(`${vehicle.engine_size}cc`);
   }
 
-  if (vehicle.fuel_type && vehicle.fuel_type !== 'Unknown') {
+  if (vehicle.fuel_type && vehicle.fuel_type !== "Unknown") {
     details.push(vehicle.fuel_type);
   }
 
-  if (vehicle.colour && vehicle.colour !== 'Unknown') {
+  if (vehicle.colour && vehicle.colour !== "Unknown") {
     details.push(vehicle.colour);
   }
 
-  return details.length > 0 ? details.join(' • ') : 'Details not available';
+  return details.length > 0 ? details.join(" • ") : "Details not available";
 }
 
 /**
  * Clean customer name formatting
  */
 function cleanCustomerName(customerName) {
-  if (!customerName || customerName === 'Unknown' || customerName.trim() === '') {
-    return 'Unknown Customer';
+  if (
+    !customerName ||
+    customerName === "Unknown" ||
+    customerName.trim() === ""
+  ) {
+    return "Unknown Customer";
   }
 
   // Capitalize first letter of each word
-  return customerName.trim()
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
+  return customerName
+    .trim()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
 }
 
 /**
@@ -1170,21 +1182,27 @@ function cleanCustomerName(customerName) {
 function formatContactInfo(vehicle) {
   const contacts = [];
 
-  if (vehicle.mobile && vehicle.mobile !== 'No contact') {
+  if (vehicle.mobile && vehicle.mobile !== "No contact") {
     // Format UK mobile number
-    const mobile = vehicle.mobile.replace(/\s+/g, '');
-    if (mobile.startsWith('07') && mobile.length === 11) {
-      contacts.push(`${mobile.slice(0, 5)} ${mobile.slice(5, 8)} ${mobile.slice(8)}`);
+    const mobile = vehicle.mobile.replace(/\s+/g, "");
+    if (mobile.startsWith("07") && mobile.length === 11) {
+      contacts.push(
+        `${mobile.slice(0, 5)} ${mobile.slice(5, 8)} ${mobile.slice(8)}`,
+      );
     } else {
       contacts.push(mobile);
     }
   }
 
-  if (vehicle.email && vehicle.email !== 'No contact' && vehicle.email.includes('@')) {
+  if (
+    vehicle.email &&
+    vehicle.email !== "No contact" &&
+    vehicle.email.includes("@")
+  ) {
     contacts.push(vehicle.email.toLowerCase());
   }
 
-  return contacts.length > 0 ? contacts.join(' • ') : 'No contact details';
+  return contacts.length > 0 ? contacts.join(" • ") : "No contact details";
 }
 
 /**
@@ -1192,11 +1210,16 @@ function formatContactInfo(vehicle) {
  */
 function getUrgencyClass(statusClass) {
   switch (statusClass) {
-    case 'expired': return 'urgency-critical';
-    case 'critical': return 'urgency-high';
-    case 'warning': return 'urgency-medium';
-    case 'valid': return 'urgency-low';
-    default: return '';
+    case "expired":
+      return "urgency-critical";
+    case "critical":
+      return "urgency-high";
+    case "warning":
+      return "urgency-medium";
+    case "valid":
+      return "urgency-low";
+    default:
+      return "";
   }
 }
 
@@ -1205,11 +1228,16 @@ function getUrgencyClass(statusClass) {
  */
 function getStatusIcon(statusClass) {
   switch (statusClass) {
-    case 'expired': return 'exclamation-triangle';
-    case 'critical': return 'clock';
-    case 'warning': return 'calendar-alt';
-    case 'valid': return 'check-circle';
-    default: return 'question-circle';
+    case "expired":
+      return "exclamation-triangle";
+    case "critical":
+      return "clock";
+    case "warning":
+      return "calendar-alt";
+    case "valid":
+      return "check-circle";
+    default:
+      return "question-circle";
   }
 }
 
@@ -1217,16 +1245,16 @@ function getStatusIcon(statusClass) {
  * Update table styling with alternating rows and numbering
  */
 function updateTableStyling() {
-  const rows = document.querySelectorAll('.vehicle-row');
+  const rows = document.querySelectorAll(".vehicle-row");
   rows.forEach((row, index) => {
     // Add row number
-    row.setAttribute('data-row-number', index + 1);
+    row.setAttribute("data-row-number", index + 1);
 
     // Add alternating row class
     if (index % 2 === 0) {
-      row.classList.add('even-row');
+      row.classList.add("even-row");
     } else {
-      row.classList.add('odd-row');
+      row.classList.add("odd-row");
     }
   });
 }
@@ -1235,8 +1263,8 @@ function updateTableStyling() {
  * Update send reminders button state based on selected vehicles
  */
 function updateSendRemindersButton() {
-  const checkboxes = document.querySelectorAll('.vehicle-checkbox:checked');
-  const sendButton = document.getElementById('send-reminders-btn');
+  const checkboxes = document.querySelectorAll(".vehicle-checkbox:checked");
+  const sendButton = document.getElementById("send-reminders-btn");
 
   if (sendButton) {
     if (checkboxes.length > 0) {
@@ -1266,10 +1294,10 @@ function updateMOTStatistics(vehicles) {
     critical: 0,
     warning: 0,
     valid: 0,
-    total: vehicles.length
+    total: vehicles.length,
   };
 
-  vehicles.forEach(vehicle => {
+  vehicles.forEach((vehicle) => {
     const status = getMOTStatus(vehicle);
     stats[status.class]++;
   });
@@ -1280,17 +1308,17 @@ function updateMOTStatistics(vehicles) {
     if (element) element.textContent = value;
   };
 
-  updateStat('expired-count', stats.expired);
-  updateStat('expiring-soon-count', stats.critical);
-  updateStat('due-month-count', stats.warning);
-  updateStat('valid-count', stats.valid);
+  updateStat("expired-count", stats.expired);
+  updateStat("expiring-soon-count", stats.critical);
+  updateStat("due-month-count", stats.warning);
+  updateStat("valid-count", stats.valid);
 
   // Update filter counts
-  updateStat('all-count', stats.total);
-  updateStat('expired-filter-count', stats.expired);
-  updateStat('critical-filter-count', stats.critical);
-  updateStat('warning-count', stats.warning);
-  updateStat('valid-filter-count', stats.valid);
+  updateStat("all-count", stats.total);
+  updateStat("expired-filter-count", stats.expired);
+  updateStat("critical-filter-count", stats.critical);
+  updateStat("warning-count", stats.warning);
+  updateStat("valid-filter-count", stats.valid);
 
   console.log("✅ MOT statistics updated:", stats);
 }
@@ -1302,19 +1330,19 @@ function filterMOTVehicles(status) {
   console.log(`🔍 Filtering MOT vehicles by status: ${status}`);
 
   // Update active filter button
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.classList.remove('active');
+  document.querySelectorAll(".filter-btn").forEach((btn) => {
+    btn.classList.remove("active");
   });
-  document.querySelector(`[data-filter="${status}"]`).classList.add('active');
+  document.querySelector(`[data-filter="${status}"]`).classList.add("active");
 
   // Filter table rows
-  const rows = document.querySelectorAll('.vehicle-row');
-  rows.forEach(row => {
+  const rows = document.querySelectorAll(".vehicle-row");
+  rows.forEach((row) => {
     const rowStatus = row.dataset.status;
-    if (status === 'all' || rowStatus === status) {
-      row.style.display = '';
+    if (status === "all" || rowStatus === status) {
+      row.style.display = "";
     } else {
-      row.style.display = 'none';
+      row.style.display = "none";
     }
   });
 }
@@ -1323,17 +1351,17 @@ function filterMOTVehicles(status) {
  * Filter MOT vehicles by search term
  */
 function filterMOTVehiclesBySearch(searchTerm) {
-  const rows = document.querySelectorAll('.vehicle-row');
+  const rows = document.querySelectorAll(".vehicle-row");
   const term = searchTerm.toLowerCase();
 
-  rows.forEach(row => {
+  rows.forEach((row) => {
     const registration = row.dataset.registration.toLowerCase();
     const text = row.textContent.toLowerCase();
 
     if (registration.includes(term) || text.includes(term)) {
-      row.style.display = '';
+      row.style.display = "";
     } else {
-      row.style.display = 'none';
+      row.style.display = "none";
     }
   });
 }
@@ -1342,8 +1370,8 @@ function filterMOTVehiclesBySearch(searchTerm) {
  * Toggle all vehicle selection
  */
 function toggleAllVehicleSelection(checked) {
-  const checkboxes = document.querySelectorAll('.vehicle-checkbox');
-  checkboxes.forEach(checkbox => {
+  const checkboxes = document.querySelectorAll(".vehicle-checkbox");
+  checkboxes.forEach((checkbox) => {
     checkbox.checked = checked;
   });
   updateSendRemindersButton();
@@ -1353,14 +1381,17 @@ function toggleAllVehicleSelection(checked) {
  * Update send reminders button state
  */
 function updateSendRemindersButton() {
-  const selectedCheckboxes = document.querySelectorAll('.vehicle-checkbox:checked');
-  const sendBtn = document.getElementById('send-reminders-btn');
+  const selectedCheckboxes = document.querySelectorAll(
+    ".vehicle-checkbox:checked",
+  );
+  const sendBtn = document.getElementById("send-reminders-btn");
 
   if (sendBtn) {
     sendBtn.disabled = selectedCheckboxes.length === 0;
-    sendBtn.textContent = selectedCheckboxes.length > 0
-      ? `Send Reminders (${selectedCheckboxes.length})`
-      : 'Send Reminders';
+    sendBtn.textContent =
+      selectedCheckboxes.length > 0
+        ? `Send Reminders (${selectedCheckboxes.length})`
+        : "Send Reminders";
   }
 }
 
@@ -1379,12 +1410,15 @@ async function viewVehicleHistory(registration) {
     let errorMessage = null;
 
     try {
-      const dvsaResponse = await fetch(`/api/dvsa/vehicle/${registration}/mot`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
+      const dvsaResponse = await fetch(
+        `/api/dvsa/vehicle/${registration}/mot`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
 
       if (dvsaResponse.ok) {
         const dvsaData = await dvsaResponse.json();
@@ -1393,18 +1427,24 @@ async function viewVehicleHistory(registration) {
         }
       }
     } catch (dvsaError) {
-      console.warn("⚠️ DVSA API not available, trying garage database:", dvsaError);
+      console.warn(
+        "⚠️ DVSA API not available, trying garage database:",
+        dvsaError,
+      );
     }
 
     // If DVSA data not available, try garage database
     if (!motData) {
       try {
-        const garageResponse = await fetch(`/mot/api/vehicles/${registration}/history`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
+        const garageResponse = await fetch(
+          `/mot/api/vehicles/${registration}/history`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
 
         if (garageResponse.ok) {
           const garageData = await garageResponse.json();
@@ -1424,7 +1464,6 @@ async function viewVehicleHistory(registration) {
     }
 
     showMOTHistoryModal(registration, motData, false, errorMessage);
-
   } catch (error) {
     console.error("❌ Error loading MOT history:", error);
     showMOTHistoryModal(registration, null, false, error.message);
@@ -1436,8 +1475,16 @@ async function viewVehicleHistory(registration) {
  */
 function generateSampleMOTData(registration) {
   const currentDate = new Date();
-  const lastYear = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
-  const twoYearsAgo = new Date(currentDate.getFullYear() - 2, currentDate.getMonth(), currentDate.getDate());
+  const lastYear = new Date(
+    currentDate.getFullYear() - 1,
+    currentDate.getMonth(),
+    currentDate.getDate(),
+  );
+  const twoYearsAgo = new Date(
+    currentDate.getFullYear() - 2,
+    currentDate.getMonth(),
+    currentDate.getDate(),
+  );
 
   return {
     registration: registration,
@@ -1448,9 +1495,15 @@ function generateSampleMOTData(registration) {
     engineSize: "1600",
     motTests: [
       {
-        completedDate: currentDate.toISOString().split('T')[0],
+        completedDate: currentDate.toISOString().split("T")[0],
         testResult: "PASSED",
-        expiryDate: new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate()).toISOString().split('T')[0],
+        expiryDate: new Date(
+          currentDate.getFullYear() + 1,
+          currentDate.getMonth(),
+          currentDate.getDate(),
+        )
+          .toISOString()
+          .split("T")[0],
         motTestNumber: "123456789",
         odometerValue: 45000,
         odometerUnit: "mi",
@@ -1459,22 +1512,22 @@ function generateSampleMOTData(registration) {
           {
             type: "ADVISORY",
             text: "Tyre worn close to legal limit on front axle",
-            dangerous: false
-          }
-        ]
+            dangerous: false,
+          },
+        ],
       },
       {
-        completedDate: lastYear.toISOString().split('T')[0],
+        completedDate: lastYear.toISOString().split("T")[0],
         testResult: "PASSED",
-        expiryDate: currentDate.toISOString().split('T')[0],
+        expiryDate: currentDate.toISOString().split("T")[0],
         motTestNumber: "987654321",
         odometerValue: 42000,
         odometerUnit: "mi",
         testStationName: "Sample MOT Centre",
-        rfrAndComments: []
+        rfrAndComments: [],
       },
       {
-        completedDate: twoYearsAgo.toISOString().split('T')[0],
+        completedDate: twoYearsAgo.toISOString().split("T")[0],
         testResult: "FAILED",
         expiryDate: null,
         motTestNumber: "456789123",
@@ -1485,16 +1538,16 @@ function generateSampleMOTData(registration) {
           {
             type: "FAIL",
             text: "Brake disc worn beyond manufacturer's specification on front axle",
-            dangerous: true
+            dangerous: true,
           },
           {
             type: "ADVISORY",
             text: "Oil leak from engine",
-            dangerous: false
-          }
-        ]
-      }
-    ]
+            dangerous: false,
+          },
+        ],
+      },
+    ],
   };
 }
 
@@ -1505,7 +1558,7 @@ function showMOTHistoryModal(registration, motData, isLoading, errorMessage) {
   console.log(`📋 Showing MOT history modal for: ${registration}`);
 
   // Remove existing modal if any
-  const existingModal = document.getElementById('mot-history-modal');
+  const existingModal = document.getElementById("mot-history-modal");
   if (existingModal) {
     existingModal.remove();
   }
@@ -1524,31 +1577,39 @@ function showMOTHistoryModal(registration, motData, isLoading, errorMessage) {
           </button>
         </div>
         <div class="modal-body">
-          ${isLoading ? generateLoadingContent() :
-            errorMessage && !motData ? generateErrorContent(errorMessage) :
-            generateMOTHistoryContent(motData, errorMessage)}
+          ${
+            isLoading
+              ? generateLoadingContent()
+              : errorMessage && !motData
+                ? generateErrorContent(errorMessage)
+                : generateMOTHistoryContent(motData, errorMessage)
+          }
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" onclick="closeMOTHistoryModal()">
             Close
           </button>
-          ${!isLoading && !errorMessage ? `
+          ${
+            !isLoading && !errorMessage
+              ? `
             <button class="btn btn-primary" onclick="printMOTHistory('${registration}')">
               <i class="fas fa-print"></i>
               Print History
             </button>
-          ` : ''}
+          `
+              : ""
+          }
         </div>
       </div>
     </div>
   `;
 
   // Add modal to page
-  document.body.insertAdjacentHTML('beforeend', modalHTML);
+  document.body.insertAdjacentHTML("beforeend", modalHTML);
 
   // Add click outside to close
-  const modal = document.getElementById('mot-history-modal');
-  modal.addEventListener('click', (e) => {
+  const modal = document.getElementById("mot-history-modal");
+  modal.addEventListener("click", (e) => {
     if (e.target === modal) {
       closeMOTHistoryModal();
     }
@@ -1605,16 +1666,18 @@ function generateMOTHistoryContent(motData, warningMessage) {
     `;
   }
 
-  const warningBanner = warningMessage ? `
+  const warningBanner = warningMessage
+    ? `
     <div class="alert alert-warning" style="margin-bottom: var(--space-4);">
       <i class="fas fa-info-circle"></i>
       ${warningMessage}
     </div>
-  ` : '';
+  `
+    : "";
 
   // Sort MOT tests by date (newest first)
-  const sortedTests = motData.motTests.sort((a, b) =>
-    new Date(b.completedDate) - new Date(a.completedDate)
+  const sortedTests = motData.motTests.sort(
+    (a, b) => new Date(b.completedDate) - new Date(a.completedDate),
   );
 
   const vehicleInfo = `
@@ -1623,27 +1686,27 @@ function generateMOTHistoryContent(motData, warningMessage) {
       <div class="vehicle-details">
         <div class="detail-item">
           <span class="label">Registration:</span>
-          <span class="value">${motData.registration || 'N/A'}</span>
+          <span class="value">${motData.registration || "N/A"}</span>
         </div>
         <div class="detail-item">
           <span class="label">Make:</span>
-          <span class="value">${motData.make || 'N/A'}</span>
+          <span class="value">${motData.make || "N/A"}</span>
         </div>
         <div class="detail-item">
           <span class="label">Model:</span>
-          <span class="value">${motData.model || 'N/A'}</span>
+          <span class="value">${motData.model || "N/A"}</span>
         </div>
         <div class="detail-item">
           <span class="label">Colour:</span>
-          <span class="value">${motData.primaryColour || 'N/A'}</span>
+          <span class="value">${motData.primaryColour || "N/A"}</span>
         </div>
         <div class="detail-item">
           <span class="label">Fuel Type:</span>
-          <span class="value">${motData.fuelType || 'N/A'}</span>
+          <span class="value">${motData.fuelType || "N/A"}</span>
         </div>
         <div class="detail-item">
           <span class="label">Engine Size:</span>
-          <span class="value">${motData.engineSize || 'N/A'}cc</span>
+          <span class="value">${motData.engineSize || "N/A"}cc</span>
         </div>
       </div>
     </div>
@@ -1652,7 +1715,7 @@ function generateMOTHistoryContent(motData, warningMessage) {
   const motHistory = `
     <div class="mot-history-timeline">
       <h4>MOT Test History (${sortedTests.length} tests)</h4>
-      ${sortedTests.map((test, index) => generateMOTTestCard(test, index === 0)).join('')}
+      ${sortedTests.map((test, index) => generateMOTTestCard(test, index === 0)).join("")}
     </div>
   `;
 
@@ -1663,22 +1726,32 @@ function generateMOTHistoryContent(motData, warningMessage) {
  * Generate individual MOT test card
  */
 function generateMOTTestCard(test, isLatest) {
-  const testDate = new Date(test.completedDate).toLocaleDateString('en-GB');
-  const expiryDate = test.expiryDate ? new Date(test.expiryDate).toLocaleDateString('en-GB') : 'N/A';
+  const testDate = new Date(test.completedDate).toLocaleDateString("en-GB");
+  const expiryDate = test.expiryDate
+    ? new Date(test.expiryDate).toLocaleDateString("en-GB")
+    : "N/A";
 
-  const statusClass = test.testResult === 'PASSED' ? 'success' :
-                     test.testResult === 'FAILED' ? 'error' : 'warning';
+  const statusClass =
+    test.testResult === "PASSED"
+      ? "success"
+      : test.testResult === "FAILED"
+        ? "error"
+        : "warning";
 
-  const statusIcon = test.testResult === 'PASSED' ? 'check-circle' :
-                    test.testResult === 'FAILED' ? 'times-circle' : 'exclamation-triangle';
+  const statusIcon =
+    test.testResult === "PASSED"
+      ? "check-circle"
+      : test.testResult === "FAILED"
+        ? "times-circle"
+        : "exclamation-triangle";
 
   return `
-    <div class="mot-test-card ${isLatest ? 'latest' : ''}">
+    <div class="mot-test-card ${isLatest ? "latest" : ""}">
       <div class="test-header">
         <div class="test-date">
           <i class="fas fa-calendar"></i>
           ${testDate}
-          ${isLatest ? '<span class="latest-badge">Latest</span>' : ''}
+          ${isLatest ? '<span class="latest-badge">Latest</span>' : ""}
         </div>
         <div class="test-result">
           <span class="status-badge status-${statusClass}">
@@ -1691,7 +1764,7 @@ function generateMOTTestCard(test, isLatest) {
       <div class="test-details">
         <div class="detail-row">
           <span class="label">Test Number:</span>
-          <span class="value">${test.motTestNumber || 'N/A'}</span>
+          <span class="value">${test.motTestNumber || "N/A"}</span>
         </div>
         <div class="detail-row">
           <span class="label">Expiry Date:</span>
@@ -1699,26 +1772,34 @@ function generateMOTTestCard(test, isLatest) {
         </div>
         <div class="detail-row">
           <span class="label">Odometer:</span>
-          <span class="value">${test.odometerValue ? test.odometerValue.toLocaleString() : 'N/A'} ${test.odometerUnit || 'miles'}</span>
+          <span class="value">${test.odometerValue ? test.odometerValue.toLocaleString() : "N/A"} ${test.odometerUnit || "miles"}</span>
         </div>
         <div class="detail-row">
           <span class="label">Test Station:</span>
-          <span class="value">${test.testStationName || 'N/A'}</span>
+          <span class="value">${test.testStationName || "N/A"}</span>
         </div>
       </div>
 
-      ${test.rfrAndComments && test.rfrAndComments.length > 0 ? `
+      ${
+        test.rfrAndComments && test.rfrAndComments.length > 0
+          ? `
         <div class="test-issues">
           <h5>Issues & Comments</h5>
-          ${test.rfrAndComments.map(item => `
+          ${test.rfrAndComments
+            .map(
+              (item) => `
             <div class="issue-item ${item.type.toLowerCase()}">
               <div class="issue-type">${item.type}</div>
               <div class="issue-text">${item.text}</div>
-              ${item.dangerous ? '<span class="dangerous-badge">DANGEROUS</span>' : ''}
+              ${item.dangerous ? '<span class="dangerous-badge">DANGEROUS</span>' : ""}
             </div>
-          `).join('')}
+          `,
+            )
+            .join("")}
         </div>
-      ` : ''}
+      `
+          : ""
+      }
     </div>
   `;
 }
@@ -1727,7 +1808,7 @@ function generateMOTTestCard(test, isLatest) {
  * Close MOT history modal
  */
 function closeMOTHistoryModal() {
-  const modal = document.getElementById('mot-history-modal');
+  const modal = document.getElementById("mot-history-modal");
   if (modal) {
     modal.remove();
   }
@@ -1739,10 +1820,10 @@ function closeMOTHistoryModal() {
 function printMOTHistory(registration) {
   console.log(`🖨️ Printing MOT history for: ${registration}`);
 
-  const modalContent = document.querySelector('#mot-history-modal .modal-body');
+  const modalContent = document.querySelector("#mot-history-modal .modal-body");
   if (!modalContent) return;
 
-  const printWindow = window.open('', '_blank');
+  const printWindow = window.open("", "_blank");
   printWindow.document.write(`
     <html>
       <head>
@@ -1761,7 +1842,7 @@ function printMOTHistory(registration) {
       </head>
       <body>
         <h1>MOT History Report - ${registration}</h1>
-        <p>Generated on: ${new Date().toLocaleDateString('en-GB')}</p>
+        <p>Generated on: ${new Date().toLocaleDateString("en-GB")}</p>
         ${modalContent.innerHTML}
       </body>
     </html>
@@ -1777,7 +1858,9 @@ function printMOTHistory(registration) {
 function sendSingleReminder(registration) {
   console.log(`📱 Sending MOT reminder for: ${registration}`);
   // TODO: Implement single SMS sending
-  alert(`Sending MOT reminder for ${registration}\n\nThis feature will be implemented next.`);
+  alert(
+    `Sending MOT reminder for ${registration}\n\nThis feature will be implemented next.`,
+  );
 }
 
 /**
@@ -2575,15 +2658,15 @@ if (typeof module !== "undefined" && module.exports) {
 }
 
 // Google Drive sync function
-window.showGoogleDriveSync = function() {
+window.showGoogleDriveSync = function () {
   console.log("📤 Opening Google Drive sync within upload page...");
 
   // Navigate to upload page first
-  showPage('upload');
+  showPage("upload");
 
   // Then switch to Google Drive tab after a short delay
   setTimeout(() => {
-    const googleDriveTab = document.getElementById('google-drive-tab');
+    const googleDriveTab = document.getElementById("google-drive-tab");
     if (googleDriveTab) {
       const tab = new bootstrap.Tab(googleDriveTab);
       tab.show();

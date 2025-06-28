@@ -1,303 +1,350 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Integration Test - Garage Management System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
-        .test-section {
-            margin: 20px 0;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
-        .test-result {
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 4px;
-        }
-        .test-pass { background-color: #d4edda; color: #155724; }
-        .test-fail { background-color: #f8d7da; color: #721c24; }
-        .test-info { background-color: #d1ecf1; color: #0c5460; }
-        .log-output {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            padding: 10px;
-            font-family: monospace;
-            font-size: 12px;
-            max-height: 300px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-        }
+      .test-section {
+        margin: 20px 0;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+      .test-result {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 4px;
+      }
+      .test-pass {
+        background-color: #d4edda;
+        color: #155724;
+      }
+      .test-fail {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+      .test-info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+      }
+      .log-output {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 10px;
+        font-family: monospace;
+        font-size: 12px;
+        max-height: 300px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container mt-4">
-        <h1><i class="fas fa-bug"></i> Integration Test Suite</h1>
-        <p class="text-muted">Testing the actual behavior of the garage management system integration</p>
+      <h1><i class="fas fa-bug"></i> Integration Test Suite</h1>
+      <p class="text-muted">
+        Testing the actual behavior of the garage management system integration
+      </p>
 
-        <!-- Test 1: Navigation Elements -->
-        <div class="test-section">
-            <h3>Test 1: Navigation Elements</h3>
-            <button class="btn btn-primary" onclick="testNavigation()">Test Navigation</button>
-            <div id="nav-results"></div>
-        </div>
+      <!-- Test 1: Navigation Elements -->
+      <div class="test-section">
+        <h3>Test 1: Navigation Elements</h3>
+        <button class="btn btn-primary" onclick="testNavigation()">
+          Test Navigation
+        </button>
+        <div id="nav-results"></div>
+      </div>
 
-        <!-- Test 2: Upload Page Loading -->
-        <div class="test-section">
-            <h3>Test 2: Upload Page Loading</h3>
-            <button class="btn btn-primary" onclick="testUploadPageLoading()">Test Upload Loading</button>
-            <div id="upload-results"></div>
-        </div>
+      <!-- Test 2: Upload Page Loading -->
+      <div class="test-section">
+        <h3>Test 2: Upload Page Loading</h3>
+        <button class="btn btn-primary" onclick="testUploadPageLoading()">
+          Test Upload Loading
+        </button>
+        <div id="upload-results"></div>
+      </div>
 
-        <!-- Test 3: Google Drive Integration -->
-        <div class="test-section">
-            <h3>Test 3: Google Drive Integration</h3>
-            <button class="btn btn-primary" onclick="testGoogleDriveIntegration()">Test Google Drive</button>
-            <div id="google-drive-results"></div>
-        </div>
+      <!-- Test 3: Google Drive Integration -->
+      <div class="test-section">
+        <h3>Test 3: Google Drive Integration</h3>
+        <button class="btn btn-primary" onclick="testGoogleDriveIntegration()">
+          Test Google Drive
+        </button>
+        <div id="google-drive-results"></div>
+      </div>
 
-        <!-- Test 4: Template Accessibility -->
-        <div class="test-section">
-            <h3>Test 4: Template Accessibility</h3>
-            <button class="btn btn-primary" onclick="testTemplateAccess()">Test Templates</button>
-            <div id="template-results"></div>
-        </div>
+      <!-- Test 4: Template Accessibility -->
+      <div class="test-section">
+        <h3>Test 4: Template Accessibility</h3>
+        <button class="btn btn-primary" onclick="testTemplateAccess()">
+          Test Templates
+        </button>
+        <div id="template-results"></div>
+      </div>
 
-        <!-- Test 5: JavaScript Loading -->
-        <div class="test-section">
-            <h3>Test 5: JavaScript Loading</h3>
-            <button class="btn btn-primary" onclick="testJavaScriptLoading()">Test JS Loading</button>
-            <div id="js-results"></div>
-        </div>
+      <!-- Test 5: JavaScript Loading -->
+      <div class="test-section">
+        <h3>Test 5: JavaScript Loading</h3>
+        <button class="btn btn-primary" onclick="testJavaScriptLoading()">
+          Test JS Loading
+        </button>
+        <div id="js-results"></div>
+      </div>
 
-        <!-- Live Log -->
-        <div class="test-section">
-            <h3>Live Test Log</h3>
-            <div id="live-log" class="log-output">Test log will appear here...\n</div>
-            <button class="btn btn-secondary btn-sm" onclick="clearLog()">Clear Log</button>
+      <!-- Live Log -->
+      <div class="test-section">
+        <h3>Live Test Log</h3>
+        <div id="live-log" class="log-output">
+          Test log will appear here...\n
         </div>
+        <button class="btn btn-secondary btn-sm" onclick="clearLog()">
+          Clear Log
+        </button>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Test logging
-        function log(message, type = 'info') {
-            const timestamp = new Date().toLocaleTimeString();
-            const logDiv = document.getElementById('live-log');
-            const typeIcon = {
-                'info': 'ℹ️',
-                'success': '✅',
-                'error': '❌',
-                'warning': '⚠️'
-            };
-            logDiv.textContent += `${timestamp} ${typeIcon[type]} ${message}\n`;
-            logDiv.scrollTop = logDiv.scrollHeight;
+      // Test logging
+      function log(message, type = "info") {
+        const timestamp = new Date().toLocaleTimeString();
+        const logDiv = document.getElementById("live-log");
+        const typeIcon = {
+          info: "ℹ️",
+          success: "✅",
+          error: "❌",
+          warning: "⚠️",
+        };
+        logDiv.textContent += `${timestamp} ${typeIcon[type]} ${message}\n`;
+        logDiv.scrollTop = logDiv.scrollHeight;
+      }
+
+      function clearLog() {
+        document.getElementById("live-log").textContent =
+          "Test log cleared...\n";
+      }
+
+      // Test 1: Navigation Elements
+      async function testNavigation() {
+        log("Starting navigation test...", "info");
+        const resultsDiv = document.getElementById("nav-results");
+        let results = "";
+
+        try {
+          // Test if main page loads
+          const mainResponse = await fetch("/");
+          if (mainResponse.ok) {
+            results +=
+              '<div class="test-result test-pass">✅ Main page loads (200 OK)</div>';
+            log("Main page loads successfully", "success");
+          } else {
+            results +=
+              '<div class="test-result test-fail">❌ Main page failed to load</div>';
+            log("Main page failed to load", "error");
+          }
+
+          // Test if upload page loads
+          const uploadResponse = await fetch("/upload");
+          if (uploadResponse.ok) {
+            results +=
+              '<div class="test-result test-pass">✅ Upload page loads (200 OK)</div>';
+            log("Upload page loads successfully", "success");
+          } else {
+            results +=
+              '<div class="test-result test-fail">❌ Upload page failed to load</div>';
+            log("Upload page failed to load", "error");
+          }
+
+          // Test if settings page loads
+          const settingsResponse = await fetch("/settings");
+          if (settingsResponse.ok) {
+            results +=
+              '<div class="test-result test-pass">✅ Settings page loads (200 OK)</div>';
+            log("Settings page loads successfully", "success");
+          } else {
+            results +=
+              '<div class="test-result test-fail">❌ Settings page failed to load</div>';
+            log("Settings page failed to load", "error");
+          }
+        } catch (error) {
+          results += `<div class="test-result test-fail">❌ Navigation test error: ${error.message}</div>`;
+          log(`Navigation test error: ${error.message}`, "error");
         }
 
-        function clearLog() {
-            document.getElementById('live-log').textContent = 'Test log cleared...\n';
-        }
+        resultsDiv.innerHTML = results;
+      }
 
-        // Test 1: Navigation Elements
-        async function testNavigation() {
-            log('Starting navigation test...', 'info');
-            const resultsDiv = document.getElementById('nav-results');
-            let results = '';
+      // Test 2: Upload Page Loading
+      async function testUploadPageLoading() {
+        log("Starting upload page loading test...", "info");
+        const resultsDiv = document.getElementById("upload-results");
+        let results = "";
 
-            try {
-                // Test if main page loads
-                const mainResponse = await fetch('/');
-                if (mainResponse.ok) {
-                    results += '<div class="test-result test-pass">✅ Main page loads (200 OK)</div>';
-                    log('Main page loads successfully', 'success');
-                } else {
-                    results += '<div class="test-result test-fail">❌ Main page failed to load</div>';
-                    log('Main page failed to load', 'error');
-                }
+        try {
+          // Test integrated upload template
+          const templateResponse = await fetch(
+            "/templates/dashboard/upload.html",
+          );
+          if (templateResponse.ok) {
+            results +=
+              '<div class="test-result test-pass">✅ Integrated upload template accessible</div>';
+            log("Integrated upload template accessible", "success");
 
-                // Test if upload page loads
-                const uploadResponse = await fetch('/upload');
-                if (uploadResponse.ok) {
-                    results += '<div class="test-result test-pass">✅ Upload page loads (200 OK)</div>';
-                    log('Upload page loads successfully', 'success');
-                } else {
-                    results += '<div class="test-result test-fail">❌ Upload page failed to load</div>';
-                    log('Upload page failed to load', 'error');
-                }
-
-                // Test if settings page loads
-                const settingsResponse = await fetch('/settings');
-                if (settingsResponse.ok) {
-                    results += '<div class="test-result test-pass">✅ Settings page loads (200 OK)</div>';
-                    log('Settings page loads successfully', 'success');
-                } else {
-                    results += '<div class="test-result test-fail">❌ Settings page failed to load</div>';
-                    log('Settings page failed to load', 'error');
-                }
-
-            } catch (error) {
-                results += `<div class="test-result test-fail">❌ Navigation test error: ${error.message}</div>`;
-                log(`Navigation test error: ${error.message}`, 'error');
+            const templateContent = await templateResponse.text();
+            if (templateContent.includes("Data Upload & Management")) {
+              results +=
+                '<div class="test-result test-pass">✅ Template contains expected content</div>';
+              log("Template contains expected content", "success");
+            } else {
+              results +=
+                '<div class="test-result test-fail">❌ Template missing expected content</div>';
+              log("Template missing expected content", "error");
             }
+          } else {
+            results +=
+              '<div class="test-result test-fail">❌ Integrated upload template not accessible</div>';
+            log("Integrated upload template not accessible", "error");
+          }
 
-            resultsDiv.innerHTML = results;
+          // Test integrated upload JavaScript
+          const jsResponse = await fetch("/js/integrated-upload.js");
+          if (jsResponse.ok) {
+            results +=
+              '<div class="test-result test-pass">✅ Integrated upload JavaScript accessible</div>';
+            log("Integrated upload JavaScript accessible", "success");
+          } else {
+            results +=
+              '<div class="test-result test-fail">❌ Integrated upload JavaScript not accessible</div>';
+            log("Integrated upload JavaScript not accessible", "error");
+          }
+        } catch (error) {
+          results += `<div class="test-result test-fail">❌ Upload loading test error: ${error.message}</div>`;
+          log(`Upload loading test error: ${error.message}`, "error");
         }
 
-        // Test 2: Upload Page Loading
-        async function testUploadPageLoading() {
-            log('Starting upload page loading test...', 'info');
-            const resultsDiv = document.getElementById('upload-results');
-            let results = '';
+        resultsDiv.innerHTML = results;
+      }
 
-            try {
-                // Test integrated upload template
-                const templateResponse = await fetch('/templates/dashboard/upload.html');
-                if (templateResponse.ok) {
-                    results += '<div class="test-result test-pass">✅ Integrated upload template accessible</div>';
-                    log('Integrated upload template accessible', 'success');
-                    
-                    const templateContent = await templateResponse.text();
-                    if (templateContent.includes('Data Upload & Management')) {
-                        results += '<div class="test-result test-pass">✅ Template contains expected content</div>';
-                        log('Template contains expected content', 'success');
-                    } else {
-                        results += '<div class="test-result test-fail">❌ Template missing expected content</div>';
-                        log('Template missing expected content', 'error');
-                    }
-                } else {
-                    results += '<div class="test-result test-fail">❌ Integrated upload template not accessible</div>';
-                    log('Integrated upload template not accessible', 'error');
-                }
+      // Test 3: Google Drive Integration
+      async function testGoogleDriveIntegration() {
+        log("Starting Google Drive integration test...", "info");
+        const resultsDiv = document.getElementById("google-drive-results");
+        let results = "";
 
-                // Test integrated upload JavaScript
-                const jsResponse = await fetch('/js/integrated-upload.js');
-                if (jsResponse.ok) {
-                    results += '<div class="test-result test-pass">✅ Integrated upload JavaScript accessible</div>';
-                    log('Integrated upload JavaScript accessible', 'success');
-                } else {
-                    results += '<div class="test-result test-fail">❌ Integrated upload JavaScript not accessible</div>';
-                    log('Integrated upload JavaScript not accessible', 'error');
-                }
+        try {
+          // Test Google Drive status endpoint
+          const statusResponse = await fetch("/google-drive/status");
+          if (statusResponse.ok) {
+            results +=
+              '<div class="test-result test-pass">✅ Google Drive status endpoint accessible</div>';
+            log("Google Drive status endpoint accessible", "success");
 
-            } catch (error) {
-                results += `<div class="test-result test-fail">❌ Upload loading test error: ${error.message}</div>`;
-                log(`Upload loading test error: ${error.message}`, 'error');
+            const statusData = await statusResponse.json();
+            results += `<div class="test-result test-info">ℹ️ Google Drive status: ${JSON.stringify(statusData)}</div>`;
+            log(`Google Drive status: ${JSON.stringify(statusData)}`, "info");
+          } else {
+            results +=
+              '<div class="test-result test-fail">❌ Google Drive status endpoint not accessible</div>';
+            log("Google Drive status endpoint not accessible", "error");
+          }
+
+          // Test Google Drive main page
+          const driveResponse = await fetch("/google-drive/");
+          if (driveResponse.ok) {
+            results +=
+              '<div class="test-result test-pass">✅ Google Drive main page accessible</div>';
+            log("Google Drive main page accessible", "success");
+          } else {
+            results +=
+              '<div class="test-result test-fail">❌ Google Drive main page not accessible</div>';
+            log("Google Drive main page not accessible", "error");
+          }
+        } catch (error) {
+          results += `<div class="test-result test-fail">❌ Google Drive test error: ${error.message}</div>`;
+          log(`Google Drive test error: ${error.message}`, "error");
+        }
+
+        resultsDiv.innerHTML = results;
+      }
+
+      // Test 4: Template Accessibility
+      async function testTemplateAccess() {
+        log("Starting template accessibility test...", "info");
+        const resultsDiv = document.getElementById("template-results");
+        let results = "";
+
+        const templates = [
+          "/templates/dashboard/upload.html",
+          "/components/header.html",
+          "/components/sidebar.html",
+        ];
+
+        for (const template of templates) {
+          try {
+            const response = await fetch(template);
+            if (response.ok) {
+              results += `<div class="test-result test-pass">✅ ${template} accessible</div>`;
+              log(`${template} accessible`, "success");
+            } else {
+              results += `<div class="test-result test-fail">❌ ${template} not accessible (${response.status})</div>`;
+              log(`${template} not accessible (${response.status})`, "error");
             }
-
-            resultsDiv.innerHTML = results;
+          } catch (error) {
+            results += `<div class="test-result test-fail">❌ ${template} error: ${error.message}</div>`;
+            log(`${template} error: ${error.message}`, "error");
+          }
         }
 
-        // Test 3: Google Drive Integration
-        async function testGoogleDriveIntegration() {
-            log('Starting Google Drive integration test...', 'info');
-            const resultsDiv = document.getElementById('google-drive-results');
-            let results = '';
+        resultsDiv.innerHTML = results;
+      }
 
-            try {
-                // Test Google Drive status endpoint
-                const statusResponse = await fetch('/google-drive/status');
-                if (statusResponse.ok) {
-                    results += '<div class="test-result test-pass">✅ Google Drive status endpoint accessible</div>';
-                    log('Google Drive status endpoint accessible', 'success');
-                    
-                    const statusData = await statusResponse.json();
-                    results += `<div class="test-result test-info">ℹ️ Google Drive status: ${JSON.stringify(statusData)}</div>`;
-                    log(`Google Drive status: ${JSON.stringify(statusData)}`, 'info');
-                } else {
-                    results += '<div class="test-result test-fail">❌ Google Drive status endpoint not accessible</div>';
-                    log('Google Drive status endpoint not accessible', 'error');
-                }
+      // Test 5: JavaScript Loading
+      async function testJavaScriptLoading() {
+        log("Starting JavaScript loading test...", "info");
+        const resultsDiv = document.getElementById("js-results");
+        let results = "";
 
-                // Test Google Drive main page
-                const driveResponse = await fetch('/google-drive/');
-                if (driveResponse.ok) {
-                    results += '<div class="test-result test-pass">✅ Google Drive main page accessible</div>';
-                    log('Google Drive main page accessible', 'success');
-                } else {
-                    results += '<div class="test-result test-fail">❌ Google Drive main page not accessible</div>';
-                    log('Google Drive main page not accessible', 'error');
-                }
+        const scripts = [
+          "/js/debug-system.js",
+          "/js/integrated-upload.js",
+          "/js/navigation.js",
+          "/js/app.js",
+        ];
 
-            } catch (error) {
-                results += `<div class="test-result test-fail">❌ Google Drive test error: ${error.message}</div>`;
-                log(`Google Drive test error: ${error.message}`, 'error');
+        for (const script of scripts) {
+          try {
+            const response = await fetch(script);
+            if (response.ok) {
+              results += `<div class="test-result test-pass">✅ ${script} accessible</div>`;
+              log(`${script} accessible`, "success");
+            } else {
+              results += `<div class="test-result test-fail">❌ ${script} not accessible (${response.status})</div>`;
+              log(`${script} not accessible (${response.status})`, "error");
             }
-
-            resultsDiv.innerHTML = results;
+          } catch (error) {
+            results += `<div class="test-result test-fail">❌ ${script} error: ${error.message}</div>`;
+            log(`${script} error: ${error.message}`, "error");
+          }
         }
 
-        // Test 4: Template Accessibility
-        async function testTemplateAccess() {
-            log('Starting template accessibility test...', 'info');
-            const resultsDiv = document.getElementById('template-results');
-            let results = '';
+        resultsDiv.innerHTML = results;
+      }
 
-            const templates = [
-                '/templates/dashboard/upload.html',
-                '/components/header.html',
-                '/components/sidebar.html'
-            ];
-
-            for (const template of templates) {
-                try {
-                    const response = await fetch(template);
-                    if (response.ok) {
-                        results += `<div class="test-result test-pass">✅ ${template} accessible</div>`;
-                        log(`${template} accessible`, 'success');
-                    } else {
-                        results += `<div class="test-result test-fail">❌ ${template} not accessible (${response.status})</div>`;
-                        log(`${template} not accessible (${response.status})`, 'error');
-                    }
-                } catch (error) {
-                    results += `<div class="test-result test-fail">❌ ${template} error: ${error.message}</div>`;
-                    log(`${template} error: ${error.message}`, 'error');
-                }
-            }
-
-            resultsDiv.innerHTML = results;
-        }
-
-        // Test 5: JavaScript Loading
-        async function testJavaScriptLoading() {
-            log('Starting JavaScript loading test...', 'info');
-            const resultsDiv = document.getElementById('js-results');
-            let results = '';
-
-            const scripts = [
-                '/js/debug-system.js',
-                '/js/integrated-upload.js',
-                '/js/navigation.js',
-                '/js/app.js'
-            ];
-
-            for (const script of scripts) {
-                try {
-                    const response = await fetch(script);
-                    if (response.ok) {
-                        results += `<div class="test-result test-pass">✅ ${script} accessible</div>`;
-                        log(`${script} accessible`, 'success');
-                    } else {
-                        results += `<div class="test-result test-fail">❌ ${script} not accessible (${response.status})</div>`;
-                        log(`${script} not accessible (${response.status})`, 'error');
-                    }
-                } catch (error) {
-                    results += `<div class="test-result test-fail">❌ ${script} error: ${error.message}</div>`;
-                    log(`${script} error: ${error.message}`, 'error');
-                }
-            }
-
-            resultsDiv.innerHTML = results;
-        }
-
-        // Auto-run basic tests on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            log('Integration test page loaded', 'success');
-            log('Click the test buttons to run specific tests', 'info');
-        });
+      // Auto-run basic tests on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        log("Integration test page loaded", "success");
+        log("Click the test buttons to run specific tests", "info");
+      });
     </script>
-</body>
+  </body>
 </html>

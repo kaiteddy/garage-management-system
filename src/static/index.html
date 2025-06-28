@@ -1215,50 +1215,58 @@
         // The application will be initialized by app.js DOMContentLoaded listener
 
         // Debug upload integration - immediate test
-        console.log('🔧 IMMEDIATE DEBUG: Testing upload integration...');
-        console.log('showPage function:', typeof window.showPage);
-        console.log('loadUploadPage function:', typeof window.loadUploadPage);
-        console.log('Upload container:', !!document.getElementById('upload-container'));
-        console.log('Upload page:', !!document.getElementById('upload'));
+        console.log("🔧 IMMEDIATE DEBUG: Testing upload integration...");
+        console.log("showPage function:", typeof window.showPage);
+        console.log("loadUploadPage function:", typeof window.loadUploadPage);
+        console.log(
+          "Upload container:",
+          !!document.getElementById("upload-container"),
+        );
+        console.log("Upload page:", !!document.getElementById("upload"));
 
         // Add debug button immediately
-        const debugBtn = document.createElement('button');
-        debugBtn.innerHTML = '🔧 Test Upload';
-        debugBtn.style.position = 'fixed';
-        debugBtn.style.top = '10px';
-        debugBtn.style.right = '10px';
-        debugBtn.style.zIndex = '9999';
-        debugBtn.style.background = '#007bff';
-        debugBtn.style.color = 'white';
-        debugBtn.style.border = 'none';
-        debugBtn.style.padding = '10px';
-        debugBtn.style.borderRadius = '5px';
-        debugBtn.style.fontSize = '14px';
-        debugBtn.style.cursor = 'pointer';
+        const debugBtn = document.createElement("button");
+        debugBtn.innerHTML = "🔧 Test Upload";
+        debugBtn.style.position = "fixed";
+        debugBtn.style.top = "10px";
+        debugBtn.style.right = "10px";
+        debugBtn.style.zIndex = "9999";
+        debugBtn.style.background = "#007bff";
+        debugBtn.style.color = "white";
+        debugBtn.style.border = "none";
+        debugBtn.style.padding = "10px";
+        debugBtn.style.borderRadius = "5px";
+        debugBtn.style.fontSize = "14px";
+        debugBtn.style.cursor = "pointer";
         debugBtn.onclick = () => {
-          console.log('🔧 DEBUG: Testing upload page load...');
-          if (typeof window.showPage === 'function') {
-            window.showPage('upload');
+          console.log("🔧 DEBUG: Testing upload page load...");
+          if (typeof window.showPage === "function") {
+            window.showPage("upload");
             console.log('✅ showPage("upload") called');
           } else {
-            console.error('❌ showPage function not found');
+            console.error("❌ showPage function not found");
           }
         };
         document.body.appendChild(debugBtn);
 
         // Also test after a delay when everything is loaded
         setTimeout(() => {
-          console.log('🔧 DELAYED DEBUG: Testing after full load...');
-          console.log('showPage function:', typeof window.showPage);
-          console.log('loadUploadPage function:', typeof window.loadUploadPage);
-          console.log('Upload container:', !!document.getElementById('upload-container'));
-          console.log('Upload page:', !!document.getElementById('upload'));
+          console.log("🔧 DELAYED DEBUG: Testing after full load...");
+          console.log("showPage function:", typeof window.showPage);
+          console.log("loadUploadPage function:", typeof window.loadUploadPage);
+          console.log(
+            "Upload container:",
+            !!document.getElementById("upload-container"),
+          );
+          console.log("Upload page:", !!document.getElementById("upload"));
 
           // Test direct navigation
-          if (typeof window.showPage === 'function') {
-            console.log('✅ showPage function is available - upload should work');
+          if (typeof window.showPage === "function") {
+            console.log(
+              "✅ showPage function is available - upload should work",
+            );
           } else {
-            console.error('❌ showPage function still not available');
+            console.error("❌ showPage function still not available");
           }
         }, 5000);
       });

@@ -1101,13 +1101,17 @@
 
           // Wait for the page to fully load before navigating
           setTimeout(() => {
-            if (typeof showPage === 'function') {
+            if (typeof showPage === "function") {
               showPage(hash);
             } else {
-              console.warn(`⚠️ showPage function not available, trying to click nav item for: ${hash}`);
+              console.warn(
+                `⚠️ showPage function not available, trying to click nav item for: ${hash}`,
+              );
 
               // Fallback: try to click the navigation item
-              const navItem = document.querySelector(`[onclick="showPage('${hash}')"]`);
+              const navItem = document.querySelector(
+                `[onclick="showPage('${hash}')"]`,
+              );
               if (navItem) {
                 navItem.click();
               } else {
@@ -1119,10 +1123,10 @@
       }
 
       // Handle hash navigation on page load
-      document.addEventListener('DOMContentLoaded', handleHashNavigation);
+      document.addEventListener("DOMContentLoaded", handleHashNavigation);
 
       // Handle hash changes (back/forward navigation)
-      window.addEventListener('hashchange', handleHashNavigation);
+      window.addEventListener("hashchange", handleHashNavigation);
 
       console.log("🔗 Hash navigation script loaded");
     </script>

@@ -19,7 +19,8 @@ logger = logging.getLogger(__name__)
 def get_google_drive_service():
     """Get Google Drive service instance"""
     # Use unified database path
-    db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'garage_management.db')
+    db_path = os.path.join(os.path.dirname(
+        os.path.dirname(__file__)), 'garage_management.db')
     return GoogleDriveService(db_path)
 
 
