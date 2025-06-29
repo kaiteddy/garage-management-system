@@ -23,11 +23,14 @@ def cleanup_database(db_path: str) -> None:
         cursor.execute('PRAGMA foreign_keys = ON')
 
         # Remove audit log entries older than 90 days
-        cutoff_audit = (datetime.now() - timedelta(days=90)).strftime('%Y-%m-%d')
-        cursor.execute('DELETE FROM audit_log WHERE timestamp < ?', (cutoff_audit,))
+        cutoff_audit = (datetime.now() - timedelta(days=90)
+                        ).strftime('%Y-%m-%d')
+        cursor.execute(
+            'DELETE FROM audit_log WHERE timestamp < ?', (cutoff_audit,))
 
         # Remove completed appointments older than one year
-        cutoff_appointments = (datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')
+        cutoff_appointments = (
+            datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')
         cursor.execute(
             "DELETE FROM appointments WHERE status='completed' AND appointment_date < ?",
             (cutoff_appointments,)
@@ -40,7 +43,8 @@ def cleanup_database(db_path: str) -> None:
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Run database maintenance tasks')
+    parser = argparse.ArgumentParser(
+        description='Run database maintenance tasks')
     parser.add_argument('--db', help='Path to database file')
     args = parser.parse_args()
 
