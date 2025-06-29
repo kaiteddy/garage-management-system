@@ -80,6 +80,17 @@ curl http://localhost:5000/api/health
 - Check `garage.db` file exists
 - Restart application if connection fails
 
+### Database Maintenance
+
+Run the cleanup script periodically to keep the database lean:
+
+```bash
+python scripts/database_cleanup.py
+```
+
+Set the `GMS_DB_PATH` environment variable if your database is in a different
+location.
+
 ### Port Issues
 
 - Default port is 5000
