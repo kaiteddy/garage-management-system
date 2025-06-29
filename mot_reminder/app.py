@@ -329,7 +329,7 @@ def process_uploaded_file(file):
 
 
 def bulk_check_vehicles(vehicle_data_list):
-    """Check MOT status for multiple vehicles with contact information"""
+    """Check MOT status for multiple vehicles and persist them"""
     results = {
         'success': [],
         'failed': [],
@@ -344,18 +344,34 @@ def bulk_check_vehicles(vehicle_data_list):
         customer_name = vehicle_data.get('customer_name')
 
         try:
-            # Check if already exists
             if reg in existing_regs:
                 results['duplicates'].append(reg)
                 continue
 
-            # Check MOT status
+            if integrated_mot_service:
+                add_result = integrated_mot_service.add_mot_vehicle(
+                    reg,
+                    customer_name=customer_name,
+                    mobile_number=mobile,
+                    upload_batch_id='bulk_upload'
+                )
+
+                if add_result.get('success'):
+                    mot_data = add_result.get('data', {})
+                    mot_data['registration'] = reg
+                    mot_data['customer_name'] = customer_name
+                    mot_data['mobile_number'] = mobile
+                    vehicles.append(mot_data)
+                    results['success'].append(reg)
+                    existing_regs.add(reg)
+                else:
+                    results['failed'].append(reg)
+                continue
+
             vehicle_info = reminder.check_mot_status(reg)
             if vehicle_info:
-                # Add contact information to vehicle info
                 vehicle_info['mobile_number'] = mobile
                 vehicle_info['customer_name'] = customer_name
-
                 vehicles.append(vehicle_info)
                 results['success'].append(reg)
                 existing_regs.add(reg)
