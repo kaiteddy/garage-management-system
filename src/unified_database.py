@@ -13,9 +13,15 @@ class UnifiedDatabase:
     """Unified database manager for the garage management system"""
 
     def __init__(self, db_path: str = None):
-        """Initialize unified database"""
-        self.db_path = db_path or os.path.join(
-            os.path.dirname(__file__), 'garage_management.db')
+        """Initialize unified database
+
+        The database path can be provided directly, via the ``GMS_DB_PATH``
+        environment variable, or defaults to ``garage_management.db`` in the
+        current directory.
+        """
+        self.db_path = db_path or os.environ.get(
+            'GMS_DB_PATH',
+            os.path.join(os.path.dirname(__file__), 'garage_management.db'))
         self.logger = logging.getLogger(__name__)
 
     def initialize_unified_schema(self):
@@ -25,8 +31,11 @@ class UnifiedDatabase:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
 
-                # Enable foreign keys
+                # Enable foreign keys and set recommended pragmas
                 cursor.execute('PRAGMA foreign_keys = ON')
+                cursor.execute('PRAGMA journal_mode=WAL')
+                cursor.execute('PRAGMA synchronous=NORMAL')
+                cursor.execute('PRAGMA temp_store=MEMORY')
 
                 # Core customer table
                 cursor.execute('''
@@ -266,6 +275,14 @@ class UnifiedDatabase:
                     'CREATE INDEX IF NOT EXISTS idx_appointments_date ON appointments (appointment_date)')
                 cursor.execute(
                     'CREATE INDEX IF NOT EXISTS idx_sms_customer_id ON sms_communications (customer_id)')
+                cursor.execute(
+                    'CREATE INDEX IF NOT EXISTS idx_job_sheets_job_number ON job_sheets (job_number)')
+                cursor.execute(
+                    'CREATE INDEX IF NOT EXISTS idx_parts_inventory_part_number ON parts_inventory (part_number)')
+                cursor.execute(
+                    'CREATE INDEX IF NOT EXISTS idx_technicians_email ON technicians (email)')
+                cursor.execute(
+                    'CREATE INDEX IF NOT EXISTS idx_appointments_status ON appointments (status)')
 
                 conn.commit()
                 self.logger.info(

@@ -13,8 +13,8 @@ from pathlib import Path
 def initialize_database():
     """Initialize SQLite database and ensure it's writable"""
     # Define database directory and path
-    db_dir = Path('data')
-    db_path = db_dir / 'garage.db'
+    db_dir = Path(os.environ.get('GMS_DB_DIR', 'data'))
+    db_path = Path(os.environ.get('GMS_DB_PATH', str(db_dir / 'garage.db')))
 
     # Create database directory if it doesn't exist
     print(f"📁 Creating database directory at {db_dir}...")
@@ -65,7 +65,7 @@ def initialize_database():
 
 def test_database_connection():
     """Test database connection"""
-    db_path = Path('data') / 'garage.db'
+    db_path = Path(os.environ.get('GMS_DB_PATH', 'data/garage.db'))
 
     try:
         print(f"🔍 Testing database connection to {db_path}...")

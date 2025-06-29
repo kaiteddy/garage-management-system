@@ -64,12 +64,17 @@ The frontend is built with vanilla JavaScript, HTML, and CSS, following a compon
 | `src/routes/google_drive_routes.py`       | Google Drive integration          |
 | `src/routes/invoice_routes.py`            | Invoice management                |
 | `src/routes/job_routes.py`                | Job management                    |
+| `src/routes/mot_routes.py`            | MOT routes                    |
+|
 | `src/routes/parts_supplier_routes.py`     | Parts and supplier management     |
 | `src/routes/upload_routes.py`             | File upload handling              |
 | `src/routes/user.py`                      | User management                   |
 | `src/routes/vat_routes.py`                | VAT calculation and reporting     |
+|
 | `src/routes/vehicle_routes.py`            | Vehicle management                |
 | `src/routes/workshop_diary_routes.py`     | Workshop scheduling               |
+| `src/routes/unified_api_routes.py`     | Additional unified API routes |
+|
 
 ### API Routes
 
@@ -118,6 +123,17 @@ The frontend is built with vanilla JavaScript, HTML, and CSS, following a compon
 | `src/deepsource_webhook_handler.py` | DeepSource webhook handling             |
 | `src/import_ga4_data.py`            | Google Analytics 4 data import          |
 | `src/mot_service.py`                | MOT service integration                 |
+| `src/db_init.py`                | Database initialization script |
+|
+| `src/migrate_sqlalchemy.py`     | SQLAlchemy migration script |
+|
+### Unified Application
+
+| File | Description |
+| --- | --- |
+| `src/unified_app.py` | Unified system application |
+| `src/unified_database.py` | Unified database manager |
+
 
 ## Frontend Components
 
@@ -126,6 +142,7 @@ The frontend is built with vanilla JavaScript, HTML, and CSS, following a compon
 | File                                 | Description                  |
 | ------------------------------------ | ---------------------------- |
 | `src/static/index.html`              | Main application HTML        |
+| `src/static/integrated_dashboard.html` | Integrated system dashboard |
 | `src/static/css/components.css`      | UI component styles          |
 | `src/static/css/job-sheets.css`      | Job sheets specific styles   |
 | `src/static/css/kanban-board.css`    | Kanban board styles          |
@@ -149,6 +166,22 @@ The frontend is built with vanilla JavaScript, HTML, and CSS, following a compon
 | `src/static/js/customer-portal.js`      | Customer portal functionality         |
 | `src/static/js/mot-dashboard.js`        | MOT dashboard functionality           |
 | `src/static/js/error-monitoring.js`     | Error monitoring functionality        |
+| `src/static/js/dashboard_data_loader.js` | Dashboard data loading |
+| `src/static/js/dashboard_integration.js` | Dashboard integration |
+| `src/static/js/debug-system.js` | Debug utilities |
+| `src/static/js/garage-issue-tracker.js` | Issue tracker functionality |
+| `src/static/js/integrated-upload.js` | Integrated file upload |
+| `src/static/js/settings.js` | System settings handling |
+| `src/static/js/utils.js` | Shared utility functions |
+| `src/static/js/pages/customers-modern.js` | Modern customers page |
+| `src/static/js/pages/dashboard-modern.js` | Modern dashboard page |
+| `src/static/js/components/modern-layout.js` | Layout component for modern pages |
+### TypeScript
+
+| File | Description |
+| --- | --- |
+| `src:components:FeedbackHotkey.ts` | React feedback hotkey component |
+
 
 ## Integration Components
 
@@ -190,6 +223,8 @@ The frontend is built with vanilla JavaScript, HTML, and CSS, following a compon
 | ---------------------------------------- | ---------------------------- |
 | `scripts/setup_deepsource_automation.sh` | DeepSource automation setup  |
 | `scripts/test_categorization.py`         | Test data categorization     |
+| `scripts/reset_database.sh`              | Reset local database         |
+| `scripts/database_cleanup.py`            | Periodic database maintenance|
 | `deploy.sh`                              | Deployment script            |
 | `start_integrated_system.py`             | Start integrated system      |
 | `start_mot_service.py`                   | Start MOT service            |
