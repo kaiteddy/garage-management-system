@@ -106,12 +106,12 @@ def upload_csv():
                 # Import the CSV using the correct database path
                 db_path = os.path.join(os.path.dirname(
                     os.path.dirname(__file__)), 'data', 'garage.db')
-                
+
                 # Ensure the database directory exists
                 os.makedirs(os.path.dirname(db_path), exist_ok=True)
-                
+
                 csv_service = CSVImportService(db_path)
-                
+
                 # Try to detect the table name from filename
                 filename_lower = filename.lower()
                 if 'customer' in filename_lower:
@@ -122,10 +122,10 @@ def upload_csv():
                     table_name = 'jobs'
                 else:
                     table_name = 'customers'  # Default
-                
+
                 # Import the file
                 result = csv_service.import_from_file(temp_path, table_name)
-                
+
                 if result['success']:
                     results.append({
                         'filename': filename,
@@ -141,25 +141,26 @@ def upload_csv():
                         'success': False,
                         'error': result.get('error', 'Unknown error during import')
                     })
-                    
+
             except Exception as e:
                 results.append({
                     'filename': filename,
                     'success': False,
                     'error': f'Error processing file: {str(e)}'
                 })
-                
+
             finally:
                 # Always clean up temp file
                 try:
                     if os.path.exists(temp_path):
                         os.remove(temp_path)
                 except Exception as e:
-                    print(f"Warning: Could not remove temp file {temp_path}: {e}")
-        
+                    print(
+                        f"Warning: Could not remove temp file {temp_path}: {e}")
+
         # Check if any files were processed successfully
         success_count = sum(1 for r in results if r.get('success', False))
-        
+
         return jsonify({
             'success': success_count > 0,
             'results': results,
@@ -167,7 +168,7 @@ def upload_csv():
             'successful_imports': success_count,
             'failed_imports': len(files) - success_count
         })
-            
+
     except Exception as e:
         return jsonify({
             'success': False,
@@ -331,7 +332,7 @@ def process_bulk_upload():
         # Use the correct database path
         db_path = os.path.join(os.path.dirname(
             os.path.dirname(__file__)), 'data', 'garage.db')
-        
+
         # Ensure the database directory exists
         os.makedirs(os.path.dirname(db_path), exist_ok=True)
 

@@ -10,8 +10,8 @@ import sys
 
 from flask import Flask, jsonify, render_template, send_from_directory
 from flask_cors import CORS
-from werkzeug.middleware.proxy_fix import ProxyFix
 from livereload import Server
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from routes.mot_routes import mot_bp
 from unified_database import UnifiedDatabase
@@ -70,12 +70,12 @@ def create_unified_app():
     """Create the unified Garage Management System application"""
     # Get the absolute path to the src directory
     src_dir = os.path.dirname(os.path.abspath(__file__))
-    
+
     # Configure the Flask app with proper template and static folders
     app = Flask(__name__,
                 static_folder=os.path.join(src_dir, 'static'),
                 template_folder=os.path.join(src_dir, 'templates'))
-    
+
     app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
     CORS(app)  # Enable CORS for all routes
 
@@ -297,20 +297,22 @@ def main():
     if app.debug:
         # Enable template auto-reload
         app.config['TEMPLATES_AUTO_RELOAD'] = True
-        
+
         # Configure livereload server
         server = Server(app.wsgi_app)
-        
+
         # Watch template files for changes
         server.watch('templates/*.html')
         server.watch('static/*.css')
         server.watch('static/*.js')
-        
+
         # Start the server with livereload
-        server.serve(host=args.host, port=args.port, debug=True, reloader_type='stat')
+        server.serve(host=args.host, port=args.port,
+                     debug=True, reloader_type='stat')
     else:
         # Production configuration
         app.run(host=args.host, port=args.port)
+
 
 if __name__ == '__main__':
     main()
