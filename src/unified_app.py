@@ -11,6 +11,7 @@ import sys
 from flask import Flask, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
+from livereload import Server
 
 from routes.mot_routes import mot_bp
 from unified_database import UnifiedDatabase
@@ -67,10 +68,16 @@ except ImportError:
 
 def create_unified_app():
     """Create the unified Garage Management System application"""
-
+    # Get the absolute path to the src directory
+    src_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Configure the Flask app with proper template and static folders
     app = Flask(__name__,
-                static_folder='static',
-                template_folder='templates')
+                static_folder=os.path.join(src_dir, 'static'),
+                template_folder=os.path.join(src_dir, 'templates'))
+    
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+    CORS(app)  # Enable CORS for all routes
 
     # Configure app
     app.config['SECRET_KEY'] = os.environ.get(
@@ -126,16 +133,16 @@ def create_unified_app():
 
     # Register only available blueprints
     blueprints = [
-        (dashboard_bp, '/api', 'Dashboard'),
-        (customer_bp, '/api', 'Customer'),
-        (vehicle_bp, '/api', 'Vehicle'),
-        (upload_bp, '/api', 'Upload'),
-        (feedback_bp, '/api', 'Feedback'),
-        (google_drive_bp, '/google-drive', 'Google Drive'),
-        (mot_bp, '/mot', 'MOT')
+        (dashboard_bp, '', 'Dashboard'),
+        (customer_bp, '', 'Customer'),
+        (vehicle_bp, '', 'Vehicle'),
+        (upload_bp, '/', 'Upload'),  # Mount at root to handle /upload directly
+        (feedback_bp, '', 'Feedback'),
+        (google_drive_bp, '', 'Google Drive'),
+        (mot_bp, '', 'MOT'),
+        # Add other blueprints here as they are created
     ]
 
-    # Add unified API routes for missing endpoints
     try:
         from routes.unified_api_routes import unified_api_bp
         blueprints.append((unified_api_bp, '', 'Unified API'))
@@ -164,40 +171,33 @@ def create_unified_app():
 
     # Main application routes
     @app.route('/')
-    def index():
-        """Main dashboard"""
-        return send_from_directory('static', 'index.html')
+    def home():
+        """Serve the main application interface"""
+        return render_template('index.html')
 
     @app.route('/integrated')
     def integrated_dashboard():
         """Integrated dashboard"""
-        return send_from_directory('static', 'integrated_dashboard.html')
-
-    @app.route('/upload')
-    def upload_page():
-        """Upload interface"""
-        return send_from_directory('static', 'upload.html')
+        return send_from_directory(app.static_folder, 'integrated_dashboard.html')
 
     @app.route('/templates/<path:filename>')
     def serve_templates(filename):
         """Serve template files"""
-        import os
-        template_path = os.path.join(
-            os.path.dirname(__file__), 'static', 'templates')
-        return send_from_directory(template_path, filename)
+        return send_from_directory(app.template_folder, filename)
 
-    @app.route('/<path:filename>')
+    @app.route('/static/<path:filename>')
     def serve_static_files(filename):
-        """Serve static HTML files from root"""
-        if filename.endswith('.html'):
-            return send_from_directory('static', filename)
-        # For non-HTML files, let Flask handle them normally
-        return app.send_static_file(filename)
+        """Serve static files"""
+        try:
+            return send_from_directory(app.static_folder, filename)
+        except Exception as e:
+            app.logger.error(f"Error serving static file {filename}: {str(e)}")
+            return str(e), 404
 
     @app.route('/settings')
     def settings_page():
         """Settings page with Data Upload tab"""
-        return send_from_directory('static', 'settings.html')
+        return send_from_directory(app.static_folder, 'settings.html')
 
     @app.route('/health')
     def health_check():
@@ -274,7 +274,7 @@ def main():
 
     parser = argparse.ArgumentParser(
         description='Unified Garage Management System')
-    parser.add_argument('--port', type=int, default=8000,
+    parser.add_argument('--port', type=int, default=5000,
                         help='Port to run the application on')
     parser.add_argument('--host', default='0.0.0.0',
                         help='Host to bind the application to')
@@ -293,14 +293,24 @@ def main():
     print(f"📤 Upload interface: http://{args.host}:{args.port}/upload")
     print(f"✅ All systems unified and ready!")
 
-    # Run the application
-    app.run(
-        host=args.host,
-        port=args.port,
-        debug=args.debug,
-        threaded=True
-    )
-
+    # Configure development server with live reload
+    if app.debug:
+        # Enable template auto-reload
+        app.config['TEMPLATES_AUTO_RELOAD'] = True
+        
+        # Configure livereload server
+        server = Server(app.wsgi_app)
+        
+        # Watch template files for changes
+        server.watch('templates/*.html')
+        server.watch('static/*.css')
+        server.watch('static/*.js')
+        
+        # Start the server with livereload
+        server.serve(host=args.host, port=args.port, debug=True, reloader_type='stat')
+    else:
+        # Production configuration
+        app.run(host=args.host, port=args.port)
 
 if __name__ == '__main__':
     main()

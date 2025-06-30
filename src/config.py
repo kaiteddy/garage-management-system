@@ -15,6 +15,12 @@ class Config:
     # DVLA API settings
     DVLA_API_KEY = os.environ.get('DVLA_API_KEY') or 'your-dvla-api-key-here'
 
+    # Google OAuth / Drive settings
+    GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
+    GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
+    GOOGLE_PROJECT_ID = os.environ.get('GOOGLE_PROJECT_ID')
+    GOOGLE_REDIRECT_URI = os.environ.get('GOOGLE_REDIRECT_URI', 'http://127.0.0.1:5000/google-drive/callback')
+
     # Session settings
     PERMANENT_SESSION_LIFETIME = timedelta(days=1)
 

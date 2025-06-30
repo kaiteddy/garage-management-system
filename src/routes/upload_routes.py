@@ -42,100 +42,136 @@ def allowed_file(filename):
 
 
 @upload_bp.route('/')
+@upload_bp.route('/upload')
 def upload_page():
-    """Display the upload page"""
-    return render_template('upload.html')
+    """Display the upload page and inject Google client ID"""
+    from flask import current_app
+    google_client_id = getattr(current_app.config, 'GOOGLE_CLIENT_ID', None)
+    google_project_id = getattr(current_app.config, 'GOOGLE_PROJECT_ID', None)
+    return render_template('upload.html', google_client_id=google_client_id, google_project_id=google_project_id)
 
 
 @upload_bp.route('/csv', methods=['POST'])
 def upload_csv():
-    """Handle CSV file upload"""
+    """Handle multiple file uploads with automatic table detection"""
     try:
-        # Check if file was uploaded
-        if 'file' not in request.files:
+        # Check if files were uploaded
+        if 'files[]' not in request.files:
             return jsonify({
                 'success': False,
-                'error': 'No file selected'
+                'error': 'No files selected'
             }), 400
 
-        file = request.files['file']
-        table_name = request.form.get('table_name', 'customers')
+        files = request.files.getlist('files[]')
+        results = []
 
-        if file.filename == '':
-            return jsonify({
-                'success': False,
-                'error': 'No file selected'
-            }), 400
-
-        if not allowed_file(file.filename):
-            return jsonify({
-                'success': False,
-                'error': 'Invalid file type. Please upload CSV or Excel files only.'
-            }), 400
-
-        # Check file size
-        file.seek(0, os.SEEK_END)
-        file_size = file.tell()
-        file.seek(0)
-
-        if file_size > MAX_FILE_SIZE:
-            return jsonify({
-                'success': False,
-                'error': f'File too large. Maximum size is {MAX_FILE_SIZE // (1024*1024)}MB.'
-            }), 400
-
-        # Save file temporarily
-        filename = secure_filename(file.filename)
-        temp_dir = tempfile.gettempdir()
-        temp_path = os.path.join(temp_dir, filename)
-
-        file.save(temp_path)
-
-        try:
-            # Import the CSV using unified database
-            db_path = os.path.join(os.path.dirname(
-                os.path.dirname(__file__)), 'garage_management.db')
-
-            if not CSVImportService:
-                return jsonify({
+        for file in files:
+            if file.filename == '':
+                results.append({
+                    'filename': file.filename or 'unnamed',
                     'success': False,
-                    'error': 'CSV import service not available'
-                }), 503
+                    'error': 'Empty file'
+                })
+                continue
 
-            import_service = CSVImportService(db_path)
+            if not allowed_file(file.filename):
+                results.append({
+                    'filename': file.filename,
+                    'success': False,
+                    'error': 'Invalid file type. Please upload CSV or Excel files only.'
+                })
+                continue
 
-            # Get import options from form
-            options = {
-                'clear_existing': request.form.get('clear_existing') == 'true',
-                'update_duplicates': request.form.get('update_duplicates') == 'true'
-            }
+            # Check file size
+            file.seek(0, os.SEEK_END)
+            file_size = file.tell()
+            file.seek(0)
 
-            result = import_service.import_csv_file(
-                temp_path, table_name, options)
+            if file_size > MAX_FILE_SIZE:
+                results.append({
+                    'filename': file.filename,
+                    'success': False,
+                    'error': f'File too large. Maximum size is {MAX_FILE_SIZE // (1024*1024)}MB.'
+                })
+                continue
 
-            # Add helpful message to result
-            if result.get('success'):
-                result['message'] = f"Successfully imported {result.get('imported', 0)} records"
-                if result.get('duplicates', 0) > 0:
-                    result['message'] += f" ({result['duplicates']} duplicates handled)"
-                if result.get('failed', 0) > 0:
-                    result['message'] += f" ({result['failed']} failed)"
+            # Save file temporarily
+            filename = secure_filename(file.filename)
+            temp_dir = tempfile.gettempdir()
+            temp_path = os.path.join(temp_dir, filename)
 
-            # Clean up temp file
-            os.unlink(temp_path)
+            try:
+                file.save(temp_path)
 
-            return jsonify(result)
-
-        except Exception as e:
-            # Clean up temp file on error
-            if os.path.exists(temp_path):
-                os.unlink(temp_path)
-            raise e
-
+                # Import the CSV using the correct database path
+                db_path = os.path.join(os.path.dirname(
+                    os.path.dirname(__file__)), 'data', 'garage.db')
+                
+                # Ensure the database directory exists
+                os.makedirs(os.path.dirname(db_path), exist_ok=True)
+                
+                csv_service = CSVImportService(db_path)
+                
+                # Try to detect the table name from filename
+                filename_lower = filename.lower()
+                if 'customer' in filename_lower:
+                    table_name = 'customers'
+                elif 'vehicle' in filename_lower:
+                    table_name = 'vehicles'
+                elif 'job' in filename_lower or 'service' in filename_lower:
+                    table_name = 'jobs'
+                else:
+                    table_name = 'customers'  # Default
+                
+                # Import the file
+                result = csv_service.import_from_file(temp_path, table_name)
+                
+                if result['success']:
+                    results.append({
+                        'filename': filename,
+                        'success': True,
+                        'table': table_name,
+                        'imported': result.get('imported_count', 0),
+                        'message': f"Successfully imported {result.get('imported_count', 0)} records to {table_name}",
+                        'stats': result.get('stats', {})
+                    })
+                else:
+                    results.append({
+                        'filename': filename,
+                        'success': False,
+                        'error': result.get('error', 'Unknown error during import')
+                    })
+                    
+            except Exception as e:
+                results.append({
+                    'filename': filename,
+                    'success': False,
+                    'error': f'Error processing file: {str(e)}'
+                })
+                
+            finally:
+                # Always clean up temp file
+                try:
+                    if os.path.exists(temp_path):
+                        os.remove(temp_path)
+                except Exception as e:
+                    print(f"Warning: Could not remove temp file {temp_path}: {e}")
+        
+        # Check if any files were processed successfully
+        success_count = sum(1 for r in results if r.get('success', False))
+        
+        return jsonify({
+            'success': success_count > 0,
+            'results': results,
+            'total_files': len(files),
+            'successful_imports': success_count,
+            'failed_imports': len(files) - success_count
+        })
+            
     except Exception as e:
         return jsonify({
             'success': False,
-            'error': f'Upload failed: {str(e)}'
+            'error': f'Unexpected error: {str(e)}'
         }), 500
 
 
@@ -292,14 +328,18 @@ def process_bulk_upload():
             }), 400
 
         results = []
-        # Use unified database path
+        # Use the correct database path
         db_path = os.path.join(os.path.dirname(
-            os.path.dirname(__file__)), 'garage_management.db')
+            os.path.dirname(__file__)), 'data', 'garage.db')
+        
+        # Ensure the database directory exists
+        os.makedirs(os.path.dirname(db_path), exist_ok=True)
 
         if not CSVImportService:
+            print("CSV Import Service not available")
             return jsonify({
                 'success': False,
-                'error': 'CSV import service not available'
+                'error': 'CSV import service not available. Please check server logs.'
             }), 503
 
         import_service = CSVImportService(db_path)
