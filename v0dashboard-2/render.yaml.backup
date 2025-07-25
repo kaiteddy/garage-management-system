@@ -1,0 +1,47 @@
+services:
+  - type: web
+    name: garagemanager-pro
+    env: node
+    plan: starter
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: NEXT_PUBLIC_APP_URL
+        fromService:
+          type: web
+          name: garagemanager-pro
+          property: host
+      - key: DATABASE_URL
+        sync: false  # Set this manually in Render dashboard
+      - key: NEXTAUTH_SECRET
+        sync: false  # Set this manually in Render dashboard
+      - key: NEXTAUTH_URL
+        fromService:
+          type: web
+          name: garagemanager-pro
+          property: host
+      - key: TWILIO_ACCOUNT_SID
+        sync: false  # Set this manually in Render dashboard
+      - key: TWILIO_AUTH_TOKEN
+        sync: false  # Set this manually in Render dashboard
+      - key: TWILIO_PHONE_NUMBER
+        sync: false  # Set this manually in Render dashboard
+      - key: TWILIO_WHATSAPP_NUMBER
+        sync: false  # Set this manually in Render dashboard
+      - key: MINIMAX_API_KEY
+        sync: false  # Set this manually in Render dashboard
+      - key: DVLA_API_KEY
+        sync: false  # Set this manually in Render dashboard
+      - key: DVSA_CLIENT_ID
+        sync: false  # Set this manually in Render dashboard
+      - key: DVSA_CLIENT_SECRET
+        sync: false  # Set this manually in Render dashboard
+      - key: DVSA_API_BASE_URL
+        value: https://tapi.dvsa.gov.uk
+      - key: DVSA_SCOPE
+        value: https://tapi.dvsa.gov.uk/.default
