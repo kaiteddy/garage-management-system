@@ -1,0 +1,50 @@
+services:
+  - type: web
+    name: garagemanager-pro
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    region: oregon
+    branch: main
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_APP_URL
+        fromService:
+          type: web
+          name: garagemanager-pro
+          property: host
+      - key: DATABASE_URL
+        sync: false
+      - key: MOT_HISTORY_API_KEY
+        sync: false
+      - key: TAPI_CLIENT_ID
+        sync: false
+      - key: TAPI_CLIENT_SECRET
+        sync: false
+      - key: TAPI_SCOPE
+        value: https://tapi.dvsa.gov.uk/.default
+      - key: TAPI_TOKEN_URL
+        value: https://login.microsoftonline.com/a455b827-244f-4c97-b5b4-ce5d13b4d00c/oauth2/v2.0/token
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_PHONE_NUMBER
+        sync: false
+      - key: TWILIO_WHATSAPP_NUMBER
+        sync: false
+      - key: MINIMAX_API_KEY
+        sync: false
+      - key: BUSINESS_NAME
+        value: ELI MOTORS LTD
+      - key: BUSINESS_TAGLINE
+        value: Professional Vehicle Services
+      - key: NEXTAUTH_SECRET
+        sync: false
+      - key: NEXTAUTH_URL
+        fromService:
+          type: web
+          name: garagemanager-pro
+          property: host

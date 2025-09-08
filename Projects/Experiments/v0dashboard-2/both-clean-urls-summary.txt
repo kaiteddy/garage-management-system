@@ -1,0 +1,38 @@
+# Both Applications - Clean Professional URLs
+# ===========================================
+
+## GarageManagerPro - MOT Management Platform
+Dashboard: https://garage-manager.eu.ngrok.io
+
+Clean Webhook URLs:
+- WhatsApp: https://garage-manager.eu.ngrok.io/api/webhooks/whatsapp
+- SMS: https://garage-manager.eu.ngrok.io/api/webhooks/sms
+- Voice: https://garage-manager.eu.ngrok.io/api/webhooks/voice
+- Status: https://garage-manager.eu.ngrok.io/api/webhooks/status
+
+## ProSearchIntelligence - Analytics Platform
+Dashboard: https://pro-search.eu.ngrok.io
+
+Clean Webhook URLs:
+- Analytics: https://pro-search.eu.ngrok.io/api/webhooks/analytics
+- Reports: https://pro-search.eu.ngrok.io/api/webhooks/reports
+- Search: https://pro-search.eu.ngrok.io/api/webhooks/search
+
+## Management Commands:
+# Start both tunnels:
+ngrok start garage-manager pro-search --config=ngrok-dual-clean.yml
+
+# Start individual tunnels:
+ngrok start garage-manager --config=ngrok-dual-clean.yml
+ngrok start pro-search --config=ngrok-dual-clean.yml
+
+# Stop all tunnels:
+pkill -f ngrok
+
+## Benefits:
+✅ Clean, professional URLs (no server hostnames)
+✅ Project-focused naming
+✅ Perfect for webhooks
+✅ Both applications accessible simultaneously
+✅ Professional appearance for clients
+✅ Stable, reserved domains

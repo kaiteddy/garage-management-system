@@ -1,0 +1,305 @@
+/* Apple Design System Global Styles */
+/* Based on iOS 26 & macOS Tahoe 26 Design Guidelines */
+
+/* Import SF Pro Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* CSS Custom Properties */
+:root {
+  /* Apple System Colors */
+  --apple-blue: #007AFF;
+  --apple-green: #34C759;
+  --apple-indigo: #5856D6;
+  --apple-orange: #FF9500;
+  --apple-pink: #FF2D92;
+  --apple-purple: #AF52DE;
+  --apple-red: #FF3B30;
+  --apple-teal: #5AC8FA;
+  --apple-yellow: #FFCC00;
+  
+  /* Neutral Colors */
+  --apple-gray: #8E8E93;
+  --apple-gray-2: #AEAEB2;
+  --apple-gray-3: #C7C7CC;
+  --apple-gray-4: #D1D1D6;
+  --apple-gray-5: #E5E5EA;
+  --apple-gray-6: #F2F2F7;
+  
+  /* Label Colors */
+  --apple-label: #000000;
+  --apple-secondary-label: #3C3C43;
+  --apple-tertiary-label: #3C3C4399;
+  --apple-quaternary-label: #3C3C434D;
+  
+  /* Background Colors */
+  --apple-background: #FFFFFF;
+  --apple-secondary-background: #F2F2F7;
+  --apple-tertiary-background: #FFFFFF;
+  --apple-grouped-background: #F2F2F7;
+  --apple-secondary-grouped-background: #FFFFFF;
+  --apple-tertiary-grouped-background: #F2F2F7;
+  
+  /* Fill Colors */
+  --apple-fill: rgba(120, 120, 128, 0.2);
+  --apple-secondary-fill: rgba(120, 120, 128, 0.16);
+  --apple-tertiary-fill: rgba(118, 118, 128, 0.12);
+  --apple-quaternary-fill: rgba(116, 116, 128, 0.08);
+  
+  /* Separator Colors */
+  --apple-separator: rgba(60, 60, 67, 0.29);
+  --apple-opaque-separator: #C6C6C8;
+  
+  /* Typography */
+  --apple-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+  --apple-font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  
+  /* Spacing Scale */
+  --apple-spacing-xs: 4px;
+  --apple-spacing-sm: 8px;
+  --apple-spacing-md: 12px;
+  --apple-spacing-lg: 16px;
+  --apple-spacing-xl: 20px;
+  --apple-spacing-2xl: 24px;
+  --apple-spacing-3xl: 32px;
+  --apple-spacing-4xl: 40px;
+  --apple-spacing-5xl: 48px;
+  
+  /* Border Radius */
+  --apple-radius-sm: 6px;
+  --apple-radius-md: 8px;
+  --apple-radius-lg: 12px;
+  --apple-radius-xl: 16px;
+  --apple-radius-2xl: 20px;
+  --apple-radius-3xl: 24px;
+  --apple-radius-full: 9999px;
+  
+  /* Shadows */
+  --apple-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --apple-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --apple-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  --apple-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+  --apple-shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
+  
+  /* Animations */
+  --apple-transition-fast: 150ms;
+  --apple-transition-normal: 250ms;
+  --apple-transition-slow: 350ms;
+  --apple-easing-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --apple-easing-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --apple-easing-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --apple-easing-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --apple-label: #FFFFFF;
+    --apple-secondary-label: #EBEBF5;
+    --apple-tertiary-label: #EBEBF599;
+    --apple-quaternary-label: #EBEBF54D;
+    --apple-background: #000000;
+    --apple-secondary-background: #1C1C1E;
+    --apple-tertiary-background: #2C2C2E;
+    --apple-grouped-background: #000000;
+    --apple-secondary-grouped-background: #1C1C1E;
+    --apple-tertiary-grouped-background: #2C2C2E;
+    --apple-separator: rgba(84, 84, 88, 0.65);
+    --apple-opaque-separator: #38383A;
+  }
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--apple-font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--apple-grouped-background);
+  color: var(--apple-label);
+  font-family: var(--apple-font-family);
+  line-height: 1.5;
+}
+
+/* Typography Classes */
+.apple-large-title {
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 41px;
+  letter-spacing: 0.37px;
+}
+
+.apple-title-1 {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 34px;
+  letter-spacing: 0.36px;
+}
+
+.apple-title-2 {
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 0.35px;
+}
+
+.apple-title-3 {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 25px;
+  letter-spacing: 0.38px;
+}
+
+.apple-headline {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: -0.41px;
+}
+
+.apple-body {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: -0.41px;
+}
+
+.apple-callout {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: -0.32px;
+}
+
+.apple-subheadline {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.24px;
+}
+
+.apple-footnote {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: -0.08px;
+}
+
+.apple-caption-1 {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0px;
+}
+
+.apple-caption-2 {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 13px;
+  letter-spacing: 0.07px;
+}
+
+/* Utility Classes */
+.apple-glass {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.apple-glass-dark {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.apple-transition {
+  transition: all var(--apple-transition-normal) var(--apple-easing-out);
+}
+
+.apple-transition-fast {
+  transition: all var(--apple-transition-fast) var(--apple-easing-out);
+}
+
+.apple-transition-slow {
+  transition: all var(--apple-transition-slow) var(--apple-easing-out);
+}
+
+.apple-hover-scale {
+  transition: transform var(--apple-transition-fast) var(--apple-easing-out);
+}
+
+.apple-hover-scale:hover {
+  transform: scale(1.02);
+}
+
+.apple-hover-scale:active {
+  transform: scale(0.98);
+}
+
+/* Focus States */
+.apple-focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--apple-blue);
+}
+
+.apple-focus-ring:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--apple-blue);
+}
+
+/* Safe Area Support */
+.apple-safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.apple-safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.apple-safe-area-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+.apple-safe-area-right {
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Scrollbar Styling (WebKit) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--apple-gray-3);
+  border-radius: var(--apple-radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--apple-gray-2);
+}
+
+/* Selection Styling */
+::selection {
+  background-color: var(--apple-blue);
+  color: white;
+}
+
+::-moz-selection {
+  background-color: var(--apple-blue);
+  color: white;
+}

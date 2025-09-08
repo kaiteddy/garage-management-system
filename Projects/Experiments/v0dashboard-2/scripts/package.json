@@ -1,0 +1,23 @@
+{
+  "name": "garage-direct-import",
+  "version": "1.0.0",
+  "description": "Direct CSV import script with smart merge for garage management system",
+  "main": "direct-import.js",
+  "scripts": {
+    "import": "node direct-import.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.9.0",
+    "papaparse": "^5.4.1"
+  },
+  "keywords": [
+    "csv",
+    "import",
+    "database",
+    "garage",
+    "smart-merge"
+  ],
+  "author": "Garage Management Pro",
+  "license": "MIT"
+}

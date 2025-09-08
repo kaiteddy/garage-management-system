@@ -1,0 +1,36 @@
+# Professional Tailscale URLs - ELI MOTORS LTD
+# ============================================
+
+## GarageManagerPro - MOT Management Platform
+Base URL: https://macbook-pro-9.taila0aa39.ts.net/GarageManagerPro
+Dashboard: https://macbook-pro-9.taila0aa39.ts.net/GarageManagerPro
+
+Webhook URLs:
+- WhatsApp: https://macbook-pro-9.taila0aa39.ts.net/GarageManagerPro/api/webhooks/whatsapp
+- SMS: https://macbook-pro-9.taila0aa39.ts.net/GarageManagerPro/api/webhooks/sms
+- Voice: https://macbook-pro-9.taila0aa39.ts.net/GarageManagerPro/api/webhooks/voice
+- Status: https://macbook-pro-9.taila0aa39.ts.net/GarageManagerPro/api/webhooks/status
+
+## ProSearchIntelligence - Analytics Platform
+Base URL: https://macbook-pro-9.taila0aa39.ts.net/ProSearchIntelligence
+Dashboard: https://macbook-pro-9.taila0aa39.ts.net/ProSearchIntelligence
+
+Webhook URLs:
+- Analytics: https://macbook-pro-9.taila0aa39.ts.net/ProSearchIntelligence/api/webhooks/analytics
+- Reports: https://macbook-pro-9.taila0aa39.ts.net/ProSearchIntelligence/api/webhooks/reports
+- Search: https://macbook-pro-9.taila0aa39.ts.net/ProSearchIntelligence/api/webhooks/search
+
+## Configuration Commands:
+# GarageManagerPro (Active):
+tailscale serve --bg --https=443 --set-path=/GarageManagerPro http://localhost:3001
+
+# ProSearchIntelligence (When ready):
+tailscale serve --bg --https=443 --set-path=/ProSearchIntelligence http://localhost:3000
+
+## Benefits:
+✅ Professional URL structure
+✅ Permanent, stable URLs
+✅ No session limits or disconnections
+✅ Secure WireGuard encryption
+✅ Perfect for production webhooks
+✅ Both platforms can run simultaneously

@@ -1,0 +1,96 @@
+# 	Trade API QuickStart Guide:
+
+=====================================================================================================================
+
+# 	Important notes: 
+## 		Please verify the commands where the text “INSERT-X-Y-HERE” appears and substitute it with your actual credentials. 
+## 		The Tenant ID is concealed within the Token URL that you received in the Credentials email. 
+## 		It is important to maintain the line breaks as they are. 
+## 		Also, make sure to preserve the quotation marks as they appear. 
+## 		Tokens are valid for one hour. Tokens will need to be refreshed once expired.
+##		Client secrets are valid for two years from the date of issue. You do not need to use the client secret endpoint until you receive an email notification indicating that it is due to expire.
+
+#	Special notes:
+## 		CMD users please replace single quotes with double quotes and enter as a single string with no line breaks.
+##		It is possible to automate/renew tokens -- you will need to consult with your developement team if you wish to implement this.
+
+#	Support notes:
+##		We do not troubleshoot code -- you will need to consult with your developement team for any code related issues.
+
+
+=====================================================================================================================
+#	MOT History API Credentials:
+
+## 	Tenant ID is masked within the Token URL (AAAAAAAA-BBBB-CCCC-DDDD-XXXXXXXXXXXX).
+## 	Client ID: XXXXXXXX-YYYY-ZZZZ-XXXX-YYYYYYYYYYYY 
+## 	Client Secret: ZZZZZ~XXXXXXXXXXXXXXXXXXXXXXXXXX~YY~ZZZZ 
+## 	API key: XXXXXXXXXXYYYYYYYYYYZZZZZZZZZZXXXXXXXXXX 
+## 	Scope URL: https://tapi.dvsa.gov.uk/.default 
+## 	Token URL: https://login.microsoftonline.com/AAAAAAAA-BBBB-CCCC-DDDD-XXXXXXXXXXXX/oauth2/v2.0/token 
+
+
+=====================================================================================================================
+
+# 	Cleansed curl:
+
+=====================================================================================================================
+
+## 	Authentication:
+
+curl --request POST --url 'https://login.microsoftonline.com/INSERT-AZURE-TENANT-HERE/oauth2/v2.0/token' --header 'content-type: application/x-www-form-urlencoded' --data grant_type=client_credentials --data client_id=INSERT-CLIENT-ID-HERE --data client_secret=INSERT-CLIENT-SECRET-HERE --data scope=https://tapi.dvsa.gov.uk/.default
+
+# 	This command is to be completed as a single line of text (no line breaks).
+# 	The above command needs the following information (replace this text only -- take care not to remove any white space or quotation):
+
+## 		INSERT-AZURE-TENANT-HERE
+## 		INSERT-CLIENT-ID-HERE
+## 		INSERT-CLIENT-SECRET-HERE
+
+
+=====================================================================================================================
+
+# 	Bulk Download:
+
+curl -X GET https://history.mot.api.gov.uk/v1/trade/vehicles/bulk-download \
+-H "Authorization: Bearer INSERT-AUTHENTICATION-TOKEN-HERE"  -H "X-API-Key: INSERT-API-KEY-HERE"
+
+#	This command is to be completed over two lines -- or a single string may work if you remove the trailing \ on the first line.
+# 	The above command needs the following information (replace this text only -- take care not to remove any white space or quotation):
+
+## 		INSERT-AUTHENTICATION-TOKEN-HERE
+## 		INSERT-API-KEY-HERE
+
+
+=====================================================================================================================
+
+# 	Single Lookup by VRM:
+
+curl -X GET https://history.mot.api.gov.uk/v1/trade/vehicles/registration/INSERT-REGISTRATION-HERE \
+-H "Authorization: Bearer INSERT-AUTHENTICATION-TOKEN-HERE"  -H "X-API-Key: INSERT-API-KEY-HERE"
+
+# 	This command is to be completed over two lines -- or a single string may work if you remove the trailing \ on the first line.
+# 	The above command needs the following information (replace this text only -- take care not to remove any white space or quotation):
+
+## 		INSERT-REGISTRATION-HERE
+## 		INSERT-AUTHENTICATION-TOKEN-HERE
+## 		INSERT-API-KEY-HERE
+
+
+=====================================================================================================================
+
+# 	Single Lookup by VIN:
+
+curl -X GET https://history.mot.api.gov.uk//v1/trade/vehicles/vin/INSERT-VIN-HERE \
+-H "Authorization: Bearer INSERT-AUTHENTICATION-TOKEN-HERE"  -H "X-API-Key: INSERT-API-KEY-HERE"
+
+# 	This command is to be completed over two lines -- or a single string may work if you remove the trailing \ on the first line.
+# 	The above command needs the following information (replace this text only -- take care not to remove any white space or quotation):
+
+## 		INSERT-VIN-HERE
+## 		INSERT-AUTHENTICATION-TOKEN-HERE
+## 		INSERT-API-KEY-HERE
+
+
+=====================================================================================================================
+
+# 	END

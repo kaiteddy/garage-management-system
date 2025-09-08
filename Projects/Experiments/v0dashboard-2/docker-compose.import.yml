@@ -1,0 +1,73 @@
+# 🐳 Docker Compose for Import Process
+version: '3.8'
+
+services:
+  garage-import:
+    build:
+      context: .
+      dockerfile: Dockerfile.import
+    container_name: garage-import-container
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - DOCKER_IMPORT=true
+    volumes:
+      # Mount ProSearch Intelligence folder
+      - "/Users/adamrutstein/Downloads/ProSearch Intelligence:/prosearch-data:ro"
+      # Mount current data directory
+      - "./data:/app/data:ro"
+      # Mount logs directory
+      - "./logs:/app/logs"
+    ports:
+      - "3003:3000"
+    networks:
+      - import-network
+    restart: unless-stopped
+    command: >
+      bash -c "
+        echo '🐳 GARAGE IMPORT CONTAINER STARTING' &&
+        echo '===================================' &&
+        echo '⏰ Start Time: $(date)' &&
+        echo '' &&
+        echo '🔍 CHECKING MOUNTED VOLUMES...' &&
+        echo '📁 ProSearch Data:' &&
+        ls -la /prosearch-data/ 2>/dev/null || echo '❌ ProSearch data not mounted' &&
+        echo '📁 CSV Data:' &&
+        ls -la /app/data/ 2>/dev/null || echo '❌ CSV data not mounted' &&
+        echo '' &&
+        echo '🚀 RUNNING PROSEARCH ACCESS...' &&
+        node /app/import-scripts/standalone-prosearch-access.js &&
+        echo '' &&
+        echo '📊 CHECKING DATABASE CONNECTION...' &&
+        node -e \"
+          require('dotenv').config();
+          const { neon } = require('@neondatabase/serverless');
+          const sql = neon(process.env.DATABASE_URL);
+          sql\\\`SELECT NOW() as time, COUNT(*) as vehicles FROM vehicles\\\`.then(r => {
+            console.log('✅ Database connected:', r[0].time);
+            console.log('🚗 Current vehicles:', r[0].vehicles);
+          }).catch(e => console.log('❌ Database error:', e.message));
+        \" &&
+        echo '' &&
+        echo '🎉 DOCKER IMPORT PROCESS COMPLETE!' &&
+        echo 'Container will remain running for inspection...' &&
+        tail -f /dev/null
+      "
+
+  # Optional: Web interface for monitoring
+  import-monitor:
+    image: nginx:alpine
+    container_name: import-monitor
+    ports:
+      - "3004:80"
+    volumes:
+      - "./logs:/usr/share/nginx/html/logs:ro"
+      - "./docker-monitor.html:/usr/share/nginx/html/index.html:ro"
+    networks:
+      - import-network
+    depends_on:
+      - garage-import
+
+networks:
+  import-network:
+    driver: bridge

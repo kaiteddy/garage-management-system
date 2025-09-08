@@ -1,0 +1,12 @@
+HTTP/2 200
+content-type: text/plain
+access-control-allow-origin: 
+access-control-allow-credentials: true
+strict-transport-security: max-age=31536000; includeSubDomains
+cross-origin-resource-policy: cross-origin
+content-length: 0
+server: proxygen-bolt
+x-fb-connection-quality: GOOD; q=0.7, rtt=50, rtx=2, c=10, mss=1380, tbw=5481, tp=-1, tpl=-1, uplat=0, ullat=0
+alt-svc: h3=":443"; ma=86400
+date: Thu, 07 Aug 2025 15:07:54 GMT
+

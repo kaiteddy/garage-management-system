@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>System Diagnostic</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #1a1a1a; color: #00ff00; }
+        .status { margin: 10px 0; padding: 10px; border: 1px solid #333; }
+        .success { border-color: #00ff00; }
+        .error { border-color: #ff0000; color: #ff0000; }
+        .warning { border-color: #ffaa00; color: #ffaa00; }
+    </style>
+</head>
+<body>
+    <h1>🔍 SYSTEM DIAGNOSTIC</h1>
+    <div id="results"></div>
+    
+    <script>
+        const results = document.getElementById('results');
+        
+        function addResult(message, type = 'status') {
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = message;
+            results.appendChild(div);
+        }
+        
+        // Test 1: Basic JavaScript execution
+        addResult('✅ JavaScript execution: WORKING', 'success');
+        
+        // Test 2: Date/Time
+        addResult(`⏰ Current time: ${new Date().toLocaleString()}`, 'success');
+        
+        // Test 3: Memory usage (approximate)
+        if (performance && performance.memory) {
+            const memory = performance.memory;
+            addResult(`💾 Memory: ${Math.round(memory.usedJSHeapSize/1024/1024)}MB used`, 'success');
+        }
+        
+        // Test 4: Network connectivity
+        fetch('/api/test-connection')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    addResult('🌐 Database connection: WORKING', 'success');
+                    addResult(`📊 Database time: ${data.database?.time || 'Unknown'}`, 'success');
+                } else {
+                    addResult('❌ Database connection: FAILED', 'error');
+                }
+            })
+            .catch(error => {
+                addResult(`❌ Network/API error: ${error.message}`, 'error');
+            });
+        
+        // Test 5: Local storage
+        try {
+            localStorage.setItem('test', 'working');
+            localStorage.removeItem('test');
+            addResult('💾 Local storage: WORKING', 'success');
+        } catch (e) {
+            addResult('❌ Local storage: FAILED', 'error');
+        }
+        
+        // Test 6: User agent
+        addResult(`🖥️ Browser: ${navigator.userAgent}`, 'status');
+        
+        // Test 7: Screen info
+        addResult(`📺 Screen: ${screen.width}x${screen.height}`, 'status');
+        
+        addResult('🎯 DIAGNOSIS: Terminal system has issues, but web interface works fine!', 'warning');
+        addResult('💡 SOLUTION: Use web-based import instead of terminal commands', 'success');
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+# 🐳 Comprehensive Clean Import - Docker Container
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apk add --no-cache bash curl
+
+# Install Node.js dependencies
+RUN npm init -y && npm install @neondatabase/serverless
+
+# Copy the comprehensive import script
+COPY docker-comprehensive-import.cjs ./
+
+# Create logs directory
+RUN mkdir -p /app/logs
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV DOCKER_IMPORT=true
+
+# Create entrypoint script
+RUN echo '#!/bin/bash' > /app/run-comprehensive-import.sh && \
+    echo 'echo "🚀 COMPREHENSIVE CLEAN IMPORT - DOCKER CONTAINER"' >> /app/run-comprehensive-import.sh && \
+    echo 'echo "================================================="' >> /app/run-comprehensive-import.sh && \
+    echo 'echo "⏰ Start Time: $(date)"' >> /app/run-comprehensive-import.sh && \
+    echo 'echo "🔒 Isolated container - main server protected"' >> /app/run-comprehensive-import.sh && \
+    echo 'echo "🎯 Mission: Import ALL missing customer data"' >> /app/run-comprehensive-import.sh && \
+    echo 'echo ""' >> /app/run-comprehensive-import.sh && \
+    echo 'echo "📁 Checking GA4 data mount..."' >> /app/run-comprehensive-import.sh && \
+    echo 'ls -la /app/ga4-data/ 2>/dev/null || echo "❌ GA4 data not mounted"' >> /app/run-comprehensive-import.sh && \
+    echo 'echo ""' >> /app/run-comprehensive-import.sh && \
+    echo 'echo "🚀 STARTING COMPREHENSIVE IMPORT..."' >> /app/run-comprehensive-import.sh && \
+    echo 'node docker-comprehensive-import.cjs 2>&1 | tee /app/logs/comprehensive-import-$(date +%Y%m%d-%H%M%S).log' >> /app/run-comprehensive-import.sh && \
+    echo 'echo ""' >> /app/run-comprehensive-import.sh && \
+    echo 'echo "🎉 COMPREHENSIVE IMPORT COMPLETE!"' >> /app/run-comprehensive-import.sh && \
+    echo 'echo "📋 Logs saved to /app/logs/"' >> /app/run-comprehensive-import.sh && \
+    echo 'echo "💤 Container staying alive for inspection..."' >> /app/run-comprehensive-import.sh && \
+    echo 'tail -f /dev/null' >> /app/run-comprehensive-import.sh && \
+    chmod +x /app/run-comprehensive-import.sh
+
+# Default command
+CMD ["/app/run-comprehensive-import.sh"]

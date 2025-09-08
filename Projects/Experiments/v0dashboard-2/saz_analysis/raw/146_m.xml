@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Session SID="146" ui-shared-id="146" BitFlags="19" ServerCertificatePolicyErrors="None">
+  <SessionTimers Version="2.0" ClientConnected="2025-08-07T16:06:13.418801+01:00" ClientBeginRequest="2025-08-07T16:06:54.429535+01:00" GotRequestHeaders="2025-08-07T16:06:54.42956+01:00" ClientDoneRequest="2025-08-07T16:06:54.42973+01:00" GatewayTime="0" DNSTime="0" TCPConnectTime="0" ServerConnected="2025-08-07T16:06:13.703813+01:00" FiddlerBeginRequest="2025-08-07T16:06:54.429834+01:00" ServerGotRequest="2025-08-07T16:06:54.433876+01:00" ServerBeginResponse="2025-08-07T16:06:54.60095+01:00" GotResponseHeaders="2025-08-07T16:06:54.60107+01:00" ServerDoneResponse="2025-08-07T16:06:54.601537+01:00" ClientBeginResponse="2025-08-07T16:06:54.602324+01:00" ClientDoneResponse="2025-08-07T16:06:54.602526+01:00" RequestHeadersSize="319" RequestBodySize="0" ResponseHeadersSize="793" ResponseBodySize="52" TrailersSize="0" />
+  <PipeInfo CltReuse="true" Reused="true" />
+  <SessionFlags>
+    <SessionFlag N="x-egressport" V="56845" />
+    <SessionFlag N="x-hostip" V="162.159.140.229" />
+    <SessionFlag N="https-server-protocolversion" V="Tls13" />
+    <SessionFlag N="x-responsebodytransferlength" V="43" />
+    <SessionFlag N="reused-connect-session-id" V="29" />
+    <SessionFlag N="x-serversocket" V="REUSE ServerPipe#29" />
+    <SessionFlag N="x-clientport" V="56832" />
+    <SessionFlag N="x-processinfo" V="Safari:12140" />
+    <SessionFlag N="https-client-protocolversion" V="Tls13" />
+    <SessionFlag N="https-client-ciphersuite" V="TLS_AES_256_GCM_SHA384" />
+    <SessionFlag N="x-clientip" V="::ffff:127.0.0.1" />
+  </SessionFlags>
+  <CertificateChainInfo>
+    <Certificate>
+      <CertificateInfo Key="extensions" Value="X509v3 Key Usage;2.5.29.15;True;03020780__split-extension__X509v3 Extended Key Usage;2.5.29.37;False;301406082B0601050507030106082B06010505070302__split-extension__X509v3 Basic Constraints;2.5.29.19;True;3000__split-extension__X509v3 Subject Key Identifier;2.5.29.14;False;041471146FFE687DB8160B767FCD5AD1169FBD5D6A1D__split-extension__X509v3 Authority Key Identifier;2.5.29.35;False;301680149327469803A951688E98D6C44248DB23BF5894D2__split-extension__Authority Information Access;1.3.6.1.5.5.7.1.1;False;3024302206082B060105050730028616687474703A2F2F65362E692E6C656E63722E6F72672F__split-extension__X509v3 Subject Alternative Name;2.5.29.17;False;DNS:*.twitter.com, DNS:cdn.syndication.twitter.com, DNS:twitter.com__split-extension__Certificate Policies;2.5.29.32;False;300A3008060667810C010201__split-extension__CRL Distribution Points;2.5.29.31;False;30243022A020A01E861C687474703A2F2F65362E632E6C656E63722E6F72672F39392E63726C__split-extension__SCT List;1.3.6.1.4.1.11129.2.4.2;False;0481F100EF007500ED3C4BD6E806C2A4A20057DBCB24E23801DF512FEDC486C5700F20DDB73E3FE000000197A8CD66AC0000040300463044022008A693E9C3E8F997768A3D85F2460B2CE3E3C00DA47B32E3D10D23B9FFC3E33E02203CFD42CE967ED6D243BBD6F9742AAB99D4B2C4A7AD35F90CB25275ECD69BC599007600DDDCCA3495D7E11605E79532FAC79FF83D1C50DFDB003A1412760A2CACBBC82A00000197A8CD6ECF00000403004730450221009FC2DFC0BF49873A67DEC77F2C36D8BAE8AF1901602CC27298DAB2CAD42034B4022005BE90164C7FC68EE1008C62F6C75F808BFB833E430817D2D06FDBC065FC7562__split-extension__" />
+      <CertificateInfo Key="subject" Value="CN=twitter.com" />
+      <CertificateInfo Key="thumbprint" Value="DC8DEBCEC86B00E4E1A0FF60A0AEE151C576D713" />
+      <CertificateInfo Key="serialnumber" Value="053E10C5D47D7FB5FF1C87A1FD7909999B62" />
+      <CertificateInfo Key="version" Value="3" />
+      <CertificateInfo Key="publickeysize" Value="" />
+      <CertificateInfo Key="friendlyname" Value="" />
+      <CertificateInfo Key="notafter" Value="Tue, 23 Sep 2025 20:36:51 GMT" />
+      <CertificateInfo Key="publickeysignaturealgorithm" Value="" />
+      <CertificateInfo Key="notbefore" Value="Wed, 25 Jun 2025 20:36:52 GMT" />
+      <CertificateInfo Key="sha256thumbprint" Value="80E5B3642962F0ED23FF9A5B5C971DC79B12AD93F9F4D5A3E7BDA6EEA17D0B29" />
+      <CertificateInfo Key="issuer" Value="CN=E6, O=Let's Encrypt, C=US" />
+      <CertificateInfo Key="publickeyalgorithm" Value="ECC" />
+    </Certificate>
+    <Certificate>
+      <CertificateInfo Key="extensions" Value="X509v3 Key Usage;2.5.29.15;True;03020186__split-extension__X509v3 Extended Key Usage;2.5.29.37;False;301406082B0601050507030206082B06010505070301__split-extension__X509v3 Basic Constraints;2.5.29.19;True;30060101FF020100__split-extension__X509v3 Subject Key Identifier;2.5.29.14;False;04149327469803A951688E98D6C44248DB23BF5894D2__split-extension__X509v3 Authority Key Identifier;2.5.29.35;False;3016801479B459E67BB6E5E40173800888C81A58F6E99B6E__split-extension__Authority Information Access;1.3.6.1.5.5.7.1.1;False;3024302206082B060105050730028616687474703A2F2F78312E692E6C656E63722E6F72672F__split-extension__Certificate Policies;2.5.29.32;False;300A3008060667810C010201__split-extension__CRL Distribution Points;2.5.29.31;False;301E301CA01AA0188616687474703A2F2F78312E632E6C656E63722E6F72672F__split-extension__" />
+      <CertificateInfo Key="subject" Value="CN=E6, O=Let's Encrypt, C=US" />
+      <CertificateInfo Key="thumbprint" Value="C94DC4831A901A9FEC0FB49B71BD49B5AAD4FAD0" />
+      <CertificateInfo Key="serialnumber" Value="00B0573E9173972770DBB487CB3A452B38" />
+      <CertificateInfo Key="version" Value="3" />
+      <CertificateInfo Key="publickeysize" Value="" />
+      <CertificateInfo Key="friendlyname" Value="" />
+      <CertificateInfo Key="notafter" Value="Fri, 12 Mar 2027 23:59:59 GMT" />
+      <CertificateInfo Key="publickeysignaturealgorithm" Value="" />
+      <CertificateInfo Key="notbefore" Value="Wed, 13 Mar 2024 00:00:00 GMT" />
+      <CertificateInfo Key="sha256thumbprint" Value="76E9E288AAFC0E37F4390CBF946AAD997D5C1C901B3CE513D3D8FADBABE2AB85" />
+      <CertificateInfo Key="issuer" Value="CN=ISRG Root X1, O=Internet Security Research Group, C=US" />
+      <CertificateInfo Key="publickeyalgorithm" Value="ECC" />
+    </Certificate>
+    <Certificate>
+      <CertificateInfo Key="extensions" Value="X509v3 Key Usage;2.5.29.15;True;03020106__split-extension__X509v3 Basic Constraints;2.5.29.19;True;30030101FF__split-extension__X509v3 Subject Key Identifier;2.5.29.14;False;041479B459E67BB6E5E40173800888C81A58F6E99B6E__split-extension__" />
+      <CertificateInfo Key="subject" Value="CN=ISRG Root X1, O=Internet Security Research Group, C=US" />
+      <CertificateInfo Key="thumbprint" Value="CABD2A79A1076A31F21D253635CB039D4329A5E8" />
+      <CertificateInfo Key="publickeymodulus" Value="ADE82473F41437F39B9E2B57281C87BEDCB7DF38908C6E3CE657A078F775C2A2FEF56A6EF6004F28DBDE68866C4493B6B163FD14126BBF1FD2EA319B217ED1333CBA48F5DD79DFB3B8FF12F1219A4BC18A8671694A66666C8F7E3C70BFAD292206F3E4C0E680AEE24B8FB7997E94039FD347977C99482353E838AE4F0A6F832ED149578C8074B6DA2FD0388D7B0370211B75F2303CFA8FAEDDDA63ABEB164FC28E114B7ECF0BE8FFB5772EF4B27B4AE04C12250C708D0329A0E15324EC13D9EE19BF10B34A8C3F89A36151DEAC870794F46371EC2EE26F5B9881E1895C34796C76EF3B906279E6DBA49A2F26C5D010E10EDED9108E16FBB7F7A8F7C7E50207988F360895E7E237960D36759EFB0E72B11D9BBC03F94905D881DD05B42AD641E9AC0176950A0FD8DFD5BD121F352F28176CD298C1A80964776E4737BACEAC595E689D7F72D689C50641293E593EDD26F524C911A75AA34C401F46A199B5A73A516E863B9E7D72A712057859ED3E5178150B038F8DD02F05B23E7B4A1C4B730512FCC6EAE050137C439374B3CA74E78E1F0108D030D45B7136B407BAC130305C48B7823B98A67D608AA2A32982CCBABD83041BA2830341A1D605F11BC2B6F0A87C863B46A8482A88DC769A76BF1F6AA53D198FEB38F364DEC82B0D0A28FFF7DBE21542D422D0275DE179FE18E77088AD4EE6D98B3AC6DD27516EFFBC64F533434F" />
+      <CertificateInfo Key="serialnumber" Value="008210CFB0D240E3594463E0BB63828B00" />
+      <CertificateInfo Key="version" Value="3" />
+      <CertificateInfo Key="publickeysize" Value="4096" />
+      <CertificateInfo Key="friendlyname" Value="" />
+      <CertificateInfo Key="publickeyexponent" Value="010001" />
+      <CertificateInfo Key="notafter" Value="Mon, 04 Jun 2035 12:04:38 GMT" />
+      <CertificateInfo Key="publickeysignaturealgorithm" Value="RSA" />
+      <CertificateInfo Key="notbefore" Value="Thu, 04 Jun 2015 12:04:38 GMT" />
+      <CertificateInfo Key="sha256thumbprint" Value="96BCEC06264976F37460779ACF28C5A7CFE8A3C0AAE11A8FFCEE05C0BDDF08C6" />
+      <CertificateInfo Key="issuer" Value="CN=ISRG Root X1, O=Internet Security Research Group, C=US" />
+      <CertificateInfo Key="publickeyalgorithm" Value="RSA" />
+    </Certificate>
+  </CertificateChainInfo>
+</Session>

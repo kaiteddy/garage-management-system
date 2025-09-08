@@ -1,0 +1,2 @@
+[console_scripts]
+run-imports = import_pipeline.scripts.run_imports:main

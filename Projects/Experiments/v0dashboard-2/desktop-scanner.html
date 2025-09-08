@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🖥️ Desktop Scanner - Import Solutions</title>
+    <style>
+        body { 
+            font-family: 'Courier New', monospace; 
+            padding: 20px; 
+            background: #0a0a0a; 
+            color: #00ff00; 
+            line-height: 1.6;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #00ff00; padding-bottom: 20px; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #333; border-radius: 5px; }
+        .success { border-color: #00ff00; background: rgba(0, 255, 0, 0.1); }
+        .error { border-color: #ff0000; background: rgba(255, 0, 0, 0.1); color: #ff0000; }
+        .warning { border-color: #ffaa00; background: rgba(255, 170, 0, 0.1); color: #ffaa00; }
+        .info { border-color: #0088ff; background: rgba(0, 136, 255, 0.1); color: #0088ff; }
+        button { 
+            background: #00ff00; 
+            color: #000; 
+            border: none; 
+            padding: 10px 20px; 
+            margin: 5px; 
+            cursor: pointer; 
+            font-family: inherit;
+            border-radius: 3px;
+        }
+        button:hover { background: #00cc00; }
+        button:disabled { background: #666; cursor: not-allowed; }
+        .loading { color: #ffaa00; }
+        pre { background: #111; padding: 10px; border-radius: 3px; overflow-x: auto; }
+        .file-list { max-height: 400px; overflow-y: auto; background: #111; padding: 10px; border-radius: 3px; }
+        .file-item { padding: 5px; margin: 2px 0; background: #1a1a1a; border-radius: 3px; }
+        .directory { color: #00aaff; }
+        .file { color: #aaaaaa; }
+        .csv-file { color: #00ff00; font-weight: bold; }
+        .import-solution { color: #ffaa00; font-weight: bold; }
+        .ga4-export { color: #ff6600; font-weight: bold; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .stats { display: flex; justify-content: space-around; text-align: center; }
+        .stat { padding: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🖥️ Desktop Scanner</h1>
+            <p>Scanning desktop for import solutions and CSV files</p>
+            <p class="warning">⚠️ Terminal system blocked - using web-based file access</p>
+        </div>
+        
+        <div class="section info">
+            <h2>🎯 Desktop Scan Controls</h2>
+            <button onclick="scanDesktop()">🔍 Scan Desktop</button>
+            <button onclick="scanProSearchDownloads()">📁 Scan ProSearch Downloads</button>
+            <button onclick="checkCurrentData()">📊 Check Current Database</button>
+            <button onclick="runImportProcess()">🚀 Run Import Process</button>
+        </div>
+        
+        <div id="results"></div>
+        
+        <div class="section warning">
+            <h3>🚨 Terminal Issue Status</h3>
+            <p><strong>Problem:</strong> Terminal interface completely blocked</p>
+            <p><strong>Solution:</strong> Web-based file system access</p>
+            <p><strong>Status:</strong> Using Node.js fs module through API endpoints</p>
+        </div>
+    </div>
+    
+    <script>
+        function addResult(title, content, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `section ${type}`;
+            div.innerHTML = `<h3>${title}</h3><div>${content}</div>`;
+            results.appendChild(div);
+        }
+        
+        function addLoading(message) {
+            addResult('⏳ Processing...', `<div class="loading">${message}</div>`, 'info');
+        }
+        
+        async function scanDesktop() {
+            addLoading('Scanning desktop for import solutions...');
+            
+            try {
+                const response = await fetch('/api/check-desktop');
+                const data = await response.json();
+                
+                if (data.success) {
+                    let content = `
+                        <div class="stats">
+                            <div class="stat">
+                                <h4>📁 Total Items</h4>
+                                <p>${data.data.totalItems}</p>
+                            </div>
+                            <div class="stat">
+                                <h4>🎯 Import Solutions</h4>
+                                <p>${data.data.importSolutions.length}</p>
+                            </div>
+                            <div class="stat">
+                                <h4>📊 CSV Files</h4>
+                                <p>${data.data.csvFiles.length}</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    if (data.data.ga4Export) {
+                        content += `
+                            <div class="ga4-export">
+                                <h4>🎉 GA4 Export Found!</h4>
+                                <p>📁 Name: ${data.data.ga4Export.name}</p>
+                                <p>📍 Path: ${data.data.ga4Export.path}</p>
+                                <p>📊 CSV Files: ${data.data.ga4Export.csvFiles.length}</p>
+                                <div class="file-list">
+                                    ${data.data.ga4Export.csvFiles.map(file => 
+                                        `<div class="file-item csv-file">📊 ${file}</div>`
+                                    ).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    if (data.data.importSolutions.length > 0) {
+                        content += `<h4>🎯 Import Solutions Found:</h4>`;
+                        data.data.importSolutions.forEach(solution => {
+                            content += `
+                                <div class="import-solution">
+                                    <h5>📦 ${solution.name}</h5>
+                                    <p>📍 ${solution.path}</p>
+                                    <p>📋 ${solution.totalItems || 'Unknown'} items</p>
+                                    ${solution.csvFiles ? `<p>📊 ${solution.csvFiles} CSV files</p>` : ''}
+                                    ${solution.contents ? `
+                                        <div class="file-list">
+                                            ${solution.contents.map(item => 
+                                                `<div class="file-item">${item.endsWith('.csv') ? '📊' : '📄'} ${item}</div>`
+                                            ).join('')}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    if (data.data.csvFiles.length > 0) {
+                        content += `<h4>📊 CSV Files on Desktop:</h4><div class="file-list">`;
+                        data.data.csvFiles.forEach(file => {
+                            content += `<div class="file-item csv-file">📊 ${file.name} (${file.sizeMB}MB)</div>`;
+                        });
+                        content += `</div>`;
+                    }
+                    
+                    addResult('🎉 Desktop Scan Complete', content, 'success');
+                } else {
+                    addResult('❌ Desktop Scan Failed', 
+                        `<p>Error: ${data.data?.error || data.error}</p>`, 'error');
+                }
+            } catch (error) {
+                addResult('❌ Scan Failed', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function scanProSearchDownloads() {
+            addLoading('Scanning Downloads folder for ProSearch Intelligence...');
+            
+            try {
+                const response = await fetch('/api/access-prosearch');
+                const data = await response.json();
+                
+                if (data.success) {
+                    let content = `<p>✅ ProSearch Intelligence folder found!</p>`;
+                    content += `<p>📁 Contains ${data.data.contents.length} items</p>`;
+                    
+                    if (data.data.importSolutions.length > 0) {
+                        content += `<h4>🎯 Import Solutions:</h4>`;
+                        data.data.importSolutions.forEach(solution => {
+                            content += `
+                                <div class="import-solution">
+                                    <h5>📦 ${solution.name}</h5>
+                                    <p>📍 ${solution.path}</p>
+                                    <p>📋 ${solution.totalItems} items</p>
+                                    <div class="file-list">
+                                        ${solution.contents.map(item => 
+                                            `<div class="file-item">📄 ${item}</div>`
+                                        ).join('')}
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    addResult('🎉 ProSearch Scan Complete', content, 'success');
+                } else {
+                    addResult('❌ ProSearch Not Found', 
+                        `<p>ProSearch Intelligence folder not found in Downloads</p>
+                         <p>Alternative items: ${data.data?.contents?.length || 0}</p>`, 'warning');
+                }
+            } catch (error) {
+                addResult('❌ ProSearch Scan Failed', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function checkCurrentData() {
+            addLoading('Checking current database status...');
+            
+            try {
+                const response = await fetch('/api/emergency-import', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'status' })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    const status = data.currentStatus;
+                    let content = `
+                        <div class="stats">
+                            <div class="stat">
+                                <h4>🚗 Vehicles</h4>
+                                <p>${status.vehicles}</p>
+                            </div>
+                            <div class="stat">
+                                <h4>👥 Customers</h4>
+                                <p>${status.customers}</p>
+                            </div>
+                            <div class="stat">
+                                <h4>📄 Documents</h4>
+                                <p>${status.documents}</p>
+                            </div>
+                        </div>
+                        <p>⏰ Last checked: ${new Date(data.timestamp).toLocaleString()}</p>
+                    `;
+                    addResult('📊 Database Status', content, 'success');
+                } else {
+                    addResult('❌ Database Check Failed', `Error: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                addResult('❌ Database Check Failed', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function runImportProcess() {
+            addLoading('Starting import process for all remaining files...');
+            
+            try {
+                const response = await fetch('/api/emergency-import', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'import-all' })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    const results = data.results;
+                    let content = `
+                        <div class="stats">
+                            <div class="stat">
+                                <h4>📁 Files Processed</h4>
+                                <p>${results.filesProcessed}</p>
+                            </div>
+                            <div class="stat">
+                                <h4>📊 Records Processed</h4>
+                                <p>${results.totalRecordsProcessed}</p>
+                            </div>
+                        </div>
+                        
+                        <h4>📋 Final Database Counts:</h4>
+                        <div class="stats">
+                            <div class="stat">
+                                <h4>🚗 Vehicles</h4>
+                                <p>${results.finalCounts.vehicles}</p>
+                            </div>
+                            <div class="stat">
+                                <h4>👥 Customers</h4>
+                                <p>${results.finalCounts.customers}</p>
+                            </div>
+                            <div class="stat">
+                                <h4>📄 Documents</h4>
+                                <p>${results.finalCounts.documents}</p>
+                            </div>
+                        </div>
+                        
+                        <h4>📄 File Results:</h4>
+                        <div class="file-list">
+                            ${Object.entries(results.fileResults).map(([file, count]) => 
+                                `<div class="file-item ${count > 0 ? 'csv-file' : 'file'}">
+                                    ${count > 0 ? '✅' : '⚠️'} ${file}: ${count} records
+                                </div>`
+                            ).join('')}
+                        </div>
+                    `;
+                    addResult('🎉 Import Process Complete', content, 'success');
+                } else {
+                    addResult('❌ Import Process Failed', 
+                        `<p>Error: ${data.error}</p>
+                         <p>Details: ${data.details}</p>`, 'error');
+                }
+            } catch (error) {
+                addResult('❌ Import Process Failed', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Auto-run desktop scan on load
+        window.onload = function() {
+            addResult('🖥️ Desktop Scanner Initialized', 
+                '<p>Ready to scan for import solutions</p><p>Terminal system bypassed - using web APIs</p>', 'info');
+        };
+    </script>
+</body>
+</html>

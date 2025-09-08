@@ -1,0 +1,47 @@
+# 🐳 Simple Docker Import - No Dependencies
+version: '3.8'
+
+services:
+  simple-import:
+    build:
+      context: .
+      dockerfile: Dockerfile.simple-import
+    container_name: garage-simple-import
+    environment:
+      - NODE_ENV=production
+      - DOCKER_IMPORT=true
+      - DATABASE_URL=${DATABASE_URL}
+    volumes:
+      # Mount GA4 Export folder (read-only)
+      - "/Users/adamrutstein/Desktop/GA4 EXPORT:/app/ga4-data:ro"
+      # Mount logs directory for output
+      - "./logs:/app/logs"
+    networks:
+      - simple-import-network
+    restart: "no"
+    mem_limit: 512m  # Even less memory
+    cpus: 1          # Single CPU core
+    command: >
+      bash -c "
+        echo '🐳 SIMPLE DOCKER IMPORT - ULTRA SAFE' &&
+        echo '====================================' &&
+        echo '⏰ Start: $(date)' &&
+        echo '🔒 Completely isolated from main server' &&
+        echo '💾 Memory limit: 512MB' &&
+        echo '⚡ CPU limit: 1 core' &&
+        echo '📦 No native dependencies' &&
+        echo '' &&
+        echo '📁 Checking mounted GA4 data...' &&
+        ls -la /app/ga4-data/ 2>/dev/null || echo '❌ GA4 data not mounted' &&
+        echo '' &&
+        echo '🚀 Running simple import analysis...' &&
+        node simple-docker-import.cjs 2>&1 | tee /app/logs/simple-import-$(date +%Y%m%d-%H%M%S).log &&
+        echo '' &&
+        echo '🎉 Simple import complete!' &&
+        echo '💤 Container staying alive for inspection...' &&
+        tail -f /dev/null
+      "
+
+networks:
+  simple-import-network:
+    driver: bridge

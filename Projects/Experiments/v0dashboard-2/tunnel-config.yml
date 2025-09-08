@@ -1,0 +1,15 @@
+# Cloudflare Tunnel Configuration for GarageManager Pro
+# Account ID: a1c77c1b106d54b2afdca84dc8c54e7d
+
+tunnel: garagemanager-pro
+credentials-file: /Users/adamrutstein/.cloudflared/garagemanager-pro.json
+
+ingress:
+  # Route all traffic to local development server
+  - hostname: "*.trycloudflare.com"
+    service: http://localhost:3002
+  # Catch-all rule (required)
+  - service: http://localhost:3002
+
+# Optional: Enable metrics
+metrics: 0.0.0.0:2000

@@ -1,0 +1,15 @@
+GET https://www.facebook.com/tr/?id=476168287020691&ev=AddToCart&dl=https%3A%2F%2Fomnipart.eurocarparts.com%2Fcategory%2Foil-filter&rl=&if=false&ts=1754579272145&cd[cs_est]=true&sw=1800&sh=1169&cudff[em]=***%40*********.**.**&ncudff[em]=***%40*********.**.**&udff[em]=bcdb966e8a1dec2e82287141729450976b2ee4c6d415a689976245f9ed927616&audff[em]=bcdb966e8a1dec2e82287141729450976b2ee4c6d415a689976245f9ed927616&v=2.9.222&r=stable&ec=7&o=6174&fbp=fb.1.1753879768034.126948203854405976&ler=empty&plt=398&it=1754579214396&coo=false&es=automatic&cs_est=true&est_source=759590501382553&tm=3&exp=q3&rqm=GET HTTP/2
+:method: GET
+:scheme: https
+:authority: www.facebook.com
+:path: /tr/?id=476168287020691&ev=AddToCart&dl=https%3A%2F%2Fomnipart.eurocarparts.com%2Fcategory%2Foil-filter&rl=&if=false&ts=1754579272145&cd[cs_est]=true&sw=1800&sh=1169&cudff[em]=***%40*********.**.**&ncudff[em]=***%40*********.**.**&udff[em]=bcdb966e8a1dec2e82287141729450976b2ee4c6d415a689976245f9ed927616&audff[em]=bcdb966e8a1dec2e82287141729450976b2ee4c6d415a689976245f9ed927616&v=2.9.222&r=stable&ec=7&o=6174&fbp=fb.1.1753879768034.126948203854405976&ler=empty&plt=398&it=1754579214396&coo=false&es=automatic&cs_est=true&est_source=759590501382553&tm=3&exp=q3&rqm=GET
+sec-fetch-dest: image
+user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/19.0 Safari/605.1.15
+accept: image/webp,image/avif,image/jxl,image/heic,image/heic-sequence,video/*;q=0.8,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+referer: https://omnipart.eurocarparts.com/
+sec-fetch-site: cross-site
+sec-fetch-mode: no-cors
+accept-language: en-GB,en;q=0.9
+priority: u=5, i
+accept-encoding: gzip, deflate, br, zstd
+

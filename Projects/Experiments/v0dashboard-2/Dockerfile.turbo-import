@@ -1,0 +1,43 @@
+# 🐳 Docker Turbo Import - Isolated Import Process
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apk add --no-cache \
+    bash \
+    curl
+
+# Copy package files
+COPY package*.json ./
+
+# Install only production dependencies
+RUN npm ci --only=production
+
+# Copy import script
+COPY standalone-turbo-import.cjs ./
+
+# Create logs directory
+RUN mkdir -p /app/logs
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV DOCKER_IMPORT=true
+
+# Create entrypoint script
+RUN echo '#!/bin/bash' > /app/docker-turbo-import.sh && \
+    echo 'echo "🐳 DOCKER TURBO IMPORT CONTAINER"' >> /app/docker-turbo-import.sh && \
+    echo 'echo "================================"' >> /app/docker-turbo-import.sh && \
+    echo 'echo "⏰ Start Time: $(date)"' >> /app/docker-turbo-import.sh && \
+    echo 'echo "🔒 Isolated from main server"' >> /app/docker-turbo-import.sh && \
+    echo 'echo ""' >> /app/docker-turbo-import.sh && \
+    echo 'echo "🚀 RUNNING TURBO IMPORT..."' >> /app/docker-turbo-import.sh && \
+    echo 'node standalone-turbo-import.cjs 2>&1 | tee /app/logs/import.log' >> /app/docker-turbo-import.sh && \
+    echo 'echo ""' >> /app/docker-turbo-import.sh && \
+    echo 'echo "🎉 DOCKER IMPORT COMPLETE!"' >> /app/docker-turbo-import.sh && \
+    echo 'echo "📋 Check logs at /app/logs/import.log"' >> /app/docker-turbo-import.sh && \
+    chmod +x /app/docker-turbo-import.sh
+
+# Default command
+CMD ["/app/docker-turbo-import.sh"]

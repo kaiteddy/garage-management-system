@@ -1,0 +1,110 @@
+2025-09-07 19:30:57,944 - INFO - 🛡️  STARTING SAFE GA4 MIGRATION
+2025-09-07 19:30:57,944 - INFO - ==================================================
+2025-09-07 19:30:57,944 - INFO - 🔌 Connecting to Neon database...
+2025-09-07 19:30:58,138 - INFO - ✅ Database connected successfully
+2025-09-07 19:30:58,138 - INFO - 📊 Checking current database state...
+2025-09-07 19:30:58,178 - WARNING -    customers: Could not check (0)
+2025-09-07 19:30:58,199 - WARNING -    vehicles: Could not check (0)
+2025-09-07 19:30:58,222 - WARNING -    documents: Could not check (0)
+2025-09-07 19:30:58,252 - WARNING -    line_items: Could not check (0)
+2025-09-07 19:30:58,273 - WARNING -    document_receipts: Could not check (0)
+2025-09-07 19:30:58,296 - WARNING -    document_extras: Could not check (0)
+2025-09-07 19:30:58,322 - WARNING -    document_line_items: Could not check (0)
+2025-09-07 19:30:58,345 - WARNING -    reminders: Could not check (0)
+2025-09-07 19:30:58,365 - WARNING -    stock: Could not check (0)
+2025-09-07 19:31:17,212 - INFO - 🛡️  STARTING SAFE GA4 MIGRATION
+2025-09-07 19:31:17,213 - INFO - ==================================================
+2025-09-07 19:31:17,213 - INFO - 🔌 Connecting to Neon database...
+2025-09-07 19:31:17,373 - INFO - ✅ Database connected successfully
+2025-09-07 19:31:17,373 - INFO - 📊 Checking current database state...
+2025-09-07 19:31:17,422 - WARNING -    customers: Could not check (0)
+2025-09-07 19:31:17,447 - WARNING -    vehicles: Could not check (0)
+2025-09-07 19:31:17,471 - WARNING -    documents: Could not check (0)
+2025-09-07 19:31:17,504 - WARNING -    line_items: Could not check (0)
+2025-09-07 19:31:17,528 - WARNING -    document_receipts: Could not check (0)
+2025-09-07 19:31:17,554 - WARNING -    document_extras: Could not check (0)
+2025-09-07 19:31:17,582 - WARNING -    document_line_items: Could not check (0)
+2025-09-07 19:31:17,606 - WARNING -    reminders: Could not check (0)
+2025-09-07 19:31:17,632 - WARNING -    stock: Could not check (0)
+2025-09-07 19:32:08,480 - INFO - 🛡️  STARTING SAFE GA4 MIGRATION
+2025-09-07 19:32:08,480 - INFO - ==================================================
+2025-09-07 19:32:08,480 - INFO - 🔌 Connecting to Neon database...
+2025-09-07 19:32:08,655 - INFO - ✅ Database connected successfully
+2025-09-07 19:32:08,655 - INFO - 📊 Checking current database state...
+2025-09-07 19:32:08,697 - WARNING -    customers: Could not check (0)
+2025-09-07 19:32:08,726 - WARNING -    vehicles: Could not check (0)
+2025-09-07 19:32:08,755 - WARNING -    documents: Could not check (0)
+2025-09-07 19:32:08,777 - WARNING -    line_items: Could not check (relation "LineItems" does not exist
+LINE 1: SELECT COUNT(*) FROM "LineItems"
+                             ^
+)
+2025-09-07 19:32:08,803 - WARNING -    document_receipts: Could not check (current transaction is aborted, commands ignored until end of transaction block
+)
+2025-09-07 19:32:08,829 - WARNING -    document_extras: Could not check (current transaction is aborted, commands ignored until end of transaction block
+)
+2025-09-07 19:32:08,854 - WARNING -    document_line_items: Could not check (current transaction is aborted, commands ignored until end of transaction block
+)
+2025-09-07 19:32:08,873 - WARNING -    reminders: Could not check (current transaction is aborted, commands ignored until end of transaction block
+)
+2025-09-07 19:32:08,894 - WARNING -    stock: Could not check (current transaction is aborted, commands ignored until end of transaction block
+)
+2025-09-07 19:32:08,894 - INFO - 📄 Starting SAFE documents import...
+2025-09-07 19:32:08,894 - ERROR - ❌ Documents.csv not found at ./data/Documents.csv
+2025-09-07 19:32:08,894 - INFO - ⏰ Starting SAFE reminders import...
+2025-09-07 19:32:08,894 - ERROR - ❌ Reminders.csv not found at ./data/Reminders.csv
+2025-09-07 19:32:08,894 - INFO - 📦 Starting SAFE stock import...
+2025-09-07 19:32:08,894 - ERROR - ❌ Stock.csv not found at ./data/Stock.csv
+2025-09-07 19:32:08,894 - INFO - 📊 Checking current database state...
+2025-09-07 19:32:08,913 - WARNING -    customers: Could not check (current transaction is aborted, commands ignored until end of transaction block
+)
+2025-09-07 19:32:08,939 - WARNING -    vehicles: Could not check (current transaction is aborted, commands ignored until end of transaction block
+)
+2025-09-07 19:32:08,965 - WARNING -    documents: Could not check (current transaction is aborted, commands ignored until end of transaction block
+)
+2025-09-07 19:32:08,984 - WARNING -    line_items: Could not check (current transaction is aborted, commands ignored until end of transaction block
+)
+2025-09-07 19:32:09,003 - WARNING -    document_receipts: Could not check (current transaction is aborted, commands ignored until end of transaction block
+)
+2025-09-07 19:32:09,026 - WARNING -    document_extras: Could not check (current transaction is aborted, commands ignored until end of transaction block
+)
+2025-09-07 19:32:09,051 - WARNING -    document_line_items: Could not check (current transaction is aborted, commands ignored until end of transaction block
+)
+2025-09-07 19:32:09,076 - WARNING -    reminders: Could not check (current transaction is aborted, commands ignored until end of transaction block
+)
+2025-09-07 19:32:09,100 - WARNING -    stock: Could not check (current transaction is aborted, commands ignored until end of transaction block
+)
+2025-09-07 19:32:09,100 - INFO - 
+🎉 SAFE MIGRATION COMPLETED
+2025-09-07 19:32:09,100 - INFO - ========================================
+2025-09-07 19:32:09,100 - INFO - 📄 Documents added: 0
+2025-09-07 19:32:09,100 - INFO - ⏰ Reminders added: 0
+2025-09-07 19:32:09,100 - INFO - 📦 Stock added: 0
+2025-09-07 19:32:09,100 - INFO - ❌ Errors: 0
+2025-09-07 19:32:09,100 - INFO - 
+📊 BEFORE vs AFTER:
+2025-09-07 19:32:09,100 - INFO -    customers: 0 (unchanged)
+2025-09-07 19:32:09,100 - INFO -    vehicles: 0 (unchanged)
+2025-09-07 19:32:09,100 - INFO -    documents: 0 (unchanged)
+2025-09-07 19:32:09,100 - INFO -    line_items: 0 (unchanged)
+2025-09-07 19:32:09,100 - INFO -    document_receipts: 0 (unchanged)
+2025-09-07 19:32:09,100 - INFO -    document_extras: 0 (unchanged)
+2025-09-07 19:32:09,100 - INFO -    document_line_items: 0 (unchanged)
+2025-09-07 19:32:09,100 - INFO -    reminders: 0 (unchanged)
+2025-09-07 19:32:09,100 - INFO -    stock: 0 (unchanged)
+2025-09-07 19:32:46,737 - INFO - 🛡️  STARTING SAFE GA4 MIGRATION
+2025-09-07 19:32:46,737 - INFO - ==================================================
+2025-09-07 19:32:46,737 - INFO - 🔌 Connecting to Neon database...
+2025-09-07 19:32:46,909 - INFO - ✅ Database connected successfully
+2025-09-07 19:32:46,909 - INFO - 📊 Checking current database state...
+2025-09-07 19:32:46,986 - WARNING -    customers: Could not check (0)
+2025-09-07 19:32:47,050 - WARNING -    vehicles: Could not check (0)
+2025-09-07 19:32:47,125 - WARNING -    documents: Could not check (0)
+2025-09-07 19:32:47,190 - WARNING -    line_items: Could not check (relation "LineItems" does not exist
+LINE 1: SELECT COUNT(*) FROM "LineItems"
+                       )
+2025-09-07 19:32:47,266 - WARNING -    document_receipts: Could not check (0)
+2025-09-07 19:32:47,333 - WARNING -    document_extras: Could not check (0)
+2025-09-07 19:32:47,393 - WARNING -    document_line_items: Could not check (0)
+2025-09-07 19:32:47,457 - WARNING -    reminders: Could not check (0)
+2025-09-07 19:32:47,515 - WARNING -    stock: Could not check (0)
+2025-09-07 19:32:47,515 - INFO - 📄 Starting SAFE documents import...

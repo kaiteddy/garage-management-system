@@ -1,0 +1,31 @@
+# 🐳 Simple Docker Import - No Native Dependencies
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install only system dependencies (no Python/build tools)
+RUN apk add --no-cache bash curl
+
+# Copy simple import script
+COPY simple-docker-import.cjs ./
+
+# Create logs directory
+RUN mkdir -p /app/logs
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV DOCKER_IMPORT=true
+
+# Create entrypoint script
+RUN echo '#!/bin/bash' > /app/run-simple-import.sh && \
+    echo 'echo "🐳 SIMPLE DOCKER IMPORT CONTAINER"' >> /app/run-simple-import.sh && \
+    echo 'echo "================================="' >> /app/run-simple-import.sh && \
+    echo 'echo "⏰ Start Time: $(date)"' >> /app/run-simple-import.sh && \
+    echo 'echo "🔒 Isolated container - no crash risk"' >> /app/run-simple-import.sh && \
+    echo 'echo ""' >> /app/run-simple-import.sh && \
+    echo 'node simple-docker-import.cjs 2>&1 | tee /app/logs/simple-import.log' >> /app/run-simple-import.sh && \
+    chmod +x /app/run-simple-import.sh
+
+# Default command
+CMD ["/app/run-simple-import.sh"]

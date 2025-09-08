@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "buildCommand": "npm run build",
+  "crons": [
+    {
+      "path": "/api/maintenance/mot-tax-refresh?dvsa=true",
+      "schedule": "0 2 * * *"
+    }
+  ]
+}

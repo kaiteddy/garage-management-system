@@ -1,0 +1,4 @@
+document_id,name,type,data
+1,Test Extra 1,type1,"{'key1': 'value1'}"
+1,Test Extra 2,type2,"{'key2': 'value2'}"
+2,Test Extra 3,type1,"{'key3': 'value3'}"

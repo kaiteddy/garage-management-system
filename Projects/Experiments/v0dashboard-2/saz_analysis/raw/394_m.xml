@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Session SID="394" ui-shared-id="394" BitFlags="19" ServerCertificatePolicyErrors="None">
+  <SessionTimers Version="2.0" ClientConnected="2025-08-07T16:06:14.603487+01:00" ClientBeginRequest="2025-08-07T16:07:54.175379+01:00" GotRequestHeaders="2025-08-07T16:07:54.17541+01:00" ClientDoneRequest="2025-08-07T16:07:54.175678+01:00" GatewayTime="0" DNSTime="0" TCPConnectTime="0" ServerConnected="2025-08-07T16:06:14.760433+01:00" FiddlerBeginRequest="2025-08-07T16:07:54.175835+01:00" ServerGotRequest="2025-08-07T16:07:54.176026+01:00" ServerBeginResponse="2025-08-07T16:07:54.221469+01:00" GotResponseHeaders="2025-08-07T16:07:54.222933+01:00" ServerDoneResponse="2025-08-07T16:07:54.222958+01:00" ClientBeginResponse="2025-08-07T16:07:54.222988+01:00" ClientDoneResponse="2025-08-07T16:07:54.223015+01:00" RequestHeadersSize="764" RequestBodySize="0" ResponseHeadersSize="86" ResponseBodySize="0" TrailersSize="0" />
+  <PipeInfo CltReuse="true" Reused="true" />
+  <SessionFlags>
+    <SessionFlag N="x-egressport" V="56902" />
+    <SessionFlag N="x-hostip" V="157.240.214.35" />
+    <SessionFlag N="https-server-protocolversion" V="Tls13" />
+    <SessionFlag N="x-responsebodytransferlength" V="0" />
+    <SessionFlag N="reused-connect-session-id" V="58" />
+    <SessionFlag N="x-serversocket" V="REUSE ServerPipe#58" />
+    <SessionFlag N="x-clientport" V="56896" />
+    <SessionFlag N="x-processinfo" V="Safari:12140" />
+    <SessionFlag N="https-client-protocolversion" V="Tls13" />
+    <SessionFlag N="https-client-ciphersuite" V="TLS_AES_256_GCM_SHA384" />
+    <SessionFlag N="x-clientip" V="::ffff:127.0.0.1" />
+  </SessionFlags>
+  <CertificateChainInfo>
+    <Certificate>
+      <CertificateInfo Key="extensions" Value="X509v3 Authority Key Identifier;2.5.29.35;False;301680145168FF90AF0207753CCCD9656462A212B859723B__split-extension__X509v3 Subject Key Identifier;2.5.29.14;False;041412AB3127D396CD4A09491CD098B60B25BC960D4A__split-extension__X509v3 Subject Alternative Name;2.5.29.17;False;DNS:*.facebook.com, DNS:*.facebook.net, DNS:*.fbcdn.net, DNS:*.fbsbx.com, DNS:*.m.facebook.com, DNS:*.messenger.com, DNS:*.xx.fbcdn.net, DNS:*.xy.fbcdn.net, DNS:*.xz.fbcdn.net, DNS:facebook.com, DNS:messenger.com__split-extension__Certificate Policies;2.5.29.32;False;30353033060667810C0102023029302706082B06010505070201161B687474703A2F2F7777772E64696769636572742E636F6D2F435053__split-extension__X509v3 Key Usage;2.5.29.15;True;03020388__split-extension__X509v3 Extended Key Usage;2.5.29.37;False;301406082B0601050507030106082B06010505070302__split-extension__CRL Distribution Points;2.5.29.31;False;306C3034A032A030862E687474703A2F2F63726C332E64696769636572742E636F6D2F736861322D68612D7365727665722D67362E63726C3034A032A030862E687474703A2F2F63726C342E64696769636572742E636F6D2F736861322D68612D7365727665722D67362E63726C__split-extension__Authority Information Access;1.3.6.1.5.5.7.1.1;False;3075302406082B060105050730018618687474703A2F2F6F6373702E64696769636572742E636F6D304D06082B060105050730028641687474703A2F2F636163657274732E64696769636572742E636F6D2F446967694365727453484132486967684173737572616E636553657276657243412E637274__split-extension__X509v3 Basic Constraints;2.5.29.19;True;3000__split-extension__SCT List;1.3.6.1.4.1.11129.2.4.2;False;04820169016700760012F14E34BD53724C840619C38F3F7A13F8E7B56287889C6D300584EBE586263A00000196D66C24130000040300473045022100F9667B6E61AD54C30C3B7EA00CA1E758451849A6F6E03107975E8A3AFBCD8F2A02202FC4404FEA5807ADFD9BA1CA9F0F8D3A36B9957929F875770859578B434E47F4007500ED3C4BD6E806C2A4A20057DBCB24E23801DF512FEDC486C5700F20DDB73E3FE000000196D66C244F00000403004630440220421D79C9F9E16FBD62CA79FE6F6AB8F9F09F725C8EBA5BCFCEEB27711283CBDB022073C4C017A0BDBE97546ADCF6AEE6E8F3D50CB34846EC0CBC4594C4E587397A6E007600A442C506496061548F0FD4EA9CFB7A2D26454D87A97F2FDF4559F6274F3A845400000196D66C245D0000040300473045022100E932DBA2A7DD28E4006E2F224AEF98BD2019BC165AC0634CD4CFC1453632B1A3022071E7C9FDB5C3710905E24E90160169A69307D1B545218459955D4D21E4937A49__split-extension__" />
+      <CertificateInfo Key="subject" Value="CN=*.facebook.com, O=&quot;Meta Platforms, Inc.&quot;, L=Menlo Park, S=California, C=US" />
+      <CertificateInfo Key="thumbprint" Value="55453EF3D1E1838091C943486E29CEE40F00E384" />
+      <CertificateInfo Key="serialnumber" Value="0E0F0C0585477D9AD2B1B582ACB34A25" />
+      <CertificateInfo Key="version" Value="3" />
+      <CertificateInfo Key="publickeysize" Value="" />
+      <CertificateInfo Key="friendlyname" Value="" />
+      <CertificateInfo Key="notafter" Value="Fri, 15 Aug 2025 00:59:59 GMT" />
+      <CertificateInfo Key="publickeysignaturealgorithm" Value="" />
+      <CertificateInfo Key="notbefore" Value="Fri, 16 May 2025 01:00:00 GMT" />
+      <CertificateInfo Key="sha256thumbprint" Value="7F57D1C6C0710B3C12B6AD29DBF50DDC4F80B392376E7474FC0670564D9061B3" />
+      <CertificateInfo Key="issuer" Value="CN=DigiCert SHA2 High Assurance Server CA, OU=www.digicert.com, O=DigiCert Inc, C=US" />
+      <CertificateInfo Key="publickeyalgorithm" Value="ECC" />
+    </Certificate>
+    <Certificate>
+      <CertificateInfo Key="extensions" Value="X509v3 Basic Constraints;2.5.29.19;True;30060101FF020100__split-extension__X509v3 Key Usage;2.5.29.15;True;03020186__split-extension__X509v3 Extended Key Usage;2.5.29.37;False;301406082B0601050507030106082B06010505070302__split-extension__Authority Information Access;1.3.6.1.5.5.7.1.1;False;3026302406082B060105050730018618687474703A2F2F6F6373702E64696769636572742E636F6D__split-extension__CRL Distribution Points;2.5.29.31;False;30423040A03EA03C863A687474703A2F2F63726C342E64696769636572742E636F6D2F4469676943657274486967684173737572616E63654556526F6F7443412E63726C__split-extension__Certificate Policies;2.5.29.32;False;303430320604551D2000302A302806082B06010505070201161C68747470733A2F2F7777772E64696769636572742E636F6D2F435053__split-extension__X509v3 Subject Key Identifier;2.5.29.14;False;04145168FF90AF0207753CCCD9656462A212B859723B__split-extension__X509v3 Authority Key Identifier;2.5.29.35;False;30168014B13EC36903F8BF4701D498261A0802EF63642BC3__split-extension__" />
+      <CertificateInfo Key="subject" Value="CN=DigiCert SHA2 High Assurance Server CA, OU=www.digicert.com, O=DigiCert Inc, C=US" />
+      <CertificateInfo Key="thumbprint" Value="A031C46782E6E6C662C2C87C76DA9AA62CCABD8E" />
+      <CertificateInfo Key="publickeymodulus" Value="B6E02FC22406C86D045FD7EF0A6406B27D22266516AE42409BCEDC9F9F76073EC330558719B94F940E5A941F5556B4C2022AAFD098EE0B40D7C4D03B72C8149EEF90B111A9AED2C8B8433AD90B0BD5D595F540AFC81DED4D9C5F57B786506899F58ADAD2C7051FA897C9DCA4B182842DC6ADA59CC71982A6850F5E44582A378FFD35F10B0827325AF5BB8B9EA4BD51D027E2DD3B4233A30528C4BB28CC9AAC2B230D78C67BE65E71B74A3E08FB81B71616A19D23124DE5D79208AC75A49CBACD17B21E4435657F532539D11C0A9A631B199274680A37C2C25248CB395AA2B6E15DC1DDA020B821A293266F144A2141C7ED6D9BF2482FF303F5A26892532F5EE3" />
+      <CertificateInfo Key="serialnumber" Value="04E1E7A4DC5CF2F36DC02B42B85D159F" />
+      <CertificateInfo Key="version" Value="3" />
+      <CertificateInfo Key="publickeysize" Value="2048" />
+      <CertificateInfo Key="friendlyname" Value="" />
+      <CertificateInfo Key="publickeyexponent" Value="010001" />
+      <CertificateInfo Key="notafter" Value="Sun, 22 Oct 2028 13:00:00 GMT" />
+      <CertificateInfo Key="publickeysignaturealgorithm" Value="RSA" />
+      <CertificateInfo Key="notbefore" Value="Tue, 22 Oct 2013 13:00:00 GMT" />
+      <CertificateInfo Key="sha256thumbprint" Value="19400BE5B7A31FB733917700789D2F0A2471C0C9D506C0E504C06C16D7CB17C0" />
+      <CertificateInfo Key="issuer" Value="CN=DigiCert High Assurance EV Root CA, OU=www.digicert.com, O=DigiCert Inc, C=US" />
+      <CertificateInfo Key="publickeyalgorithm" Value="RSA" />
+    </Certificate>
+    <Certificate>
+      <CertificateInfo Key="extensions" Value="X509v3 Key Usage;2.5.29.15;True;03020186__split-extension__X509v3 Basic Constraints;2.5.29.19;True;30030101FF__split-extension__X509v3 Subject Key Identifier;2.5.29.14;False;0414B13EC36903F8BF4701D498261A0802EF63642BC3__split-extension__X509v3 Authority Key Identifier;2.5.29.35;False;30168014B13EC36903F8BF4701D498261A0802EF63642BC3__split-extension__" />
+      <CertificateInfo Key="subject" Value="CN=DigiCert High Assurance EV Root CA, OU=www.digicert.com, O=DigiCert Inc, C=US" />
+      <CertificateInfo Key="thumbprint" Value="5FB7EE0633E259DBAD0C4C9AE6D38F1A61C7DC25" />
+      <CertificateInfo Key="publickeymodulus" Value="C6CCE573E6FBD4BBE52D2D32A6DFE5813FC9CD2549B6712AC3D5943467A20A1CB05F69A640B1C4B7B28FD098A4A941593AD3DC94D63CDB7438A44ACC4D2582F74AA5531238EEF3496D71917E63B6ABA65FC3A484F84F6251BEF8C5ECDB3892E306E508910CC4284155FBCB5A89157E71E835BF4D72093DBE3A38505B77311B8DB3C724459AA7AC6D00145A04B7BA13EB510A984141224E656187814150A6795C89DE194A57D52EE65D1C532C7E98CD1A0616A46873D03404135CA171D35A7C55DB5E64E13787305604E511B4298012F1793988A202117C2766B788B778F2CA0AA838AB0A64C2BF665D9584C1A1251E875D1A500B2012CC41BB6E0B5138B84BCB" />
+      <CertificateInfo Key="serialnumber" Value="02AC5C266A0B409B8F0B79F2AE462577" />
+      <CertificateInfo Key="version" Value="3" />
+      <CertificateInfo Key="publickeysize" Value="2048" />
+      <CertificateInfo Key="friendlyname" Value="" />
+      <CertificateInfo Key="publickeyexponent" Value="010001" />
+      <CertificateInfo Key="notafter" Value="Mon, 10 Nov 2031 00:00:00 GMT" />
+      <CertificateInfo Key="publickeysignaturealgorithm" Value="RSA" />
+      <CertificateInfo Key="notbefore" Value="Fri, 10 Nov 2006 00:00:00 GMT" />
+      <CertificateInfo Key="sha256thumbprint" Value="7431E5F4C3C1CE4690774F0B61E05440883BA9A01ED00BA6ABD7806ED3B118CF" />
+      <CertificateInfo Key="issuer" Value="CN=DigiCert High Assurance EV Root CA, OU=www.digicert.com, O=DigiCert Inc, C=US" />
+      <CertificateInfo Key="publickeyalgorithm" Value="RSA" />
+    </Certificate>
+  </CertificateChainInfo>
+</Session>

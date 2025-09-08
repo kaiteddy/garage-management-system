@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Session SID="142" ui-shared-id="142" BitFlags="19" ServerCertificatePolicyErrors="None">
+  <SessionTimers Version="2.0" ClientConnected="2025-08-07T16:06:13.616763+01:00" ClientBeginRequest="2025-08-07T16:06:54.41173+01:00" GotRequestHeaders="2025-08-07T16:06:54.411746+01:00" ClientDoneRequest="2025-08-07T16:06:54.41184+01:00" GatewayTime="0" DNSTime="0" TCPConnectTime="0" ServerConnected="2025-08-07T16:06:13.737489+01:00" FiddlerBeginRequest="2025-08-07T16:06:54.411955+01:00" ServerGotRequest="2025-08-07T16:06:54.41203+01:00" ServerBeginResponse="2025-08-07T16:06:54.601216+01:00" GotResponseHeaders="2025-08-07T16:06:54.601282+01:00" ServerDoneResponse="2025-08-07T16:06:54.601388+01:00" ClientBeginResponse="2025-08-07T16:06:54.601789+01:00" ClientDoneResponse="2025-08-07T16:06:54.60207+01:00" RequestHeadersSize="93" RequestBodySize="0" ResponseHeadersSize="535" ResponseBodySize="0" TrailersSize="0" />
+  <PipeInfo CltReuse="true" Reused="true" />
+  <SessionFlags>
+    <SessionFlag N="x-egressport" V="56853" />
+    <SessionFlag N="x-hostip" V="150.171.22.12" />
+    <SessionFlag N="https-server-protocolversion" V="Tls13" />
+    <SessionFlag N="x-responsebodytransferlength" V="0" />
+    <SessionFlag N="reused-connect-session-id" V="32" />
+    <SessionFlag N="x-serversocket" V="REUSE ServerPipe#32" />
+    <SessionFlag N="x-clientport" V="56842" />
+    <SessionFlag N="x-processinfo" V="Safari:12140" />
+    <SessionFlag N="https-client-protocolversion" V="Tls13" />
+    <SessionFlag N="https-client-ciphersuite" V="TLS_AES_256_GCM_SHA384" />
+    <SessionFlag N="x-clientip" V="::ffff:127.0.0.1" />
+  </SessionFlags>
+  <CertificateChainInfo>
+    <Certificate>
+      <CertificateInfo Key="extensions" Value="X509v3 Authority Key Identifier;2.5.29.35;False;301680140F80611C823161D52F28E78D4638B42CE1C6D9E2__split-extension__X509v3 Subject Key Identifier;2.5.29.14;False;0414CF9586069D4AEDC7AC3F81B851E5709DE3E36315__split-extension__X509v3 Subject Alternative Name;2.5.29.17;False;DNS:www.linkedin.com, DNS:linkedin.com, DNS:rum5.perf.linkedin.com, DNS:exp4.www.linkedin.com, DNS:exp3.www.linkedin.com, DNS:exp2.www.linkedin.com, DNS:exp1.www.linkedin.com, DNS:rum2.perf.linkedin.com, DNS:rum4.perf.linkedin.com, DNS:rum6.perf.linkedin.com, DNS:rum17.perf.linkedin.com, DNS:rum8.perf.linkedin.com, DNS:rum9.perf.linkedin.com, DNS:afd.perf.linkedin.com, DNS:rum14.perf.linkedin.com, DNS:rum18.perf.linkedin.com, DNS:rum19.perf.linkedin.com, DNS:exp5.www.linkedin.com, DNS:realtime.www.linkedin.com, DNS:px.ads.linkedin.com, DNS:px4.ads.linkedin.com, DNS:dc.ads.linkedin.com, DNS:lnkd.in, DNS:px.jobs.linkedin.com, DNS:mid4.linkedin.com, DNS:lan.sdk.linkedin.com, DNS:www.linkedin-measure.com, DNS:status.linkedin.com, DNS:payment.www.linkedin.com, DNS:afd-wcs.www.linkedin.com, DNS:shm.www.linkedin.com, DNS:static.licdn.com, DNS:static-exp1.licdn.com, DNS:static-exp2.licdn.com, DNS:static-exp3.licdn.com, DNS:static-afd.licdn.com__split-extension__Certificate Policies;2.5.29.32;False;30353033060667810C0102023029302706082B06010505070201161B687474703A2F2F7777772E64696769636572742E636F6D2F435053__split-extension__X509v3 Key Usage;2.5.29.15;True;030205A0__split-extension__X509v3 Extended Key Usage;2.5.29.37;False;301406082B0601050507030106082B06010505070302__split-extension__CRL Distribution Points;2.5.29.31;False;308182303FA03DA03B8639687474703A2F2F63726C332E64696769636572742E636F6D2F44696769636572745348413253656375726553657276657243412D312E63726C303FA03DA03B8639687474703A2F2F63726C342E64696769636572742E636F6D2F44696769636572745348413253656375726553657276657243412D312E63726C__split-extension__Authority Information Access;1.3.6.1.5.5.7.1.1;False;3070302406082B060105050730018618687474703A2F2F6F6373702E64696769636572742E636F6D304806082B06010505073002863C687474703A2F2F636163657274732E64696769636572742E636F6D2F44696769436572745348413253656375726553657276657243412D322E637274__split-extension__X509v3 Basic Constraints;2.5.29.19;True;3000__split-extension__SCT List;1.3.6.1.4.1.11129.2.4.2;False;0482016C016A007700DDDCCA3495D7E11605E79532FAC79FF83D1C50DFDB003A1412760A2CACBBC82A000001959E9A90AC00000403004830460221009D449426A3A29F63D6010FC1EF11B33A2F02781C685AA0682ADB74197F49D4B7022100876B753C5DBE5B5C092BA439D4EBF5ABD4355917E66C9B652B6440511E28CFA8007600ED3C4BD6E806C2A4A20057DBCB24E23801DF512FEDC486C5700F20DDB73E3FE0000001959E9A90A80000040300473045022030D74807C9AF85084B69504FAEBA34DE09B542F0A7D163432AF6CC2BE19949EA022100B5A8DF7EFDAB4C57DF18031F15D19F4B755DD4CC3C2E9DAF171208A3DA200F15007700E6D2316340778CC1104106D771B9CEC1D240F6968486FBBA87321DFD1E378E50000001959E9A90B80000040300483046022100AC3166C4DA9C26F2530EF4CFAE87B5E596DD829DFD7366F99FBB1DE07273375E022100F07C5FAC06EF99094DED07E7270025E215FA26EB0687BBA9C97FAD5D02875946__split-extension__" />
+      <CertificateInfo Key="subject" Value="CN=www.linkedin.com, O=LinkedIn Corporation, L=Sunnyvale, S=California, C=US" />
+      <CertificateInfo Key="thumbprint" Value="EAED61477EF0E7484758C7BAC8F0073B8895A972" />
+      <CertificateInfo Key="publickeymodulus" Value="C48EE94FC127A37FCA283E7C37E56AEA908735D5D508D25B95293A1B5C80034A3B83C6A9D7B707D4528D5B0FFA586CC5F449F624323A027C8CAB8ABF2CD00265212C77EC65893C8BFCC2EB72314EFA6EFF25EE528155F8F855835C360962379D9F80D90463F6DC1E8EC6E331CA28EC89071816E50C9B667EC2002A1CEE663457BC7A6CDC9069FE8266AD61AA8FDF42BA51D78B6C87A1A679652C9A82340F79273C799F5C9D09B232EBC9B39D091BBD4B70C44DDA9E420E32A036EEABB938CADF405AB53971180FB4E4B55B160206A450BE561079AF67C72339F7D6E65818F061CC97804412C9621C0059E09F1CE235CC3EED268FA1AD1CB18026D3ED39D07CF1" />
+      <CertificateInfo Key="serialnumber" Value="0F26E88757403E8ABF60841AA9FFBD84" />
+      <CertificateInfo Key="version" Value="3" />
+      <CertificateInfo Key="publickeysize" Value="2048" />
+      <CertificateInfo Key="friendlyname" Value="" />
+      <CertificateInfo Key="publickeyexponent" Value="010001" />
+      <CertificateInfo Key="notafter" Value="Wed, 17 Sep 2025 00:59:59 GMT" />
+      <CertificateInfo Key="publickeysignaturealgorithm" Value="RSA" />
+      <CertificateInfo Key="notbefore" Value="Sun, 16 Mar 2025 00:00:00 GMT" />
+      <CertificateInfo Key="sha256thumbprint" Value="755F4C98A1718E9DEFEA19C3E12DC3206D9797F6935CE48E6FC5EE912520999D" />
+      <CertificateInfo Key="issuer" Value="CN=DigiCert SHA2 Secure Server CA, O=DigiCert Inc, C=US" />
+      <CertificateInfo Key="publickeyalgorithm" Value="RSA" />
+    </Certificate>
+    <Certificate>
+      <CertificateInfo Key="extensions" Value="X509v3 Subject Key Identifier;2.5.29.14;False;04140F80611C823161D52F28E78D4638B42CE1C6D9E2__split-extension__X509v3 Authority Key Identifier;2.5.29.35;False;3016801403DE503556D14CBB66F0A3E21B1BC397B23DD155__split-extension__X509v3 Key Usage;2.5.29.15;True;03020186__split-extension__X509v3 Extended Key Usage;2.5.29.37;False;301406082B0601050507030106082B06010505070302__split-extension__X509v3 Basic Constraints;2.5.29.19;True;30060101FF020100__split-extension__Authority Information Access;1.3.6.1.5.5.7.1.1;False;3068302406082B060105050730018618687474703A2F2F6F6373702E64696769636572742E636F6D304006082B060105050730028634687474703A2F2F636163657274732E64696769636572742E636F6D2F4469676943657274476C6F62616C526F6F7443412E637274__split-extension__CRL Distribution Points;2.5.29.31;False;30723037A035A0338631687474703A2F2F63726C332E64696769636572742E636F6D2F4469676943657274476C6F62616C526F6F7443412E63726C3037A035A0338631687474703A2F2F63726C342E64696769636572742E636F6D2F4469676943657274476C6F62616C526F6F7443412E63726C__split-extension__Certificate Policies;2.5.29.32;False;30273007060567810C01013008060667810C0102013008060667810C0102023008060667810C010203__split-extension__" />
+      <CertificateInfo Key="subject" Value="CN=DigiCert SHA2 Secure Server CA, O=DigiCert Inc, C=US" />
+      <CertificateInfo Key="thumbprint" Value="626D44E704D1CEABE3BF0D53397464AC8080142C" />
+      <CertificateInfo Key="publickeymodulus" Value="DCAE58904DC1C4301590355B6E3C8215F52C5CBDE3DBFF7143FA642580D4EE18A24DF066D00A736E1198361764AF379DFDFA4184AFC7AF8CFE1A734DCF339790A2968753832BB9A675482D1D56377BDA31321AD7ACAB06F4AA5D4BB74746DD2A93C3902E798080EF13046A143BB59B92BEC207654EFCDAFCFF7AAEDC5C7E55310CE83907A4D7BE2FD30B6AD2B1DF5FFE5774533B3580DDAE8E4498B39F0ED3DAE0D7F46B29AB44A74B58846D924B81C3DA738B129748900445751ADD37319792E8CD540D3BE4C13F395E2EB8F35C7E108E8641008D456647B0A165CEA0AA29094EF397EBE82EAB0F72A7300EFAC7F4FD1477C3A45B2857C2B3F982FDB745589B" />
+      <CertificateInfo Key="serialnumber" Value="02742EAA17CA8E21C717BB1FFCFD0CA0" />
+      <CertificateInfo Key="version" Value="3" />
+      <CertificateInfo Key="publickeysize" Value="2048" />
+      <CertificateInfo Key="friendlyname" Value="" />
+      <CertificateInfo Key="publickeyexponent" Value="010001" />
+      <CertificateInfo Key="notafter" Value="Mon, 23 Sep 2030 00:59:59 GMT" />
+      <CertificateInfo Key="publickeysignaturealgorithm" Value="RSA" />
+      <CertificateInfo Key="notbefore" Value="Wed, 23 Sep 2020 01:00:00 GMT" />
+      <CertificateInfo Key="sha256thumbprint" Value="C1AD7778796D20BCA65C889A2655021156528BB62FF5FA43E1B8E5A83E3D2EAA" />
+      <CertificateInfo Key="issuer" Value="CN=DigiCert Global Root CA, OU=www.digicert.com, O=DigiCert Inc, C=US" />
+      <CertificateInfo Key="publickeyalgorithm" Value="RSA" />
+    </Certificate>
+    <Certificate>
+      <CertificateInfo Key="extensions" Value="X509v3 Key Usage;2.5.29.15;True;03020186__split-extension__X509v3 Basic Constraints;2.5.29.19;True;30030101FF__split-extension__X509v3 Subject Key Identifier;2.5.29.14;False;041403DE503556D14CBB66F0A3E21B1BC397B23DD155__split-extension__X509v3 Authority Key Identifier;2.5.29.35;False;3016801403DE503556D14CBB66F0A3E21B1BC397B23DD155__split-extension__" />
+      <CertificateInfo Key="subject" Value="CN=DigiCert Global Root CA, OU=www.digicert.com, O=DigiCert Inc, C=US" />
+      <CertificateInfo Key="thumbprint" Value="A8985D3A65E5E5C4B2D7D66D40C6DD2FB19C5436" />
+      <CertificateInfo Key="publickeymodulus" Value="E23BE11172DEA8A4D3A357AA50A28F0B7790C9A2A5EE12CE965B010920CC0193A74E30B753F743C46900579DE28D22DD870640008109CECE1B83BFDFCD3B7146E2D666C705B37627168F7B9E1E957DEEB748A308DAD6AF7A0C3906657F4A5D1FBC17F8ABBEEE28D7747F7A78995985686E5C23324BBF4EC0E85A6DE370BF7710BFFC01F685D9A844105832A97518D5D1A2BE47E2276AF49A33F84908608BD45FB43A84BFA1AA4A4C7D3ECF4F5F6C765EA04B37919EDC22E66DCE141A8E6ACBFECDB3146417C75B299E32BFF2EEFAD30B42D4ABB74132DA0CD4EFF881D5BB8D583FB51BE84928A270DA3104DDF7B216F24C0A4E07A8ED4A3D5EB57FA390C3AF27" />
+      <CertificateInfo Key="serialnumber" Value="083BE056904246B1A1756AC95991C74A" />
+      <CertificateInfo Key="version" Value="3" />
+      <CertificateInfo Key="publickeysize" Value="2048" />
+      <CertificateInfo Key="friendlyname" Value="" />
+      <CertificateInfo Key="publickeyexponent" Value="010001" />
+      <CertificateInfo Key="notafter" Value="Mon, 10 Nov 2031 00:00:00 GMT" />
+      <CertificateInfo Key="publickeysignaturealgorithm" Value="RSA" />
+      <CertificateInfo Key="notbefore" Value="Fri, 10 Nov 2006 00:00:00 GMT" />
+      <CertificateInfo Key="sha256thumbprint" Value="4348A0E9444C78CB265E058D5E8944B4D84F9662BD26DB257F8934A443C70161" />
+      <CertificateInfo Key="issuer" Value="CN=DigiCert Global Root CA, OU=www.digicert.com, O=DigiCert Inc, C=US" />
+      <CertificateInfo Key="publickeyalgorithm" Value="RSA" />
+    </Certificate>
+  </CertificateChainInfo>
+</Session>

@@ -1,0 +1,21 @@
+{
+  "name": "prosearch-intelligence",
+  "version": "1.0.0",
+  "description": "ProSearch Intelligence Platform - ELI MOTORS LTD",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "prosearch",
+    "intelligence",
+    "analytics",
+    "eli-motors"
+  ],
+  "author": "ELI MOTORS LTD",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

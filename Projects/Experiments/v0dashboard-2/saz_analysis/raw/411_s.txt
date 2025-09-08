@@ -1,0 +1,16 @@
+HTTP/2 204
+access-control-allow-origin: https://omnipart.eurocarparts.com
+date: Thu, 07 Aug 2025 15:08:00 GMT
+pragma: no-cache
+expires: Fri, 01 Jan 1990 00:00:00 GMT
+cache-control: no-cache, no-store, must-revalidate
+access-control-allow-credentials: true
+content-type: text/plain
+cross-origin-resource-policy: cross-origin
+content-security-policy-report-only: script-src 'none'; form-action 'none'; frame-src 'none'; report-uri https://csp.withgoogle.com/csp/scaffolding/ascnsrsggc:158:0
+cross-origin-opener-policy-report-only: same-origin; report-to=ascnsrsggc:158:0
+report-to: {"group":"ascnsrsggc:158:0","max_age":2592000,"endpoints":[{"url":"https://csp.withgoogle.com/csp/report-to/scaffolding/ascnsrsggc:158:0"}],}
+server: Golfe2
+content-length: 0
+alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+

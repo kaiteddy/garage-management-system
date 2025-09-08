@@ -1,0 +1,19 @@
+OPTIONS https://api.omnipart.eurocarparts.com/products/product-information?skus[]=501440620&skus[]=501440624&skus[]=501440626&skus[]=501440627&skus[]=501440628&skus[]=501440629&skus[]=50144062J&skus[]=50144062F HTTP/2
+:method: OPTIONS
+:scheme: https
+:authority: api.omnipart.eurocarparts.com
+:path: /products/product-information?skus[]=501440620&skus[]=501440624&skus[]=501440626&skus[]=501440627&skus[]=501440628&skus[]=501440629&skus[]=50144062J&skus[]=50144062F
+origin: https://omnipart.eurocarparts.com
+sec-fetch-site: same-site
+access-control-request-method: GET
+access-control-request-headers: content-type
+sec-fetch-mode: cors
+user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/19.0 Safari/605.1.15
+referer: https://omnipart.eurocarparts.com/
+sec-fetch-dest: empty
+content-length: 0
+accept: */*
+accept-language: en-GB,en;q=0.9
+priority: u=3, i
+accept-encoding: gzip, deflate, br, zstd
+

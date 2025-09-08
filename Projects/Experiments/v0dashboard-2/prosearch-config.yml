@@ -1,0 +1,14 @@
+# ProSearch Intelligence - ELI MOTORS LTD
+# Analytics & Intelligence Platform
+tunnel: 
+credentials-file: /Users/adamrutstein/.cloudflared/prosearch-intelligence.json
+
+ingress:
+  # Main application - ProSearch Intelligence
+  - hostname: intelligence.elimotors.co.uk
+    service: http://localhost:3000
+  # Catch-all for any unmatched requests
+  - service: http_status:404
+
+# Enable metrics for monitoring
+metrics: 0.0.0.0:2001

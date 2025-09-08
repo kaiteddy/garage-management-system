@@ -1,0 +1,19 @@
+GET https://api.omnipart.eurocarparts.com/content-elements/signed_out_homepage HTTP/2
+:method: GET
+:scheme: https
+:authority: api.omnipart.eurocarparts.com
+:path: /content-elements/signed_out_homepage
+accept: */*
+content-type: application/json
+origin: https://omnipart.eurocarparts.com
+sec-fetch-site: same-site
+if-none-match: W/"be07f54a154694b9338dac674c3c2fbf"
+sec-fetch-mode: cors
+user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/19.0 Safari/605.1.15
+referer: https://omnipart.eurocarparts.com/
+sec-fetch-dest: empty
+accept-language: en-GB,en;q=0.9
+priority: u=3, i
+accept-encoding: gzip, deflate, br, zstd
+cookie: _fbp=fb.1.1753879768034.126948203854405976; _ga=GA1.1.1461406101.1753879768; _ga_VD2WNR6CV9=GS2.1.s1754579173$o5$g1$t1754579214$j19$l0$h1371148352; OptanonConsent=isGpcEnabled=0&datestamp=Thu+Aug+07+2025+16%3A06%3A54+GMT%2B0100+(British+Summer+Time)&version=6.34.0&isIABGlobal=false&hosts=&genVendors=&consentId=8ae74bf3-6f81-4168-b151-8a23b8063295&interactionCount=1&landingPath=NotLandingPage&groups=C0001%3A1%2CC0002%3A1%2CC0003%3A1%2CC0004%3A1%2CC0005%3A1&geolocation=GB%3BENG&AwaitingReconsent=false; ORA_FPC=id=9cc6d39d-eb49-427b-b52e-f862f66f07a8; bearer=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NTQ1NzY5MzAsImV4cCI6MTc1NDU4MDUzMCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiNTI0YWQyZjgtYWY4NS00OTFhLWFkYjEtNDQyODMxMTM0ODgyIiwiZ3Vlc3RfdXNlciI6dHJ1ZX0.GDmC0PNRp4VgUeo0NWjP82WBS4PowzMaFHsHcrDXpW3-LwlVNwCdJBcT5RqBI5UCecCXVcg0cchNZDL3-jN8_txUUGbcKRPm9jQhtYnbhK_GwZ7k7EZ2OClAuebXzaZTXdwM0F1DBe_dSY1AFo9_h_tj7x8SOg_3lXSEt2VA5Cm_PCDB7bDj-EqXYrU1p2FCFc1ugl96xrhdjB8mJu2wuvAGW4cuYSpUcOu_dd6NIhnvMXC3mOpXnhzm4rYzj4BvSqU2x276pKd8MvCQD1JPSlXP4l1fLbJ5Wnt_7jDd8jDEn3EDiPQKZVLLnhoP6jagOhCcqlBHGd0QCBeGmNSN2Cr_O3XUUIVbbX_FtThLTwrHID19S3tcEsY1Y6XSZK5FR8UcXuuEt9HKvyMWxZBZFFexwbl6ykk3UCCzodn7O4xRaTUMN1dFGXQBazyNcKtbhj_lrRaAdVIiTWa9tekEHH8ozCR8HxEOZuT6LzISDNNCH1iBb3C7aP_SRpr6OqPmhthUSPK8eYuHi3qzjiguQDfJxKrxWoRwxfW1gUoks6yi82C3Hidin-EldzhMvhSw_YrqjoD1_zkkQzPYzffx9FkCDW3uOI12aQT2Dg8dlCWdpvMPH7KJH4smFfI9iDwj_b6A6baonoqRMxXmmSXi0DpK4KBbmm2frjbZGi3t3zc; refresh_token=c8ab5f3d5fc3b11a75b373f988948bfa825133971833e97132614557d6ffe71b57306c2ba771b8d36762e18dc6425b96f496841879d32186c6831a8b3ae940c4; _ugeuid=6556; OptanonAlertBoxClosed=2025-07-30T12:49:27.501Z
+

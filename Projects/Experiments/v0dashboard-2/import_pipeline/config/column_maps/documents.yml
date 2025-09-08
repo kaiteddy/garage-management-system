@@ -1,0 +1,64 @@
+# documents.yml
+# Maps CSV columns to database fields for the documents table
+
+# Required fields - will raise error if any of these are missing
+required_fields:
+  - _ID
+  - _ID_Customer
+  - _ID_Vehicle
+  - docType
+  - docNumber
+  - docDate_Issued
+  - docStatus
+  - us_TotalGROSS
+  - us_TotalNET
+  - us_TotalTAX
+
+# Field mappings (CSV column -> DB column)
+field_mappings:
+  _ID: id
+  _ID_Customer: customer_id
+  _ID_Vehicle: vehicle_id
+  docType: document_type
+  docNumber: document_number
+  docDate_Issued: issue_date
+  docDate_DueBy: due_date
+  docStatus: status
+  docNotes: notes
+  
+  # Financials
+  us_TotalGROSS: total_gross
+  us_TotalNET: total_net
+  us_TotalTAX: total_tax
+  
+  # Customer info
+  custName_Forename: customer_first_name
+  custName_Surname: customer_last_name
+  custAddress_Road: customer_address_line1
+  custAddress_Town: customer_city
+  custAddress_PostCode: customer_postcode
+  custCont_Telephone: customer_phone
+  
+  # Vehicle info
+  vehMake: vehicle_make
+  vehModel: vehicle_model
+  vehRegistration: vehicle_registration
+  vehMileage: vehicle_mileage
+
+# Type casting for fields
+type_casting:
+  issue_date: date
+  due_date: date
+  total_gross: decimal
+  total_net: decimal
+  total_tax: decimal
+  vehicle_mileage: integer
+
+# Default values for fields
+defaults:
+  document_type: "invoice"  # Default to invoice if not specified
+  status: "draft"           # Default status if not specified
+
+# Fields to ignore from CSV (won't be imported)
+ignore_fields:
+  - ""  # Add any fields to explicitly ignore here

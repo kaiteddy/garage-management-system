@@ -1,0 +1,28 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3001:3000"
+    env_file:
+      - .env.local
+    environment:
+      - NODE_ENV=production
+      - SWS_API_ENABLED=true
+      - VDG_API_ENABLED=true
+      - DVSA_API_ENABLED=true
+      - NEXT_PUBLIC_BASE_URL=http://localhost:3001
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2.0'
+        reservations:
+          memory: 1G
+          cpus: '1.0'

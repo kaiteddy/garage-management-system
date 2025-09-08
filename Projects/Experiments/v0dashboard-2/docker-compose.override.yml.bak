@@ -1,0 +1,49 @@
+# Docker Compose override for development optimization
+# This file automatically applies resource limits to all services
+
+version: '3.8'
+
+x-resource-limits: &resource-limits
+  deploy:
+    resources:
+      limits:
+        memory: 512M
+        cpus: '1.0'
+      reservations:
+        memory: 256M
+        cpus: '0.5'
+
+services:
+  # Apply resource limits to any service that doesn't have them
+  app:
+    <<: *resource-limits
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=1024
+    
+  postgres:
+    <<: *resource-limits
+    command: >
+      postgres
+      -c shared_buffers=64MB
+      -c effective_cache_size=128MB
+      -c maintenance_work_mem=32MB
+      -c checkpoint_completion_target=0.9
+      -c wal_buffers=8MB
+      -c default_statistics_target=50
+      -c random_page_cost=1.1
+      -c effective_io_concurrency=100
+    
+  redis:
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.5'
+        reservations:
+          memory: 64M
+          cpus: '0.25'
+    command: >
+      redis-server
+      --maxmemory 64mb
+      --maxmemory-policy allkeys-lru
+      --save ""

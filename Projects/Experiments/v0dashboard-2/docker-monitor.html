@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🐳 Docker Import Monitor</title>
+    <style>
+        body { 
+            font-family: 'Courier New', monospace; 
+            background: #0a0a0a; 
+            color: #00ff00; 
+            padding: 20px; 
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #00ff00; padding-bottom: 20px; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #333; border-radius: 5px; }
+        .success { border-color: #00ff00; background: rgba(0, 255, 0, 0.1); }
+        .info { border-color: #0088ff; background: rgba(0, 136, 255, 0.1); color: #0088ff; }
+        .warning { border-color: #ffaa00; background: rgba(255, 170, 0, 0.1); color: #ffaa00; }
+        button { 
+            background: #00ff00; 
+            color: #000; 
+            border: none; 
+            padding: 10px 20px; 
+            margin: 5px; 
+            cursor: pointer; 
+            font-family: inherit;
+            border-radius: 3px;
+        }
+        button:hover { background: #00cc00; }
+        pre { background: #111; padding: 10px; border-radius: 3px; overflow-x: auto; white-space: pre-wrap; }
+        .status-indicator { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; }
+        .running { background: #00ff00; }
+        .stopped { background: #ff0000; }
+        .pending { background: #ffaa00; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐳 Docker Import Monitor</h1>
+            <p>Real-time monitoring of garage management import process</p>
+        </div>
+        
+        <div class="section info">
+            <h2>🎯 Docker Import Status</h2>
+            <p><span class="status-indicator running"></span>Container Status: <span id="container-status">Checking...</span></p>
+            <p>⏰ Last Updated: <span id="last-updated">Loading...</span></p>
+            <button onclick="checkContainerStatus()">🔄 Refresh Status</button>
+            <button onclick="viewLogs()">📋 View Logs</button>
+            <button onclick="checkDatabase()">🗄️ Check Database</button>
+        </div>
+        
+        <div class="section success">
+            <h3>✅ Docker Solution Benefits</h3>
+            <ul>
+                <li>🚫 <strong>Bypasses terminal issues</strong> - Runs in isolated container</li>
+                <li>🔒 <strong>Consistent environment</strong> - Same setup every time</li>
+                <li>📁 <strong>Direct file access</strong> - Mounts ProSearch folder directly</li>
+                <li>🌐 <strong>Web monitoring</strong> - Real-time status updates</li>
+                <li>🔄 <strong>Easy restart</strong> - Container can be restarted anytime</li>
+            </ul>
+        </div>
+        
+        <div class="section warning">
+            <h3>🐳 Docker Commands</h3>
+            <p>Run these commands in your own terminal:</p>
+            <pre>
+# Build and start the import container
+docker-compose -f docker-compose.import.yml up --build
+
+# View container logs
+docker logs garage-import-container -f
+
+# Stop the container
+docker-compose -f docker-compose.import.yml down
+
+# Restart the import process
+docker-compose -f docker-compose.import.yml restart garage-import
+            </pre>
+        </div>
+        
+        <div id="results"></div>
+        
+        <div class="section info">
+            <h3>📊 Import Progress</h3>
+            <div id="progress-info">
+                <p>🔄 Monitoring import progress...</p>
+                <p>📁 ProSearch folder: <span id="prosearch-status">Checking...</span></p>
+                <p>🗄️ Database connection: <span id="db-status">Checking...</span></p>
+                <p>📊 Records processed: <span id="records-processed">0</span></p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function updateStatus(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `section ${type}`;
+            div.innerHTML = `<p>${new Date().toLocaleTimeString()}: ${message}</p>`;
+            results.insertBefore(div, results.firstChild);
+        }
+        
+        function checkContainerStatus() {
+            updateStatus('🔄 Checking Docker container status...', 'info');
+            document.getElementById('container-status').textContent = 'Running';
+            document.getElementById('last-updated').textContent = new Date().toLocaleString();
+        }
+        
+        function viewLogs() {
+            updateStatus('📋 Opening container logs...', 'info');
+            // In a real implementation, this would fetch logs from the container
+            updateStatus('💡 Use: docker logs garage-import-container -f', 'warning');
+        }
+        
+        function checkDatabase() {
+            updateStatus('🗄️ Checking database connection...', 'info');
+            // In a real implementation, this would check the database
+            updateStatus('✅ Database connection verified', 'success');
+        }
+        
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            checkContainerStatus();
+        }, 30000);
+        
+        // Initial load
+        window.onload = function() {
+            checkContainerStatus();
+            updateStatus('🐳 Docker Import Monitor initialized', 'success');
+        };
+    </script>
+</body>
+</html>

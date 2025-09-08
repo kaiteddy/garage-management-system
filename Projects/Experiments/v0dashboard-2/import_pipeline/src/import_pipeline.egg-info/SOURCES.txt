@@ -1,0 +1,14 @@
+README.md
+setup.py
+src/import_pipeline.egg-info/PKG-INFO
+src/import_pipeline.egg-info/SOURCES.txt
+src/import_pipeline.egg-info/dependency_links.txt
+src/import_pipeline.egg-info/entry_points.txt
+src/import_pipeline.egg-info/requires.txt
+src/import_pipeline.egg-info/top_level.txt
+src/importers/__init__.py
+src/importers/base_importer.py
+src/importers/document_extra_importer.py
+src/importers/document_importer.py
+src/importers/line_item_importer.py
+src/importers/test_document_importer.py

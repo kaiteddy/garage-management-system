@@ -1,0 +1,15 @@
+GET https://t.co/1/i/adsct?bci=4&dv=Europe%2FLondon%26en-GB%26Apple%20Computer%2C%20Inc.%26MacIntel%26127%261800%261169%268%2624%261800%261079%260%26na&eci=3&event=%7B%7D&event_id=2b6f5c65-d508-4abf-83e2-a58f3b2408ba&integration=gtm&p_id=Twitter&p_user_id=0&pl_id=9ebc8a09-1590-4229-907f-b519861cbc35&tw_document_href=https%3A%2F%2Fomnipart.eurocarparts.com%2F&tw_iframe_status=0&txn_id=o2g3x&type=javascript&version=2.3.33 HTTP/2
+:method: GET
+:scheme: https
+:authority: t.co
+:path: /1/i/adsct?bci=4&dv=Europe%2FLondon%26en-GB%26Apple%20Computer%2C%20Inc.%26MacIntel%26127%261800%261169%268%2624%261800%261079%260%26na&eci=3&event=%7B%7D&event_id=2b6f5c65-d508-4abf-83e2-a58f3b2408ba&integration=gtm&p_id=Twitter&p_user_id=0&pl_id=9ebc8a09-1590-4229-907f-b519861cbc35&tw_document_href=https%3A%2F%2Fomnipart.eurocarparts.com%2F&tw_iframe_status=0&txn_id=o2g3x&type=javascript&version=2.3.33
+sec-fetch-dest: image
+user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/19.0 Safari/605.1.15
+accept: image/webp,image/avif,image/jxl,image/heic,image/heic-sequence,video/*;q=0.8,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+referer: https://omnipart.eurocarparts.com/
+sec-fetch-site: cross-site
+sec-fetch-mode: no-cors
+accept-language: en-GB,en;q=0.9
+priority: u=5, i
+accept-encoding: gzip, deflate, br, zstd
+

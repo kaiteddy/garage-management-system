@@ -1,0 +1,19 @@
+OPTIONS https://api.omnipart.eurocarparts.com/storefront/products-by-skus?skus[]=552989010&skus[]=542771140&skus[]=550773553&skus[]=552989090&skus[]=552998350&skus[]=545772361 HTTP/2
+:method: OPTIONS
+:scheme: https
+:authority: api.omnipart.eurocarparts.com
+:path: /storefront/products-by-skus?skus[]=552989010&skus[]=542771140&skus[]=550773553&skus[]=552989090&skus[]=552998350&skus[]=545772361
+origin: https://omnipart.eurocarparts.com
+sec-fetch-site: same-site
+access-control-request-method: GET
+access-control-request-headers: content-type
+sec-fetch-mode: cors
+user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/19.0 Safari/605.1.15
+referer: https://omnipart.eurocarparts.com/
+sec-fetch-dest: empty
+content-length: 0
+accept: */*
+accept-language: en-GB,en;q=0.9
+priority: u=3, i
+accept-encoding: gzip, deflate, br, zstd
+

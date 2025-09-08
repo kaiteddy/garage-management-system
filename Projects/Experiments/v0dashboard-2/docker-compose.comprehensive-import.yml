@@ -1,0 +1,58 @@
+# 🐳 Comprehensive Clean Import - Docker Compose
+version: '3.8'
+
+services:
+  comprehensive-import:
+    build:
+      context: .
+      dockerfile: Dockerfile.comprehensive-import
+    container_name: garage-comprehensive-import
+    environment:
+      - NODE_ENV=production
+      - DOCKER_IMPORT=true
+      - DATABASE_URL=${DATABASE_URL}
+    volumes:
+      # Mount GA4 Export folder (read-only)
+      - "/Users/adamrutstein/Desktop/GA4 EXPORT:/app/ga4-data:ro"
+      # Mount logs directory for output
+      - "./logs:/app/logs"
+    networks:
+      - comprehensive-import-network
+    restart: "no"
+    mem_limit: 1g    # 1GB memory limit
+    cpus: 2          # 2 CPU cores
+    command: >
+      bash -c "
+        echo '🚀 COMPREHENSIVE CLEAN IMPORT - SAFE DOCKER EXECUTION' &&
+        echo '=====================================================' &&
+        echo '⏰ Start: $(date)' &&
+        echo '🔒 Completely isolated from main server' &&
+        echo '💾 Memory limit: 1GB' &&
+        echo '⚡ CPU limit: 2 cores' &&
+        echo '🎯 Mission: Import ALL missing customer data and relationships' &&
+        echo '' &&
+        echo '📊 IMPORT PHASES:' &&
+        echo '   Phase 1: Comprehensive Customer Import (6,961 records)' &&
+        echo '   Phase 2: Vehicle-Customer Relationships (10,548 records)' &&
+        echo '   Phase 3: Document Import with Relationships (31,069 records)' &&
+        echo '   Phase 4: Line Items Import (86,513 records)' &&
+        echo '   Phase 5: Final Verification and Relationship Check' &&
+        echo '' &&
+        echo '📁 Checking mounted GA4 data...' &&
+        ls -la /app/ga4-data/ 2>/dev/null || echo '❌ GA4 data not mounted' &&
+        echo '' &&
+        echo '🚀 STARTING COMPREHENSIVE CLEAN IMPORT...' &&
+        echo '=========================================' &&
+        node docker-comprehensive-import.cjs 2>&1 | tee /app/logs/comprehensive-import-$(date +%Y%m%d-%H%M%S).log &&
+        echo '' &&
+        echo '🎉 COMPREHENSIVE IMPORT COMPLETE!' &&
+        echo '=================================' &&
+        echo '📋 Check logs in /app/logs/ for detailed results' &&
+        echo '🔒 Container isolated - main server completely safe' &&
+        echo '💤 Container staying alive for log inspection...' &&
+        tail -f /dev/null
+      "
+
+networks:
+  comprehensive-import-network:
+    driver: bridge

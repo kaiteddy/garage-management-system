@@ -1,0 +1,272 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Core business entities
+model Customer {
+  id                String    @id @default(cuid())
+  accountNumber     String?   @unique @map("account_number")
+  title             String?
+  forename          String?
+  surname           String?
+  companyName       String?   @map("company_name")
+  houseNo           String?   @map("house_no")
+  road              String?
+  locality          String?
+  town              String?
+  county            String?
+  postCode          String?   @map("post_code")
+  telephone         String?
+  mobile            String?
+  email             String?
+  lastInvoiceDate   DateTime? @map("last_invoice_date") @db.Date
+  notes             String?
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  vehicles          Vehicle[]
+  documents         Document[]
+  appointments      Appointment[]
+  correspondence    CustomerCorrespondence[]
+  consent           CustomerConsent[]
+
+  @@map("customers")
+}
+
+model Vehicle {
+  id                String    @id @default(cuid())
+  customerId        String?   @map("customer_id")
+  registration      String    @unique
+  make              String?
+  model             String?
+  colour            String?
+  fuelType          String?   @map("fuel_type")
+  vin               String?
+  engineCode        String?   @map("engine_code")
+  dateOfReg         DateTime? @map("date_of_reg") @db.Date
+  motExpiryDate     DateTime? @map("mot_expiry_date") @db.Date
+  motStatus         String?   @map("mot_status") @default("unknown")
+  motLastChecked    DateTime? @map("mot_last_checked")
+  lastInvoiceDate   DateTime? @map("last_invoice_date") @db.Date
+  reminderNotes     String?   @map("reminder_notes")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  customer          Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  documents         Document[]
+  appointments      Appointment[]
+  reminders         Reminder[]
+  motHistory        MotHistory[]
+  technicalData     VehicleTechnicalData[]
+  oils              VehicleOil[]
+
+  @@map("vehicles")
+}
+
+model Document {
+  id                String    @id @default(cuid())
+  customerId        String?   @map("customer_id")
+  vehicleId         String?   @map("vehicle_id")
+  appointmentId     String?   @map("appointment_id")
+  docDate           DateTime? @map("doc_date") @db.Date
+  docNumber         String?   @map("doc_number")
+  docType           String?   @map("doc_type")
+  totalNet          Decimal?  @map("total_net") @db.Decimal(10, 2) @default(0)
+  totalVat          Decimal?  @map("total_vat") @db.Decimal(10, 2) @default(0)
+  totalGross        Decimal?  @map("total_gross") @db.Decimal(10, 2) @default(0)
+  status            String?   @default("draft")
+  labourDescription String?   @map("labour_description")
+  notes             String?
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  customer          Customer?    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  vehicle           Vehicle?     @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  appointment       Appointment? @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  lineItems         LineItem[]
+  receipts          Receipt[]
+
+  @@map("documents")
+}
+
+model LineItem {
+  id                String   @id @default(cuid())
+  documentId        String   @map("document_id")
+  stockId           String?  @map("stock_id")
+  description       String
+  quantity          Decimal  @db.Decimal(10, 3) @default(1)
+  unitPrice         Decimal  @map("unit_price") @db.Decimal(10, 2) @default(0)
+  totalAmount       Decimal  @map("total_amount") @db.Decimal(10, 2) @default(0)
+  taxRate           Decimal  @map("tax_rate") @db.Decimal(5, 2) @default(20)
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  document          Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@map("line_items")
+}
+
+model Appointment {
+  id                String    @id @default(cuid())
+  customerId        String?   @map("customer_id")
+  vehicleId         String?   @map("vehicle_id")
+  startDate         DateTime  @map("start_date") @db.Date
+  endDate           DateTime? @map("end_date") @db.Date
+  startTime         DateTime? @map("start_time") @db.Time
+  endTime           DateTime? @map("end_time") @db.Time
+  description       String?
+  resource          String?
+  status            String?   @default("scheduled")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  customer          Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  vehicle           Vehicle?  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  documents         Document[]
+
+  @@map("appointments")
+}
+
+model Reminder {
+  id                String    @id @default(cuid())
+  vehicleId         String    @map("vehicle_id")
+  reminderType      String    @map("reminder_type") // 'MOT', 'Service', 'Insurance'
+  dueDate           DateTime  @map("due_date") @db.Date
+  emailEnabled      Boolean   @map("email_enabled") @default(false)
+  smsEnabled        Boolean   @map("sms_enabled") @default(false)
+  printEnabled      Boolean   @map("print_enabled") @default(false)
+  emailSentDate     DateTime? @map("email_sent_date")
+  smsSentDate       DateTime? @map("sms_sent_date")
+  printSentDate     DateTime? @map("print_sent_date")
+  status            String?   @default("pending")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  vehicle           Vehicle   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@map("reminders")
+}
+
+model Receipt {
+  id                String   @id @default(cuid())
+  documentId        String   @map("document_id")
+  receiptDate       DateTime @map("receipt_date") @db.Date
+  amount            Decimal  @db.Decimal(10, 2) @default(0)
+  paymentMethod     String?  @map("payment_method")
+  description       String?
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  // Relations
+  document          Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@map("receipts")
+}
+
+model MotHistory {
+  id                String   @id @default(cuid())
+  vehicleId         String   @map("vehicle_id")
+  registration      String
+  testDate          DateTime @map("test_date") @db.Date
+  testResult        String?  @map("test_result")
+  expiryDate        DateTime @map("expiry_date") @db.Date
+  odometerValue     Int?     @map("odometer_value")
+  odometerUnit      String?  @map("odometer_unit")
+  motTestNumber     String?  @map("mot_test_number")
+  defects           Json?
+  advisories        Json?
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  // Relations
+  vehicle           Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@map("mot_history")
+}
+
+// Communication models
+model CustomerCorrespondence {
+  id                String   @id @default(cuid())
+  customerId        String   @map("customer_id")
+  channel           String   // 'email', 'sms', 'whatsapp', 'phone', 'letter'
+  direction         String   // 'inbound', 'outbound'
+  subject           String?
+  content           String
+  status            String   @default("sent") // 'sent', 'delivered', 'read', 'failed'
+  sentAt            DateTime @map("sent_at")
+  deliveredAt       DateTime? @map("delivered_at")
+  readAt            DateTime? @map("read_at")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  // Relations
+  customer          Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@map("customer_correspondence")
+}
+
+model CustomerConsent {
+  id                String   @id @default(cuid())
+  customerId        String   @map("customer_id")
+  consentType       String   @map("consent_type") // 'marketing_email', 'marketing_sms', 'data_processing'
+  granted           Boolean  @default(false)
+  grantedAt         DateTime? @map("granted_at")
+  revokedAt         DateTime? @map("revoked_at")
+  ipAddress         String?  @map("ip_address")
+  userAgent         String?  @map("user_agent")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  customer          Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@map("customer_consent")
+}
+
+// Technical data models
+model VehicleTechnicalData {
+  id                String   @id @default(cuid())
+  vehicleId         String   @map("vehicle_id")
+  dataType          String   @map("data_type") // 'specification', 'service_schedule', 'parts'
+  dataSource        String   @map("data_source") // 'autodata', 'sws', 'manual'
+  data              Json
+  lastUpdated       DateTime @map("last_updated")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  // Relations
+  vehicle           Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@map("vehicle_technical_data")
+}
+
+model VehicleOil {
+  id                String   @id @default(cuid())
+  vehicleId         String   @map("vehicle_id")
+  oilType           String   @map("oil_type") // 'engine', 'transmission', 'differential'
+  specification     String
+  viscosity         String
+  capacity          Decimal  @db.Decimal(5, 2)
+  partNumber        String?  @map("part_number")
+  price             Decimal? @db.Decimal(8, 2)
+  supplier          String?
+  lastUpdated       DateTime @map("last_updated")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  // Relations
+  vehicle           Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@map("vehicle_oils")
+}

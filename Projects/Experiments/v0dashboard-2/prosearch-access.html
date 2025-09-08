@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ProSearch Intelligence Access</title>
+    <style>
+        body { 
+            font-family: 'Courier New', monospace; 
+            padding: 20px; 
+            background: #0a0a0a; 
+            color: #00ff00; 
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #00ff00; padding-bottom: 20px; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #333; border-radius: 5px; }
+        .success { border-color: #00ff00; background: rgba(0, 255, 0, 0.1); }
+        .error { border-color: #ff0000; background: rgba(255, 0, 0, 0.1); color: #ff0000; }
+        .warning { border-color: #ffaa00; background: rgba(255, 170, 0, 0.1); color: #ffaa00; }
+        .info { border-color: #0088ff; background: rgba(0, 136, 255, 0.1); color: #0088ff; }
+        button { 
+            background: #00ff00; 
+            color: #000; 
+            border: none; 
+            padding: 10px 20px; 
+            margin: 5px; 
+            cursor: pointer; 
+            font-family: inherit;
+            border-radius: 3px;
+        }
+        button:hover { background: #00cc00; }
+        button:disabled { background: #666; cursor: not-allowed; }
+        .loading { color: #ffaa00; }
+        pre { background: #111; padding: 10px; border-radius: 3px; overflow-x: auto; }
+        .file-list { max-height: 400px; overflow-y: auto; }
+        .file-item { padding: 5px; margin: 2px 0; background: #1a1a1a; border-radius: 3px; }
+        .directory { color: #00aaff; }
+        .file { color: #aaaaaa; }
+        .import-solution { color: #ffaa00; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 ProSearch Intelligence Access</h1>
+            <p>Accessing import solutions from /Users/adamrutstein/Downloads/ProSearch Intelligence</p>
+        </div>
+        
+        <div class="section info">
+            <h2>🎯 Mission: Access Import Solutions</h2>
+            <p>Terminal system is blocked, using web-based file access instead.</p>
+            <button onclick="accessProSearchFolder()">🔍 Access ProSearch Folder</button>
+            <button onclick="checkCurrentImportStatus()">📊 Check Current Import Status</button>
+            <button onclick="runEmergencyImport()">🚨 Run Emergency Import</button>
+        </div>
+        
+        <div id="results"></div>
+        
+        <div class="section warning">
+            <h3>⚠️ Terminal Issue Diagnosis</h3>
+            <p><strong>Problem:</strong> Terminal commands hanging on basic operations</p>
+            <p><strong>Cause:</strong> System-level terminal interface blocking</p>
+            <p><strong>Solution:</strong> Web-based file access and import execution</p>
+        </div>
+    </div>
+    
+    <script>
+        function addResult(title, content, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `section ${type}`;
+            div.innerHTML = `<h3>${title}</h3><div>${content}</div>`;
+            results.appendChild(div);
+        }
+        
+        function addLoading(message) {
+            addResult('⏳ Processing...', `<div class="loading">${message}</div>`, 'info');
+        }
+        
+        async function accessProSearchFolder() {
+            addLoading('Accessing ProSearch Intelligence folder...');
+            
+            try {
+                const response = await fetch('/api/access-prosearch');
+                const data = await response.json();
+                
+                if (data.success) {
+                    let content = `<p>✅ ProSearch Intelligence folder found!</p>`;
+                    content += `<p>📁 Contains ${data.data.contents.length} items</p>`;
+                    
+                    if (data.data.importSolutions.length > 0) {
+                        content += `<h4>🎯 Import Solutions Found:</h4>`;
+                        data.data.importSolutions.forEach(solution => {
+                            content += `<div class="import-solution">📦 ${solution.name}</div>`;
+                            content += `<div>📍 Path: ${solution.path}</div>`;
+                            content += `<div>📋 Contains ${solution.totalItems} items</div>`;
+                            content += `<div class="file-list">`;
+                            solution.contents.forEach(item => {
+                                content += `<div class="file-item">- ${item}</div>`;
+                            });
+                            content += `</div><br>`;
+                        });
+                    }
+                    
+                    content += `<h4>📋 All Contents:</h4><div class="file-list">`;
+                    data.data.contents.forEach(item => {
+                        const className = item.type === 'directory' ? 'directory' : 'file';
+                        content += `<div class="file-item ${className}">`;
+                        content += `${item.type === 'directory' ? '📁' : '📄'} ${item.name}`;
+                        if (item.size) content += ` (${Math.round(item.size/1024)}KB)`;
+                        content += `</div>`;
+                    });
+                    content += `</div>`;
+                    
+                    addResult('🎉 ProSearch Folder Access Successful', content, 'success');
+                } else {
+                    addResult('❌ ProSearch Folder Not Found', 
+                        `<p>Error: ${data.data.error}</p>
+                         <p>Alternative items found: ${data.data.contents.length}</p>
+                         <pre>${JSON.stringify(data.data.contents, null, 2)}</pre>`, 'error');
+                }
+            } catch (error) {
+                addResult('❌ Access Failed', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function checkCurrentImportStatus() {
+            addLoading('Checking current database status...');
+            
+            try {
+                const response = await fetch('/api/emergency-import', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'status' })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    const status = data.currentStatus;
+                    let content = `
+                        <p>🚗 Vehicles: ${status.vehicles}</p>
+                        <p>👥 Customers: ${status.customers}</p>
+                        <p>📄 Documents: ${status.documents}</p>
+                        <p>⏰ Last checked: ${data.timestamp}</p>
+                    `;
+                    addResult('📊 Current Database Status', content, 'success');
+                } else {
+                    addResult('❌ Status Check Failed', `Error: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                addResult('❌ Status Check Failed', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function runEmergencyImport() {
+            addLoading('Running emergency import of all remaining files...');
+            
+            try {
+                const response = await fetch('/api/emergency-import', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'import-all' })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    const results = data.results;
+                    let content = `
+                        <p>✅ Import completed successfully!</p>
+                        <p>📁 Files processed: ${results.filesProcessed}</p>
+                        <p>📊 Total records processed: ${results.totalRecordsProcessed}</p>
+                        <h4>📋 Final Database Counts:</h4>
+                        <p>🚗 Vehicles: ${results.finalCounts.vehicles}</p>
+                        <p>👥 Customers: ${results.finalCounts.customers}</p>
+                        <p>📄 Documents: ${results.finalCounts.documents}</p>
+                        <h4>📄 File Results:</h4>
+                        <pre>${JSON.stringify(results.fileResults, null, 2)}</pre>
+                    `;
+                    addResult('🎉 Emergency Import Successful', content, 'success');
+                } else {
+                    addResult('❌ Emergency Import Failed', `Error: ${data.error}<br>Details: ${data.details}`, 'error');
+                }
+            } catch (error) {
+                addResult('❌ Emergency Import Failed', `Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Auto-run status check on load
+        window.onload = function() {
+            checkCurrentImportStatus();
+        };
+    </script>
+</body>
+</html>

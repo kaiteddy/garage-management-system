@@ -1,0 +1,21 @@
+# document_extras.yml
+# Maps CSV columns to database fields for the document_extras table
+
+required_fields:
+  - _ID
+  - "Labour Description"  # This is the actual column name with a space
+
+field_mappings:
+  _ID: document_id
+  "Labour Description": labour_description
+  docNotes: notes
+
+type_casting:
+  # No special type casting needed for text fields
+
+defaults:
+  # No defaults needed for this table
+
+# Fields to ignore from CSV (won't be imported)
+ignore_fields:
+  - ""  # Add any fields to explicitly ignore here

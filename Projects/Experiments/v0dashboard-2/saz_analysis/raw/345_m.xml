@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Session SID="345" ui-shared-id="345" BitFlags="19" ServerCertificatePolicyErrors="None">
+  <SessionTimers Version="2.0" ClientConnected="2025-08-07T16:06:13.695504+01:00" ClientBeginRequest="2025-08-07T16:07:46.524592+01:00" GotRequestHeaders="2025-08-07T16:07:46.524616+01:00" ClientDoneRequest="2025-08-07T16:07:46.524739+01:00" GatewayTime="0" DNSTime="0" TCPConnectTime="0" ServerConnected="2025-08-07T16:06:13.795334+01:00" FiddlerBeginRequest="2025-08-07T16:07:46.52484+01:00" ServerGotRequest="2025-08-07T16:07:46.524919+01:00" ServerBeginResponse="2025-08-07T16:07:46.571488+01:00" GotResponseHeaders="2025-08-07T16:07:46.5715+01:00" ServerDoneResponse="2025-08-07T16:07:46.571576+01:00" ClientBeginResponse="2025-08-07T16:07:46.571621+01:00" ClientDoneResponse="2025-08-07T16:07:46.571678+01:00" RequestHeadersSize="425" RequestBodySize="0" ResponseHeadersSize="47" ResponseBodySize="0" TrailersSize="0" />
+  <PipeInfo CltReuse="true" Reused="true" />
+  <SessionFlags>
+    <SessionFlag N="x-egressport" V="56857" />
+    <SessionFlag N="x-hostip" V="216.239.32.36" />
+    <SessionFlag N="https-server-protocolversion" V="Tls13" />
+    <SessionFlag N="x-responsebodytransferlength" V="0" />
+    <SessionFlag N="reused-connect-session-id" V="37" />
+    <SessionFlag N="x-serversocket" V="REUSE ServerPipe#37" />
+    <SessionFlag N="x-clientport" V="56848" />
+    <SessionFlag N="x-processinfo" V="Safari:12140" />
+    <SessionFlag N="https-client-protocolversion" V="Tls13" />
+    <SessionFlag N="https-client-ciphersuite" V="TLS_AES_256_GCM_SHA384" />
+    <SessionFlag N="x-clientip" V="::ffff:127.0.0.1" />
+  </SessionFlags>
+  <CertificateChainInfo>
+    <Certificate>
+      <CertificateInfo Key="extensions" Value="X509v3 Key Usage;2.5.29.15;True;03020780__split-extension__X509v3 Extended Key Usage;2.5.29.37;False;300A06082B06010505070301__split-extension__X509v3 Basic Constraints;2.5.29.19;True;3000__split-extension__X509v3 Subject Key Identifier;2.5.29.14;False;0414BA98165106D082E1FAC5856DCC622F8A9D699592__split-extension__X509v3 Authority Key Identifier;2.5.29.35;False;30168014DE1B1EED7915D43E3724C321BBEC34396D42B230__split-extension__Authority Information Access;1.3.6.1.5.5.7.1.1;False;304A302106082B060105050730018615687474703A2F2F6F2E706B692E676F6F672F777232302506082B060105050730028619687474703A2F2F692E706B692E676F6F672F7772322E637274__split-extension__X509v3 Subject Alternative Name;2.5.29.17;False;DNS:*.google-analytics.com, DNS:region1.app-measurement.com, DNS:app-measurement.com, DNS:region1.att.app-measurement.com, DNS:att.app-measurement.com, DNS:region1.analytics.app-measurement.com, DNS:analytics.app-measurement.com, DNS:region1.app-analytics-services-att.com, DNS:app-analytics-services-att.com, DNS:region1.app-analytics-services.com, DNS:app-analytics-services.com, DNS:google-analytics.com, DNS:region1.google-analytics.com, DNS:ssl.google-analytics.com, DNS:www.google-analytics.com, DNS:region1.analytics.google.com, DNS:googletagmanager.com, DNS:www.googletagmanager.com, DNS:urchin.com, DNS:service.urchin.com, DNS:fps.goog, DNS:*.fps.goog, DNS:googleoptimize.com, DNS:www.googleoptimize.com__split-extension__Certificate Policies;2.5.29.32;False;300A3008060667810C010201__split-extension__CRL Distribution Points;2.5.29.31;False;302D302BA029A0278625687474703A2F2F632E706B692E676F6F672F7772322F6F4246595961687A6756492E63726C__split-extension__SCT List;1.3.6.1.4.1.11129.2.4.2;False;0481F300F1007700CCFB0F6A85710965FE959B53CEE9B27C22E9855C0D978DB6A97E54C0FE4C0DB000000197E43C45BC0000040300483046022100FF6306EADC7A51B89CCF491B1B9A1AC50331AEFAF4AD39EDF48B1C519EBCC60F0221008A6F5B2D2B89C0AA7F3E69080073969C57FA977474A0281F113AC26DFF274554007600DDDCCA3495D7E11605E79532FAC79FF83D1C50DFDB003A1412760A2CACBBC82A00000197E43C45D00000040300473045022100C6E56743B30FB94F39D936BA64DB02EE4E21AAF6307CF6373C67E13FD06CA2E5022072F20DB9192D72F069EF02B871EC09F47CF6B8307EE4024F38E1B9E28C8D5726__split-extension__" />
+      <CertificateInfo Key="subject" Value="CN=*.google-analytics.com" />
+      <CertificateInfo Key="thumbprint" Value="A28A24AD517DA462BB346FC921A1B9E12DA60EC1" />
+      <CertificateInfo Key="serialnumber" Value="478C138ACD37E3C112CA0DC8C455CC39" />
+      <CertificateInfo Key="version" Value="3" />
+      <CertificateInfo Key="publickeysize" Value="" />
+      <CertificateInfo Key="friendlyname" Value="" />
+      <CertificateInfo Key="notafter" Value="Mon, 29 Sep 2025 09:34:02 GMT" />
+      <CertificateInfo Key="publickeysignaturealgorithm" Value="" />
+      <CertificateInfo Key="notbefore" Value="Mon, 07 Jul 2025 09:34:03 GMT" />
+      <CertificateInfo Key="sha256thumbprint" Value="9FB9948F84D34471A78172C8804D1402E3E0300CF11727830082D9C368D3B3AF" />
+      <CertificateInfo Key="issuer" Value="CN=WR2, O=Google Trust Services, C=US" />
+      <CertificateInfo Key="publickeyalgorithm" Value="ECC" />
+    </Certificate>
+    <Certificate>
+      <CertificateInfo Key="extensions" Value="X509v3 Key Usage;2.5.29.15;True;03020186__split-extension__X509v3 Extended Key Usage;2.5.29.37;False;301406082B0601050507030106082B06010505070302__split-extension__X509v3 Basic Constraints;2.5.29.19;True;30060101FF020100__split-extension__X509v3 Subject Key Identifier;2.5.29.14;False;0414DE1B1EED7915D43E3724C321BBEC34396D42B230__split-extension__X509v3 Authority Key Identifier;2.5.29.35;False;30168014E4AF2B26711A2B4827852F52662CEFF08913713E__split-extension__Authority Information Access;1.3.6.1.5.5.7.1.1;False;3026302406082B060105050730028618687474703A2F2F692E706B692E676F6F672F72312E637274__split-extension__CRL Distribution Points;2.5.29.31;False;30223020A01EA01C861A687474703A2F2F632E706B692E676F6F672F722F72312E63726C__split-extension__Certificate Policies;2.5.29.32;False;300A3008060667810C010201__split-extension__" />
+      <CertificateInfo Key="subject" Value="CN=WR2, O=Google Trust Services, C=US" />
+      <CertificateInfo Key="thumbprint" Value="66E4161260B100FEE0DE287A9A5293B4C2224AE6" />
+      <CertificateInfo Key="publickeymodulus" Value="A9FF9C7F451E70A8539FCAD9E50DDE4657577DBC8F9A5AAC46F1849ABB91DBC9FB2F01FB920900165EA01CF8C1ABF9782F4ACCD885A2D8593C0ED318FBB1F5240D26EEB65B64767C14C72F7ACEA84CB7F4D908FCDF87233520A8E269E28C4E3FB159FA60A21EB3C920531982CA36536D604DE90091FC768D5C080F0AC2DCF1736BC5136E0A4F7AC2F2021C2EB46383DA31F62D7530B2FBABC26EDBA9C00EB9F967D4C3255774EB05B4E98EB5DE28CDCC7A14E47103CB4D612E6157C519A90B98841AE87929D9B28D2FFF576A66E0CEAB95A82996637012671E3AE1DBB02171D77C9EFDAA176EFE2BFB381714D166A7AF9AB570CCC863813A8CC02AA97637CEE3" />
+      <CertificateInfo Key="serialnumber" Value="7FF005A07C4CDED100AD9D66A5107B98" />
+      <CertificateInfo Key="version" Value="3" />
+      <CertificateInfo Key="publickeysize" Value="2048" />
+      <CertificateInfo Key="friendlyname" Value="" />
+      <CertificateInfo Key="publickeyexponent" Value="010001" />
+      <CertificateInfo Key="notafter" Value="Tue, 20 Feb 2029 14:00:00 GMT" />
+      <CertificateInfo Key="publickeysignaturealgorithm" Value="RSA" />
+      <CertificateInfo Key="notbefore" Value="Wed, 13 Dec 2023 09:00:00 GMT" />
+      <CertificateInfo Key="sha256thumbprint" Value="E6FE22BF45E4F0D3B85C59E02C0F495418E1EB8D3210F788D48CD5E1CB547CD4" />
+      <CertificateInfo Key="issuer" Value="CN=GTS Root R1, O=Google Trust Services LLC, C=US" />
+      <CertificateInfo Key="publickeyalgorithm" Value="RSA" />
+    </Certificate>
+    <Certificate>
+      <CertificateInfo Key="extensions" Value="X509v3 Key Usage;2.5.29.15;True;03020186__split-extension__X509v3 Basic Constraints;2.5.29.19;True;30030101FF__split-extension__X509v3 Subject Key Identifier;2.5.29.14;False;0414E4AF2B26711A2B4827852F52662CEFF08913713E__split-extension__" />
+      <CertificateInfo Key="subject" Value="CN=GTS Root R1, O=Google Trust Services LLC, C=US" />
+      <CertificateInfo Key="thumbprint" Value="E58C1CC4913B38634BE9106EE3AD8E6B9DD9814A" />
+      <CertificateInfo Key="publickeymodulus" Value="B611028B1EE3A1779B3BDCBF943EB795A7403CA1FD82F97D32068271F6F68C7FFBE8DBBC6A2E9797A38C4BF92BF6B1F9CE841DB1F9C597DEEFB9F2A3E9BC12895EA7AA52ABF82327CBA4B19C63DBD7997EF00A5EEB68A6F4C65A470D4D1033E34EB113A3C8186C4BECFC0990DF9D6429252307A1B4D23D2E60E0CFD20987BBCD48F04DC2C27A888ABBBACF5919D6AF8FB007B09E31F182C1C0DF2EA66D6C190EB5D87E261A45033DB079A49428AD0F7F26E5A808FE96E83C689453EE833A882B159609B2E07A8C2E75D69CEBA756648F964F68AE3D97C2848FC0BC40C00B5CBDF687B3356CAC18507F84E04CCD92D320E933BC5299AF32B529B3252AB448F972E1CA64F7E682108DE89DC28A88FA38668AFC63F901F978FD7B5C77FA7687FAECDFB10E799557B4BD26EFD601D1EB160ABB8E0BB5C5C58A55ABD3ACEA914B29CC19A432254E2AF16544D002CEAACE49B4EA9F7C83B0407BE743ABA76CA38F7D8981FA4CA5FFD58EC3CE4BE0B5D8B38E45CF76C0ED402BFD530FB0A7D53B0DB18AA203DE31ADCC77EA6F7B3ED6DF912212E6BEFAD832FC1063145172DE5DD61693BD296833EF3A66EC078A26DF13D757657827DE5E491400A2007F9AA821B6A9B195B0A5B90D1611DAC76C483C40E07E0D5ACD563CD19705B9CB4BED394B9CC43FD255136E24B0D671FAF4C1BACCED1BF5FE8141D800983D3AC8AE7A9837180595" />
+      <CertificateInfo Key="serialnumber" Value="0203E5936F31B01349886BA217" />
+      <CertificateInfo Key="version" Value="3" />
+      <CertificateInfo Key="publickeysize" Value="4096" />
+      <CertificateInfo Key="friendlyname" Value="" />
+      <CertificateInfo Key="publickeyexponent" Value="010001" />
+      <CertificateInfo Key="notafter" Value="Sun, 22 Jun 2036 01:00:00 GMT" />
+      <CertificateInfo Key="publickeysignaturealgorithm" Value="RSA" />
+      <CertificateInfo Key="notbefore" Value="Wed, 22 Jun 2016 01:00:00 GMT" />
+      <CertificateInfo Key="sha256thumbprint" Value="D947432ABDE7B7FA90FC2E6B59101B1280E0E1C7E4E40FA3C6887FFF57A7F4CF" />
+      <CertificateInfo Key="issuer" Value="CN=GTS Root R1, O=Google Trust Services LLC, C=US" />
+      <CertificateInfo Key="publickeyalgorithm" Value="RSA" />
+    </Certificate>
+  </CertificateChainInfo>
+</Session>

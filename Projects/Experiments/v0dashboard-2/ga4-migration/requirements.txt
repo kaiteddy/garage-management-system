@@ -1,0 +1,30 @@
+# GA4 Migration Package - Python Dependencies
+
+# Database connectivity
+psycopg2-binary==2.9.9
+
+# Data processing
+pandas==2.1.4
+numpy==1.24.4
+
+# Configuration management
+python-dotenv==1.0.0
+
+# Logging and utilities
+colorama==0.4.6
+tqdm==4.66.1
+
+# Date/time handling
+python-dateutil==2.8.2
+
+# Optional: For enhanced CSV processing
+chardet==5.2.0
+
+# Optional: For API development
+fastapi==0.104.1
+uvicorn==0.24.0
+pydantic==2.5.0
+
+# Optional: For testing
+pytest==7.4.3
+pytest-cov==4.1.0

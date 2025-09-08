@@ -1,0 +1,15 @@
+GET https://px.ads.linkedin.com/collect?v=2&fmt=js&pid=1510753&time=1754579214410&url=https%3A%2F%2Fomnipart.eurocarparts.com%2F HTTP/2
+:method: GET
+:scheme: https
+:authority: px.ads.linkedin.com
+:path: /collect?v=2&fmt=js&pid=1510753&time=1754579214410&url=https%3A%2F%2Fomnipart.eurocarparts.com%2F
+sec-fetch-dest: image
+user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/19.0 Safari/605.1.15
+accept: image/webp,image/avif,image/jxl,image/heic,image/heic-sequence,video/*;q=0.8,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+referer: https://omnipart.eurocarparts.com/
+sec-fetch-site: cross-site
+sec-fetch-mode: no-cors
+accept-language: en-GB,en;q=0.9
+priority: u=5, i
+accept-encoding: gzip, deflate, br, zstd
+

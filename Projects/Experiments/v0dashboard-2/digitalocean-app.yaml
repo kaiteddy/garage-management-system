@@ -1,0 +1,56 @@
+name: garage-manager-pro-simple
+services:
+- name: web
+  image:
+    registry_type: DOCR
+    repository: garage-manager-pro
+    tag: latest
+  instance_count: 1
+  instance_size_slug: apps-s-1vcpu-1gb
+  http_port: 3000
+  # Disable health check temporarily
+  # health_check:
+  #   http_path: /
+  envs:
+  - key: NODE_ENV
+    value: production
+  - key: NEXT_PUBLIC_APP_URL
+    value: ${APP_URL}
+  - key: DATABASE_URL
+    value: ${DATABASE_URL}
+    type: SECRET
+  - key: NEXTAUTH_SECRET
+    value: ${NEXTAUTH_SECRET}
+    type: SECRET
+  - key: NEXTAUTH_URL
+    value: ${APP_URL}
+  - key: TWILIO_ACCOUNT_SID
+    value: ${TWILIO_ACCOUNT_SID}
+    type: SECRET
+  - key: TWILIO_AUTH_TOKEN
+    value: ${TWILIO_AUTH_TOKEN}
+    type: SECRET
+  - key: TWILIO_PHONE_NUMBER
+    value: ${TWILIO_PHONE_NUMBER}
+    type: SECRET
+  - key: TWILIO_WHATSAPP_NUMBER
+    value: ${TWILIO_WHATSAPP_NUMBER}
+    type: SECRET
+  - key: MINIMAX_API_KEY
+    value: ${MINIMAX_API_KEY}
+    type: SECRET
+  - key: DVLA_API_KEY
+    value: ${DVLA_API_KEY}
+    type: SECRET
+  - key: DVSA_CLIENT_ID
+    value: ${DVSA_CLIENT_ID}
+    type: SECRET
+  - key: DVSA_CLIENT_SECRET
+    value: ${DVSA_CLIENT_SECRET}
+    type: SECRET
+  - key: DVSA_API_BASE_URL
+    value: https://tapi.dvsa.gov.uk
+  - key: DVSA_SCOPE
+    value: https://tapi.dvsa.gov.uk/.default
+  routes:
+  - path: /

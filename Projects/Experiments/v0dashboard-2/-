@@ -1,0 +1,433 @@
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.URI;
+import java.util.concurrent.CompletableFuture;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+// Include Jackson dependency in your project:
+// implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+
+public class Program {
+
+    private static final String UKVD_ENDPOINT = "https://uk.api.vehicledataglobal.com/r2/lookup";
+    private static final String apiKey = "4765ecc6-e012-4db6-ac26-24d67ae25ab9";
+    private static final String packageName = "VehicleDetailsWithImage";
+
+    public static void main(String[] args) {
+        HttpClient client = HttpClient.newHttpClient();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String queryParams = String.format("?apiKey=%s&packageName=%s", apiKey, packageName);
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(UKVD_ENDPOINT + queryParams))
+            .GET()
+            .build();
+
+        CompletableFuture<HttpResponse<String>> response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+
+
+        response.thenApply(HttpResponse::body).thenAccept(jsonResponse -> {
+            try {
+                UkvdResponse ukvdResponse = objectMapper.readValue(jsonResponse, UkvdResponse.class);
+                // Process the ukvdResponse object as needed
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).join();
+    }
+}
+
+
+// ***************************************************************************
+// This is the model class for the response from the API call
+// The model contains all the data based on the specific package given
+// If you change the package data on your control panel, you will need to
+// regenerate this model class.
+// ***************************************************************************
+
+record UkvdResponse(
+    RequestInformation requestInformation,
+    ResponseInformation responseInformation,
+    BillingInformation billingInformation,
+    LookupResults results
+) {}
+
+record RequestInformation(
+        String packageName, // Package Name : The name of the package that was used to make the request.
+        String searchTerm, // Search Term : The value used to do the look up.
+        String searchType, // Search Type : Which data item that is being looked up.
+        String requestIp // Request IP Address : The IP address where the request was made from.
+) {}
+record ResponseInformation(
+        Integer statusCode, // Status Code Number : The status of the response
+        String statusMessage, // Status Code Text : The status of the response as text
+        Boolean isSuccessStatusCode, // Is Status Code Successful : This returns whether the status of the response indicates that the request was successful.
+        Long queryTimeMs, // Query Time : This is the amount of time the query took to execute in milliseconds
+        UUID responseId // Response Identifier : This is the unique identifier of the report. Use this when referring to any issues with the results with support.
+) {}
+record BillingInformation(
+        UUID billingTransactionId, // Billing Transaction Id : This is the unique reference to the billing transaction for this lookup. If missing this transaction did not require any billing to take place.
+        Integer accountType, // Account Type : This is the current type of account that defines how the account is billed.
+        BigDecimal accountBalance, // Account Balance : The current balance of the account if this is a pay as a go account.
+        BigDecimal transactionCost, // Transaction Cost : The total cost of the transaction if the transaction required billing.
+        Integer billingResult, // Billing Result : Whether the account was billed
+        String billingResultMessage, // Billing Result Text : Whether the account was billed in text format
+        BigDecimal refundAmount, // Refund Amount : The amount that was required to be refunded depending on what package data was able to be returned and how the package was set up.
+        Integer refundResult, // Refund Result : Whether the transaction had a refund
+        String refundResultMessage // Refund Result Text : Whether the transaction had a refund in text format
+) {}
+
+record LookupResults(
+    VehicleDetails vehicleDetails,
+    ModelDetails modelDetails,
+    VehicleImageDetails vehicleImageDetails
+) {}
+
+record VehicleDetails(
+        VehicleDetails_VehicleIdentificationSection vehicleIdentification, // Vehicle Identification : DVLA Vehicle Identification details.
+        VehicleDetails_VehicleStatusSection vehicleStatus, // Vehicle Status : Vehicle status details (such as import, export and scrapped status).
+        VehicleDetails_VehicleHistorySection vehicleHistory, // Vehicle History : Vehicle status details (such as import, export and scrapped status).
+        VehicleDetails_DvlaTechnicalDetailsSection dvlaTechnicalDetails, // DVLA Technical Details : Additional technical details held by the DVLA on this vehicle.
+        Integer statusCode, // Status Code : API Response Status Code.
+        String statusMessage, // Status Message : API Response Status Message. Human description describing the API response.
+        Integer documentVersion // Document Version : Data Source Versioning.
+) {}
+record VehicleDetails_VehicleIdentificationSection(
+        String vrm, // VRM : The Vehicle Registration Mark (VRM).
+        String vin, // VIN : The Vehicle Identification Number (VIN) - sometimes referred to as the Chassis Number.
+        String vinLast5, // VIN Last 5 : The last 5 digits of the Vehicle Identification Number (VIN).
+        String dvlaMake, // DVLA Make : Vehicle make (eg: Ford, Volkswagen, Audi)
+        String dvlaModel, // DVLA Model : Vehicle model (eg: Galaxy, Sharan, R8)
+        String dvlaWheelPlan, // DVLA Wheel Plan : Vehicle wheel plan identifier (eg: 2 AXLE RIGID BODY)
+        LocalDateTime dateFirstRegisteredInUk, // Date First Registered in UK : Date/time the vehicle was first registered in the UK.
+        LocalDateTime dateFirstRegistered, // Date First Registered : Date/time the vehicle was first registered.
+        LocalDateTime dateOfManufacture, // Date Of Manufacture : Date/time the vehicle was manufactured.
+        Integer yearOfManufacture, // Year Of Manufacture : Year the vehicle was manufactured.
+        Boolean vehicleUsedBeforeFirstRegistration, // Vehicle Used Before First Registration : Indicates whether or not the vehicle used before first registration.
+        String engineNumber, // Engine Number : The vehicle's Engine Number.
+        String previousVrmNi, // Previous VRM NI : The vehicle's Northern Ireland plate - if the vehicle previously had a Northern Ireland VRM.
+        String dvlaBodyType, // DVLA Body Type : The DVLA Body Type.
+        String dvlaFuelType // DVLA Fuel Type : The DVLA Fuel Type.
+) {}
+record VehicleDetails_VehicleStatusSection(
+        Boolean isImported, // Is Imported : Indicates whether or not vehicle was imported from within the EU (European Union).
+        Boolean isImportedFromNi, // Is Imported From NI : Indicates whether or not vehicle was imported from Northern Ireland.
+        Boolean isImportedFromOutsideEu, // Is Imported From Non EU : Indicates whether or not vehicle was imported from outside the EU (European Union).
+        LocalDateTime dateImported, // Date Imported : Date/time the vehicle was imported.
+        Boolean certificateOfDestructionIssued, // Certificate of Destruction Issued : Indicates whether or not a Certificate of Destruction been issued for this vehicle.
+        Boolean isExported, // Is Exported : Indicates whether or not the vehicle is recorded as having been exported.
+        LocalDateTime dateExported, // Date Exported : Date and time the vehicle was exported.
+        Boolean isScrapped, // Is Scrapped : Indicates whether or not the vehicle been recorded as scrapped.
+        Boolean isUnscrapped, // Is Unscrapped : Indicates whether or not the vehicle has been recorded as un-scrapped.
+        LocalDateTime dateScrapped, // Date Scrapped : Date and time the vehicle was recorded as scrapped.
+        Boolean dvlaCherishedTransferMarker, // DVLA Cherished Transfer Marker : Indicates whether or not the vehicle has been subject to cherished transfers, as disclosed by the DVLA
+        VehicleDetails_VehicleStatusSection_VehicleExciseDutyDetailsSection vehicleExciseDutyDetails // Vehicle Excise Duty Details : Vehicle Excise Duty Details (Tax & CO2 ratings & values).
+) {}
+record VehicleDetails_VehicleStatusSection_VehicleExciseDutyDetailsSection(
+        Integer dvlaCo2, // DVLA CO2 : The CO2 value, unchecked direct from the DVLA.
+        String dvlaCo2Band, // DVLA CO2 Band : The CO2 band, unchecked direct from the DVLA.
+        String dvlaBand, // DVLA Band : DVLA band details.
+        VehicleDetails_VehicleStatusSection_VehicleExciseDutyDetailsSection_VedRateSection vedRate // Ved Rate : Vehicle road tax charge details. Object contains information regarding the First Year, Premium Vehicle and Standard vehicle road taxes.
+) {}
+record VehicleDetails_VehicleStatusSection_VehicleExciseDutyDetailsSection_VedRateSection(
+        VehicleDetails_VehicleStatusSection_VehicleExciseDutyDetailsSection_VedRateSection_RateValuePair firstYear, // First Year : Vehicle road tax charge for the first year. Object contains 6 & 12 month values.
+        VehicleDetails_VehicleStatusSection_VehicleExciseDutyDetailsSection_VedRateSection_RateValuePair premiumVehicle, // Premium Vehicle : Vehicle Road Tax charge for Premium rated vehicles OTR above £40,000. Object contains 6 & 12 month values.
+        VehicleDetails_VehicleStatusSection_VehicleExciseDutyDetailsSection_VedRateSection_RateValuePair standard // Standard : Standard vehicle road tax. Object contains 6 & 12 month values.
+) {}
+record VehicleDetails_VehicleStatusSection_VehicleExciseDutyDetailsSection_VedRateSection_RateValuePair(
+        BigDecimal sixMonths, // Six Months : Vehicle road tax charge for 6 months.
+        BigDecimal twelveMonths // Twelve Months : Vehicle road tax charge for 12 months.
+) {}
+record VehicleDetails_VehicleHistorySection(
+        VehicleDetails_VehicleHistorySection_ColourDetailsSection colourDetails, // Colour Details : Current & Previous vehicle colour details.
+        List<VehicleDetails_VehicleHistorySection_KeeperChangeItem> keeperChangeList, // Keeper Change List : List of Keeper changes.
+        List<VehicleDetails_VehicleHistorySection_PlateChangeItem> plateChangeList, // Plate Change List : List of registration plate changes.
+        List<VehicleDetails_VehicleHistorySection_V5cCertificateItem> v5cCertificateList // V5C Certificate Issue Date List : A list of V5C Certificate issued dates.
+) {}
+record VehicleDetails_VehicleHistorySection_ColourDetailsSection(
+        String currentColour, // Current Colour : The vehicle's currently recorded colour.
+        Integer numberOfColourChanges, // Number Of Colour Changes : Number of colour changes recorded for this vehicle.
+        String originalColour, // Original Colour : The vehicle's original colour.
+        String previousColour, // Previous Colour : The vehicle's previous colour.
+        LocalDateTime latestColourChangeDate // Latest Colour Change Date : The latest date when the vehicle's colour was recorded as having been changed.
+) {}
+record VehicleDetails_VehicleHistorySection_KeeperChangeItem(
+        Integer numberOfPreviousKeepers, // Number Of Previous Keepers : The number of previous keepers for this vehicle.
+        LocalDateTime keeperStartDate, // Keeper Start Date : Date when the current keeper started.
+        LocalDateTime previousKeeperDisposalDate // Previous Keeper Disposal Date : Date when the previous keeper disposed of the vehicle
+) {}
+record VehicleDetails_VehicleHistorySection_PlateChangeItem(
+        String currentVrm, // Current VRM : The vehicle's current VRM.
+        String transferType, // Transfer Type : The type of plate transfer.
+        LocalDateTime dateOfReceipt, // Receipt : Date of receipt for the plate transfer.
+        String previousVrm, // Previous VRM : The previous VRM, before the new (current VRM) was assigned.
+        LocalDateTime dateOfTransaction // Date Of Transaction : Date of the plate transfer transaction.
+) {}
+record VehicleDetails_VehicleHistorySection_V5cCertificateItem(
+        LocalDateTime issueDate // Issue Date : Issue date of certificate.
+) {}
+record VehicleDetails_DvlaTechnicalDetailsSection(
+        Integer numberOfSeats, // Number Of Seats : Number of seats inside the vehicle, including the drivers seat
+        Integer engineCapacityCc, // Engine Capacity : Engine Capacity as disclosed by the DVLA
+        Integer grossWeightKg, // Gross Weight : Gross Vehicle Weight, as disclosed by the DVLA
+        Integer maxNetPowerKw, // Max Net Power : Maximum Net Power of the vehicle, expressed in kW, as disclosed by the DVLA
+        Integer massInServiceKg, // Mass In Service : Mass In Service, as disclosed by the DVLA
+        BigDecimal powerToWeightRatio, // Power To Weight Ratio : Power to Weight Ratio, as disclosed by the DVLA
+        Integer maxPermissibleBrakedTrailerMassKg, // Max Permissible Braked Trailer Mass : Maximum technically permissible mass of a braked trailer.
+        Integer maxPermissibleUnbrakedTrailerMassKg // Max Permissible Unbraked Trailer Mass : Maximum technically permissible mass of an unbraked trailer.
+) {}
+record ModelDetails(
+        ModelDetails_ModelIdentificationSection modelIdentification, // Model Identification : Object containing model identification data.
+        ModelDetails_ModelClassificationSection modelClassification, // Model Classification : Object containing model classification data.
+        ModelDetails_AdditionalInformationSection additionalInformation, // Additional Information : Object containing additional information data.
+        ModelDetails_BodyDetailsSection bodyDetails, // Body Details : Object containing vehicle body details.
+        ModelDetails_DimensionsSection dimensions, // Dimensions : Object containing vehicle dimensions data.
+        ModelDetails_WeightsSection weights, // Weights : Object containing vehicle weights Data.
+        ModelDetails_PowertrainSection powertrain, // Power Train : Object containing vehicle power source data.
+        ModelDetails_SafetySection safety, // Safety : Object containing safety related data.
+        ModelDetails_EmissionsSection emissions, // Emissions : Object containing vehicle emissions data.
+        ModelDetails_PerformanceSection performance, // Performance : Object containing vehicle performance data.
+        Integer statusCode, // Status Code : API Response Status Code.
+        String statusMessage, // Status Message : API Response Status Message. Human description describing the API response.
+        Integer documentVersion // Document Version : Data Source Versioning.
+) {}
+record ModelDetails_ModelIdentificationSection(
+        String make, // Make : Vehicle make (eg: Ford, Volkswagen, Audi).
+        String range, // Range : Vehicle range (eg: C-Max, Focus).
+        String model, // Model : Vehicle model (eg: C-Max Style TDCi, Focus LX).
+        String modelVariant, // Model Variant : This is the model variant,  Will be null if we have no variants
+        String series, // Series : The model series assigned by the manufacturer (eg: C214, E46).
+        Integer mark, // Mark : eg: VW Golf Mark 2 where a manufacturer uses it, if they do not, it will always be 1.
+        LocalDateTime startDate, // Start Date : Manufacturer's start date for this vehicle Make, Model, Series.
+        LocalDateTime endDate, // End Date : Manufacturer's end date for this vehicle Make, Model, Series.
+        String countryOfOrigin, // Country of Origin : Country where the vehicle was manufactured.
+        Integer variantCode // Variant Code : Code number identifying the vehicle variant (model variation). Will be null if we have no variants.
+) {}
+record ModelDetails_ModelClassificationSection(
+        String typeApprovalCategory, // Type Approval Category : The type approval category code assigned to this type of vehicle.
+        String marketSectorCode, // Market Sector Code : The market sector code assigned to this type of vehicle.
+        String vehicleClass, // Vehicle Class : The class of vehicle (eg: Car).
+        String taxationClass // Taxation Class : Taxation class is determined from type approval category, possible results are Car, PVC, LCV, HCV or Quad.
+) {}
+record ModelDetails_AdditionalInformationSection(
+        ModelDetails_AdditionalInformationSection_VehicleWarrantyInformationSection vehicleWarrantyInformation, // Vehicle Warranty Information : Object containing Vehicle Warranty Information.
+        List<ModelDetails_AdditionalInformationSection_SubscriptionOptionItem> subscriptionOptionList, // Subscription Options : List containing Subscription Options available for this vehicle.
+        ModelDetails_AdditionalInformationSection_SoftwareSection software // Software : Object containing vehicle software details.
+) {}
+record ModelDetails_AdditionalInformationSection_VehicleWarrantyInformationSection(
+        Integer manufacturerWarrantyMiles, // Manufacturer Warranty Miles : Manufacturer warranty from new, in miles (ie: 30,000 miles warranty).
+        Integer manufacturerWarrantyMonths // Manufacturer Warranty Months : Manufacturer warranty from new, in months (ie: 60 months warranty).
+) {}
+record ModelDetails_AdditionalInformationSection_SubscriptionOptionItem(
+        String name // Subscription Name : Name of the subscription service
+) {}
+record ModelDetails_AdditionalInformationSection_SoftwareSection(
+        Boolean supportsOverTheAirSoftwareUpdate // Supports Over The Air Software Update : Indicates whether or not the vehicle supports over the air software updates.
+) {}
+record ModelDetails_BodyDetailsSection(
+        String bodyShape, // Body Shape : Applicable to commercial vehicles to confirm the body shape.
+        String bodyStyle, // Body Style : The body shape of this vehicle (eg: Saloon, Hatchback, MPV).
+        String cabType, // Cab Type : Applicable to commercial vehicles (eg: Luton Van).
+        String platformName, // Platform Name : The name of the platform the vehicle is based on.
+        Boolean platformIsSharedAcrossModels, // Platform Is Shared Across Models : Indicates whether or not the platform is shared across multiple models.
+        String wheelbaseType, // Wheelbase Type : The wheelbase type for this vehicle (eg: Short Wheelbase, Long Wheelbase).
+        Integer numberOfAxles, // Number Of Axles : The number of axles on this vehicle.
+        Integer numberOfDoors, // Number Of Doors : The number of doors on this vehicle.
+        Integer numberOfSeats, // Number Of Seats : Number of seats for this vehicle.
+        BigDecimal payloadVolumeLitres, // Payload Volume : The volume of the load area.
+        Integer fuelTankCapacityLitres // Fuel Tank Capacity : Fuel tank capacity expressed in litres.
+) {}
+record ModelDetails_DimensionsSection(
+        Integer heightMm, // Height : Overall height of the vehicle, including roof-bars or aerial.
+        Integer lengthMm, // Length : Overall length of the vehicle (bumper to bumper). Does not include any after market items, which may extended the length of the vehicle.
+        Integer widthMm, // Width : Overall width, including the wing mirrors.
+        Integer wheelbaseLengthMm, // Wheelbase Length : Wheelbase length of the vehicle expressed in mm.
+        Integer internalLoadLengthMm // Internal Load Length : Applies to commercial vehicle. Length from the bulkhead to the rear of the load area expressed in mm.
+) {}
+record ModelDetails_WeightsSection(
+        Integer kerbWeightKg, // Kerb Weight : The weight of the vehicle, including a full tank of fuel and all standard equipment.
+        Integer grossTrainWeightKg, // Gross Train Weight : The maximum permissible weight the vehicle, including any trailer.
+        Integer unladenWeightKg, // Unladen Weight : The weight of the vehicle, including all standard equipment.
+        Integer payloadWeightKg, // Payload Weight : The difference between the Kerb Weight and the Gross Weight.
+        Integer grossVehicleWeightKg, // Gross Vehicle Weight : The total weight of the vehicle including the Kerb Weight and Payload Weight.
+        Integer grossCombinedWeightKg // Gross Combined Weight : The total combined weight: Fully laden vehicle and fully laden trailer added together.
+) {}
+record ModelDetails_PowertrainSection(
+        String powertrainType, // Powertrain Type : Vehicle powertrain type (eg; ICE, REEV, BEV, PHEV).
+        String fuelType, // Fuel Type : Fuel type for this vehicle (eg: DIESEL, PETROL).
+        ModelDetails_PowertrainSection_IceDetailsSection iceDetails, // ICE Details : Object containing Internal Combustion Engine details Data.
+        ModelDetails_PowertrainSection_ElectricVehicleDetails evDetails, // EV Details : Object containing Electric Vehicle details Data.
+        ModelDetails_PowertrainSection_TransmissionSection transmission // Transmission : Object containing vehicle transmission data.
+) {}
+record ModelDetails_PowertrainSection_IceDetailsSection(
+        String engineFamily, // Engine Family : A family is a basic unit used to identify a family/group of engines for certification and compliance purposes.
+        String engineLocation, // Engine Location : The relative location of the engine within the vehicle.
+        String engineDescription, // Engine Description : Describes the type of engine.
+        String engineManufacturer, // Engine Manufacturer : The manufacturer of the engine.
+        String fuelDelivery, // Fuel Delivery : The fuel delivery mechanism used in the engine (eg: Injection).
+        String aspiration, // Aspiration : The type of aspiration mechanism used in the engine (eg: Turbo charged, naturally aspirated).
+        String cylinderArrangement, // Cylinder Arrangement : The arrangement of the cylinders within the engine (eg: Inline, Vee, W, Rotary).
+        Integer numberOfCylinders, // Number of Cylinders : The number of cylinders within the engine.
+        Integer boreMm, // Bore : Diameter of cylinder.
+        Integer strokeMm, // Stroke : Length of the swept volume of the cylinder expressed in mm.  This is the distance the piston travels between top and bottom dead centre of the stroke.
+        String valveGear, // Valve Gear : Describes the valve actuation mechanism used in the engine (eg: DOHC, OHC).
+        Integer valvesPerCylinder, // Valves per Cylinder : The number of valves per cylinder.
+        Integer engineCapacityCc, // Engine Capacity : The cubic capacity of the engine.
+        BigDecimal engineCapacityLitres // Engine Capacity : The cubic capacity in litres of the engine rounded up or down. Based on the Engine Capacity CC.
+) {}
+record ModelDetails_PowertrainSection_ElectricVehicleDetails(
+        ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection technicalDetails, // Technical Details : An object containing technical details for the vehicle.
+        ModelDetails_PowertrainSection_ElectricVehicleDetails_PerformanceSection performance, // Performance : An object containing performance details for the vehicle.
+        Integer documentVersion // Document Version : Data Source Versioning.
+) {}
+record ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection(
+        String powertrainType, // Powertrain Type : Powertrain types (eg: ICE, REEV, BEV, PHEV).
+        Boolean isTeslaSuperchargerCompatible, // Tesla Supercharger Compatible : Indicates whether or not the hardware is compatible with Tesla Superchargers.
+        Integer numberOfChargePorts, // Number Of Charge Ports : Number of charge ports available on the vehicle.
+        ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_TeslaSuperchargingSection teslaSupercharging, // Tesla Supercharging : Object describing Tesla Supercharging details.
+        List<ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_ChargeCableDetailsItem> chargeCableDetailsList, // Charge Cable Details : List of charge cable details for the vehicle.
+        List<ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_ChargePortDetailsItem> chargePortDetailsList, // Charge Port Details List : List containing Charge Port details.
+        List<ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_BatteryDetailsItem> batteryDetailsList, // Battery Details List : List containing Battery details.
+        List<ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_MotorDetailsItem> motorDetailsList, // Motor Details List : List containing Motor details.
+        List<ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_TransmissionDetailsItem> transmissionDetailsList // Transmission Details List : List containing Transmission details.
+) {}
+record ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_TeslaSuperchargingSection(
+        ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_TeslaSuperchargingSection_SuperchargerVersionDetails version1, // Version 1 : Object describing Tesla Supercharger Version 1.
+        ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_TeslaSuperchargingSection_SuperchargerVersionDetails version2, // Version 2 : Object describing Tesla Supercharger Version 2.
+        ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_TeslaSuperchargingSection_SuperchargerVersionDetails version3 // Version 3 : Object describing Tesla Supercharger Version 3.
+) {}
+record ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_TeslaSuperchargingSection_SuperchargerVersionDetails(
+        Boolean isCompatibleWithVehicle, // Is Compatible With Vehicle : This supercharging version is compatible with the vehicle.
+        Integer maxChargeKw, // Max Charge : The maximum charge in Kilowatts for this supercharger version
+        Boolean requiresCcsAdaptor, // Requires Ccs Adaptor : CCS (Combined Charging System) Does this supercharger version require a CCS Adaptor?
+        Integer averageChargeTime10To80Percent // Avg Charge Time 10-80% : The average time taken using this supercharger version from 10% to 80%
+) {}
+record ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_ChargeCableDetailsItem(
+        Boolean isSuppliedAsStandard, // Is Supplied As Standard : Indicates whether or not this charge cable is supplied as standard (rather than being an optional extra).
+        String description // Description : Charge cable description.
+) {}
+record ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_ChargePortDetailsItem(
+        String portType, // Port Type : The type of port for this charge port item.
+        String locationOnVehicle, // Location On Vehicle : The location of this charge port on vehicle.
+        BigDecimal maxChargePowerKw, // Max Charge Power : The maximum capacity of the onboard charger for this charge port item.
+        Boolean isStandardChargePort, // Is Standard Charge Port : Is this a standard charge port?
+        ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_ChargePortDetailsItem_ChargeTimesSection chargeTimes // Charge Times : Object containing details for charge times.
+) {}
+record ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_ChargePortDetailsItem_ChargeTimesSection(
+        List<ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_ChargePortDetailsItem_ChargeTimesSection_ChargeTimeItem> averageChargeTimes10To80Percent // Avg Charge Time 10-80% : List containing details for average charge times
+) {}
+record ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_ChargePortDetailsItem_ChargeTimesSection_ChargeTimeItem(
+        BigDecimal chargePortKw, // Charge Port Kw : The rate of power delivery.
+        Integer timeInMinutes // Time In Minutes : The time in minutes to go from 10% to 80%.
+) {}
+record ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_BatteryDetailsItem(
+        BigDecimal totalCapacityKwh, // Total Capacity : The total (design maximum) capacity of the battery in Kilowatts/per hour.
+        BigDecimal usableCapacityKwh, // Usable Capacity : The usable capacity of the battery in Kilowatts/per hour.
+        String description, // Description : Description of the battery.
+        String chemistry, // Chemistry : Battery chemistry type (eg: Lithium-ion).
+        Integer voltage, // Voltage : The voltage of the battery.
+        String locationOnVehicle, // Location On Vehicle : Battery location on the vehicle.
+        Integer manufacturerWarrantyMonths, // Manufacturer Warranty Months : The number of months (from new) where the battery is covered under a manufacturers warranty.
+        Integer manufacturerWarrantyMiles // Manufacturer Warranty Miles : The number of miles (from new) where the battery is covered under a manufacturers warranty.
+) {}
+record ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_MotorDetailsItem(
+        String manufacturer, // Manufacturer : The manufacturer of the motor.
+        String model, // Model : The model of the motor.
+        String motorType, // Motor Type : Type of motor (eg: AC induction/asynchronous).
+        Integer powerKw, // Power Kw : Total power in killowatts
+        Integer maxPowerRpm, // Max Power Rpm : The maximum power described in RPM (Revolutions Per Minute).
+        Integer maxTorqueNm, // Max Torque Nm : The maximum power described in Torque Nm (Torque Newton Metres).
+        Boolean supportsRegenerativeBraking, // Supports Regenerative Braking : Supports recovery of kinetic energy to the battery whilst the vehicle is braking.
+        String motorLocation, // Motor Location : The location of the motor.
+        String axleDrivenByMotor, // Axle Driven By Motor : Identifies which axle is driven by this motor.
+        String additionalInformation // Additional Information : Additional information for this motor.
+) {}
+record ModelDetails_PowertrainSection_ElectricVehicleDetails_TechnicalDetailsSection_TransmissionDetailsItem(
+        String transmissionType, // Transmission Type : The transmission type (eg: Automatic, CVT, Manual).
+        Integer numberOfGears, // Number Of Gears : The number of forward gears.
+        String transmissionLocation // Transmission Location : The location of the transmission.
+) {}
+record ModelDetails_PowertrainSection_ElectricVehicleDetails_PerformanceSection(
+        Integer maxChargeInputPowerKw, // Max Charge Input Power : Maximum input charge power the vehicle can accept in Kw.
+        Integer whMile, // Wh Mile : The amount of energy used to travel one mile.
+        ModelDetails_PowertrainSection_ElectricVehicleDetails_PerformanceSection_RangeFiguresSection rangeFigures // Range Figures : Object containing vehicle range figures.
+) {}
+record ModelDetails_PowertrainSection_ElectricVehicleDetails_PerformanceSection_RangeFiguresSection(
+        Integer realRangeMiles, // Real Range Miles : Vehicle range (in miles) tested under real driving conditions.
+        Integer realRangeKm, // Real Range Km : Vehicle range (in kilometers) tested under real driving conditions.
+        Integer milesPerChargeHour, // Miles Per Charge Hour : The estimated vehicle range gained hour of charge.
+        Integer zeroEmissionMiles // Zero Emission Miles : How many miles the vehicle can travel producing zero emissions.
+) {}
+record ModelDetails_PowertrainSection_TransmissionSection(
+        String transmissionType, // Transmission Type : The transmission type (eg: Automatic, CVT, Manual).
+        Integer numberOfGears, // Number Of Gears : The number of forward gears.
+        String driveType, // Drive Type : Number of wheels x number of driven wheels (eg: 4x4, 4x2).
+        String drivingAxle // Driving Axle : Which axle the motor is delivering power to.
+) {}
+record ModelDetails_SafetySection(
+        ModelDetails_SafetySection_EuroNcapSection euroNcap // Euro Ncap : Object containing Vehicle Euro NCAP data.
+) {}
+record ModelDetails_SafetySection_EuroNcapSection(
+        Integer ncapStarRating, // NCAP Star Rating : NCAP (The European New Car Assessment Programme) The safety rating as assigned by NCAP.
+        Integer ncapChildPercent, // NCAP Child Percent : The NCAP percentage - rated level of protection for a child occupant, in the event of an impact.
+        Integer ncapAdultPercent, // NCAP Adult Percent : The NCAP percentage - rated level of protection for a adult occupant, in the event of an impact.
+        Integer ncapPedestrianPercent, // NCAP Pedestrian Percent : The NCAP percentage - rated level of protection for a pedestrian, in the event of an impact.
+        Integer ncapSafetyAssistPercent // NCAP Safety Assist Percent : The NCAP percentage - rated level of the vehicles braking and warning systems.
+) {}
+record ModelDetails_EmissionsSection(
+        String euroStatus, // Euro Status : European emission standard. Value indicates the emission levels in line with the age of the vehicle.
+        Integer manufacturerCo2, // Manufacturer CO2 : The manufacturer's claimed level of CO2 emissions.
+        ModelDetails_EmissionsSection_SoundLevelsSection soundLevels // Sound Levels Section : Object containing Sound Levels Data.
+) {}
+record ModelDetails_EmissionsSection_SoundLevelsSection(
+        Integer stationaryDb, // Stationary : Sound level, in decibels, measured whilst vehicle is stationary.
+        Integer engineSpeedRpm, // Engine Speed : Engine speed at which sound measurements are taken.
+        Integer driveByDb // Drive By Db : Sound level, in decibels, measured for the drive by test.
+) {}
+record ModelDetails_PerformanceSection(
+        BigDecimal dragCoefficient, // Drag Coefficient : A dimensionless quantity that is used to quantify the drag or resistance of an object in a fluid environment. Used for aerodynamic drag calculation in the case of a road vehicle.
+        ModelDetails_PerformanceSection_TorqueSection torque, // Torque : Object containing torque data.
+        ModelDetails_PerformanceSection_PowerSection power, // Power : Object containing power data.
+        ModelDetails_PerformanceSection_StatisticsSection statistics, // Statistics : Object containing statistics data.
+        ModelDetails_PerformanceSection_FuelEconomySection fuelEconomy // Fuel Economy : Object containing fuel economy data.
+) {}
+record ModelDetails_PerformanceSection_TorqueSection(
+        BigDecimal nm, // Nm : Maximum torque expressed in Nm (Newton Metre).
+        BigDecimal lbFt, // LbFt : Maximum torque expressed in LbFt (Pound Foot).
+        Integer rpm // RPM : Engine RPM where peak torque is achieved.
+) {}
+record ModelDetails_PerformanceSection_PowerSection(
+        BigDecimal bhp, // BHP : Maximum power expressed in BHP (Brake Horse Power).
+        BigDecimal ps, // PS : Maximum power expressed in PS (PferdStarke is the metric measure of horsepower. It is the equivalent of 98.6% of one HP).
+        BigDecimal kw, // kW : Maximum power expressed in kW (Kilowatts).
+        Integer rpm // RPM : Engine RPM where peak power is achieved.
+) {}
+record ModelDetails_PerformanceSection_StatisticsSection(
+        BigDecimal zeroToSixtyMph, // Zero To Sixty MPH : Manufacturer's claimed time for accelerating from 0 to 60 miles per hour, expressed in seconds.
+        BigDecimal zeroToOneHundredKph, // Zero To One Hundred KPH : Manufacturer's claimed time for accelerating from 0 to 100 kilometers per hour, expressed in seconds.
+        Integer maxSpeedKph, // Max Speed Kph : The manufacturer's claimed top speed expressed in kilometers per hour.
+        Integer maxSpeedMph // Max Speed Mph : The manufacturer's claimed top speed expressed in miles per hour.
+) {}
+record ModelDetails_PerformanceSection_FuelEconomySection(
+        BigDecimal urbanColdMpg, // Urban Cold : Urban Cold fuel consumption in Miles per Gallon.
+        BigDecimal extraUrbanMpg, // Extra Urban : Extra Urban fuel consumption in Miles per Gallon.
+        BigDecimal combinedMpg, // Combined : Combined fuel consumption in Miles per Gallon.
+        BigDecimal urbanColdL100Km, // Urban Cold : Urban Cold fuel consumption in Litres per 100 kilometers.
+        BigDecimal extraUrbanL100Km, // Extra Urban : Extra Urban fuel consumption in Litres per 100 kilometers.
+        BigDecimal combinedL100Km // Combined : Combined fuel consumption in Litres per 100 kilometers.
+) {}
+record VehicleImageDetails(
+        List<VehicleImageDetails_VehicleImageItem> vehicleImageList, // Vehicle Image List : List of vehicle image items.
+        Integer statusCode, // Status Code : API Response Status Code.
+        String statusMessage, // Status Message : API Response Status Message. Human description describing the API response.
+        Integer documentVersion // Document Version : Data Source Versioning.
+) {}
+record VehicleImageDetails_VehicleImageItem(
+        String viewAngle, // View Angle : The angle of the vehicle in the image
+        String imageUrl, // Image URL : URL to download this vehicle image.
+        String colour, // Colour : A Hex (Hexadecimal) colour reference for this vehicle (eg: #002400).
+        String description, // Description : Vehicle image colour description (eg: Light Green, White).
+        LocalDateTime expiryDate // Expiry Date : Expiry date and time for this image. After this time, the URL will not return a vehicle image.
+) {}
+

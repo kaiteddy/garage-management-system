@@ -1,0 +1,39 @@
+
+> service-data-table@0.1.0 dev
+> next dev
+
+Environment variables in next.config.mjs: {
+  DATABASE_URL: '***',
+  NEXT_PUBLIC_APP_URL: 'https://app.elimotors.co.uk',
+  NODE_ENV: 'development',
+  MINIMAX_API_KEY: 'Not set',
+  SCRAPINGBEE_API_KEY: '***',
+  VDG_API_KEY: '***',
+  SWS_API_KEY: '***'
+}
+Exposing environment variables to the browser: [
+  'NEXT_PUBLIC_APP_URL',
+  'NEXT_PUBLIC_DVSA_API_ENABLED',
+  'NEXT_PUBLIC_MINIMAX_ENABLED'
+]
+Environment variables in next.config.mjs: {
+  DATABASE_URL: '***',
+  NEXT_PUBLIC_APP_URL: 'https://app.elimotors.co.uk',
+  NODE_ENV: 'development',
+  MINIMAX_API_KEY: 'Not set',
+  SCRAPINGBEE_API_KEY: '***',
+  VDG_API_KEY: '***',
+  SWS_API_KEY: '***'
+}
+Exposing environment variables to the browser: [
+  'NEXT_PUBLIC_APP_URL',
+  'NEXT_PUBLIC_DVSA_API_ENABLED',
+  'NEXT_PUBLIC_MINIMAX_ENABLED'
+]
+   ▲ Next.js 15.2.4
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.1.39:3000
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 1265ms

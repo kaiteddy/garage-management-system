@@ -1,0 +1,67 @@
+# 🐳 Docker Compose for Isolated Turbo Import
+version: '3.8'
+
+services:
+  turbo-import:
+    build:
+      context: .
+      dockerfile: Dockerfile.turbo-import
+    container_name: garage-turbo-import
+    environment:
+      - NODE_ENV=production
+      - DOCKER_IMPORT=true
+      - DATABASE_URL=${DATABASE_URL}
+    volumes:
+      # Mount GA4 Export folder (read-only)
+      - "/Users/adamrutstein/Desktop/GA4 EXPORT:/app/ga4-data:ro"
+      # Mount logs directory for output
+      - "./logs:/app/logs"
+    networks:
+      - turbo-import-network
+    restart: "no"  # Don't restart automatically
+    mem_limit: 1g  # Limit memory usage
+    cpus: 2        # Limit CPU usage
+    command: >
+      bash -c "
+        echo '🐳 GARAGE TURBO IMPORT - ISOLATED CONTAINER' &&
+        echo '===========================================' &&
+        echo '⏰ Start Time: $(date)' &&
+        echo '🔒 Isolated from main server (no crash risk)' &&
+        echo '💾 Memory limit: 1GB' &&
+        echo '⚡ CPU limit: 2 cores' &&
+        echo '' &&
+        echo '📁 CHECKING MOUNTED DATA...' &&
+        echo '📊 GA4 Export files:' &&
+        ls -la /app/ga4-data/ 2>/dev/null || echo '❌ GA4 data not mounted' &&
+        echo '' &&
+        echo '🚀 STARTING ISOLATED TURBO IMPORT...' &&
+        echo '====================================' &&
+        node standalone-turbo-import.cjs 2>&1 | tee /app/logs/import-$(date +%Y%m%d-%H%M%S).log &&
+        echo '' &&
+        echo '🎉 TURBO IMPORT COMPLETE!' &&
+        echo '========================' &&
+        echo '📋 Logs saved to /app/logs/' &&
+        echo '🔒 Container isolated - main server safe!' &&
+        echo '' &&
+        echo '💤 Container will remain running for log inspection...' &&
+        tail -f /dev/null
+      "
+
+  # Optional: Log viewer service
+  log-viewer:
+    image: nginx:alpine
+    container_name: import-log-viewer
+    ports:
+      - "3005:80"
+    volumes:
+      - "./logs:/usr/share/nginx/html/logs:ro"
+      - "./docker-log-viewer.html:/usr/share/nginx/html/index.html:ro"
+    networks:
+      - turbo-import-network
+    depends_on:
+      - turbo-import
+
+networks:
+  turbo-import-network:
+    driver: bridge
+    name: turbo-import-net

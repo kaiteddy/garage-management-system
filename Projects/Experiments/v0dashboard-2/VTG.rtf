@@ -1,0 +1,2798 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2856
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fmodern\fcharset0 Courier;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red13\green18\blue31;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c5882\c9020\c16471;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs26 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 \{\
+  "RequestInformation": [\
+    \{\
+      "Name": "PackageName",\
+      "Label": "Package Name",\
+      "Description": "The name of the package that was used to make the request.",\
+      "Type": "String",\
+      "IsList": false,\
+      "IsNullable": false\
+    \},\
+    \{\
+      "Name": "SearchTerm",\
+      "Label": "Search Term",\
+      "Description": "The value used to do the look up.",\
+      "Type": "String",\
+      "IsList": false,\
+      "IsNullable": false\
+    \},\
+    \{\
+      "Name": "SearchType",\
+      "Label": "Search Type",\
+      "Description": "Which data item that is being looked up.",\
+      "Type": "String",\
+      "IsList": false,\
+      "IsNullable": false\
+    \},\
+    \{\
+      "Name": "RequestIp",\
+      "Label": "Request IP Address",\
+      "Description": "The IP address where the request was made from.",\
+      "Type": "String",\
+      "IsList": false,\
+      "IsNullable": false\
+    \}\
+  ],\
+  "ResponseInformation": [\
+    \{\
+      "Name": "StatusCode",\
+      "Label": "Status Code Number",\
+      "Description": "The status of the response",\
+      "Type": "Integer",\
+      "IsList": false,\
+      "IsNullable": false,\
+      "PossibleValues": [\
+        "0 = Success",\
+        "1 = SuccessWithResultsBlockWarnings",\
+        "2 = NoResultsFound",\
+        "3 = BillingFailure",\
+        "4 = FilterIpFailure",\
+        "5 = FilterCustomFailure",\
+        "6 = SandboxValidationFailure",\
+        "7 = UnknownApiKey",\
+        "8 = UnknownPackage",\
+        "9 = UnknownSearchType",\
+        "10 = ThirdPartyFailure",\
+        "11 = FailedPackageRule",\
+        "12 = BadlyFormedUrl",\
+        "13 = InvalidSearchTerm",\
+        "14 = NoSearchTermFound",\
+        "15 = MultipleSearchTermsFound",\
+        "17 = InformationTemporarilyUnavailable",\
+        "18 = PackageRestrictedFromApiKey",\
+        "19 = ApiKeyReachedConcurrentLimit",\
+        "20 = ApiKeyReachedDailyLimit",\
+        "21 = PlateInRetentionLastVehicleReturned",\
+        "22 = ApiKeyInvalidForPackage",\
+        "23 = AccountNotActive",\
+        "24 = DataIntegrityWarning",\
+        "25 = NoDvlaRegistrationDataAvailable",\
+        "26 = NoMatchFound",\
+        "27 = PackageReachedConcurrentLimit",\
+        "28 = PackageReachedDailyLimit",\
+        "29 = UnknownRevision"\
+      ],\
+      "EnumIntegers": [\
+        0,\
+        1,\
+        2,\
+        3,\
+        4,\
+        5,\
+        6,\
+        7,\
+        8,\
+        9,\
+        10,\
+        11,\
+        12,\
+        13,\
+        14,\
+        15,\
+        17,\
+        18,\
+        19,\
+        20,\
+        21,\
+        22,\
+        23,\
+        24,\
+        25,\
+        26,\
+        27,\
+        28,\
+        29\
+      ]\
+    \},\
+    \{\
+      "Name": "StatusMessage",\
+      "Label": "Status Code Text",\
+      "Description": "The status of the response as text",\
+      "Type": "String",\
+      "IsList": false,\
+      "IsNullable": false\
+    \},\
+    \{\
+      "Name": "IsSuccessStatusCode",\
+      "Label": "Is Status Code Successful",\
+      "Description": "This returns whether the status of the response indicates that the request was successful.",\
+      "Type": "Boolean",\
+      "IsList": false,\
+      "IsNullable": false\
+    \},\
+    \{\
+      "Name": "QueryTimeMs",\
+      "Label": "Query Time",\
+      "Description": "This is the amount of time the query took to execute in milliseconds",\
+      "Type": "Long",\
+      "IsList": false,\
+      "IsNullable": false\
+    \},\
+    \{\
+      "Name": "ResponseId",\
+      "Label": "Response Identifier",\
+      "Description": "This is the unique identifier of the report. Use this when referring to any issues with the results with support.",\
+      "Type": "Guid",\
+      "IsList": false,\
+      "IsNullable": false\
+    \}\
+  ],\
+  "BillingInformation": [\
+    \{\
+      "Name": "BillingTransactionId",\
+      "Label": "Billing Transaction Id",\
+      "Description": "This is the unique reference to the billing transaction for this lookup. If missing this transaction did not require any billing to take place.",\
+      "Type": "Guid",\
+      "IsList": false,\
+      "IsNullable": true\
+    \},\
+    \{\
+      "Name": "AccountType",\
+      "Label": "Account Type",\
+      "Description": "This is the current type of account that defines how the account is billed.",\
+      "Type": "Integer",\
+      "IsList": false,\
+      "IsNullable": false,\
+      "PossibleValues": [\
+        "0 = Trial",\
+        "1 = PayGo",\
+        "2 = Subscription"\
+      ],\
+      "EnumIntegers": [\
+        0,\
+        1,\
+        2,\
+        3,\
+        4,\
+        5,\
+        6\
+      ]\
+    \},\
+    \{\
+      "Name": "AccountBalance",\
+      "Label": "Account Balance",\
+      "Description": "The current balance of the account if this is a pay as a go account.",\
+      "Type": "Decimal",\
+      "IsList": false,\
+      "IsNullable": true\
+    \},\
+    \{\
+      "Name": "TransactionCost",\
+      "Label": "Transaction Cost",\
+      "Description": "The total cost of the transaction if the transaction required billing.",\
+      "Type": "Decimal",\
+      "IsList": false,\
+      "IsNullable": true\
+    \},\
+    \{\
+      "Name": "BillingResult",\
+      "Label": "Billing Result",\
+      "Description": "Whether the account was billed",\
+      "Type": "Integer",\
+      "IsList": false,\
+      "IsNullable": false,\
+      "PossibleValues": [\
+        "0 = Success",\
+        "1 = InsufficientFunds",\
+        "2 = OverageCapMet",\
+        "3 = BillingAccountNotFound",\
+        "4 = SandboxKey",\
+        "50 = Deferred"\
+      ],\
+      "EnumIntegers": [\
+        0,\
+        1,\
+        2,\
+        3,\
+        4,\
+        50\
+      ]\
+    \},\
+    \{\
+      "Name": "BillingResultMessage",\
+      "Label": "Billing Result Text",\
+      "Description": "Whether the account was billed in text format",\
+      "Type": "String",\
+      "IsList": false,\
+      "IsNullable": false\
+    \},\
+    \{\
+      "Name": "RefundAmount",\
+      "Label": "Refund Amount",\
+      "Description": "The amount that was required to be refunded depending on what package data was able to be returned and how the package was set up.",\
+      "Type": "Decimal",\
+      "IsList": false,\
+      "IsNullable": true\
+    \},\
+    \{\
+      "Name": "RefundResult",\
+      "Label": "Refund Result",\
+      "Description": "Whether the transaction had a refund",\
+      "Type": "Integer",\
+      "IsList": false,\
+      "IsNullable": true,\
+      "PossibleValues": [\
+        "0 = Success",\
+        "50 = Deferred"\
+      ],\
+      "EnumIntegers": [\
+        0,\
+        50\
+      ]\
+    \},\
+    \{\
+      "Name": "RefundResultMessage",\
+      "Label": "Refund Result Text",\
+      "Description": "Whether the transaction had a refund in text format",\
+      "Type": "String",\
+      "IsList": false,\
+      "IsNullable": false\
+    \}\
+  ],\
+  "Results": \{\
+    "VehicleDetails": [\
+      \{\
+        "Name": "VehicleIdentification",\
+        "ObjectName": "VehicleIdentificationSection",\
+        "Label": "Vehicle Identification",\
+        "Description": "DVLA Vehicle Identification details.",\
+        "Type": "Object",\
+        "IsList": false,\
+        "IsNullable": true,\
+        "ObjectProperties": [\
+          \{\
+            "Name": "Vrm",\
+            "Label": "VRM",\
+            "Description": "The Vehicle Registration Mark (VRM).",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "Vin",\
+            "Label": "VIN",\
+            "Description": "The Vehicle Identification Number (VIN) - sometimes referred to as the Chassis Number.",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "VinLast5",\
+            "Label": "VIN Last 5",\
+            "Description": "The last 5 digits of the Vehicle Identification Number (VIN).",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "DvlaMake",\
+            "Label": "DVLA Make",\
+            "Description": "Vehicle make (eg: Ford, Volkswagen, Audi)",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "DvlaModel",\
+            "Label": "DVLA Model",\
+            "Description": "Vehicle model (eg: Galaxy, Sharan, R8)",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "DvlaWheelPlan",\
+            "Label": "DVLA Wheel Plan",\
+            "Description": "Vehicle wheel plan identifier (eg: 2 AXLE RIGID BODY)",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false,\
+            "PossibleValues": [\
+              "2 AXLE",\
+              "RIGID",\
+              "BODY"\
+            ]\
+          \},\
+          \{\
+            "Name": "DateFirstRegisteredInUk",\
+            "Label": "Date First Registered in UK",\
+            "Description": "Date/time the vehicle was first registered in the UK.",\
+            "Type": "DateTime",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "DateFirstRegistered",\
+            "Label": "Date First Registered",\
+            "Description": "Date/time the vehicle was first registered.",\
+            "Type": "DateTime",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "DateOfManufacture",\
+            "Label": "Date Of Manufacture",\
+            "Description": "Date/time the vehicle was manufactured.",\
+            "Type": "DateTime",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "YearOfManufacture",\
+            "Label": "Year Of Manufacture",\
+            "Description": "Year the vehicle was manufactured.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "VehicleUsedBeforeFirstRegistration",\
+            "Label": "Vehicle Used Before First Registration",\
+            "Description": "Indicates whether or not the vehicle used before first registration.",\
+            "Type": "Boolean",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "EngineNumber",\
+            "Label": "Engine Number",\
+            "Description": "The vehicle's Engine Number.",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "PreviousVrmNi",\
+            "Label": "Previous VRM NI",\
+            "Description": "The vehicle's Northern Ireland plate - if the vehicle previously had a Northern Ireland VRM.",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "DvlaBodyType",\
+            "Label": "DVLA Body Type",\
+            "Description": "The DVLA Body Type.",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "DvlaFuelType",\
+            "Label": "DVLA Fuel Type",\
+            "Description": "The DVLA Fuel Type.",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \}\
+        ]\
+      \},\
+      \{\
+        "Name": "VehicleStatus",\
+        "ObjectName": "VehicleStatusSection",\
+        "Label": "Vehicle Status",\
+        "Description": "Vehicle status details (such as import, export and scrapped status).",\
+        "Type": "Object",\
+        "IsList": false,\
+        "IsNullable": true,\
+        "ObjectProperties": [\
+          \{\
+            "Name": "IsImported",\
+            "Label": "Is Imported",\
+            "Description": "Indicates whether or not vehicle was imported from within the EU (European Union).",\
+            "Type": "Boolean",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "IsImportedFromNi",\
+            "Label": "Is Imported From NI",\
+            "Description": "Indicates whether or not vehicle was imported from Northern Ireland.",\
+            "Type": "Boolean",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "IsImportedFromOutsideEu",\
+            "Label": "Is Imported From Non EU",\
+            "Description": "Indicates whether or not vehicle was imported from outside the EU (European Union).",\
+            "Type": "Boolean",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "DateImported",\
+            "Label": "Date Imported",\
+            "Description": "Date/time the vehicle was imported.",\
+            "Type": "DateTime",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "CertificateOfDestructionIssued",\
+            "Label": "Certificate of Destruction Issued",\
+            "Description": "Indicates whether or not a Certificate of Destruction been issued for this vehicle.",\
+            "Type": "Boolean",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "IsExported",\
+            "Label": "Is Exported",\
+            "Description": "Indicates whether or not the vehicle is recorded as having been exported.",\
+            "Type": "Boolean",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "DateExported",\
+            "Label": "Date Exported",\
+            "Description": "Date and time the vehicle was exported.",\
+            "Type": "DateTime",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "IsScrapped",\
+            "Label": "Is Scrapped",\
+            "Description": "Indicates whether or not the vehicle been recorded as scrapped.",\
+            "Type": "Boolean",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "IsUnscrapped",\
+            "Label": "Is Unscrapped",\
+            "Description": "Indicates whether or not the vehicle has been recorded as un-scrapped.",\
+            "Type": "Boolean",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "DateScrapped",\
+            "Label": "Date Scrapped",\
+            "Description": "Date and time the vehicle was recorded as scrapped.",\
+            "Type": "DateTime",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "DvlaCherishedTransferMarker",\
+            "Label": "DVLA Cherished Transfer Marker",\
+            "Description": "Indicates whether or not the vehicle has been subject to cherished transfers, as disclosed by the DVLA",\
+            "Type": "Boolean",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "VehicleExciseDutyDetails",\
+            "ObjectName": "VehicleExciseDutyDetailsSection",\
+            "Label": "Vehicle Excise Duty Details",\
+            "Description": "Vehicle Excise Duty Details (Tax & CO2 ratings & values).",\
+            "Type": "Object",\
+            "IsList": false,\
+            "IsNullable": true,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "DvlaCo2",\
+                "Label": "DVLA CO2",\
+                "Description": "The CO2 value, unchecked direct from the DVLA.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "DvlaCo2Band",\
+                "Label": "DVLA CO2 Band",\
+                "Description": "The CO2 band, unchecked direct from the DVLA.",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "DvlaBand",\
+                "Label": "DVLA Band",\
+                "Description": "DVLA band details.",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "VedRate",\
+                "ObjectName": "VedRateSection",\
+                "Label": "Ved Rate",\
+                "Description": "Vehicle road tax charge details. Object contains information regarding the First Year, Premium Vehicle and Standard vehicle road taxes.",\
+                "Type": "Object",\
+                "IsList": false,\
+                "IsNullable": true,\
+                "ObjectProperties": [\
+                  \{\
+                    "Name": "FirstYear",\
+                    "ObjectName": "RateValuePair",\
+                    "Label": "First Year",\
+                    "Description": "Vehicle road tax charge for the first year. Object contains 6 & 12 month values.",\
+                    "Type": "Object",\
+                    "IsList": false,\
+                    "IsNullable": true,\
+                    "ObjectProperties": [\
+                      \{\
+                        "Name": "SixMonths",\
+                        "Label": "Six Months",\
+                        "Description": "Vehicle road tax charge for 6 months.",\
+                        "Type": "Decimal",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \},\
+                      \{\
+                        "Name": "TwelveMonths",\
+                        "Label": "Twelve Months",\
+                        "Description": "Vehicle road tax charge for 12 months.",\
+                        "Type": "Decimal",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \}\
+                    ]\
+                  \},\
+                  \{\
+                    "Name": "PremiumVehicle",\
+                    "ObjectName": "RateValuePair",\
+                    "Label": "Premium Vehicle",\
+                    "Description": "Vehicle Road Tax charge for Premium rated vehicles OTR above \'a340,000. Object contains 6 & 12 month values.",\
+                    "Type": "Object",\
+                    "IsList": false,\
+                    "IsNullable": true,\
+                    "ObjectProperties": [\
+                      \{\
+                        "Name": "SixMonths",\
+                        "Label": "Six Months",\
+                        "Description": "Vehicle road tax charge for 6 months.",\
+                        "Type": "Decimal",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \},\
+                      \{\
+                        "Name": "TwelveMonths",\
+                        "Label": "Twelve Months",\
+                        "Description": "Vehicle road tax charge for 12 months.",\
+                        "Type": "Decimal",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \}\
+                    ]\
+                  \},\
+                  \{\
+                    "Name": "Standard",\
+                    "ObjectName": "RateValuePair",\
+                    "Label": "Standard",\
+                    "Description": "Standard vehicle road tax. Object contains 6 & 12 month values.",\
+                    "Type": "Object",\
+                    "IsList": false,\
+                    "IsNullable": true,\
+                    "ObjectProperties": [\
+                      \{\
+                        "Name": "SixMonths",\
+                        "Label": "Six Months",\
+                        "Description": "Vehicle road tax charge for 6 months.",\
+                        "Type": "Decimal",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \},\
+                      \{\
+                        "Name": "TwelveMonths",\
+                        "Label": "Twelve Months",\
+                        "Description": "Vehicle road tax charge for 12 months.",\
+                        "Type": "Decimal",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \}\
+                    ]\
+                  \}\
+                ]\
+              \}\
+            ]\
+          \}\
+        ]\
+      \},\
+      \{\
+        "Name": "VehicleHistory",\
+        "ObjectName": "VehicleHistorySection",\
+        "Label": "Vehicle History",\
+        "Description": "Vehicle status details (such as import, export and scrapped status).",\
+        "Type": "Object",\
+        "IsList": false,\
+        "IsNullable": true,\
+        "ObjectProperties": [\
+          \{\
+            "Name": "ColourDetails",\
+            "ObjectName": "ColourDetailsSection",\
+            "Label": "Colour Details",\
+            "Description": "Current & Previous vehicle colour details.",\
+            "Type": "Object",\
+            "IsList": false,\
+            "IsNullable": true,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "CurrentColour",\
+                "Label": "Current Colour",\
+                "Description": "The vehicle's currently recorded colour.",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "NumberOfColourChanges",\
+                "Label": "Number Of Colour Changes",\
+                "Description": "Number of colour changes recorded for this vehicle.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "OriginalColour",\
+                "Label": "Original Colour",\
+                "Description": "The vehicle's original colour.",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "PreviousColour",\
+                "Label": "Previous Colour",\
+                "Description": "The vehicle's previous colour.",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "LatestColourChangeDate",\
+                "Label": "Latest Colour Change Date",\
+                "Description": "The latest date when the vehicle's colour was recorded as having been changed.",\
+                "Type": "DateTime",\
+                "IsList": false,\
+                "IsNullable": true\
+              \}\
+            ]\
+          \},\
+          \{\
+            "Name": "KeeperChangeList",\
+            "ObjectName": "KeeperChangeItem",\
+            "Label": "Keeper Change List",\
+            "Description": "List of Keeper changes.",\
+            "Type": "Object",\
+            "IsList": true,\
+            "IsNullable": false,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "NumberOfPreviousKeepers",\
+                "Label": "Number Of Previous Keepers",\
+                "Description": "The number of previous keepers for this vehicle.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "KeeperStartDate",\
+                "Label": "Keeper Start Date",\
+                "Description": "Date when the current keeper started.",\
+                "Type": "DateTime",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "PreviousKeeperDisposalDate",\
+                "Label": "Previous Keeper Disposal Date",\
+                "Description": "Date when the previous keeper disposed of the vehicle",\
+                "Type": "DateTime",\
+                "IsList": false,\
+                "IsNullable": true\
+              \}\
+            ]\
+          \},\
+          \{\
+            "Name": "PlateChangeList",\
+            "ObjectName": "PlateChangeItem",\
+            "Label": "Plate Change List",\
+            "Description": "List of registration plate changes.",\
+            "Type": "Object",\
+            "IsList": true,\
+            "IsNullable": false,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "CurrentVrm",\
+                "Label": "Current VRM",\
+                "Description": "The vehicle's current VRM.",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "TransferType",\
+                "Label": "Transfer Type",\
+                "Description": "The type of plate transfer.",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "DateOfReceipt",\
+                "Label": "Receipt",\
+                "Description": "Date of receipt for the plate transfer.",\
+                "Type": "DateTime",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "PreviousVrm",\
+                "Label": "Previous VRM",\
+                "Description": "The previous VRM, before the new (current VRM) was assigned.",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "DateOfTransaction",\
+                "Label": "Date Of Transaction",\
+                "Description": "Date of the plate transfer transaction.",\
+                "Type": "DateTime",\
+                "IsList": false,\
+                "IsNullable": true\
+              \}\
+            ]\
+          \},\
+          \{\
+            "Name": "V5cCertificateList",\
+            "ObjectName": "V5cCertificateItem",\
+            "Label": "V5C Certificate Issue Date List",\
+            "Description": "A list of V5C Certificate issued dates.",\
+            "Type": "Object",\
+            "IsList": true,\
+            "IsNullable": false,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "IssueDate",\
+                "Label": "Issue Date",\
+                "Description": "Issue date of certificate.",\
+                "Type": "DateTime",\
+                "IsList": false,\
+                "IsNullable": false\
+              \}\
+            ]\
+          \}\
+        ]\
+      \},\
+      \{\
+        "Name": "DvlaTechnicalDetails",\
+        "ObjectName": "DvlaTechnicalDetailsSection",\
+        "Label": "DVLA Technical Details",\
+        "Description": "Additional technical details held by the DVLA on this vehicle.",\
+        "Type": "Object",\
+        "IsList": false,\
+        "IsNullable": true,\
+        "ObjectProperties": [\
+          \{\
+            "Name": "NumberOfSeats",\
+            "Label": "Number Of Seats",\
+            "Description": "Number of seats inside the vehicle, including the drivers seat",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "EngineCapacityCc",\
+            "Label": "Engine Capacity",\
+            "Description": "Engine Capacity as disclosed by the DVLA",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "GrossWeightKg",\
+            "Label": "Gross Weight",\
+            "Description": "Gross Vehicle Weight, as disclosed by the DVLA",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "MaxNetPowerKw",\
+            "Label": "Max Net Power",\
+            "Description": "Maximum Net Power of the vehicle, expressed in kW, as disclosed by the DVLA",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "MassInServiceKg",\
+            "Label": "Mass In Service",\
+            "Description": "Mass In Service, as disclosed by the DVLA",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "PowerToWeightRatio",\
+            "Label": "Power To Weight Ratio",\
+            "Description": "Power to Weight Ratio, as disclosed by the DVLA",\
+            "Type": "Decimal",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "MaxPermissibleBrakedTrailerMassKg",\
+            "Label": "Max Permissible Braked Trailer Mass",\
+            "Description": "Maximum technically permissible mass of a braked trailer.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "MaxPermissibleUnbrakedTrailerMassKg",\
+            "Label": "Max Permissible Unbraked Trailer Mass",\
+            "Description": "Maximum technically permissible mass of an unbraked trailer.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \}\
+        ]\
+      \},\
+      \{\
+        "Name": "StatusCode",\
+        "Label": "Status Code",\
+        "Description": "API Response Status Code.",\
+        "Type": "Integer",\
+        "IsList": false,\
+        "IsNullable": false,\
+        "PossibleValues": [\
+          "0 = Success",\
+          "1 = SuccessWithResultsBlockWarnings",\
+          "2 = NoResultsFound",\
+          "3 = BillingFailure",\
+          "4 = FilterIpFailure",\
+          "5 = FilterCustomFailure",\
+          "6 = SandboxValidationFailure",\
+          "7 = UnknownApiKey",\
+          "8 = UnknownPackage",\
+          "9 = UnknownSearchType",\
+          "10 = ThirdPartyFailure",\
+          "11 = FailedPackageRule",\
+          "12 = BadlyFormedUrl",\
+          "13 = InvalidSearchTerm",\
+          "14 = NoSearchTermFound",\
+          "15 = MultipleSearchTermsFound",\
+          "17 = InformationTemporarilyUnavailable",\
+          "18 = PackageRestrictedFromApiKey",\
+          "19 = ApiKeyReachedConcurrentLimit",\
+          "20 = ApiKeyReachedDailyLimit",\
+          "21 = PlateInRetentionLastVehicleReturned",\
+          "22 = ApiKeyInvalidForPackage",\
+          "23 = AccountNotActive",\
+          "24 = DataIntegrityWarning",\
+          "25 = NoDvlaRegistrationDataAvailable",\
+          "26 = NoMatchFound",\
+          "27 = PackageReachedConcurrentLimit",\
+          "28 = PackageReachedDailyLimit",\
+          "29 = UnknownRevision"\
+        ],\
+        "EnumIntegers": [\
+          0,\
+          1,\
+          2,\
+          3,\
+          4,\
+          5,\
+          6,\
+          7,\
+          8,\
+          9,\
+          10,\
+          11,\
+          12,\
+          13,\
+          14,\
+          15,\
+          17,\
+          18,\
+          19,\
+          20,\
+          21,\
+          22,\
+          23,\
+          24,\
+          25,\
+          26,\
+          27,\
+          28,\
+          29\
+        ]\
+      \},\
+      \{\
+        "Name": "StatusMessage",\
+        "Label": "Status Message",\
+        "Description": "API Response Status Message. Human description describing the API response.",\
+        "Type": "String",\
+        "IsList": false,\
+        "IsNullable": false\
+      \},\
+      \{\
+        "Name": "DocumentVersion",\
+        "Label": "Document Version",\
+        "Description": "Data Source Versioning.",\
+        "Type": "Integer",\
+        "IsList": false,\
+        "IsNullable": false\
+      \}\
+    ],\
+    "ModelDetails": [\
+      \{\
+        "Name": "ModelIdentification",\
+        "ObjectName": "ModelIdentificationSection",\
+        "Label": "Model Identification",\
+        "Description": "Object containing model identification data.",\
+        "Type": "Object",\
+        "IsList": false,\
+        "IsNullable": true,\
+        "ObjectProperties": [\
+          \{\
+            "Name": "Make",\
+            "Label": "Make",\
+            "Description": "Vehicle make (eg: Ford, Volkswagen, Audi).",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "Range",\
+            "Label": "Range",\
+            "Description": "Vehicle range (eg: C-Max, Focus).",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "Model",\
+            "Label": "Model",\
+            "Description": "Vehicle model (eg: C-Max Style TDCi, Focus LX).",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "ModelVariant",\
+            "Label": "Model Variant",\
+            "Description": "This is the model variant,  Will be null if we have no variants",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "Series",\
+            "Label": "Series",\
+            "Description": "The model series assigned by the manufacturer (eg: C214, E46).",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "Mark",\
+            "Label": "Mark",\
+            "Description": "eg: VW Golf Mark 2 where a manufacturer uses it, if they do not, it will always be 1.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "StartDate",\
+            "Label": "Start Date",\
+            "Description": "Manufacturer's start date for this vehicle Make, Model, Series.",\
+            "Type": "DateTime",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "EndDate",\
+            "Label": "End Date",\
+            "Description": "Manufacturer's end date for this vehicle Make, Model, Series.",\
+            "Type": "DateTime",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "CountryOfOrigin",\
+            "Label": "Country of Origin",\
+            "Description": "Country where the vehicle was manufactured.",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "VariantCode",\
+            "Label": "Variant Code",\
+            "Description": "Code number identifying the vehicle variant (model variation). Will be null if we have no variants.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \}\
+        ]\
+      \},\
+      \{\
+        "Name": "ModelClassification",\
+        "ObjectName": "ModelClassificationSection",\
+        "Label": "Model Classification",\
+        "Description": "Object containing model classification data.",\
+        "Type": "Object",\
+        "IsList": false,\
+        "IsNullable": true,\
+        "ObjectProperties": [\
+          \{\
+            "Name": "TypeApprovalCategory",\
+            "Label": "Type Approval Category",\
+            "Description": "The type approval category code assigned to this type of vehicle.",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false,\
+            "PossibleValues": [\
+              "L1",\
+              "L2",\
+              "L3",\
+              "L4",\
+              "L5",\
+              "L6",\
+              "L7",\
+              "M1",\
+              "M2",\
+              "M3",\
+              "N1",\
+              "N2",\
+              "N3",\
+              "O1",\
+              "O2",\
+              "O3",\
+              "O4",\
+              "T",\
+              "R",\
+              "S"\
+            ]\
+          \},\
+          \{\
+            "Name": "MarketSectorCode",\
+            "Label": "Market Sector Code",\
+            "Description": "The market sector code assigned to this type of vehicle.",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "VehicleClass",\
+            "Label": "Vehicle Class",\
+            "Description": "The class of vehicle (eg: Car).",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "TaxationClass",\
+            "Label": "Taxation Class",\
+            "Description": "Taxation class is determined from type approval category, possible results are Car, PVC, LCV, HCV or Quad.",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \}\
+        ]\
+      \},\
+      \{\
+        "Name": "AdditionalInformation",\
+        "ObjectName": "AdditionalInformationSection",\
+        "Label": "Additional Information",\
+        "Description": "Object containing additional information data.",\
+        "Type": "Object",\
+        "IsList": false,\
+        "IsNullable": true,\
+        "ObjectProperties": [\
+          \{\
+            "Name": "VehicleWarrantyInformation",\
+            "ObjectName": "VehicleWarrantyInformationSection",\
+            "Label": "Vehicle Warranty Information",\
+            "Description": "Object containing Vehicle Warranty Information.",\
+            "Type": "Object",\
+            "IsList": false,\
+            "IsNullable": true,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "ManufacturerWarrantyMiles",\
+                "Label": "Manufacturer Warranty Miles",\
+                "Description": "Manufacturer warranty from new, in miles (ie: 30,000 miles warranty).",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "ManufacturerWarrantyMonths",\
+                "Label": "Manufacturer Warranty Months",\
+                "Description": "Manufacturer warranty from new, in months (ie: 60 months warranty).",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \}\
+            ]\
+          \},\
+          \{\
+            "Name": "SubscriptionOptionList",\
+            "ObjectName": "SubscriptionOptionItem",\
+            "Label": "Subscription Options",\
+            "Description": "List containing Subscription Options available for this vehicle.",\
+            "Type": "Object",\
+            "IsList": true,\
+            "IsNullable": false,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "Name",\
+                "Label": "Subscription Name",\
+                "Description": "Name of the subscription service",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \}\
+            ]\
+          \},\
+          \{\
+            "Name": "Software",\
+            "ObjectName": "SoftwareSection",\
+            "Label": "Software",\
+            "Description": "Object containing vehicle software details.",\
+            "Type": "Object",\
+            "IsList": false,\
+            "IsNullable": true,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "SupportsOverTheAirSoftwareUpdate",\
+                "Label": "Supports Over The Air Software Update",\
+                "Description": "Indicates whether or not the vehicle supports over the air software updates.",\
+                "Type": "Boolean",\
+                "IsList": false,\
+                "IsNullable": true\
+              \}\
+            ]\
+          \}\
+        ]\
+      \},\
+      \{\
+        "Name": "BodyDetails",\
+        "ObjectName": "BodyDetailsSection",\
+        "Label": "Body Details",\
+        "Description": "Object containing vehicle body details.",\
+        "Type": "Object",\
+        "IsList": false,\
+        "IsNullable": true,\
+        "ObjectProperties": [\
+          \{\
+            "Name": "BodyShape",\
+            "Label": "Body Shape",\
+            "Description": "Applicable to commercial vehicles to confirm the body shape.",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "BodyStyle",\
+            "Label": "Body Style",\
+            "Description": "The body shape of this vehicle (eg: Saloon, Hatchback, MPV).",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "CabType",\
+            "Label": "Cab Type",\
+            "Description": "Applicable to commercial vehicles (eg: Luton Van).",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "PlatformName",\
+            "Label": "Platform Name",\
+            "Description": "The name of the platform the vehicle is based on.",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "PlatformIsSharedAcrossModels",\
+            "Label": "Platform Is Shared Across Models",\
+            "Description": "Indicates whether or not the platform is shared across multiple models.",\
+            "Type": "Boolean",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "WheelbaseType",\
+            "Label": "Wheelbase Type",\
+            "Description": "The wheelbase type for this vehicle (eg: Short Wheelbase, Long Wheelbase).",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "NumberOfAxles",\
+            "Label": "Number Of Axles",\
+            "Description": "The number of axles on this vehicle.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "NumberOfDoors",\
+            "Label": "Number Of Doors",\
+            "Description": "The number of doors on this vehicle.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "NumberOfSeats",\
+            "Label": "Number Of Seats",\
+            "Description": "Number of seats for this vehicle.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "PayloadVolumeLitres",\
+            "Label": "Payload Volume",\
+            "Description": "The volume of the load area.",\
+            "Type": "Decimal",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "FuelTankCapacityLitres",\
+            "Label": "Fuel Tank Capacity",\
+            "Description": "Fuel tank capacity expressed in litres.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \}\
+        ]\
+      \},\
+      \{\
+        "Name": "Dimensions",\
+        "ObjectName": "DimensionsSection",\
+        "Label": "Dimensions",\
+        "Description": "Object containing vehicle dimensions data.",\
+        "Type": "Object",\
+        "IsList": false,\
+        "IsNullable": true,\
+        "ObjectProperties": [\
+          \{\
+            "Name": "HeightMm",\
+            "Label": "Height",\
+            "Description": "Overall height of the vehicle, including roof-bars or aerial.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "LengthMm",\
+            "Label": "Length",\
+            "Description": "Overall length of the vehicle (bumper to bumper). Does not include any after market items, which may extended the length of the vehicle.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "WidthMm",\
+            "Label": "Width",\
+            "Description": "Overall width, including the wing mirrors.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "WheelbaseLengthMm",\
+            "Label": "Wheelbase Length",\
+            "Description": "Wheelbase length of the vehicle expressed in mm.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "InternalLoadLengthMm",\
+            "Label": "Internal Load Length",\
+            "Description": "Applies to commercial vehicle. Length from the bulkhead to the rear of the load area expressed in mm.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \}\
+        ]\
+      \},\
+      \{\
+        "Name": "Weights",\
+        "ObjectName": "WeightsSection",\
+        "Label": "Weights",\
+        "Description": "Object containing vehicle weights Data.",\
+        "Type": "Object",\
+        "IsList": false,\
+        "IsNullable": true,\
+        "ObjectProperties": [\
+          \{\
+            "Name": "KerbWeightKg",\
+            "Label": "Kerb Weight",\
+            "Description": "The weight of the vehicle, including a full tank of fuel and all standard equipment.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "GrossTrainWeightKg",\
+            "Label": "Gross Train Weight",\
+            "Description": "The maximum permissible weight the vehicle, including any trailer.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "UnladenWeightKg",\
+            "Label": "Unladen Weight",\
+            "Description": "The weight of the vehicle, including all standard equipment.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "PayloadWeightKg",\
+            "Label": "Payload Weight",\
+            "Description": "The difference between the Kerb Weight and the Gross Weight.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "GrossVehicleWeightKg",\
+            "Label": "Gross Vehicle Weight",\
+            "Description": "The total weight of the vehicle including the Kerb Weight and Payload Weight.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "GrossCombinedWeightKg",\
+            "Label": "Gross Combined Weight",\
+            "Description": "The total combined weight: Fully laden vehicle and fully laden trailer added together.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \}\
+        ]\
+      \},\
+      \{\
+        "Name": "Powertrain",\
+        "ObjectName": "PowertrainSection",\
+        "Label": "Power Train",\
+        "Description": "Object containing vehicle power source data.",\
+        "Type": "Object",\
+        "IsList": false,\
+        "IsNullable": true,\
+        "ObjectProperties": [\
+          \{\
+            "Name": "PowertrainType",\
+            "Label": "Powertrain Type",\
+            "Description": "Vehicle powertrain type (eg; ICE, REEV, BEV, PHEV).",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false,\
+            "PossibleValues": [\
+              "ICE",\
+              "BEV",\
+              "PHEV",\
+              "FHEV",\
+              "MHEV",\
+              "HFCV",\
+              "REEV"\
+            ]\
+          \},\
+          \{\
+            "Name": "FuelType",\
+            "Label": "Fuel Type",\
+            "Description": "Fuel type for this vehicle (eg: DIESEL, PETROL).",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false,\
+            "PossibleValues": [\
+              "CNG",\
+              "CNG/Diesel",\
+              "CNG/Petrol",\
+              "Diesel",\
+              "Diesel/Electric",\
+              "Electric",\
+              "Electric Hydrogen",\
+              "Fuel Cell",\
+              "Hybrid",\
+              "Hydrogen",\
+              "LPG",\
+              "Petrol",\
+              "Petrol/Alcohol",\
+              "Petrol/Electric",\
+              "Petrol/LPG"\
+            ]\
+          \},\
+          \{\
+            "Name": "IceDetails",\
+            "ObjectName": "IceDetailsSection",\
+            "Label": "ICE Details",\
+            "Description": "Object containing Internal Combustion Engine details Data.",\
+            "Type": "Object",\
+            "IsList": false,\
+            "IsNullable": true,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "EngineFamily",\
+                "Label": "Engine Family",\
+                "Description": "A family is a basic unit used to identify a family/group of engines for certification and compliance purposes.",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "EngineLocation",\
+                "Label": "Engine Location",\
+                "Description": "The relative location of the engine within the vehicle.",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "EngineDescription",\
+                "Label": "Engine Description",\
+                "Description": "Describes the type of engine.",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "EngineManufacturer",\
+                "Label": "Engine Manufacturer",\
+                "Description": "The manufacturer of the engine.",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "FuelDelivery",\
+                "Label": "Fuel Delivery",\
+                "Description": "The fuel delivery mechanism used in the engine (eg: Injection).",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "Aspiration",\
+                "Label": "Aspiration",\
+                "Description": "The type of aspiration mechanism used in the engine (eg: Turbo charged, naturally aspirated).",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "CylinderArrangement",\
+                "Label": "Cylinder Arrangement",\
+                "Description": "The arrangement of the cylinders within the engine (eg: Inline, Vee, W, Rotary).",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "NumberOfCylinders",\
+                "Label": "Number of Cylinders",\
+                "Description": "The number of cylinders within the engine.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "BoreMm",\
+                "Label": "Bore",\
+                "Description": "Diameter of cylinder.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "StrokeMm",\
+                "Label": "Stroke",\
+                "Description": "Length of the swept volume of the cylinder expressed in mm.  This is the distance the piston travels between top and bottom dead centre of the stroke.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "ValveGear",\
+                "Label": "Valve Gear",\
+                "Description": "Describes the valve actuation mechanism used in the engine (eg: DOHC, OHC).",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "ValvesPerCylinder",\
+                "Label": "Valves per Cylinder",\
+                "Description": "The number of valves per cylinder.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "EngineCapacityCc",\
+                "Label": "Engine Capacity",\
+                "Description": "The cubic capacity of the engine.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "EngineCapacityLitres",\
+                "Label": "Engine Capacity",\
+                "Description": "The cubic capacity in litres of the engine rounded up or down. Based on the Engine Capacity CC.",\
+                "Type": "Decimal",\
+                "IsList": false,\
+                "IsNullable": true\
+              \}\
+            ]\
+          \},\
+          \{\
+            "Name": "EvDetails",\
+            "ObjectName": "ElectricVehicleDetails",\
+            "Label": "EV Details",\
+            "Description": "Object containing Electric Vehicle details Data.",\
+            "Type": "Object",\
+            "IsList": false,\
+            "IsNullable": true,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "TechnicalDetails",\
+                "ObjectName": "TechnicalDetailsSection",\
+                "Label": "Technical Details",\
+                "Description": "An object containing technical details for the vehicle.",\
+                "Type": "Object",\
+                "IsList": false,\
+                "IsNullable": true,\
+                "ObjectProperties": [\
+                  \{\
+                    "Name": "PowertrainType",\
+                    "Label": "Powertrain Type",\
+                    "Description": "Powertrain types (eg: ICE, REEV, BEV, PHEV).",\
+                    "Type": "String",\
+                    "IsList": false,\
+                    "IsNullable": false,\
+                    "PossibleValues": [\
+                      "Uncategorised",\
+                      "BEV",\
+                      "PHEV",\
+                      "FHEV",\
+                      "MHEV",\
+                      "HFCV",\
+                      "REEV"\
+                    ]\
+                  \},\
+                  \{\
+                    "Name": "IsTeslaSuperchargerCompatible",\
+                    "Label": "Tesla Supercharger Compatible",\
+                    "Description": "Indicates whether or not the hardware is compatible with Tesla Superchargers.",\
+                    "Type": "Boolean",\
+                    "IsList": false,\
+                    "IsNullable": false\
+                  \},\
+                  \{\
+                    "Name": "NumberOfChargePorts",\
+                    "Label": "Number Of Charge Ports",\
+                    "Description": "Number of charge ports available on the vehicle.",\
+                    "Type": "Integer",\
+                    "IsList": false,\
+                    "IsNullable": false\
+                  \},\
+                  \{\
+                    "Name": "TeslaSupercharging",\
+                    "ObjectName": "TeslaSuperchargingSection",\
+                    "Label": "Tesla Supercharging",\
+                    "Description": "Object describing Tesla Supercharging details.",\
+                    "Type": "Object",\
+                    "IsList": false,\
+                    "IsNullable": true,\
+                    "ObjectProperties": [\
+                      \{\
+                        "Name": "Version1",\
+                        "ObjectName": "SuperchargerVersionDetails",\
+                        "Label": "Version 1",\
+                        "Description": "Object describing Tesla Supercharger Version 1.",\
+                        "Type": "Object",\
+                        "IsList": false,\
+                        "IsNullable": true,\
+                        "ObjectProperties": [\
+                          \{\
+                            "Name": "IsCompatibleWithVehicle",\
+                            "Label": "Is Compatible With Vehicle",\
+                            "Description": "This supercharging version is compatible with the vehicle.",\
+                            "Type": "Boolean",\
+                            "IsList": false,\
+                            "IsNullable": true\
+                          \},\
+                          \{\
+                            "Name": "MaxChargeKw",\
+                            "Label": "Max Charge",\
+                            "Description": "The maximum charge in Kilowatts for this supercharger version",\
+                            "Type": "Integer",\
+                            "IsList": false,\
+                            "IsNullable": true\
+                          \},\
+                          \{\
+                            "Name": "RequiresCcsAdaptor",\
+                            "Label": "Requires Ccs Adaptor",\
+                            "Description": "CCS (Combined Charging System) Does this supercharger version require a CCS Adaptor?",\
+                            "Type": "Boolean",\
+                            "IsList": false,\
+                            "IsNullable": true\
+                          \},\
+                          \{\
+                            "Name": "AverageChargeTime10To80Percent",\
+                            "Label": "Avg Charge Time 10-80%",\
+                            "Description": "The average time taken using this supercharger version from 10% to 80%",\
+                            "Type": "Integer",\
+                            "IsList": false,\
+                            "IsNullable": true\
+                          \}\
+                        ]\
+                      \},\
+                      \{\
+                        "Name": "Version2",\
+                        "ObjectName": "SuperchargerVersionDetails",\
+                        "Label": "Version 2",\
+                        "Description": "Object describing Tesla Supercharger Version 2.",\
+                        "Type": "Object",\
+                        "IsList": false,\
+                        "IsNullable": true,\
+                        "ObjectProperties": [\
+                          \{\
+                            "Name": "IsCompatibleWithVehicle",\
+                            "Label": "Is Compatible With Vehicle",\
+                            "Description": "This supercharging version is compatible with the vehicle.",\
+                            "Type": "Boolean",\
+                            "IsList": false,\
+                            "IsNullable": true\
+                          \},\
+                          \{\
+                            "Name": "MaxChargeKw",\
+                            "Label": "Max Charge",\
+                            "Description": "The maximum charge in Kilowatts for this supercharger version",\
+                            "Type": "Integer",\
+                            "IsList": false,\
+                            "IsNullable": true\
+                          \},\
+                          \{\
+                            "Name": "RequiresCcsAdaptor",\
+                            "Label": "Requires Ccs Adaptor",\
+                            "Description": "CCS (Combined Charging System) Does this supercharger version require a CCS Adaptor?",\
+                            "Type": "Boolean",\
+                            "IsList": false,\
+                            "IsNullable": true\
+                          \},\
+                          \{\
+                            "Name": "AverageChargeTime10To80Percent",\
+                            "Label": "Avg Charge Time 10-80%",\
+                            "Description": "The average time taken using this supercharger version from 10% to 80%",\
+                            "Type": "Integer",\
+                            "IsList": false,\
+                            "IsNullable": true\
+                          \}\
+                        ]\
+                      \},\
+                      \{\
+                        "Name": "Version3",\
+                        "ObjectName": "SuperchargerVersionDetails",\
+                        "Label": "Version 3",\
+                        "Description": "Object describing Tesla Supercharger Version 3.",\
+                        "Type": "Object",\
+                        "IsList": false,\
+                        "IsNullable": true,\
+                        "ObjectProperties": [\
+                          \{\
+                            "Name": "IsCompatibleWithVehicle",\
+                            "Label": "Is Compatible With Vehicle",\
+                            "Description": "This supercharging version is compatible with the vehicle.",\
+                            "Type": "Boolean",\
+                            "IsList": false,\
+                            "IsNullable": true\
+                          \},\
+                          \{\
+                            "Name": "MaxChargeKw",\
+                            "Label": "Max Charge",\
+                            "Description": "The maximum charge in Kilowatts for this supercharger version",\
+                            "Type": "Integer",\
+                            "IsList": false,\
+                            "IsNullable": true\
+                          \},\
+                          \{\
+                            "Name": "RequiresCcsAdaptor",\
+                            "Label": "Requires Ccs Adaptor",\
+                            "Description": "CCS (Combined Charging System) Does this supercharger version require a CCS Adaptor?",\
+                            "Type": "Boolean",\
+                            "IsList": false,\
+                            "IsNullable": true\
+                          \},\
+                          \{\
+                            "Name": "AverageChargeTime10To80Percent",\
+                            "Label": "Avg Charge Time 10-80%",\
+                            "Description": "The average time taken using this supercharger version from 10% to 80%",\
+                            "Type": "Integer",\
+                            "IsList": false,\
+                            "IsNullable": true\
+                          \}\
+                        ]\
+                      \}\
+                    ]\
+                  \},\
+                  \{\
+                    "Name": "ChargeCableDetailsList",\
+                    "ObjectName": "ChargeCableDetailsItem",\
+                    "Label": "Charge Cable Details",\
+                    "Description": "List of charge cable details for the vehicle.",\
+                    "Type": "Object",\
+                    "IsList": true,\
+                    "IsNullable": false,\
+                    "ObjectProperties": [\
+                      \{\
+                        "Name": "IsSuppliedAsStandard",\
+                        "Label": "Is Supplied As Standard",\
+                        "Description": "Indicates whether or not this charge cable is supplied as standard (rather than being an optional extra).",\
+                        "Type": "Boolean",\
+                        "IsList": false,\
+                        "IsNullable": false\
+                      \},\
+                      \{\
+                        "Name": "Description",\
+                        "Label": "Description",\
+                        "Description": "Charge cable description.",\
+                        "Type": "String",\
+                        "IsList": false,\
+                        "IsNullable": false\
+                      \}\
+                    ]\
+                  \},\
+                  \{\
+                    "Name": "ChargePortDetailsList",\
+                    "ObjectName": "ChargePortDetailsItem",\
+                    "Label": "Charge Port Details List",\
+                    "Description": "List containing Charge Port details.",\
+                    "Type": "Object",\
+                    "IsList": true,\
+                    "IsNullable": false,\
+                    "ObjectProperties": [\
+                      \{\
+                        "Name": "PortType",\
+                        "Label": "Port Type",\
+                        "Description": "The type of port for this charge port item.",\
+                        "Type": "String",\
+                        "IsList": false,\
+                        "IsNullable": false,\
+                        "PossibleValues": [\
+                          "Type 1",\
+                          "Type 2 Optional",\
+                          "Type 2 Standard",\
+                          "Type 2 Supercharger V2",\
+                          "Type 2 Supercharger V3",\
+                          "CCS - 400v Three Phase Wye",\
+                          "Type 2 - 230v Single Phase",\
+                          "Type 2 - 230v Three Phase Delta",\
+                          "Type 2 - 400v Three Phase Wye",\
+                          "CCS",\
+                          "Type 2",\
+                          "Type 1 Standard",\
+                          "Type 1 Optional",\
+                          "CCS Optional"\
+                        ]\
+                      \},\
+                      \{\
+                        "Name": "LocationOnVehicle",\
+                        "Label": "Location On Vehicle",\
+                        "Description": "The location of this charge port on vehicle.",\
+                        "Type": "String",\
+                        "IsList": false,\
+                        "IsNullable": false,\
+                        "PossibleValues": [\
+                          "Left/Front",\
+                          "Right/Front",\
+                          "Left/Rear",\
+                          "Right/Rear",\
+                          "Front/Centre"\
+                        ]\
+                      \},\
+                      \{\
+                        "Name": "MaxChargePowerKw",\
+                        "Label": "Max Charge Power",\
+                        "Description": "The maximum capacity of the onboard charger for this charge port item.",\
+                        "Type": "Decimal",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \},\
+                      \{\
+                        "Name": "IsStandardChargePort",\
+                        "Label": "Is Standard Charge Port",\
+                        "Description": "Is this a standard charge port?",\
+                        "Type": "Boolean",\
+                        "IsList": false,\
+                        "IsNullable": false\
+                      \},\
+                      \{\
+                        "Name": "ChargeTimes",\
+                        "ObjectName": "ChargeTimesSection",\
+                        "Label": "Charge Times",\
+                        "Description": "Object containing details for charge times.",\
+                        "Type": "Object",\
+                        "IsList": false,\
+                        "IsNullable": true,\
+                        "ObjectProperties": [\
+                          \{\
+                            "Name": "AverageChargeTimes10To80Percent",\
+                            "ObjectName": "ChargeTimeItem",\
+                            "Label": "Avg Charge Time 10-80%",\
+                            "Description": "List containing details for average charge times",\
+                            "Type": "Object",\
+                            "IsList": true,\
+                            "IsNullable": false,\
+                            "ObjectProperties": [\
+                              \{\
+                                "Name": "ChargePortKw",\
+                                "Label": "Charge Port Kw",\
+                                "Description": "The rate of power delivery.",\
+                                "Type": "Decimal",\
+                                "IsList": false,\
+                                "IsNullable": true\
+                              \},\
+                              \{\
+                                "Name": "TimeInMinutes",\
+                                "Label": "Time In Minutes",\
+                                "Description": "The time in minutes to go from 10% to 80%.",\
+                                "Type": "Integer",\
+                                "IsList": false,\
+                                "IsNullable": true\
+                              \}\
+                            ]\
+                          \}\
+                        ]\
+                      \}\
+                    ]\
+                  \},\
+                  \{\
+                    "Name": "BatteryDetailsList",\
+                    "ObjectName": "BatteryDetailsItem",\
+                    "Label": "Battery Details List",\
+                    "Description": "List containing Battery details.",\
+                    "Type": "Object",\
+                    "IsList": true,\
+                    "IsNullable": false,\
+                    "ObjectProperties": [\
+                      \{\
+                        "Name": "TotalCapacityKwh",\
+                        "Label": "Total Capacity",\
+                        "Description": "The total (design maximum) capacity of the battery in Kilowatts/per hour.",\
+                        "Type": "Decimal",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \},\
+                      \{\
+                        "Name": "UsableCapacityKwh",\
+                        "Label": "Usable Capacity",\
+                        "Description": "The usable capacity of the battery in Kilowatts/per hour.",\
+                        "Type": "Decimal",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \},\
+                      \{\
+                        "Name": "Description",\
+                        "Label": "Description",\
+                        "Description": "Description of the battery.",\
+                        "Type": "String",\
+                        "IsList": false,\
+                        "IsNullable": false\
+                      \},\
+                      \{\
+                        "Name": "Chemistry",\
+                        "Label": "Chemistry",\
+                        "Description": "Battery chemistry type (eg: Lithium-ion).",\
+                        "Type": "String",\
+                        "IsList": false,\
+                        "IsNullable": false\
+                      \},\
+                      \{\
+                        "Name": "Voltage",\
+                        "Label": "Voltage",\
+                        "Description": "The voltage of the battery.",\
+                        "Type": "Integer",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \},\
+                      \{\
+                        "Name": "LocationOnVehicle",\
+                        "Label": "Location On Vehicle",\
+                        "Description": "Battery location on the vehicle.",\
+                        "Type": "String",\
+                        "IsList": false,\
+                        "IsNullable": false,\
+                        "PossibleValues": [\
+                          "UnderChassis",\
+                          "TransmissionTunnel",\
+                          "Under Floor/Middle",\
+                          "Rear",\
+                          "Under Boot/Rear"\
+                        ]\
+                      \},\
+                      \{\
+                        "Name": "ManufacturerWarrantyMonths",\
+                        "Label": "Manufacturer Warranty Months",\
+                        "Description": "The number of months (from new) where the battery is covered under a manufacturers warranty.",\
+                        "Type": "Integer",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \},\
+                      \{\
+                        "Name": "ManufacturerWarrantyMiles",\
+                        "Label": "Manufacturer Warranty Miles",\
+                        "Description": "The number of miles (from new) where the battery is covered under a manufacturers warranty.",\
+                        "Type": "Integer",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \}\
+                    ]\
+                  \},\
+                  \{\
+                    "Name": "MotorDetailsList",\
+                    "ObjectName": "MotorDetailsItem",\
+                    "Label": "Motor Details List",\
+                    "Description": "List containing Motor details.",\
+                    "Type": "Object",\
+                    "IsList": true,\
+                    "IsNullable": false,\
+                    "ObjectProperties": [\
+                      \{\
+                        "Name": "Manufacturer",\
+                        "Label": "Manufacturer",\
+                        "Description": "The manufacturer of the motor.",\
+                        "Type": "String",\
+                        "IsList": false,\
+                        "IsNullable": false\
+                      \},\
+                      \{\
+                        "Name": "Model",\
+                        "Label": "Model",\
+                        "Description": "The model of the motor.",\
+                        "Type": "String",\
+                        "IsList": false,\
+                        "IsNullable": false\
+                      \},\
+                      \{\
+                        "Name": "MotorType",\
+                        "Label": "Motor Type",\
+                        "Description": "Type of motor (eg: AC induction/asynchronous).",\
+                        "Type": "String",\
+                        "IsList": false,\
+                        "IsNullable": false\
+                      \},\
+                      \{\
+                        "Name": "PowerKw",\
+                        "Label": "Power Kw",\
+                        "Description": "Total power in killowatts",\
+                        "Type": "Integer",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \},\
+                      \{\
+                        "Name": "MaxPowerRpm",\
+                        "Label": "Max Power Rpm",\
+                        "Description": "The maximum power described in RPM (Revolutions Per Minute).",\
+                        "Type": "Integer",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \},\
+                      \{\
+                        "Name": "MaxTorqueNm",\
+                        "Label": "Max Torque Nm",\
+                        "Description": "The maximum power described in Torque Nm (Torque Newton Metres).",\
+                        "Type": "Integer",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \},\
+                      \{\
+                        "Name": "SupportsRegenerativeBraking",\
+                        "Label": "Supports Regenerative Braking",\
+                        "Description": "Supports recovery of kinetic energy to the battery whilst the vehicle is braking.",\
+                        "Type": "Boolean",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \},\
+                      \{\
+                        "Name": "MotorLocation",\
+                        "Label": "Motor Location",\
+                        "Description": "The location of the motor.",\
+                        "Type": "String",\
+                        "IsList": false,\
+                        "IsNullable": false,\
+                        "PossibleValues": [\
+                          "RearAxle",\
+                          "FrontWheel",\
+                          "Front",\
+                          "Rear"\
+                        ]\
+                      \},\
+                      \{\
+                        "Name": "AxleDrivenByMotor",\
+                        "Label": "Axle Driven By Motor",\
+                        "Description": "Identifies which axle is driven by this motor.",\
+                        "Type": "String",\
+                        "IsList": false,\
+                        "IsNullable": false\
+                      \},\
+                      \{\
+                        "Name": "AdditionalInformation",\
+                        "Label": "Additional Information",\
+                        "Description": "Additional information for this motor.",\
+                        "Type": "String",\
+                        "IsList": false,\
+                        "IsNullable": false\
+                      \}\
+                    ]\
+                  \},\
+                  \{\
+                    "Name": "TransmissionDetailsList",\
+                    "ObjectName": "TransmissionDetailsItem",\
+                    "Label": "Transmission Details List",\
+                    "Description": "List containing Transmission details.",\
+                    "Type": "Object",\
+                    "IsList": true,\
+                    "IsNullable": false,\
+                    "ObjectProperties": [\
+                      \{\
+                        "Name": "TransmissionType",\
+                        "Label": "Transmission Type",\
+                        "Description": "The transmission type (eg: Automatic, CVT, Manual).",\
+                        "Type": "String",\
+                        "IsList": false,\
+                        "IsNullable": false\
+                      \},\
+                      \{\
+                        "Name": "NumberOfGears",\
+                        "Label": "Number Of Gears",\
+                        "Description": "The number of forward gears.",\
+                        "Type": "Integer",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \},\
+                      \{\
+                        "Name": "TransmissionLocation",\
+                        "Label": "Transmission Location",\
+                        "Description": "The location of the transmission.",\
+                        "Type": "String",\
+                        "IsList": false,\
+                        "IsNullable": false,\
+                        "PossibleValues": [\
+                          "Unknown",\
+                          "Front",\
+                          "Rear"\
+                        ]\
+                      \}\
+                    ]\
+                  \}\
+                ]\
+              \},\
+              \{\
+                "Name": "Performance",\
+                "ObjectName": "PerformanceSection",\
+                "Label": "Performance",\
+                "Description": "An object containing performance details for the vehicle.",\
+                "Type": "Object",\
+                "IsList": false,\
+                "IsNullable": true,\
+                "ObjectProperties": [\
+                  \{\
+                    "Name": "MaxChargeInputPowerKw",\
+                    "Label": "Max Charge Input Power",\
+                    "Description": "Maximum input charge power the vehicle can accept in Kw.",\
+                    "Type": "Integer",\
+                    "IsList": false,\
+                    "IsNullable": true\
+                  \},\
+                  \{\
+                    "Name": "WhMile",\
+                    "Label": "Wh Mile",\
+                    "Description": "The amount of energy used to travel one mile.",\
+                    "Type": "Integer",\
+                    "IsList": false,\
+                    "IsNullable": true\
+                  \},\
+                  \{\
+                    "Name": "RangeFigures",\
+                    "ObjectName": "RangeFiguresSection",\
+                    "Label": "Range Figures",\
+                    "Description": "Object containing vehicle range figures.",\
+                    "Type": "Object",\
+                    "IsList": false,\
+                    "IsNullable": true,\
+                    "ObjectProperties": [\
+                      \{\
+                        "Name": "RealRangeMiles",\
+                        "Label": "Real Range Miles",\
+                        "Description": "Vehicle range (in miles) tested under real driving conditions.",\
+                        "Type": "Integer",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \},\
+                      \{\
+                        "Name": "RealRangeKm",\
+                        "Label": "Real Range Km",\
+                        "Description": "Vehicle range (in kilometers) tested under real driving conditions.",\
+                        "Type": "Integer",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \},\
+                      \{\
+                        "Name": "MilesPerChargeHour",\
+                        "Label": "Miles Per Charge Hour",\
+                        "Description": "The estimated vehicle range gained hour of charge.",\
+                        "Type": "Integer",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \},\
+                      \{\
+                        "Name": "ZeroEmissionMiles",\
+                        "Label": "Zero Emission Miles",\
+                        "Description": "How many miles the vehicle can travel producing zero emissions.",\
+                        "Type": "Integer",\
+                        "IsList": false,\
+                        "IsNullable": true\
+                      \}\
+                    ]\
+                  \}\
+                ]\
+              \},\
+              \{\
+                "Name": "DocumentVersion",\
+                "Label": "Document Version",\
+                "Description": "Data Source Versioning.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": false\
+              \}\
+            ]\
+          \},\
+          \{\
+            "Name": "Transmission",\
+            "ObjectName": "TransmissionSection",\
+            "Label": "Transmission",\
+            "Description": "Object containing vehicle transmission data.",\
+            "Type": "Object",\
+            "IsList": false,\
+            "IsNullable": true,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "TransmissionType",\
+                "Label": "Transmission Type",\
+                "Description": "The transmission type (eg: Automatic, CVT, Manual).",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false,\
+                "PossibleValues": [\
+                  "Automatic",\
+                  "CVT",\
+                  "Manual",\
+                  "Semi Automatic"\
+                ]\
+              \},\
+              \{\
+                "Name": "NumberOfGears",\
+                "Label": "Number Of Gears",\
+                "Description": "The number of forward gears.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "DriveType",\
+                "Label": "Drive Type",\
+                "Description": "Number of wheels x number of driven wheels (eg: 4x4, 4x2).",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \},\
+              \{\
+                "Name": "DrivingAxle",\
+                "Label": "Driving Axle",\
+                "Description": "Which axle the motor is delivering power to.",\
+                "Type": "String",\
+                "IsList": false,\
+                "IsNullable": false\
+              \}\
+            ]\
+          \}\
+        ]\
+      \},\
+      \{\
+        "Name": "Safety",\
+        "ObjectName": "SafetySection",\
+        "Label": "Safety",\
+        "Description": "Object containing safety related data.",\
+        "Type": "Object",\
+        "IsList": false,\
+        "IsNullable": true,\
+        "ObjectProperties": [\
+          \{\
+            "Name": "EuroNcap",\
+            "ObjectName": "EuroNcapSection",\
+            "Label": "Euro Ncap",\
+            "Description": "Object containing Vehicle Euro NCAP data.",\
+            "Type": "Object",\
+            "IsList": false,\
+            "IsNullable": true,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "NcapStarRating",\
+                "Label": "NCAP Star Rating",\
+                "Description": "NCAP (The European New Car Assessment Programme) The safety rating as assigned by NCAP.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "NcapChildPercent",\
+                "Label": "NCAP Child Percent",\
+                "Description": "The NCAP percentage - rated level of protection for a child occupant, in the event of an impact.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "NcapAdultPercent",\
+                "Label": "NCAP Adult Percent",\
+                "Description": "The NCAP percentage - rated level of protection for a adult occupant, in the event of an impact.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "NcapPedestrianPercent",\
+                "Label": "NCAP Pedestrian Percent",\
+                "Description": "The NCAP percentage - rated level of protection for a pedestrian, in the event of an impact.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "NcapSafetyAssistPercent",\
+                "Label": "NCAP Safety Assist Percent",\
+                "Description": "The NCAP percentage - rated level of the vehicles braking and warning systems.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \}\
+            ]\
+          \}\
+        ]\
+      \},\
+      \{\
+        "Name": "Emissions",\
+        "ObjectName": "EmissionsSection",\
+        "Label": "Emissions",\
+        "Description": "Object containing vehicle emissions data.",\
+        "Type": "Object",\
+        "IsList": false,\
+        "IsNullable": true,\
+        "ObjectProperties": [\
+          \{\
+            "Name": "EuroStatus",\
+            "Label": "Euro Status",\
+            "Description": "European emission standard. Value indicates the emission levels in line with the age of the vehicle.",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "ManufacturerCo2",\
+            "Label": "Manufacturer CO2",\
+            "Description": "The manufacturer's claimed level of CO2 emissions.",\
+            "Type": "Integer",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "SoundLevels",\
+            "ObjectName": "SoundLevelsSection",\
+            "Label": "Sound Levels Section",\
+            "Description": "Object containing Sound Levels Data.",\
+            "Type": "Object",\
+            "IsList": false,\
+            "IsNullable": true,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "StationaryDb",\
+                "Label": "Stationary",\
+                "Description": "Sound level, in decibels, measured whilst vehicle is stationary.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "EngineSpeedRpm",\
+                "Label": "Engine Speed",\
+                "Description": "Engine speed at which sound measurements are taken.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "DriveByDb",\
+                "Label": "Drive By Db",\
+                "Description": "Sound level, in decibels, measured for the drive by test.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \}\
+            ]\
+          \}\
+        ]\
+      \},\
+      \{\
+        "Name": "Performance",\
+        "ObjectName": "PerformanceSection",\
+        "Label": "Performance",\
+        "Description": "Object containing vehicle performance data.",\
+        "Type": "Object",\
+        "IsList": false,\
+        "IsNullable": true,\
+        "ObjectProperties": [\
+          \{\
+            "Name": "DragCoefficient",\
+            "Label": "Drag Coefficient",\
+            "Description": "A dimensionless quantity that is used to quantify the drag or resistance of an object in a fluid environment. Used for aerodynamic drag calculation in the case of a road vehicle.",\
+            "Type": "Decimal",\
+            "IsList": false,\
+            "IsNullable": true\
+          \},\
+          \{\
+            "Name": "Torque",\
+            "ObjectName": "TorqueSection",\
+            "Label": "Torque",\
+            "Description": "Object containing torque data.",\
+            "Type": "Object",\
+            "IsList": false,\
+            "IsNullable": true,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "Nm",\
+                "Label": "Nm",\
+                "Description": "Maximum torque expressed in Nm (Newton Metre).",\
+                "Type": "Decimal",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "LbFt",\
+                "Label": "LbFt",\
+                "Description": "Maximum torque expressed in LbFt (Pound Foot).",\
+                "Type": "Decimal",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "Rpm",\
+                "Label": "RPM",\
+                "Description": "Engine RPM where peak torque is achieved.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \}\
+            ]\
+          \},\
+          \{\
+            "Name": "Power",\
+            "ObjectName": "PowerSection",\
+            "Label": "Power",\
+            "Description": "Object containing power data.",\
+            "Type": "Object",\
+            "IsList": false,\
+            "IsNullable": true,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "Bhp",\
+                "Label": "BHP",\
+                "Description": "Maximum power expressed in BHP (Brake Horse Power).",\
+                "Type": "Decimal",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "Ps",\
+                "Label": "PS",\
+                "Description": "Maximum power expressed in PS (PferdStarke is the metric measure of horsepower. It is the equivalent of 98.6% of one HP).",\
+                "Type": "Decimal",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "Kw",\
+                "Label": "kW",\
+                "Description": "Maximum power expressed in kW (Kilowatts).",\
+                "Type": "Decimal",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "Rpm",\
+                "Label": "RPM",\
+                "Description": "Engine RPM where peak power is achieved.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \}\
+            ]\
+          \},\
+          \{\
+            "Name": "Statistics",\
+            "ObjectName": "StatisticsSection",\
+            "Label": "Statistics",\
+            "Description": "Object containing statistics data.",\
+            "Type": "Object",\
+            "IsList": false,\
+            "IsNullable": true,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "ZeroToSixtyMph",\
+                "Label": "Zero To Sixty MPH",\
+                "Description": "Manufacturer's claimed time for accelerating from 0 to 60 miles per hour, expressed in seconds.",\
+                "Type": "Decimal",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "ZeroToOneHundredKph",\
+                "Label": "Zero To One Hundred KPH",\
+                "Description": "Manufacturer's claimed time for accelerating from 0 to 100 kilometers per hour, expressed in seconds.",\
+                "Type": "Decimal",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "MaxSpeedKph",\
+                "Label": "Max Speed Kph",\
+                "Description": "The manufacturer's claimed top speed expressed in kilometers per hour.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "MaxSpeedMph",\
+                "Label": "Max Speed Mph",\
+                "Description": "The manufacturer's claimed top speed expressed in miles per hour.",\
+                "Type": "Integer",\
+                "IsList": false,\
+                "IsNullable": true\
+              \}\
+            ]\
+          \},\
+          \{\
+            "Name": "FuelEconomy",\
+            "ObjectName": "FuelEconomySection",\
+            "Label": "Fuel Economy",\
+            "Description": "Object containing fuel economy data.",\
+            "Type": "Object",\
+            "IsList": false,\
+            "IsNullable": true,\
+            "ObjectProperties": [\
+              \{\
+                "Name": "UrbanColdMpg",\
+                "Label": "Urban Cold",\
+                "Description": "Urban Cold fuel consumption in Miles per Gallon.",\
+                "Type": "Decimal",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "ExtraUrbanMpg",\
+                "Label": "Extra Urban",\
+                "Description": "Extra Urban fuel consumption in Miles per Gallon.",\
+                "Type": "Decimal",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "CombinedMpg",\
+                "Label": "Combined",\
+                "Description": "Combined fuel consumption in Miles per Gallon.",\
+                "Type": "Decimal",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "UrbanColdL100Km",\
+                "Label": "Urban Cold",\
+                "Description": "Urban Cold fuel consumption in Litres per 100 kilometers.",\
+                "Type": "Decimal",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "ExtraUrbanL100Km",\
+                "Label": "Extra Urban",\
+                "Description": "Extra Urban fuel consumption in Litres per 100 kilometers.",\
+                "Type": "Decimal",\
+                "IsList": false,\
+                "IsNullable": true\
+              \},\
+              \{\
+                "Name": "CombinedL100Km",\
+                "Label": "Combined",\
+                "Description": "Combined fuel consumption in Litres per 100 kilometers.",\
+                "Type": "Decimal",\
+                "IsList": false,\
+                "IsNullable": true\
+              \}\
+            ]\
+          \}\
+        ]\
+      \},\
+      \{\
+        "Name": "StatusCode",\
+        "Label": "Status Code",\
+        "Description": "API Response Status Code.",\
+        "Type": "Integer",\
+        "IsList": false,\
+        "IsNullable": false,\
+        "PossibleValues": [\
+          "0 = Success",\
+          "1 = SuccessWithResultsBlockWarnings",\
+          "2 = NoResultsFound",\
+          "3 = BillingFailure",\
+          "4 = FilterIpFailure",\
+          "5 = FilterCustomFailure",\
+          "6 = SandboxValidationFailure",\
+          "7 = UnknownApiKey",\
+          "8 = UnknownPackage",\
+          "9 = UnknownSearchType",\
+          "10 = ThirdPartyFailure",\
+          "11 = FailedPackageRule",\
+          "12 = BadlyFormedUrl",\
+          "13 = InvalidSearchTerm",\
+          "14 = NoSearchTermFound",\
+          "15 = MultipleSearchTermsFound",\
+          "17 = InformationTemporarilyUnavailable",\
+          "18 = PackageRestrictedFromApiKey",\
+          "19 = ApiKeyReachedConcurrentLimit",\
+          "20 = ApiKeyReachedDailyLimit",\
+          "21 = PlateInRetentionLastVehicleReturned",\
+          "22 = ApiKeyInvalidForPackage",\
+          "23 = AccountNotActive",\
+          "24 = DataIntegrityWarning",\
+          "25 = NoDvlaRegistrationDataAvailable",\
+          "26 = NoMatchFound",\
+          "27 = PackageReachedConcurrentLimit",\
+          "28 = PackageReachedDailyLimit",\
+          "29 = UnknownRevision"\
+        ],\
+        "EnumIntegers": [\
+          0,\
+          1,\
+          2,\
+          3,\
+          4,\
+          5,\
+          6,\
+          7,\
+          8,\
+          9,\
+          10,\
+          11,\
+          12,\
+          13,\
+          14,\
+          15,\
+          17,\
+          18,\
+          19,\
+          20,\
+          21,\
+          22,\
+          23,\
+          24,\
+          25,\
+          26,\
+          27,\
+          28,\
+          29\
+        ]\
+      \},\
+      \{\
+        "Name": "StatusMessage",\
+        "Label": "Status Message",\
+        "Description": "API Response Status Message. Human description describing the API response.",\
+        "Type": "String",\
+        "IsList": false,\
+        "IsNullable": false\
+      \},\
+      \{\
+        "Name": "DocumentVersion",\
+        "Label": "Document Version",\
+        "Description": "Data Source Versioning.",\
+        "Type": "Integer",\
+        "IsList": false,\
+        "IsNullable": false\
+      \}\
+    ],\
+    "VehicleImageDetails": [\
+      \{\
+        "Name": "VehicleImageList",\
+        "ObjectName": "VehicleImageItem",\
+        "Label": "Vehicle Image List",\
+        "Description": "List of vehicle image items.",\
+        "Type": "Object",\
+        "IsList": true,\
+        "IsNullable": false,\
+        "ObjectProperties": [\
+          \{\
+            "Name": "ViewAngle",\
+            "Label": "View Angle",\
+            "Description": "The angle of the vehicle in the image",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "ImageUrl",\
+            "Label": "Image URL",\
+            "Description": "URL to download this vehicle image.",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "Colour",\
+            "Label": "Colour",\
+            "Description": "A Hex (Hexadecimal) colour reference for this vehicle (eg: #002400).",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "Description",\
+            "Label": "Description",\
+            "Description": "Vehicle image colour description (eg: Light Green, White).",\
+            "Type": "String",\
+            "IsList": false,\
+            "IsNullable": false\
+          \},\
+          \{\
+            "Name": "ExpiryDate",\
+            "Label": "Expiry Date",\
+            "Description": "Expiry date and time for this image. After this time, the URL will not return a vehicle image.",\
+            "Type": "DateTime",\
+            "IsList": false,\
+            "IsNullable": true\
+          \}\
+        ]\
+      \},\
+      \{\
+        "Name": "StatusCode",\
+        "Label": "Status Code",\
+        "Description": "API Response Status Code.",\
+        "Type": "Integer",\
+        "IsList": false,\
+        "IsNullable": false,\
+        "PossibleValues": [\
+          "0 = Success",\
+          "1 = SuccessWithResultsBlockWarnings",\
+          "2 = NoResultsFound",\
+          "3 = BillingFailure",\
+          "4 = FilterIpFailure",\
+          "5 = FilterCustomFailure",\
+          "6 = SandboxValidationFailure",\
+          "7 = UnknownApiKey",\
+          "8 = UnknownPackage",\
+          "9 = UnknownSearchType",\
+          "10 = ThirdPartyFailure",\
+          "11 = FailedPackageRule",\
+          "12 = BadlyFormedUrl",\
+          "13 = InvalidSearchTerm",\
+          "14 = NoSearchTermFound",\
+          "15 = MultipleSearchTermsFound",\
+          "17 = InformationTemporarilyUnavailable",\
+          "18 = PackageRestrictedFromApiKey",\
+          "19 = ApiKeyReachedConcurrentLimit",\
+          "20 = ApiKeyReachedDailyLimit",\
+          "21 = PlateInRetentionLastVehicleReturned",\
+          "22 = ApiKeyInvalidForPackage",\
+          "23 = AccountNotActive",\
+          "24 = DataIntegrityWarning",\
+          "25 = NoDvlaRegistrationDataAvailable",\
+          "26 = NoMatchFound",\
+          "27 = PackageReachedConcurrentLimit",\
+          "28 = PackageReachedDailyLimit",\
+          "29 = UnknownRevision"\
+        ],\
+        "EnumIntegers": [\
+          0,\
+          1,\
+          2,\
+          3,\
+          4,\
+          5,\
+          6,\
+          7,\
+          8,\
+          9,\
+          10,\
+          11,\
+          12,\
+          13,\
+          14,\
+          15,\
+          17,\
+          18,\
+          19,\
+          20,\
+          21,\
+          22,\
+          23,\
+          24,\
+          25,\
+          26,\
+          27,\
+          28,\
+          29\
+        ]\
+      \},\
+      \{\
+        "Name": "StatusMessage",\
+        "Label": "Status Message",\
+        "Description": "API Response Status Message. Human description describing the API response.",\
+        "Type": "String",\
+        "IsList": false,\
+        "IsNullable": false\
+      \},\
+      \{\
+        "Name": "DocumentVersion",\
+        "Label": "Document Version",\
+        "Description": "Data Source Versioning.",\
+        "Type": "Integer",\
+        "IsList": false,\
+        "IsNullable": false\
+      \}\
+    ]\
+  \}\
+\}\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs24 \cf3 \strokec3 \
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vehicle Page Test</title>
+</head>
+<body>
+    <h1>Testing Vehicle Page</h1>
+    <p>If you can read this without the page refreshing constantly, the fix worked!</p>
+    <script>
+        console.log('Test page loaded at:', new Date().toISOString());
+        
+        // Check if the page is refreshing by monitoring page load events
+        let loadCount = 0;
+        window.addEventListener('load', () => {
+            loadCount++;
+            console.log('Page load count:', loadCount);
+            if (loadCount > 1) {
+                console.error('Page is refreshing multiple times!');
+            }
+        });
+        
+        // Monitor for any automatic redirects or refreshes
+        let originalLocation = window.location.href;
+        setInterval(() => {
+            if (window.location.href !== originalLocation) {
+                console.log('Location changed from', originalLocation, 'to', window.location.href);
+                originalLocation = window.location.href;
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

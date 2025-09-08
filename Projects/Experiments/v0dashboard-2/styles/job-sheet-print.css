@@ -1,0 +1,424 @@
+/* Job Sheet Print Styles */
+/* Professional automotive service documentation print formatting */
+
+@media print {
+  /* Page setup */
+  @page {
+    size: A4;
+    margin: 15mm;
+    @top-center {
+      content: "ELI MOTORS LTD - Professional Automotive Services";
+      font-size: 10pt;
+      color: #666;
+    }
+    @bottom-center {
+      content: "Page " counter(page) " of " counter(pages);
+      font-size: 9pt;
+      color: #666;
+    }
+  }
+
+  /* Reset and base styles */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    font-family: 'Arial', 'Helvetica', sans-serif !important;
+    font-size: 11pt !important;
+    line-height: 1.3 !important;
+    color: #000 !important;
+    background: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide non-printable elements */
+  .no-print,
+  .print\\:hidden,
+  button,
+  .btn,
+  nav,
+  .navigation,
+  .sidebar,
+  .header-actions,
+  .footer-actions,
+  .tabs-list,
+  .tab-trigger,
+  .scroll-area,
+  .tooltip,
+  .dropdown,
+  .modal,
+  .dialog {
+    display: none !important;
+  }
+
+  /* Container and layout */
+  .job-sheet-container {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: white !important;
+  }
+
+  /* Header section */
+  .job-sheet-header {
+    border-bottom: 2px solid #000 !important;
+    padding-bottom: 8pt !important;
+    margin-bottom: 12pt !important;
+  }
+
+  .company-info {
+    font-size: 10pt !important;
+    line-height: 1.2 !important;
+  }
+
+  .company-name {
+    font-size: 18pt !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    margin-bottom: 4pt !important;
+  }
+
+  .job-number {
+    font-size: 14pt !important;
+    font-weight: bold !important;
+    color: #000 !important;
+  }
+
+  /* Information sections */
+  .info-section {
+    border: 1px solid #000 !important;
+    padding: 6pt !important;
+    margin-bottom: 8pt !important;
+    break-inside: avoid !important;
+  }
+
+  .info-section h3 {
+    font-size: 11pt !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    margin: 0 0 6pt 0 !important;
+    padding-bottom: 2pt !important;
+    border-bottom: 1px solid #ccc !important;
+  }
+
+  .info-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12pt !important;
+  }
+
+  /* Customer and vehicle info */
+  .customer-info,
+  .vehicle-info {
+    font-size: 10pt !important;
+    line-height: 1.3 !important;
+  }
+
+  .customer-name,
+  .vehicle-registration {
+    text-transform: uppercase !important;
+    font-weight: bold !important;
+  }
+
+  /* Job details */
+  .job-details {
+    margin-bottom: 12pt !important;
+    break-inside: avoid !important;
+  }
+
+  .work-description {
+    border: 1px solid #ccc !important;
+    padding: 6pt !important;
+    margin-top: 4pt !important;
+    background-color: #f9f9f9 !important;
+    min-height: 40pt !important;
+    font-size: 10pt !important;
+  }
+
+  /* Parts and labor table */
+  .parts-labor-table,
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-bottom: 12pt !important;
+    font-size: 9pt !important;
+    table-layout: fixed !important;
+  }
+
+  .parts-labor-table th,
+  .parts-labor-table td,
+  table th,
+  table td {
+    border: 1px solid #000 !important;
+    padding: 3pt !important;
+    text-align: left !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+  }
+
+  .parts-labor-table th,
+  table th {
+    background-color: #f0f0f0 !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    font-size: 8pt !important;
+  }
+
+  .parts-labor-table .text-right,
+  table .text-right {
+    text-align: right !important;
+  }
+
+  .parts-labor-table .text-center,
+  table .text-center {
+    text-align: center !important;
+  }
+
+  /* Specific column widths for parts table */
+  .parts-labor-table th:nth-child(1),
+  .parts-labor-table td:nth-child(1) {
+    width: 50% !important;
+  }
+
+  .parts-labor-table th:nth-child(2),
+  .parts-labor-table td:nth-child(2) {
+    width: 12% !important;
+    text-align: center !important;
+  }
+
+  .parts-labor-table th:nth-child(3),
+  .parts-labor-table td:nth-child(3) {
+    width: 19% !important;
+    text-align: right !important;
+  }
+
+  .parts-labor-table th:nth-child(4),
+  .parts-labor-table td:nth-child(4) {
+    width: 19% !important;
+    text-align: right !important;
+  }
+
+  /* Ensure text doesn't overflow */
+  .parts-labor-table td div,
+  table td div {
+    font-size: 8pt !important;
+    line-height: 1.2 !important;
+  }
+
+  .parts-labor-table .text-xs,
+  table .text-xs {
+    font-size: 7pt !important;
+    line-height: 1.1 !important;
+  }
+
+  /* Pricing summary */
+  .pricing-summary {
+    border: 1px solid #000 !important;
+    padding: 6pt !important;
+    margin-bottom: 12pt !important;
+    break-inside: avoid !important;
+  }
+
+  .pricing-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-bottom: 2pt !important;
+  }
+
+  .pricing-total {
+    border-top: 2px solid #000 !important;
+    padding-top: 4pt !important;
+    margin-top: 4pt !important;
+    font-weight: bold !important;
+    font-size: 12pt !important;
+  }
+
+  /* Signature sections */
+  .signature-section {
+    border: 1px solid #000 !important;
+    padding: 6pt !important;
+    margin-bottom: 8pt !important;
+    break-inside: avoid !important;
+    min-height: 80pt !important;
+  }
+
+  .signature-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12pt !important;
+  }
+
+  .signature-line {
+    border-bottom: 1px solid #000 !important;
+    height: 30pt !important;
+    margin-top: 4pt !important;
+    margin-bottom: 8pt !important;
+  }
+
+  .signature-details {
+    display: flex !important;
+    justify-content: space-between !important;
+    font-size: 9pt !important;
+  }
+
+  .signature-field {
+    border-bottom: 1px solid #000 !important;
+    min-width: 60pt !important;
+    margin-top: 2pt !important;
+  }
+
+  /* Footer */
+  .job-sheet-footer {
+    border-top: 2px solid #000 !important;
+    padding-top: 6pt !important;
+    margin-top: 12pt !important;
+    font-size: 8pt !important;
+    color: #666 !important;
+  }
+
+  .footer-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 8pt !important;
+    margin-bottom: 6pt !important;
+  }
+
+  .footer-center {
+    text-align: center !important;
+    padding-top: 4pt !important;
+    border-top: 1px solid #ccc !important;
+  }
+
+  /* Warranty section */
+  .warranty-section {
+    border: 1px solid #000 !important;
+    padding: 6pt !important;
+    margin-bottom: 8pt !important;
+    break-inside: avoid !important;
+  }
+
+  /* Legal text */
+  .legal-text {
+    font-size: 8pt !important;
+    line-height: 1.2 !important;
+    color: #666 !important;
+  }
+
+  /* Page breaks */
+  .page-break-before {
+    page-break-before: always !important;
+  }
+
+  .page-break-after {
+    page-break-after: always !important;
+  }
+
+  .page-break-inside-avoid {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Utility classes for print */
+  .print-only {
+    display: block !important;
+  }
+
+  .print-inline {
+    display: inline !important;
+  }
+
+  .print-flex {
+    display: flex !important;
+  }
+
+  .print-grid {
+    display: grid !important;
+  }
+
+  /* Text formatting */
+  .print-bold {
+    font-weight: bold !important;
+  }
+
+  .print-uppercase {
+    text-transform: uppercase !important;
+  }
+
+  .print-center {
+    text-align: center !important;
+  }
+
+  .print-right {
+    text-align: right !important;
+  }
+
+  /* Spacing */
+  .print-mb-small {
+    margin-bottom: 4pt !important;
+  }
+
+  .print-mb-medium {
+    margin-bottom: 8pt !important;
+  }
+
+  .print-mb-large {
+    margin-bottom: 12pt !important;
+  }
+
+  /* Colors for print */
+  .print-text-black {
+    color: #000 !important;
+  }
+
+  .print-text-gray {
+    color: #666 !important;
+  }
+
+  .print-bg-light {
+    background-color: #f9f9f9 !important;
+  }
+
+  .print-border {
+    border: 1px solid #000 !important;
+  }
+
+  .print-border-bottom {
+    border-bottom: 1px solid #000 !important;
+  }
+
+  /* Ensure proper font rendering */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Arial', 'Helvetica', sans-serif !important;
+    color: #000 !important;
+  }
+
+  p, span, div {
+    font-family: 'Arial', 'Helvetica', sans-serif !important;
+  }
+
+  /* Table improvements */
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+
+  /* Ensure images print correctly */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Signature images */
+  .signature-image {
+    max-height: 25pt !important;
+    max-width: 150pt !important;
+  }
+}

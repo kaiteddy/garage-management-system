@@ -1,0 +1,35 @@
+# Clean Professional URLs - ELI MOTORS LTD
+# ========================================
+
+## GarageManagerPro - MOT Management Platform
+Dashboard: https://garage-manager.eu.ngrok.io
+
+Clean Webhook URLs:
+- WhatsApp: https://garage-manager.eu.ngrok.io/api/webhooks/whatsapp
+- SMS: https://garage-manager.eu.ngrok.io/api/webhooks/sms
+- Voice: https://garage-manager.eu.ngrok.io/api/webhooks/voice
+- Status: https://garage-manager.eu.ngrok.io/api/webhooks/status
+
+## ProSearchIntelligence - Analytics Platform
+Dashboard: https://pro-search.eu.ngrok.io
+
+Clean Webhook URLs:
+- Analytics: https://pro-search.eu.ngrok.io/api/webhooks/analytics
+- Reports: https://pro-search.eu.ngrok.io/api/webhooks/reports
+- Search: https://pro-search.eu.ngrok.io/api/webhooks/search
+
+## Start Commands:
+# Start both tunnels simultaneously:
+ngrok start garage-manager-pro pro-search-intelligence --config=ngrok-clean-urls.yml
+
+# Or start individually:
+ngrok start garage-manager-pro --config=ngrok-clean-urls.yml
+ngrok start pro-search-intelligence --config=ngrok-clean-urls.yml
+
+## Benefits:
+✅ Clean, professional URLs
+✅ No server hostnames visible
+✅ Perfect for webhooks
+✅ Multiple simultaneous tunnels
+✅ Reserved domains (upgraded account)
+✅ Professional appearance for clients

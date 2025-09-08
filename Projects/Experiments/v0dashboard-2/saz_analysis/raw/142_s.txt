@@ -1,0 +1,16 @@
+HTTP/2 200
+content-type: application/javascript
+set-cookie: bcookie="v=2&6410250b-31a1-45cc-8c20-e4837b01e028"; Domain=.linkedin.com; Expires=Fri, 07-Aug-2026 15:06:54 GMT; Path=/; Secure; SameSite=None
+set-cookie: li_gc=MTswOzE3NTQ1NzkyMTQ7MjswMjET7Mw1i3BCDdtJEtHknduvzxXfrrrKFxbMakV+TYSQww==; Domain=.linkedin.com; Expires=Tue, 03 Feb 2026 15:06:54 GMT; Path=/; Secure; SameSite=None
+set-cookie: lidc="b=TGST04:s=T:r=T:a=T:p=T:g=3508:u=1:x=1:i=1754579214:t=1754665614:v=2:sig=AQHU4f0MrksZ0wOHGHfAcwlfM02cpwhR"; Expires=Fri, 08 Aug 2025 15:06:54 GMT; domain=.linkedin.com; Path=/; SameSite=None; Secure
+linkedin-action: 1
+x-li-fabric: prod-ltx1
+x-li-pop: afd-prod-ltx1-x
+x-li-proto: http/2
+x-li-uuid: AAY7x87P3HYqpgixEmduuw==
+x-cache: CONFIG_NOCACHE
+alt-svc: h3=":443"; ma=86400
+x-msedge-ref: Ref A: 2A1607C397A740A7A6FD993C1BA65682 Ref B: LTSEDGE1707 Ref C: 2025-08-07T15:06:54Z
+date: Thu, 07 Aug 2025 15:06:53 GMT
+content-length: 0
+

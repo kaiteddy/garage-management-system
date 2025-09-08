@@ -1,0 +1,58 @@
+# 🐳 Docker Import Container - Bypass Terminal Issues
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apk add --no-cache \
+    bash \
+    curl \
+    git
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Create import scripts directory
+RUN mkdir -p /app/import-scripts
+
+# Copy import scripts
+COPY standalone-prosearch-access.js /app/import-scripts/
+COPY find-import-solutions.cjs /app/import-scripts/
+COPY bulk-import.cjs /app/import-scripts/
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV DOCKER_IMPORT=true
+
+# Create entrypoint script
+RUN echo '#!/bin/bash' > /app/docker-import.sh && \
+    echo 'echo "🐳 DOCKER IMPORT CONTAINER STARTED"' >> /app/docker-import.sh && \
+    echo 'echo "=================================="' >> /app/docker-import.sh && \
+    echo 'echo "⏰ Time: $(date)"' >> /app/docker-import.sh && \
+    echo 'echo ""' >> /app/docker-import.sh && \
+    echo 'echo "🔍 CHECKING PROSEARCH FOLDER..."' >> /app/docker-import.sh && \
+    echo 'if [ -d "/prosearch-data" ]; then' >> /app/docker-import.sh && \
+    echo '  echo "✅ ProSearch data mounted successfully"' >> /app/docker-import.sh && \
+    echo '  ls -la /prosearch-data/' >> /app/docker-import.sh && \
+    echo 'else' >> /app/docker-import.sh && \
+    echo '  echo "❌ ProSearch data not mounted"' >> /app/docker-import.sh && \
+    echo 'fi' >> /app/docker-import.sh && \
+    echo 'echo ""' >> /app/docker-import.sh && \
+    echo 'echo "🚀 RUNNING IMPORT PROCESS..."' >> /app/docker-import.sh && \
+    echo 'node /app/import-scripts/standalone-prosearch-access.js' >> /app/docker-import.sh && \
+    echo 'echo ""' >> /app/docker-import.sh && \
+    echo 'echo "🎉 DOCKER IMPORT COMPLETE!"' >> /app/docker-import.sh && \
+    chmod +x /app/docker-import.sh
+
+# Expose port for web interface
+EXPOSE 3000
+
+# Default command
+CMD ["/app/docker-import.sh"]
