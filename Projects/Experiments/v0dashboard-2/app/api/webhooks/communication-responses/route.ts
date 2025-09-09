@@ -366,19 +366,35 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
     
-    // Twilio webhook verification
+    // WhatsApp and Twilio webhook verification
+    const hubMode = searchParams.get('hub.mode')
     const hubChallenge = searchParams.get('hub.challenge')
     const hubVerifyToken = searchParams.get('hub.verify_token')
-    
+
     if (hubChallenge && hubVerifyToken) {
-      // Verify the token matches what we expect
-      const expectedToken = process.env.TWILIO_WEBHOOK_VERIFY_TOKEN || 'eli_motors_webhook_2024'
-      
-      if (hubVerifyToken === expectedToken) {
-        console.log('[WEBHOOK-RESPONSES] ✅ Webhook verification successful')
-        return new Response(hubChallenge, { status: 200 })
+      // Support both WhatsApp and Twilio verification tokens
+      const whatsappToken = process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN || 'whatsapp_verify_2024_elimotors'
+      const twilioToken = process.env.TWILIO_WEBHOOK_VERIFY_TOKEN || 'eli_motors_webhook_2024'
+
+      const isValidToken = hubVerifyToken === whatsappToken || hubVerifyToken === twilioToken
+      const isWhatsAppVerification = hubMode === 'subscribe'
+
+      if (isValidToken) {
+        const verifyType = hubVerifyToken === whatsappToken ? 'WhatsApp' : 'Twilio'
+        console.log(`[WEBHOOK-RESPONSES] ✅ ${verifyType} webhook verification successful`)
+
+        // WhatsApp requires plain text response, Twilio accepts either
+        return new Response(hubChallenge, {
+          status: 200,
+          headers: { 'Content-Type': 'text/plain' }
+        })
       } else {
         console.log('[WEBHOOK-RESPONSES] ❌ Webhook verification failed - invalid token')
+        console.log(`[WEBHOOK-RESPONSES] Expected WhatsApp: "${whatsappToken}" (length: ${whatsappToken.length})`)
+        console.log(`[WEBHOOK-RESPONSES] Expected Twilio: "${twilioToken}" (length: ${twilioToken.length})`)
+        console.log(`[WEBHOOK-RESPONSES] Got: "${hubVerifyToken}" (length: ${hubVerifyToken.length})`)
+        console.log(`[WEBHOOK-RESPONSES] WhatsApp env var exists: ${!!process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN}`)
+        console.log(`[WEBHOOK-RESPONSES] Twilio env var exists: ${!!process.env.TWILIO_WEBHOOK_VERIFY_TOKEN}`)
         return new Response('Forbidden', { status: 403 })
       }
     }
@@ -402,7 +418,8 @@ export async function GET(request: Request) {
         status: 'active',
         endpoint: '/api/webhooks/communication-responses',
         supportedTypes: ['whatsapp', 'sms'],
-        verificationToken: process.env.TWILIO_WEBHOOK_VERIFY_TOKEN ? 'configured' : 'not_configured'
+        verificationToken: process.env.TWILIO_WEBHOOK_VERIFY_TOKEN ? 'configured' : 'not_configured',
+        whatsappVerificationToken: process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN ? 'configured' : 'not_configured'
       },
       recentActivity: stats[0]
     })
