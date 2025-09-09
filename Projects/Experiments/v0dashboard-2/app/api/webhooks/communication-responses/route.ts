@@ -373,7 +373,7 @@ export async function GET(request: Request) {
 
     if (hubChallenge && hubVerifyToken) {
       // Support both WhatsApp and Twilio verification tokens
-      const whatsappToken = process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN || 'whatsapp_verify_2024_elimotors'
+      const whatsappToken = 'whatsapp_verify_2024_elimotors' // Temporarily hardcoded for debugging
       const twilioToken = process.env.TWILIO_WEBHOOK_VERIFY_TOKEN || 'eli_motors_webhook_2024'
 
       const isValidToken = hubVerifyToken === whatsappToken || hubVerifyToken === twilioToken
