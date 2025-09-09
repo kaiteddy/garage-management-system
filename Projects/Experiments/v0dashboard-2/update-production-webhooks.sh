@@ -6,7 +6,7 @@ echo ""
 
 # Production URLs
 PRODUCTION_URL="https://garagemanagerpro.vercel.app"
-PHONE_NUMBER="+447488896449"
+PHONE_NUMBER="+15558340240"
 
 echo "📱 Phone Number: $PHONE_NUMBER"
 echo "🌐 Production URL: $PRODUCTION_URL"
@@ -32,7 +32,7 @@ echo ""
 
 echo "📋 NEW WEBHOOK URLS:"
 echo "==================="
-echo "🗣️  Voice URL: $PRODUCTION_URL/api/voice/webhook"
+echo "🗣️  Voice URL: $PRODUCTION_URL/api/twilio/voice"
 echo "💬 SMS URL: $PRODUCTION_URL/api/webhooks/communication-responses"
 echo "📱 WhatsApp URL: $PRODUCTION_URL/api/webhooks/communication-responses"
 echo "📊 Status Callback: $PRODUCTION_URL/api/webhooks/status-callback"
@@ -44,7 +44,7 @@ echo "Testing webhook endpoints..."
 
 # Test each webhook endpoint
 echo "Testing Voice webhook..."
-curl -s -o /dev/null -w "Voice webhook: %{http_code}\n" "$PRODUCTION_URL/api/voice/webhook"
+curl -s -o /dev/null -w "Voice webhook: %{http_code}\n" "$PRODUCTION_URL/api/twilio/voice"
 
 echo "Testing SMS webhook..."
 curl -s -o /dev/null -w "SMS webhook: %{http_code}\n" "$PRODUCTION_URL/api/webhooks/communication-responses"
@@ -66,7 +66,7 @@ echo "======================="
 echo "1. Go to: https://console.twilio.com/us1/develop/phone-numbers/manage/incoming"
 echo "2. Click on: $PHONE_NUMBER"
 echo "3. Verify these URLs are set:"
-echo "   • Voice URL: $PRODUCTION_URL/api/voice/webhook"
+echo "   • Voice URL: $PRODUCTION_URL/api/twilio/voice"
 echo "   • SMS URL: $PRODUCTION_URL/api/webhooks/communication-responses"
 echo "   • Status Callback: $PRODUCTION_URL/api/webhooks/status-callback"
 echo ""

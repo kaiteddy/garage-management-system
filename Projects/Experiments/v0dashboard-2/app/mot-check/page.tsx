@@ -863,7 +863,7 @@ export default function MOTCheckPage() {
               <Button
                 onClick={handleNewSearch}
                 variant="outline"
-                className="bg-white hover:bg-gray-50 border-2 border-gray-200 text-gray-700 font-medium px-6 py-2"
+                className="bg-gray-600 hover:bg-gray-700 border-2 border-gray-600 text-white dark:bg-gray-500 dark:border-gray-500 dark:hover:bg-gray-600 font-medium px-6 py-2"
               >
                 <Search className="h-4 w-4 mr-2" />
                 New Search
@@ -927,7 +927,7 @@ export default function MOTCheckPage() {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="h-7 px-2 bg-green-50 border-green-200 hover:bg-green-100 text-green-700"
+                              className="h-7 px-2 bg-green-600 border-green-600 hover:bg-green-700 text-white dark:bg-green-500 dark:border-green-500 dark:hover:bg-green-600"
                               onClick={() => sendWhatsAppMessage(
                                 customers[0].phone || customers[0].phone_number || '',
                                 `${customers[0].first_name} ${customers[0].last_name}`,
@@ -948,7 +948,7 @@ export default function MOTCheckPage() {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="h-7 px-2 bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700"
+                              className="h-7 px-2 bg-blue-600 border-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:border-blue-500 dark:hover:bg-blue-600"
                               onClick={() => openEmailClient(
                                 customers[0].email,
                                 `${customers[0].first_name} ${customers[0].last_name}`
@@ -973,7 +973,7 @@ export default function MOTCheckPage() {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="h-7 px-2 bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700 ml-2"
+                              className="h-7 px-2 bg-blue-600 border-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:border-blue-500 dark:hover:bg-blue-600 ml-2"
                               onClick={() => {
                                 const fullAddress = [
                                   customers[0].address_line1,
@@ -1111,7 +1111,7 @@ export default function MOTCheckPage() {
                       </div>
                       <button
                         onClick={() => setShowChangeOwnerDialog(true)}
-                        className="w-full h-10 bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 text-blue-700 border border-blue-200 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2"
+                        className="w-full h-10 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 border border-blue-600 dark:border-blue-500 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2"
                       >
                         <User className="w-4 h-4" />
                         <span>Change Owner</span>
@@ -1456,7 +1456,7 @@ export default function MOTCheckPage() {
                                           <Button
                                             size="sm"
                                             variant="outline"
-                                            className="h-8 px-3 bg-green-50 border-green-200 hover:bg-green-100 text-green-700"
+                                            className="h-8 px-3 bg-green-600 border-green-600 hover:bg-green-700 text-white dark:bg-green-500 dark:border-green-500 dark:hover:bg-green-600"
                                             onClick={() => sendWhatsAppMessage(
                                               customerRecord.phone || customerRecord.phone_number || '',
                                               `${customerRecord.first_name} ${customerRecord.last_name}`,
@@ -1477,7 +1477,7 @@ export default function MOTCheckPage() {
                                           <Button
                                             size="sm"
                                             variant="outline"
-                                            className="h-8 px-3 bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700"
+                                            className="h-8 px-3 bg-blue-600 border-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:border-blue-500 dark:hover:bg-blue-600"
                                             onClick={() => openEmailClient(
                                               customerRecord.email,
                                               `${customerRecord.first_name} ${customerRecord.last_name}`
@@ -1504,7 +1504,7 @@ export default function MOTCheckPage() {
                                           <Button
                                             size="sm"
                                             variant="outline"
-                                            className="h-8 px-3 bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700 w-fit"
+                                            className="h-8 px-3 bg-blue-600 border-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:border-blue-500 dark:hover:bg-blue-600 w-fit"
                                             onClick={() => {
                                               const fullAddress = [
                                                 customerRecord.address_line1,

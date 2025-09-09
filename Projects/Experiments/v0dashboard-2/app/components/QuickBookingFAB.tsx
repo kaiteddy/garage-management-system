@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import '../../styles/fab-animations.css'
 
 export default function QuickBookingFAB() {
   const [isOpen, setIsOpen] = useState(false)
@@ -45,10 +46,13 @@ export default function QuickBookingFAB() {
           {quickActions.map((action, index) => (
             <div
               key={action.href}
-              className="flex items-center justify-end"
-              style={{
-                animation: `slideUp 0.3s ease-out ${index * 0.1}s both`
-              }}
+              className={`flex items-center justify-end ${
+                index === 0 ? 'fab-slide-up' :
+                index === 1 ? 'fab-slide-up-delay-1' :
+                index === 2 ? 'fab-slide-up-delay-2' :
+                index === 3 ? 'fab-slide-up-delay-3' :
+                'fab-slide-up-delay-4'
+              }`}
             >
               <div className="mr-3 bg-white px-3 py-2 rounded-lg shadow-lg border">
                 <div className="text-sm font-medium text-gray-900">{action.name}</div>
@@ -76,19 +80,7 @@ export default function QuickBookingFAB() {
         <span className="text-xl">{isOpen ? '✕' : '📅'}</span>
       </button>
 
-      {/* Styles */}
-      <style jsx>{`
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
+
     </div>
   )
 }

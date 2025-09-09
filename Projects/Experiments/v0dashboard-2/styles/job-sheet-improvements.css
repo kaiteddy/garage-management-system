@@ -1,0 +1,203 @@
+/* Job Sheet Readability Improvements */
+
+/* Improve text contrast and readability */
+.job-sheet-container {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Better contrast for labels */
+.job-sheet-label {
+  color: #374151 !important; /* gray-700 */
+  font-weight: 600 !important;
+}
+
+/* Improved input field visibility */
+.job-sheet-input {
+  border: 2px solid #d1d5db !important; /* gray-300 */
+  background-color: #ffffff !important;
+  color: #111827 !important; /* gray-900 */
+}
+
+.job-sheet-input:focus {
+  border-color: #3b82f6 !important; /* blue-500 */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Better status badge contrast */
+.status-badge {
+  font-weight: 600 !important;
+  border-width: 2px !important;
+}
+
+/* Improved card backgrounds */
+.job-sheet-card {
+  background-color: #ffffff !important;
+  border: 2px solid #e5e7eb !important; /* gray-200 */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Better section headers */
+.section-header {
+  color: #1f2937 !important; /* gray-800 */
+  font-weight: 700 !important;
+  border-bottom: 2px solid #e5e7eb !important;
+  padding-bottom: 0.5rem !important;
+  margin-bottom: 1rem !important;
+}
+
+/* Improved table readability */
+.job-sheet-table th {
+  background-color: #f9fafb !important; /* gray-50 */
+  color: #374151 !important; /* gray-700 */
+  font-weight: 600 !important;
+  border-bottom: 2px solid #e5e7eb !important;
+}
+
+.job-sheet-table td {
+  border-bottom: 1px solid #e5e7eb !important;
+  color: #111827 !important; /* gray-900 */
+}
+
+/* Better button contrast */
+.job-sheet-button {
+  font-weight: 500 !important;
+  border-width: 2px !important;
+}
+
+.job-sheet-button:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Improved MOT/TAX status boxes */
+.status-box {
+  border-width: 2px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.status-box:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 12px -2px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Better registration plate styling */
+.registration-plate {
+  background-color: #fde047 !important; /* yellow-300 */
+  color: #000000 !important;
+  border: 3px solid #ca8a04 !important; /* yellow-600 */
+  font-weight: 800 !important;
+  letter-spacing: 0.1em !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Improved vehicle info background */
+.vehicle-info-section {
+  background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%) !important; /* blue-100 to indigo-100 */
+  border-bottom: 3px solid #d1d5db !important;
+}
+
+/* Better contrast for small text */
+.small-text {
+  color: #4b5563 !important; /* gray-600 */
+  font-weight: 500 !important;
+}
+
+/* Improved loading states */
+.loading-spinner {
+  border-color: #3b82f6 !important; /* blue-500 */
+  border-top-color: transparent !important;
+}
+
+/* Better error states */
+.error-text {
+  color: #dc2626 !important; /* red-600 */
+  font-weight: 500 !important;
+}
+
+/* Success states */
+.success-text {
+  color: #059669 !important; /* green-600 */
+  font-weight: 500 !important;
+}
+
+/* Improved dropdown menus */
+.dropdown-menu {
+  background-color: #ffffff !important;
+  border: 2px solid #e5e7eb !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dropdown-item:hover {
+  background-color: #f3f4f6 !important; /* gray-100 */
+  color: #111827 !important;
+}
+
+/* Better modal backgrounds */
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.modal-content {
+  background-color: #ffffff !important;
+  border: 2px solid #e5e7eb !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Improved form sections */
+.form-section {
+  background-color: #ffffff !important;
+  border: 2px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+  padding: 1.5rem !important;
+  margin-bottom: 1rem !important;
+}
+
+/* Better pricing display */
+.price-display {
+  color: #059669 !important; /* green-600 */
+  font-weight: 700 !important;
+  font-size: 1.125rem !important;
+}
+
+/* Improved part badges */
+.part-badge {
+  background-color: #f3f4f6 !important; /* gray-100 */
+  color: #374151 !important; /* gray-700 */
+  border: 1px solid #d1d5db !important;
+  font-weight: 500 !important;
+}
+
+/* Better technical data sections */
+.technical-section {
+  background-color: #f8fafc !important; /* slate-50 */
+  border: 2px solid #e2e8f0 !important; /* slate-200 */
+  border-radius: 0.5rem !important;
+  padding: 1rem !important;
+}
+
+/* Improved oil specification cards */
+.oil-spec-card {
+  border-width: 2px !important;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.oil-spec-card.engine-oil {
+  background-color: #f0fdf4 !important; /* green-50 */
+  border-color: #bbf7d0 !important; /* green-200 */
+}
+
+.oil-spec-card.brake-fluid {
+  background-color: #fef2f2 !important; /* red-50 */
+  border-color: #fecaca !important; /* red-200 */
+}
+
+.oil-spec-card.transmission-oil {
+  background-color: #eff6ff !important; /* blue-50 */
+  border-color: #bfdbfe !important; /* blue-200 */
+}
+
+.oil-spec-card.coolant {
+  background-color: #ecfeff !important; /* cyan-50 */
+  border-color: #a7f3d0 !important; /* cyan-200 */
+}

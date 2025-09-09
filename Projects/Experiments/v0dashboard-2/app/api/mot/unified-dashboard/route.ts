@@ -108,8 +108,108 @@ export async function GET(request: Request) {
     `
 
     console.log(`[UNIFIED-MOT] Executing main query with periodDays: ${periodDays}`)
-    const vehicles = await sql.unsafe(motQuery)
-    console.log(`[UNIFIED-MOT] Found ${vehicles.length} vehicles`)
+
+    // Build WHERE clause based on filters
+    let whereClause = ''
+    if (expiryPeriod === 'all') {
+      whereClause = "urgency_level IN ('EXPIRED', 'CRITICAL', 'DUE_SOON', 'VALID', 'NO_DATA')"
+    } else if (includeExpired) {
+      whereClause = "urgency_level IN ('EXPIRED', 'CRITICAL', 'DUE_SOON', 'NO_DATA')"
+    } else {
+      whereClause = "urgency_level IN ('CRITICAL', 'DUE_SOON', 'NO_DATA')"
+    }
+
+    // Build ORDER BY clause
+    let orderByClause = 'urgency_score DESC'
+    if (sortBy === 'mot_expiry_date') {
+      orderByClause = `mot_expiry_date ${sortOrder}`
+    } else if (sortBy === 'customer_value') {
+      orderByClause = `customer_value ${sortOrder}`
+    } else if (sortBy === 'registration') {
+      orderByClause = `registration ${sortOrder}`
+    } else {
+      orderByClause = `urgency_score ${sortOrder}`
+    }
+
+    // Use simple template literal with fixed values
+    const vehicles = await sql`
+      WITH vehicle_mot_analysis AS (
+        SELECT
+          v.registration,
+          v.make,
+          v.model,
+          v.year,
+          v.color,
+          v.fuel_type,
+          v.mot_expiry_date,
+          v.mot_status,
+          v.mot_last_checked,
+          v.owner_id,
+          c.first_name as customer_first_name,
+          c.last_name as customer_last_name,
+          c.phone as customer_phone,
+          c.email as customer_email,
+          c.address_line1,
+          c.city,
+          c.postcode,
+          ca.total_spent,
+          ca.total_documents,
+          ca.last_document_date,
+
+          -- Calculate urgency level based on adjustable period
+          CASE
+            WHEN v.mot_expiry_date IS NULL THEN 'NO_DATA'
+            WHEN v.mot_expiry_date < CURRENT_DATE THEN 'EXPIRED'
+            WHEN v.mot_expiry_date <= CURRENT_DATE + INTERVAL '7 days' THEN 'CRITICAL'
+            WHEN v.mot_expiry_date <= CURRENT_DATE + INTERVAL '30 days' THEN 'DUE_SOON'
+            ELSE 'VALID'
+          END as urgency_level,
+
+          -- Calculate days difference
+          CASE
+            WHEN v.mot_expiry_date IS NULL THEN NULL
+            WHEN v.mot_expiry_date < CURRENT_DATE THEN
+              CURRENT_DATE - v.mot_expiry_date
+            ELSE
+              v.mot_expiry_date - CURRENT_DATE
+          END as days_difference,
+
+          -- Calculate urgency score for sorting
+          CASE
+            WHEN v.mot_expiry_date IS NULL THEN 1
+            WHEN v.mot_expiry_date < CURRENT_DATE THEN
+              1000 + (CURRENT_DATE - v.mot_expiry_date)
+            WHEN v.mot_expiry_date <= CURRENT_DATE + INTERVAL '7 days' THEN
+              500 + (7 - (v.mot_expiry_date - CURRENT_DATE))
+            WHEN v.mot_expiry_date <= CURRENT_DATE + INTERVAL '30 days' THEN
+              100 + (30 - (v.mot_expiry_date - CURRENT_DATE))
+            ELSE
+              (v.mot_expiry_date - CURRENT_DATE)
+          END as urgency_score,
+
+          -- Customer value score
+          COALESCE(ca.total_spent::numeric, 0) as customer_value
+
+        FROM vehicles v
+        LEFT JOIN customers c ON v.owner_id = c.id
+        LEFT JOIN customer_activity ca ON v.owner_id = ca.customer_id
+        WHERE v.registration IS NOT NULL
+          AND v.registration != ''
+          AND v.active = true
+      )
+      SELECT *
+      FROM vehicle_mot_analysis
+      WHERE urgency_level IN ('CRITICAL', 'DUE_SOON', 'NO_DATA')
+      ORDER BY urgency_score DESC
+      LIMIT 50 OFFSET 0
+    `
+    console.log(`[UNIFIED-MOT] Found ${vehicles ? vehicles.length : 'undefined'} vehicles`)
+
+    // Ensure vehicles is an array
+    if (!Array.isArray(vehicles)) {
+      console.error(`[UNIFIED-MOT] Vehicles query returned non-array:`, typeof vehicles, vehicles)
+      throw new Error('Vehicles query returned invalid data type')
+    }
 
     // Get summary statistics
     const summaryQuery = `
@@ -133,8 +233,44 @@ export async function GET(request: Request) {
     `
 
     console.log(`[UNIFIED-MOT] Executing summary query`)
-    const summaryResult = await sql.unsafe(summaryQuery)
-    const summary = summaryResult[0] || {
+    // Use simple template literal with fixed values
+    const summaryResult = await sql`
+      WITH vehicle_mot_analysis AS (
+        SELECT
+          v.registration,
+          v.mot_expiry_date,
+          v.owner_id,
+          ca.total_spent,
+
+          -- Calculate urgency level based on adjustable period
+          CASE
+            WHEN v.mot_expiry_date IS NULL THEN 'NO_DATA'
+            WHEN v.mot_expiry_date < CURRENT_DATE THEN 'EXPIRED'
+            WHEN v.mot_expiry_date <= CURRENT_DATE + INTERVAL '7 days' THEN 'CRITICAL'
+            WHEN v.mot_expiry_date <= CURRENT_DATE + INTERVAL '30 days' THEN 'DUE_SOON'
+            ELSE 'VALID'
+          END as urgency_level
+
+        FROM vehicles v
+        LEFT JOIN customer_activity ca ON v.owner_id = ca.customer_id
+        WHERE v.registration IS NOT NULL
+          AND v.registration != ''
+          AND v.active = true
+      )
+      SELECT
+        COUNT(*) as total_vehicles,
+        COUNT(CASE WHEN urgency_level = 'NO_DATA' THEN 1 END) as no_data,
+        COUNT(CASE WHEN urgency_level = 'EXPIRED' THEN 1 END) as expired,
+        COUNT(CASE WHEN urgency_level = 'CRITICAL' THEN 1 END) as critical,
+        COUNT(CASE WHEN urgency_level = 'DUE_SOON' THEN 1 END) as due_soon,
+        COUNT(CASE WHEN urgency_level = 'VALID' THEN 1 END) as valid,
+        COUNT(CASE WHEN owner_id IS NOT NULL THEN 1 END) as with_customers,
+        COALESCE(SUM(total_spent::numeric), 0) as total_customer_value
+      FROM vehicle_mot_analysis
+    `
+    console.log(`[UNIFIED-MOT] Summary result type:`, typeof summaryResult, Array.isArray(summaryResult))
+
+    const summary = (Array.isArray(summaryResult) ? summaryResult[0] : summaryResult) || {
       total_vehicles: 0,
       no_data: 0,
       expired: 0,

@@ -1,10 +1,10 @@
 # 🚗 ELI MOTORS LTD - WhatsApp & Voice System Summary
 
-## 📱 **What Happens When Customers Call +447488896449**
+## 📱 **What Happens When Customers Call +15558340240**
 
 ### **Professional Voice Menu System:**
 ```
-Customer calls +447488896449
+Customer calls +15558340240
 ↓
 "Hello, thank you for calling ELI MOTORS LTD, your trusted MOT and service centre."
 ↓
@@ -18,7 +18,7 @@ Connects to your main business line OR records voicemail
 ```
 
 ### **Current Setup:**
-- **Number:** +447488896449 (Twilio number)
+- **Number:** +15558340240 (Twilio number)
 - **Voice Menu:** Professional greeting with options
 - **Fallback:** Connects to your main business line
 - **Voicemail:** Records messages when unavailable
@@ -30,7 +30,7 @@ Connects to your main business line OR records voicemail
 
 ### **All messages now include:**
 ✅ **"ELI MOTORS LTD"** branding  
-✅ **"Call us to book: +447488896449"** (no online booking)  
+✅ **"Call us to book: +15558340240"** (no online booking)  
 ✅ **Professional formatting** with emojis  
 ✅ **DVLA MOT check links** for verification  
 ✅ **"Reply STOP to opt out"** for compliance  
@@ -45,7 +45,7 @@ Dear John Smith,
 
 Please book your MOT test soon to avoid any issues.
 
-📞 Call us to book: +447488896449
+📞 Call us to book: +15558340240
 🏢 ELI MOTORS LTD - Your trusted MOT centre
 
 🔗 Check status: https://www.check-mot.service.gov.uk/results?registration=AB12CDE&checkRecalls=true
@@ -99,7 +99,7 @@ Reply STOP to opt out.
 5. **Batch approve** in WhatsApp Management dashboard
 
 ### **For Call Management:**
-1. Customers call **+447488896449**
+1. Customers call **+15558340240**
 2. **Professional voice menu** guides them
 3. **Connects to your main line** or records voicemail
 4. **All calls logged** in database
@@ -142,7 +142,7 @@ Reply STOP to opt out.
 
 ### **To Activate Voice System:**
 1. Go to **Twilio Console** → **Phone Numbers**
-2. Click on **+447488896449**
+2. Click on **+15558340240**
 3. Set **Voice Webhook:** `https://toxic-las-equilibrium-failed.trycloudflare.com/api/twilio/voice`
 4. **Test by calling** the number
 
@@ -153,7 +153,7 @@ Reply STOP to opt out.
 ### **Immediate Actions:**
 1. ✅ **WhatsApp messages updated** with ELI MOTORS LTD branding
 2. ✅ **Removed online booking** references
-3. ✅ **Voice system created** for +447488896449
+3. ✅ **Voice system created** for +15558340240
 4. ✅ **Database management** system ready
 
 ### **To Complete Setup:**
@@ -198,7 +198,7 @@ Reply STOP to opt out.
 Your ELI MOTORS LTD WhatsApp and Voice system is now complete with:
 
 - **Professional branding** throughout all messages
-- **Correct phone number handling** (+447488896449)
+- **Correct phone number handling** (+15558340240)
 - **No online booking references** (removed)
 - **87.5% cost savings** on messaging
 - **Full GDPR compliance** and data protection

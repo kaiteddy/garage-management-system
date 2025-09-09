@@ -32,7 +32,12 @@ export const VehicleImage: React.FC<VehicleImageProps> = ({
 
   useEffect(() => {
     if (vrm) {
-      fetchVehicleImage()
+      // Add a small delay to prevent blocking the main component
+      const timer = setTimeout(() => {
+        fetchVehicleImage()
+      }, 100)
+
+      return () => clearTimeout(timer)
     }
   }, [vrm, make, model, year])
 
@@ -66,9 +71,17 @@ export const VehicleImage: React.FC<VehicleImageProps> = ({
         }
       }
 
-      // ONLY USE VDG (Vehicle Data Group) for real vehicle images
+      // ONLY USE VDG (Vehicle Data Group) for real vehicle images with timeout
       console.log(`🔍 [VEHICLE-IMAGE] Fetching VDG professional image for ${cleanVrm}`)
-      const enhancedResponse = await fetch(`/api/vehicle-data?registration=${encodeURIComponent(cleanVrm)}&dataTypes=image`)
+
+      // Create a timeout promise to prevent hanging
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Request timeout')), 5000) // 5 second timeout
+      })
+
+      const fetchPromise = fetch(`/api/vehicle-data?registration=${encodeURIComponent(cleanVrm)}&dataTypes=image`)
+
+      const enhancedResponse = await Promise.race([fetchPromise, timeoutPromise]) as Response
 
       if (enhancedResponse.ok) {
         const enhancedData = await enhancedResponse.json()
@@ -94,7 +107,13 @@ export const VehicleImage: React.FC<VehicleImageProps> = ({
 
     } catch (err) {
       console.error(`❌ [VEHICLE-IMAGE] Error fetching VDG image for ${vrm}:`, err)
-      setError('Failed to load vehicle image')
+
+      // If it's a timeout or connection error, show a more specific message
+      if (err instanceof Error && (err.message.includes('timeout') || err.message.includes('ETIMEDOUT'))) {
+        setError('Connection timeout - image service unavailable')
+      } else {
+        setError('Failed to load vehicle image')
+      }
     } finally {
       setLoading(false)
     }
@@ -137,6 +156,8 @@ export const VehicleImage: React.FC<VehicleImageProps> = ({
   }
 
   if (error || !imageData) {
+    const isTimeout = error?.includes('timeout') || error?.includes('Connection timeout')
+
     return (
       <div className={`relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300 ${className}`}>
         <div className="text-center p-4">
@@ -148,8 +169,17 @@ export const VehicleImage: React.FC<VehicleImageProps> = ({
           </div>
           <p className="text-sm text-gray-600 mb-1 font-medium">{vrm}</p>
           <p className="text-xs text-gray-500">{make} {model}</p>
-          <p className="text-xs text-blue-600 mt-1 font-medium">No VDG image available</p>
-          <p className="text-xs text-gray-400 mt-1">Professional images only</p>
+          {isTimeout ? (
+            <>
+              <p className="text-xs text-orange-600 mt-1 font-medium">⏱️ Service temporarily unavailable</p>
+              <p className="text-xs text-gray-400 mt-1">Image service timeout</p>
+            </>
+          ) : (
+            <>
+              <p className="text-xs text-blue-600 mt-1 font-medium">No VDG image available</p>
+              <p className="text-xs text-gray-400 mt-1">Professional images only</p>
+            </>
+          )}
         </div>
       </div>
     )

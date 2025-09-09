@@ -1,6 +1,9 @@
 // Bulk MOT Check Script - Optimized for Speed
 const { Pool } = require('pg');
 const path = require('path');
+
+// Load environment variables from both .env and .env.local
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 require('dotenv').config({ path: path.resolve(__dirname, '../.env.local') });
 
 // Database configuration

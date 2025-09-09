@@ -1,9 +1,9 @@
-# 📞 Call Handling Guide for +447488896449
+# 📞 Call Handling Guide for +15558340240
 
-## 🎯 **When Customers Call +447488896449**
+## 🎯 **When Customers Call +15558340240**
 
 ### **Current Setup:**
-- **Number:** +447488896449 (Your Twilio SMS/Voice number)
+- **Number:** +15558340240 (Your Twilio SMS/Voice number)
 - **Business:** ELI MOTORS LTD
 - **Purpose:** MOT bookings, service inquiries, customer support
 
@@ -13,7 +13,7 @@
 
 ### **Option 1: Direct to Your Main Business Line**
 ```
-Customer calls +447488896449
+Customer calls +15558340240
 ↓
 Forwards to your main business number
 ↓
@@ -22,7 +22,7 @@ You/staff answer: "Hello, ELI MOTORS LTD, how can I help you?"
 
 ### **Option 2: Twilio Voice Menu (Recommended)**
 ```
-Customer calls +447488896449
+Customer calls +15558340240
 ↓
 Automated message: "Hello, you've reached ELI MOTORS LTD..."
 ↓
@@ -35,7 +35,7 @@ Menu options:
 
 ### **Option 3: Voicemail with Callback**
 ```
-Customer calls +447488896449
+Customer calls +15558340240
 ↓
 Voicemail: "You've reached ELI MOTORS LTD. Please leave your name, number, and reason for calling..."
 ↓
@@ -140,7 +140,7 @@ Based on your MOT reminders:
 
 ### **Twilio Console Configuration:**
 1. Go to **Phone Numbers** → **Manage** → **Active Numbers**
-2. Click on **+447488896449**
+2. Click on **+15558340240**
 3. Set **Voice Configuration:**
    - Webhook: `https://your-domain.com/api/twilio/voice`
    - HTTP Method: POST
@@ -198,4 +198,4 @@ Based on your MOT reminders:
 - Your **business hours** for the greeting message
 - Any **specific requirements** for call handling
 
-This will ensure customers calling +447488896449 get professional service and proper routing to ELI MOTORS LTD!
+This will ensure customers calling +15558340240 get professional service and proper routing to ELI MOTORS LTD!

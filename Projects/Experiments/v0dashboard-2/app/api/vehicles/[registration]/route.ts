@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import { neon } from '@neondatabase/serverless';
+import { sql } from '@/lib/database/neon-client';
 import { lookupVehicle } from '@/lib/dvla-api';
-
-const sql = neon(process.env.DATABASE_URL!);
 
 export async function GET(
   request: Request,

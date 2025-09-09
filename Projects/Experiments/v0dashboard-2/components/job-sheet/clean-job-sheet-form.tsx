@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import "../../styles/job-sheet-improvements.css"
 import { useSearchParams } from "next/navigation"
 import { Search, Save, Printer, Mail, MoreHorizontal, Trash2, Calendar, Plus, Edit, Eye, ArrowLeft, ChevronDown, ChevronUp, Car, Bot, Copy, Check, Lock, Move, Hash, X, FileText, Clock, MapPin, Wrench, Zap, Settings, FileImage, Cog, AlertCircle, AlertTriangle, RefreshCw, Database, TrendingUp, Package } from "lucide-react"
 import VehicleDiagram from "../vehicle-diagram"
@@ -95,22 +96,22 @@ export function CleanJobSheetForm({ initialData, showBackButton = false, onBack,
     addPricingHistory
   } = usePartsPricing()
 
-  // Status options with colors
+  // Status options with improved colors for better readability
   const statusOptions = [
-    { value: "Open", label: "Open", color: "bg-blue-100 text-blue-800 border-blue-200" },
-    { value: "In Progress", label: "In Progress", color: "bg-yellow-100 text-yellow-800 border-yellow-200" },
-    { value: "Awaiting Parts", label: "Awaiting Parts", color: "bg-orange-100 text-orange-800 border-orange-200" },
-    { value: "Parts Ordered", label: "Parts Ordered", color: "bg-purple-100 text-purple-800 border-purple-200" },
-    { value: "Ready for Collection", label: "Ready for Collection", color: "bg-green-100 text-green-800 border-green-200" },
-    { value: "Completed", label: "Completed", color: "bg-gray-100 text-gray-800 border-gray-200" },
-    { value: "Invoiced", label: "Invoiced", color: "bg-indigo-100 text-indigo-800 border-indigo-200" },
-    { value: "On Hold", label: "On Hold", color: "bg-red-100 text-red-800 border-red-200" }
+    { value: "Open", label: "Open", color: "bg-blue-50 text-blue-900 border-blue-300 font-semibold" },
+    { value: "In Progress", label: "In Progress", color: "bg-yellow-50 text-yellow-900 border-yellow-300 font-semibold" },
+    { value: "Awaiting Parts", label: "Awaiting Parts", color: "bg-orange-50 text-orange-900 border-orange-300 font-semibold" },
+    { value: "Parts Ordered", label: "Parts Ordered", color: "bg-purple-50 text-purple-900 border-purple-300 font-semibold" },
+    { value: "Ready for Collection", label: "Ready for Collection", color: "bg-green-50 text-green-900 border-green-300 font-semibold" },
+    { value: "Completed", label: "Completed", color: "bg-gray-50 text-gray-900 border-gray-300 font-semibold" },
+    { value: "Invoiced", label: "Invoiced", color: "bg-indigo-50 text-indigo-900 border-indigo-300 font-semibold" },
+    { value: "On Hold", label: "On Hold", color: "bg-red-50 text-red-900 border-red-300 font-semibold" }
   ]
 
   // Get status color
   const getStatusColor = (status: string) => {
     const statusOption = statusOptions.find(option => option.value === status)
-    return statusOption ? statusOption.color : "bg-gray-100 text-gray-800 border-gray-200"
+    return statusOption ? statusOption.color : "bg-gray-50 text-gray-900 border-gray-300 font-semibold"
   }
 
   // State for job description
@@ -1517,6 +1518,15 @@ export function CleanJobSheetForm({ initialData, showBackButton = false, onBack,
       setJobDescription(initialData.description || '')
       setJobNotes(initialData.notes || '')
 
+      // Debug: Log the updated jobSheet state
+      console.log('🔍 [DEBUG] JobSheet state updated:', {
+        jobNumber: initialData.jobNumber,
+        registration: initialData.registration,
+        customer: initialData.customer,
+        vehicleMake: (initialData as any).vehicleMake || make,
+        vehicleModel: (initialData as any).vehicleModel || model
+      })
+
       // Load line items for this job sheet
       loadLineItems(initialData.id)
 
@@ -1544,9 +1554,19 @@ export function CleanJobSheetForm({ initialData, showBackButton = false, onBack,
       // Mark initial data as processed
       setInitialDataProcessed(true)
 
+      // Debug: Log the processed data
+      console.log('🔍 [DEBUG] Initial data processed:', {
+        jobNumber: initialData.jobNumber,
+        customer: initialData.customer,
+        registration: initialData.registration,
+        makeModel: makeModel,
+        vehicleMake: (initialData as any).vehicleMake,
+        vehicleModel: (initialData as any).vehicleModel
+      })
+
       toast({
         title: "Job Sheet Loaded",
-        description: `Loaded job sheet ${initialData.jobNumber} - Fetching latest vehicle data...`,
+        description: `Loaded job sheet ${initialData.jobNumber} - ${initialData.customer} - ${initialData.registration}`,
       })
     }
   }, [initialData, initialDataProcessed, dvlaLookupCompleted, handleRegistrationLookup, toast])
@@ -2993,9 +3013,9 @@ export function CleanJobSheetForm({ initialData, showBackButton = false, onBack,
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-100 job-sheet-container">
       {/* Clean Header */}
-      <div className="bg-white border-b px-4 sm:px-6 py-4">
+      <div className="bg-white border-b-2 border-gray-200 px-4 sm:px-6 py-4 shadow-sm">
         <div className="flex items-center justify-between flex-wrap gap-4">
           {/* Left Section - Navigation & Job Info */}
           <div className="flex items-center gap-4">
@@ -3007,11 +3027,11 @@ export function CleanJobSheetForm({ initialData, showBackButton = false, onBack,
             )}
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500 font-medium">JOB SHEET:</span>
+                <span className="text-xs text-gray-600 font-semibold">JOB SHEET:</span>
                 <span className="text-lg font-bold text-gray-900 uppercase">{jobSheet.jobNumber}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500 font-medium">CUSTOMER:</span>
+                <span className="text-xs text-gray-600 font-semibold">CUSTOMER:</span>
                 <span className="text-lg font-bold text-gray-900 uppercase">
                   {(() => {
                     console.log('👤 Customer State:', jobSheet.customer)
@@ -3025,7 +3045,7 @@ export function CleanJobSheetForm({ initialData, showBackButton = false, onBack,
           {/* Right Section - Status & Actions */}
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
-              <Label className="text-sm font-medium text-gray-700">Status:</Label>
+              <Label className="text-sm font-semibold text-gray-800">Status:</Label>
               <Select
                 value={jobSheet.status}
                 onValueChange={handleStatusChange}
@@ -3099,7 +3119,7 @@ export function CleanJobSheetForm({ initialData, showBackButton = false, onBack,
       </div>
 
       {/* Vehicle Information Section - Resizable */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b px-4 sm:px-6 py-4 vehicle-info-container relative" style={{ minHeight: '320px' }}>
+      <div className="bg-gradient-to-r from-blue-100 to-indigo-100 border-b-2 border-gray-200 px-4 sm:px-6 py-4 vehicle-info-container vehicle-info-section relative shadow-sm" style={{ minHeight: '320px' }}>
 
 
         <ResizablePanelGroup direction="horizontal" className="min-h-[200px]">
@@ -3142,7 +3162,7 @@ export function CleanJobSheetForm({ initialData, showBackButton = false, onBack,
               {/* Registration Input with Essential Actions Only */}
               <div className="flex items-center gap-2">
                 <Input
-                  className="bg-yellow-400 text-black px-3 py-2 rounded-lg font-bold text-lg tracking-wider border-yellow-500 text-center w-40"
+                  className="bg-yellow-300 text-black px-3 py-2 rounded-lg font-bold text-lg tracking-wider border-2 border-yellow-600 text-center w-40 shadow-md registration-plate"
                   value={jobSheet.vehicle.registration}
                   onChange={(e) => setJobSheet(prev => ({
                     ...prev,
@@ -3319,12 +3339,12 @@ export function CleanJobSheetForm({ initialData, showBackButton = false, onBack,
             <div className="flex gap-2 mb-3">
               {/* MOT Status Box */}
               <div
-                className={`w-44 p-2 rounded-lg text-center border shadow-md select-none transition-all duration-200 cursor-pointer ${
-                  jobSheet.vehicle.motStatus === 'Valid' ? 'bg-green-50 text-green-800 border-green-200' :
-                  jobSheet.vehicle.motStatus === 'No details held by DVLA' ? 'bg-orange-50 text-orange-800 border-orange-200' :
-                  jobSheet.vehicle.motStatus ? 'bg-red-50 text-red-800 border-red-200' :
-                  'bg-gray-50 text-gray-600 border-gray-200'
-                } hover:shadow-lg`}
+                className={`w-44 p-3 rounded-lg text-center border-2 shadow-lg select-none transition-all duration-200 cursor-pointer status-box ${
+                  jobSheet.vehicle.motStatus === 'Valid' ? 'bg-green-100 text-green-900 border-green-400' :
+                  jobSheet.vehicle.motStatus === 'No details held by DVLA' ? 'bg-orange-100 text-orange-900 border-orange-400' :
+                  jobSheet.vehicle.motStatus ? 'bg-red-100 text-red-900 border-red-400' :
+                  'bg-gray-100 text-gray-800 border-gray-400'
+                } hover:shadow-xl`}
                 onClick={() => {
                   if (!showMotDropdown) {
                     fetchMotHistory(jobSheet.vehicle.registration)
@@ -3367,12 +3387,12 @@ export function CleanJobSheetForm({ initialData, showBackButton = false, onBack,
 
               {/* TAX Status Box */}
               <div
-                className={`w-44 p-2 rounded-lg text-center border shadow-md select-none transition-all duration-200 ${
-                  jobSheet.vehicle.taxStatus === 'Taxed' ? 'bg-green-50 text-green-800 border-green-200' :
-                  jobSheet.vehicle.taxStatus === 'Untaxed' ? 'bg-red-50 text-red-800 border-red-200' :
-                  jobSheet.vehicle.taxStatus ? 'bg-orange-50 text-orange-800 border-orange-200' :
-                  'bg-gray-50 text-gray-600 border-gray-200'
-                } hover:shadow-lg`}
+                className={`w-44 p-3 rounded-lg text-center border-2 shadow-lg select-none transition-all duration-200 status-box ${
+                  jobSheet.vehicle.taxStatus === 'Taxed' ? 'bg-green-100 text-green-900 border-green-400' :
+                  jobSheet.vehicle.taxStatus === 'Untaxed' ? 'bg-red-100 text-red-900 border-red-400' :
+                  jobSheet.vehicle.taxStatus ? 'bg-orange-100 text-orange-900 border-orange-400' :
+                  'bg-gray-100 text-gray-800 border-gray-400'
+                } hover:shadow-xl`}
               >
                 <div className="text-xs font-bold uppercase mb-1 tracking-wide">
                   TAX STATUS
@@ -3419,21 +3439,21 @@ export function CleanJobSheetForm({ initialData, showBackButton = false, onBack,
 
           {/* Right Panel - Detailed Vehicle Information */}
           <ResizablePanel defaultSize={60} minSize={40}>
-            <div className="bg-white rounded-lg border p-6 h-full flex flex-col ml-2 relative z-20">
+            <div className="bg-white rounded-lg border-2 border-gray-200 p-6 h-full flex flex-col ml-2 relative z-20 shadow-md">
               <div className="space-y-4">
                 {/* Vehicle Basic Information - Compact Layout */}
                 <div className="space-y-3">
                   <div className="grid grid-cols-3 gap-4 text-base">
                     <div>
-                      <div className="text-gray-600 font-semibold uppercase text-sm tracking-wide mb-1">Make</div>
+                      <div className="text-gray-700 font-bold uppercase text-sm tracking-wide mb-1">Make</div>
                       <div className="font-bold uppercase text-gray-900 text-lg">{jobSheet.vehicle.make || 'N/A'}</div>
                     </div>
                     <div>
-                      <div className="text-gray-600 font-semibold uppercase text-sm tracking-wide mb-1">Model</div>
+                      <div className="text-gray-700 font-bold uppercase text-sm tracking-wide mb-1">Model</div>
                       <div className="font-bold uppercase text-gray-900 text-lg">{jobSheet.vehicle.model || 'N/A'}</div>
                     </div>
                     <div>
-                      <div className="text-gray-600 font-semibold uppercase text-sm tracking-wide mb-1">Year</div>
+                      <div className="text-gray-700 font-bold uppercase text-sm tracking-wide mb-1">Year</div>
                       <div className="font-bold uppercase text-gray-900 text-lg">{jobSheet.vehicle.year || 'N/A'}</div>
                     </div>
                   </div>
@@ -3459,10 +3479,10 @@ export function CleanJobSheetForm({ initialData, showBackButton = false, onBack,
                   </div>
 
                   {/* VIN/Chassis Section - Always Show if Available */}
-                  <div className="border-t pt-3">
-                    <div className="text-gray-600 font-semibold uppercase text-sm tracking-wide mb-2">VIN/Chassis</div>
+                  <div className="border-t-2 border-gray-200 pt-3">
+                    <div className="text-gray-700 font-bold uppercase text-sm tracking-wide mb-2">VIN/Chassis</div>
                     <div className="flex items-center gap-3">
-                      <div className="bg-gray-100 text-gray-900 px-4 py-3 rounded-lg text-base font-mono font-bold flex-1 border">
+                      <div className="bg-gray-200 text-gray-900 px-4 py-3 rounded-lg text-base font-mono font-bold flex-1 border-2 border-gray-300">
                         {(jobSheet.vehicle.chassis || jobSheet.vehicle.vin || 'WVWZZZ1JZ3W386752').toUpperCase()}
                       </div>
                       <Button
@@ -3505,23 +3525,23 @@ export function CleanJobSheetForm({ initialData, showBackButton = false, onBack,
                 </div>
 
                 {/* Technical Details Section - Compact */}
-                <div className="border-t border-gray-200 pt-2">
-                  <div className="text-sm text-gray-600 font-bold uppercase mb-2 tracking-wide">Technical Details</div>
+                <div className="border-t-2 border-gray-200 pt-2">
+                  <div className="text-sm text-gray-700 font-bold uppercase mb-2 tracking-wide">Technical Details</div>
                   <div className="grid grid-cols-2 gap-3 text-base">
                     <div>
-                      <div className="text-gray-600 font-semibold text-sm tracking-wide mb-1">Engine Size</div>
+                      <div className="text-gray-700 font-bold text-sm tracking-wide mb-1">Engine Size</div>
                       <div className="font-bold text-gray-900 text-lg">{jobSheet.vehicle.engineSize || 'N/A'}</div>
                     </div>
                     <div>
-                      <div className="text-gray-600 font-semibold text-sm tracking-wide mb-1">CO2 Emissions</div>
+                      <div className="text-gray-700 font-bold text-sm tracking-wide mb-1">CO2 Emissions</div>
                       <div className="font-bold text-gray-900 text-lg">{jobSheet.vehicle.co2Emissions ? `${jobSheet.vehicle.co2Emissions}g/km` : 'N/A'}</div>
                     </div>
                     <div>
-                      <div className="text-gray-600 font-semibold text-sm tracking-wide mb-1">Euro Status</div>
+                      <div className="text-gray-700 font-bold text-sm tracking-wide mb-1">Euro Status</div>
                       <div className="font-bold text-gray-900 text-lg">{jobSheet.vehicle.euroStatus || 'N/A'}</div>
                     </div>
                     <div>
-                      <div className="text-gray-600 font-semibold text-sm tracking-wide mb-1">Engine Code</div>
+                      <div className="text-gray-700 font-bold text-sm tracking-wide mb-1">Engine Code</div>
                       <div className="font-bold text-gray-900 text-lg">{jobSheet.vehicle.engineCode || 'N/A'}</div>
                     </div>
                   </div>
@@ -4485,14 +4505,14 @@ export function CleanJobSheetForm({ initialData, showBackButton = false, onBack,
                   variant="outline"
                   size="sm"
                   onClick={() => setShowAIDialog(true)}
-                  className="h-8 bg-purple-50 text-purple-700 border-purple-200"
+                  className="h-8 bg-purple-600 text-white border-purple-600 dark:bg-purple-500 dark:border-purple-500"
                 >
                   <span className="text-xs">🤖 AI Generate</span>
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
-                  className="h-8 bg-green-50 text-green-700 border-green-200"
+                  className="h-8 bg-green-600 text-white border-green-600 dark:bg-green-500 dark:border-green-500"
                   title="Print Workshop Sheet"
                 >
                   <span className="text-xs">🖨️ Print</span>
@@ -4530,7 +4550,7 @@ export function CleanJobSheetForm({ initialData, showBackButton = false, onBack,
                     variant="outline"
                     size="sm"
                     onClick={() => handleCommonDescription(desc.key)}
-                    className="h-7 text-xs font-mono bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200"
+                    className="h-7 text-xs font-mono bg-blue-600 hover:bg-blue-700 text-white border-blue-600 dark:bg-blue-500 dark:border-blue-500 dark:hover:bg-blue-600"
                     title={`Generate smart description for ${desc.label}`}
                   >
                     🤖 {desc.label}

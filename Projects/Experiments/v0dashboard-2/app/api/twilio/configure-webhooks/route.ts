@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     const number = numbers[0]
     const webhookUrls = {
       sms: `${baseUrl}/api/webhooks/communication-responses`,
-      voice: `${baseUrl}/api/voice/webhook`,
+      voice: `${baseUrl}/api/twilio/voice`,
       statusCallback: `${baseUrl}/api/webhooks/status-callback`
     }
 

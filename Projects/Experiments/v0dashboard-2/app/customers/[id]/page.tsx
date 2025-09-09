@@ -225,7 +225,7 @@ export default function CustomerDetailPage({ params }: { params: { id: string } 
     return (
       <div className="space-y-6">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="sm" onClick={() => router.back()}>
+          <Button variant="outline" size="sm" onClick={() => router.back()} className="bg-gray-600 border-gray-600 text-white hover:bg-gray-700 dark:bg-gray-500 dark:border-gray-500 dark:hover:bg-gray-600">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>
@@ -241,7 +241,7 @@ export default function CustomerDetailPage({ params }: { params: { id: string } 
     return (
       <div className="space-y-6">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="sm" onClick={() => router.back()}>
+          <Button variant="outline" size="sm" onClick={() => router.back()} className="bg-gray-600 border-gray-600 text-white hover:bg-gray-700 dark:bg-gray-500 dark:border-gray-500 dark:hover:bg-gray-600">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>
@@ -258,7 +258,7 @@ export default function CustomerDetailPage({ params }: { params: { id: string } 
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="sm" onClick={() => router.back()}>
+          <Button variant="outline" size="sm" onClick={() => router.back()} className="bg-gray-600 border-gray-600 text-white hover:bg-gray-700 dark:bg-gray-500 dark:border-gray-500 dark:hover:bg-gray-600">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>

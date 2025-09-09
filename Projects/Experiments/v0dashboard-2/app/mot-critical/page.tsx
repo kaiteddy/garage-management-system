@@ -1041,7 +1041,7 @@ export default function MOTCriticalPage() {
                                     <Button
                                       variant="outline"
                                       size="sm"
-                                      className="h-8 px-2 text-xs bg-green-50 border-green-200 hover:bg-green-100 text-green-700"
+                                      className="h-8 px-2 text-xs bg-green-600 border-green-600 hover:bg-green-700 text-white dark:bg-green-500 dark:border-green-500 dark:hover:bg-green-600"
                                       onClick={() => window.open(`https://www.gov.uk/check-mot-history?registration=${vehicle.registration}`, '_blank')}
                                       title="Check MOT history on DVLA"
                                     >
@@ -1052,7 +1052,7 @@ export default function MOTCriticalPage() {
                                       <Button
                                         variant="outline"
                                         size="sm"
-                                        className="h-8 px-2 text-xs bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700"
+                                        className="h-8 px-2 text-xs bg-blue-600 border-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:border-blue-500 dark:hover:bg-blue-600"
                                         title="View vehicle record"
                                       >
                                         <FileText className="h-3 w-3 mr-1" />

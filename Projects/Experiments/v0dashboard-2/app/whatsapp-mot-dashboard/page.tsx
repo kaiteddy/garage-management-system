@@ -187,7 +187,7 @@ export default function WhatsAppMOTDashboard() {
                 <p className="text-sm text-muted-foreground">ID: {campaignData.template_info.template_sid}</p>
               </div>
               <div>
-                <Badge variant="outline" className="bg-green-50 text-green-700">
+                <Badge variant="outline" className="bg-green-600 text-white dark:bg-green-500">
                   ✅ {campaignData.template_info.status}
                 </Badge>
               </div>

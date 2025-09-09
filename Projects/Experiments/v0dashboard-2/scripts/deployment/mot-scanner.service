@@ -1,0 +1,29 @@
+[Unit]
+Description=Automated MOT Scanner Service
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/path/to/your/app/scripts
+ExecStart=/usr/bin/node automated-mot-scanner.cjs
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mot-scanner
+
+# Environment variables (alternatively, use EnvironmentFile)
+Environment=NODE_ENV=production
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/path/to/your/app
+
+[Install]
+WantedBy=multi-user.target

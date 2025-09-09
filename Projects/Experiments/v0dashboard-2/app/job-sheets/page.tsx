@@ -382,13 +382,14 @@ export default function JobSheetsPage() {
     return details[status as keyof typeof details] || 'Overdue'
   }
 
-  const getTechnicianBadge = (id: string) => {
+  const getTechnicianBadge = (id: string | number) => {
     try {
       const technicians = getTechnicians()
       if (!technicians || technicians.length === 0) {
         return 'No Technician'
       }
-      const hash = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+      const idString = String(id)
+      const hash = idString.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
       return technicians[hash % technicians.length]?.name || 'Unassigned'
     } catch (error) {
       console.error('Error getting technician badge:', error)
@@ -396,13 +397,14 @@ export default function JobSheetsPage() {
     }
   }
 
-  const getBayBadge = (id: string) => {
+  const getBayBadge = (id: string | number) => {
     try {
       const bays = getServiceBays()
       if (!bays || bays.length === 0) {
         return 'No Bay'
       }
-      const hash = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+      const idString = String(id)
+      const hash = idString.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
       return bays[hash % bays.length]?.name || 'Unassigned'
     } catch (error) {
       console.error('Error getting bay badge:', error)
@@ -585,14 +587,14 @@ export default function JobSheetsPage() {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  jobSheets.map((job) => (
+                  Array.isArray(jobSheets) ? jobSheets.map((job) => (
                     <TableRow
                       key={job.id}
                       className="hover:bg-gray-50 transition-colors border-b"
                     >
                       <TableCell className="font-medium py-6 align-middle">
                         <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 px-3 py-1">
+                          <Badge variant="outline" className="bg-blue-600 text-white border-blue-600 dark:bg-blue-500 dark:border-blue-500 px-3 py-1">
                             {job.jobNumber}
                           </Badge>
                           <Button
@@ -741,7 +743,13 @@ export default function JobSheetsPage() {
                         </div>
                       </TableCell>
                     </TableRow>
-                  ))
+                  )) : (
+                    <TableRow>
+                      <TableCell colSpan={12} className="text-center py-8 text-muted-foreground">
+                        Error loading job sheets. Please refresh the page.
+                      </TableCell>
+                    </TableRow>
+                  )
                 )}
               </TableBody>
             </Table>

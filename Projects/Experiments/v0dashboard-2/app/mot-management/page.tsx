@@ -109,6 +109,8 @@ export default function MOTManagementPage() {
   const [data, setData] = useState<MOTData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [autoRefresh, setAutoRefresh] = useState(true) // Auto-refresh enabled by default
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
 
   // Filter states
   const [expiryPeriod, setExpiryPeriod] = useState('30') // Default 30 days
@@ -152,6 +154,8 @@ export default function MOTManagementPage() {
       }
 
       setData(result.data)
+      setError(null)
+      setLastUpdated(new Date())
 
     } catch (error) {
       console.error("[MOT-MANAGEMENT] Error:", error)
@@ -168,9 +172,34 @@ export default function MOTManagementPage() {
     loadMOTData()
   }, [expiryPeriod, includeExpired, currentPage, sortBy, sortOrder])
 
+  // Auto-refresh effect
+  useEffect(() => {
+    if (!autoRefresh) return
+
+    const interval = setInterval(() => {
+      console.log('🔄 Auto-refreshing MOT data...')
+      loadMOTData()
+    }, 30000) // Refresh every 30 seconds
+
+    return () => clearInterval(interval)
+  }, [autoRefresh, expiryPeriod, includeExpired, currentPage, sortBy, sortOrder])
+
   const handleRefresh = () => {
     setCurrentPage(1)
     loadMOTData()
+  }
+
+  const handleAutoRefreshToggle = (enabled: boolean) => {
+    setAutoRefresh(enabled)
+    if (enabled) {
+      toast.success("Auto-refresh enabled", {
+        description: "MOT data will update every 30 seconds"
+      })
+    } else {
+      toast.info("Auto-refresh disabled", {
+        description: "MOT data will only update manually"
+      })
+    }
   }
 
   const handleExport = async () => {
@@ -268,12 +297,34 @@ export default function MOTManagementPage() {
       {/* Compact Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold">MOT Management</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-xl font-bold">MOT Management</h2>
+            {autoRefresh && (
+              <Badge variant="secondary" className="text-xs">
+                <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
+                Live
+              </Badge>
+            )}
+          </div>
           <p className="text-xs text-muted-foreground">
             Unified MOT tracking with adjustable expiry periods
+            {autoRefresh && " • Auto-updating every 30 seconds"}
           </p>
         </div>
         <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+            <Switch
+              checked={autoRefresh}
+              onCheckedChange={handleAutoRefreshToggle}
+              id="auto-refresh"
+            />
+            <Label htmlFor="auto-refresh" className="text-xs">Auto-refresh</Label>
+            {lastUpdated && (
+              <span className="hidden sm:inline">
+                • Updated {lastUpdated.toLocaleTimeString()}
+              </span>
+            )}
+          </div>
           <Button onClick={handleRefresh} disabled={isLoading} variant="outline" size="sm">
             {isLoading ? <RefreshCw className="h-3 w-3 animate-spin" /> : <RefreshCw className="h-3 w-3" />}
             <span className="ml-1 hidden sm:inline">Refresh</span>

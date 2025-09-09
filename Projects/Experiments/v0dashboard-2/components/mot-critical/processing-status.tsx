@@ -115,7 +115,7 @@ export function ProcessingStatus() {
                 <span className="sm:hidden">Active</span>
               </Badge>
             ) : (
-              <Badge variant="outline" className="bg-green-50 text-green-700 w-fit">
+              <Badge variant="outline" className="bg-green-600 text-white dark:bg-green-500 w-fit">
                 <CheckCircle className="h-3 w-3 mr-1" />
                 Idle
               </Badge>

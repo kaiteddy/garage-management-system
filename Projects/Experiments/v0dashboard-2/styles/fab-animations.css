@@ -1,0 +1,32 @@
+/* FAB (Floating Action Button) Animations */
+
+@keyframes slideUpFab {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fab-slide-up {
+  animation: slideUpFab 0.3s ease-out both;
+}
+
+.fab-slide-up-delay-1 {
+  animation: slideUpFab 0.3s ease-out 0.1s both;
+}
+
+.fab-slide-up-delay-2 {
+  animation: slideUpFab 0.3s ease-out 0.2s both;
+}
+
+.fab-slide-up-delay-3 {
+  animation: slideUpFab 0.3s ease-out 0.3s both;
+}
+
+.fab-slide-up-delay-4 {
+  animation: slideUpFab 0.3s ease-out 0.4s both;
+}

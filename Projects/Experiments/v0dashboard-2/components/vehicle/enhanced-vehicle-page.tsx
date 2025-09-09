@@ -24,7 +24,8 @@ import {
   X,
   AlertTriangle,
   CheckCircle,
-  Wrench
+  Wrench,
+  ImageOff
 } from "lucide-react"
 import { VehicleServiceHistory } from "@/components/vehicle/vehicle-service-history"
 import { MOTHistoryVisualization } from "@/components/vehicle/mot-history-visualization"
@@ -72,6 +73,8 @@ interface EnhancedVehiclePageProps {
 }
 
 export function EnhancedVehiclePage({ registration }: EnhancedVehiclePageProps) {
+  console.log(`🎯 EnhancedVehiclePage component rendered for registration: ${registration}`)
+
   const router = useRouter()
   const [vehicle, setVehicle] = useState<VehicleDetails | null>(null)
   const [loading, setLoading] = useState(true)
@@ -105,8 +108,13 @@ export function EnhancedVehiclePage({ registration }: EnhancedVehiclePageProps) 
       if (data.success) {
         console.log('✅ MOT history fetched successfully')
         setMotHistoryFetched(true)
-        // Trigger a reload of vehicle data
-        setMotHistoryFetched(prev => !prev)
+        // Manually reload vehicle data without causing infinite loop
+        const response = await fetch(`/api/vehicles/${encodeURIComponent(registration)}`)
+        const vehicleData = await response.json()
+        if (vehicleData.success) {
+          setVehicle(vehicleData.vehicle)
+          setCustomerData(vehicleData.vehicle.customer || {})
+        }
       } else {
         console.log('⚠️ MOT history fetch failed:', data.error)
 
@@ -130,33 +138,28 @@ export function EnhancedVehiclePage({ registration }: EnhancedVehiclePageProps) 
       setLoading(true)
       setError(null)
 
+      console.log(`🔍 Loading vehicle details for ${registration}...`)
       const response = await fetch(`/api/vehicles/${encodeURIComponent(registration)}`)
       const data = await response.json()
 
+      console.log('📊 Vehicle API response:', data)
+
       if (data.success) {
+        console.log('✅ Vehicle data loaded successfully')
         setVehicle(data.vehicle)
         setCustomerData(data.vehicle.customer || {})
-
-        // Auto-fetch MOT/Tax if missing, guarded to avoid infinite loops
-        const needsMotOrTax = !data.vehicle.motStatus || !data.vehicle.taxStatus || (!data.vehicle.motExpiryDate && !data.vehicle.taxDueDate)
-        if (needsMotOrTax && !autoFetchAttemptedRef.current) {
-          autoFetchAttemptedRef.current = true
-          try {
-            await fetchMotHistory()
-          } catch (e) {
-            console.warn('Auto-fetch MOT/Tax failed:', e)
-          }
-        }
       } else {
+        console.log('❌ Vehicle API error:', data.error)
         setError(data.error || 'Failed to load vehicle details')
       }
     } catch (err) {
+      console.error('💥 Error loading vehicle:', err)
       setError('Failed to load vehicle details')
-      console.error('Error loading vehicle:', err)
     } finally {
+      console.log('🏁 Setting loading to false')
       setLoading(false)
     }
-  }, [registration, motHistoryFetched, fetchMotHistory])
+  }, [registration])
 
   const refreshVehicleData = async () => {
     try {
@@ -174,6 +177,7 @@ export function EnhancedVehiclePage({ registration }: EnhancedVehiclePageProps) 
   }
 
   useEffect(() => {
+    console.log(`🚀 EnhancedVehiclePage useEffect triggered for registration: ${registration}`)
     setMotHistoryFetched(false) // Reset the flag when registration changes
     autoFetchAttemptedRef.current = false // Allow auto-fetch for new registrations
     loadVehicleDetails()
@@ -261,35 +265,35 @@ export function EnhancedVehiclePage({ registration }: EnhancedVehiclePageProps) 
   }
 
   const getMotStatusBadge = (status: string, expiryDate: string) => {
-    if (!status) return 'bg-gray-100 text-gray-800'
+    if (!status) return 'bg-gray-600 text-white dark:bg-gray-500'
 
     const now = new Date()
     const expiry = new Date(expiryDate)
     const diffDays = Math.ceil((expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
 
     if (status.toLowerCase().includes('valid')) {
-      if (diffDays < 0) return 'bg-red-100 text-red-800' // Expired
-      if (diffDays <= 14) return 'bg-red-100 text-red-800' // Critical (14 days or less)
-      if (diffDays <= 30) return 'bg-orange-100 text-orange-800' // Due soon (30 days or less)
-      return 'bg-green-100 text-green-800' // Valid
+      if (diffDays < 0) return 'bg-red-600 text-white dark:bg-red-500' // Expired
+      if (diffDays <= 14) return 'bg-red-600 text-white dark:bg-red-500' // Critical (14 days or less)
+      if (diffDays <= 30) return 'bg-orange-600 text-white dark:bg-orange-500' // Due soon (30 days or less)
+      return 'bg-green-600 text-white dark:bg-green-500' // Valid
     }
-    return 'bg-red-100 text-red-800'
+    return 'bg-red-600 text-white dark:bg-red-500'
   }
 
   const getTaxStatusBadge = (status: string, expiryDate: string) => {
-    if (!status) return 'bg-gray-100 text-gray-800'
+    if (!status) return 'bg-gray-600 text-white dark:bg-gray-500'
 
     const now = new Date()
     const expiry = new Date(expiryDate)
     const diffDays = Math.ceil((expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
 
     if (status.toLowerCase().includes('taxed')) {
-      if (diffDays < 0) return 'bg-red-100 text-red-800' // Expired
-      if (diffDays <= 14) return 'bg-red-100 text-red-800' // Critical (14 days or less)
-      if (diffDays <= 30) return 'bg-orange-100 text-orange-800' // Due soon (30 days or less)
-      return 'bg-green-100 text-green-800' // Valid
+      if (diffDays < 0) return 'bg-red-600 text-white dark:bg-red-500' // Expired
+      if (diffDays <= 14) return 'bg-red-600 text-white dark:bg-red-500' // Critical (14 days or less)
+      if (diffDays <= 30) return 'bg-orange-600 text-white dark:bg-orange-500' // Due soon (30 days or less)
+      return 'bg-green-600 text-white dark:bg-green-500' // Valid
     }
-    return 'bg-red-100 text-red-800'
+    return 'bg-red-600 text-white dark:bg-red-500'
   }
 
   const getActualMotStatus = (status: string, expiryDate: string) => {
@@ -337,7 +341,10 @@ export function EnhancedVehiclePage({ registration }: EnhancedVehiclePageProps) 
             <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
             <h3 className="text-lg font-medium mb-2">Error Loading Vehicle</h3>
             <p className="text-muted-foreground mb-4">{error || 'Vehicle not found'}</p>
-            <Button onClick={() => router.push('/vehicles')}>
+            <Button
+              onClick={() => router.push('/vehicles')}
+              className="bg-gray-600 border-gray-600 text-white hover:bg-gray-700 dark:bg-gray-500 dark:border-gray-500 dark:hover:bg-gray-600"
+            >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Go Back
             </Button>
@@ -356,6 +363,7 @@ export function EnhancedVehiclePage({ registration }: EnhancedVehiclePageProps) 
             variant="outline"
             size="sm"
             onClick={handleBackNavigation}
+            className="bg-gray-600 border-gray-600 text-white hover:bg-gray-700 dark:bg-gray-500 dark:border-gray-500 dark:hover:bg-gray-600"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
@@ -373,11 +381,18 @@ export function EnhancedVehiclePage({ registration }: EnhancedVehiclePageProps) 
           </div>
         </div>
         <div className="flex items-center space-x-2">
-          <Button variant="outline" onClick={openDVLAMOTCheck}>
+          <Button
+            variant="outline"
+            onClick={openDVLAMOTCheck}
+            className="bg-blue-600 border-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:border-blue-500 dark:hover:bg-blue-600"
+          >
             <ExternalLink className="h-4 w-4 mr-2" />
             DVLA Check
           </Button>
-          <Button onClick={refreshVehicleData}>
+          <Button
+            onClick={refreshVehicleData}
+            className="bg-green-600 border-green-600 text-white hover:bg-green-700 dark:bg-green-500 dark:border-green-500 dark:hover:bg-green-600"
+          >
             <RefreshCw className="h-4 w-4 mr-2" />
             Refresh
           </Button>
@@ -446,13 +461,20 @@ export function EnhancedVehiclePage({ registration }: EnhancedVehiclePageProps) 
             </CardTitle>
           </CardHeader>
           <CardContent className="p-2">
-            <VehicleImageXL
-              vrm={vehicle.registration}
-              make={vehicle.make}
-              model={vehicle.model}
-              year={vehicle.year}
-              className="rounded-lg"
-            />
+            <div className="h-64 w-full bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
+              <div className="text-center p-4">
+                <div className="relative">
+                  <Car className="h-12 w-12 mx-auto mb-2 text-gray-400" />
+                  <div className="absolute -top-1 -right-1 bg-blue-100 rounded-full p-1">
+                    <ImageOff className="h-4 w-4 text-blue-500" />
+                  </div>
+                </div>
+                <p className="text-sm text-gray-600 mb-1 font-medium">{vehicle.registration}</p>
+                <p className="text-xs text-gray-500">{vehicle.make} {vehicle.model}</p>
+                <p className="text-xs text-blue-600 mt-1 font-medium">Image service temporarily disabled</p>
+                <p className="text-xs text-gray-400 mt-1">Fixing database connection</p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -530,7 +552,7 @@ export function EnhancedVehiclePage({ registration }: EnhancedVehiclePageProps) 
                   variant="outline"
                   size="sm"
                   onClick={() => setShowChangeOwnerDialog(true)}
-                  className="bg-orange-50 border-orange-200 text-orange-700 hover:bg-orange-100"
+                  className="bg-orange-600 border-orange-600 text-white hover:bg-orange-700 dark:bg-orange-500 dark:border-orange-500 dark:hover:bg-orange-600"
                 >
                   <User className="h-4 w-4 mr-2" />
                   Change Owner
@@ -546,6 +568,7 @@ export function EnhancedVehiclePage({ registration }: EnhancedVehiclePageProps) 
                       setEditingCustomer(true)
                     }
                   }}
+                  className="bg-blue-600 border-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:border-blue-500 dark:hover:bg-blue-600"
                 >
                   {editingCustomer ? (
                     <>
@@ -725,12 +748,14 @@ export function EnhancedVehiclePage({ registration }: EnhancedVehiclePageProps) 
                     setCustomerData(vehicle.customer)
                     setEditingCustomer(false)
                   }}
+                  className="bg-gray-600 border-gray-600 text-white hover:bg-gray-700 dark:bg-gray-500 dark:border-gray-500 dark:hover:bg-gray-600"
                 >
                   Cancel
                 </Button>
                 <Button
                   onClick={saveCustomerData}
                   disabled={savingCustomer}
+                  className="bg-green-600 border-green-600 text-white hover:bg-green-700 dark:bg-green-500 dark:border-green-500 dark:hover:bg-green-600"
                 >
                   {savingCustomer ? (
                     <>
@@ -775,7 +800,7 @@ export function EnhancedVehiclePage({ registration }: EnhancedVehiclePageProps) 
                         <p className="text-muted-foreground mb-4">
                           Retrieving MOT history from DVLA database...
                         </p>
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-700">
+                        <div className="bg-blue-100 dark:bg-blue-800 border border-blue-200 dark:border-blue-600 rounded-lg p-3 text-sm text-blue-800 dark:text-blue-100">
                           🔄 This may take a few moments while we fetch the latest data
                         </div>
                       </>
@@ -789,7 +814,7 @@ export function EnhancedVehiclePage({ registration }: EnhancedVehiclePageProps) 
                         <Button
                           onClick={fetchMotHistory}
                           disabled={fetchingMotHistory}
-                          className="bg-blue-600 hover:bg-blue-700"
+                          className="bg-blue-600 border-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:border-blue-500 dark:hover:bg-blue-600"
                         >
                           <ExternalLink className="h-4 w-4 mr-2" />
                           Fetch MOT History from DVLA

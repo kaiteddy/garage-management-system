@@ -248,7 +248,7 @@ export function MainDashboard() {
                 <CardTitle className="text-xl font-bold">MOT Status Overview</CardTitle>
                 <div className="flex items-center gap-3 mt-2">
                   <CardDescription>Current status of all vehicles</CardDescription>
-                  <Badge variant="secondary" className="bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800">
+                  <Badge variant="secondary" className="bg-green-600 dark:bg-green-500 text-white border-green-600 dark:border-green-500">
                     <div className="flex items-center gap-1">
                       <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
                       Auto-updating nightly

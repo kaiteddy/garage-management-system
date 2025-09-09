@@ -147,7 +147,7 @@ function CreateEstimateForm() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link href="/mot-check">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="bg-gray-600 border-gray-600 text-white hover:bg-gray-700 dark:bg-gray-500 dark:border-gray-500 dark:hover:bg-gray-600">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to MOT Check
               </Button>
@@ -380,7 +380,7 @@ function LoadingEstimateForm() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link href="/mot-check">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="bg-gray-600 border-gray-600 text-white hover:bg-gray-700 dark:bg-gray-500 dark:border-gray-500 dark:hover:bg-gray-600">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to MOT Check
               </Button>

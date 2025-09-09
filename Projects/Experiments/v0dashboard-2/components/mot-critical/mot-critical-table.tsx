@@ -273,7 +273,7 @@ Reply STOP to opt out.`
         variant: "destructive" as const,
         icon: XCircle,
         text: `Expired ${daysExpired} days ago`,
-        className: "bg-red-100 text-red-800"
+        className: "bg-red-600 text-white dark:bg-red-500"
       }
     } else {
       const daysUntilExpiry = vehicle.daysUntilExpiry
@@ -281,7 +281,7 @@ Reply STOP to opt out.`
         variant: "secondary" as const,
         icon: AlertTriangle,
         text: `Expires in ${daysUntilExpiry} days`,
-        className: "bg-yellow-100 text-yellow-800"
+        className: "bg-yellow-600 text-white dark:bg-yellow-500"
       }
     }
   }
@@ -295,8 +295,14 @@ Reply STOP to opt out.`
 
   // Vehicle Record Navigation
   const openVehicleRecord = (vehicle: CriticalVehicle) => {
+    // Add debugging to see if the function is being called
+    console.log('Opening vehicle record for:', vehicle.registration)
+
     // Navigate to a vehicle detail page (you can customize this route)
     router.push(`/vehicles/${vehicle.registration}`)
+
+    // Also log after the navigation attempt
+    console.log('Navigation attempted to:', `/vehicles/${vehicle.registration}`)
   }
 
   // Filter and search logic
@@ -432,11 +438,11 @@ Reply STOP to opt out.`
           {/* Bulk Communication Controls */}
           <div className="flex flex-col sm:flex-row gap-4 mb-6 p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg border border-blue-200">
             <div className="flex-1">
-              <h3 className="font-medium text-blue-900 mb-2 flex items-center gap-2">
+              <h3 className="font-medium text-blue-900 dark:text-blue-100 mb-2 flex items-center gap-2">
                 <MessageSquare className="h-4 w-4" />
                 {communicationChannel === 'whatsapp' ? 'WhatsApp' : 'SMS'} Reminders
               </h3>
-              <p className="text-sm text-blue-700 mb-3">
+              <p className="text-sm text-blue-700 dark:text-blue-200 mb-3">
                 {selectedVehicles.length > 0
                   ? `${selectedVehicles.length} vehicle${selectedVehicles.length !== 1 ? 's' : ''} selected for ${communicationChannel === 'whatsapp' ? 'WhatsApp' : 'SMS'} reminders`
                   : `Select vehicles to send MOT reminder ${communicationChannel === 'whatsapp' ? 'WhatsApp messages' : 'SMS messages'}`
@@ -445,7 +451,7 @@ Reply STOP to opt out.`
 
               {/* Cost Calculator */}
               {selectedVehicles.length > 0 && (
-                <div className="text-xs text-blue-600 mb-3 p-2 bg-blue-50 rounded border border-blue-200">
+                <div className="text-xs text-blue-800 dark:text-blue-100 mb-3 p-2 bg-blue-100 dark:bg-blue-800 rounded border border-blue-200 dark:border-blue-600">
                   <div className="flex justify-between items-center">
                     <span>Estimated cost:</span>
                     <span className="font-semibold">
@@ -532,7 +538,7 @@ Reply STOP to opt out.`
                             disabled={!canSelect || sendingBulkSMS}
                             className={`text-xs ${
                               canSelect
-                                ? 'bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700'
+                                ? 'bg-blue-600 border-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:border-blue-500 dark:hover:bg-blue-600'
                                 : 'opacity-50'
                             }`}
                             title={canSelect ? `Select next ${size} vehicles` : `Only ${availableCount} vehicles available`}
@@ -560,7 +566,7 @@ Reply STOP to opt out.`
                         variant="outline"
                         onClick={selectNextBatch}
                         disabled={paginatedVehicles.filter(v => !selectedVehicles.includes(v.id)).length < batchSize || sendingBulkSMS}
-                        className="text-xs bg-green-50 border-green-200 hover:bg-green-100 text-green-700"
+                        className="text-xs bg-green-600 border-green-600 hover:bg-green-700 text-white dark:bg-green-500 dark:border-green-500 dark:hover:bg-green-600"
                       >
                         Select Next {batchSize}
                       </Button>
@@ -630,10 +636,10 @@ Reply STOP to opt out.`
           {/* Table */}
           <div className="rounded-md border bg-white overflow-hidden font-['Inter','Inter_Fallback',system-ui,sans-serif]">
             <div className="overflow-x-auto">
-              <Table className="min-w-[1600px]">
+              <Table className="w-full">
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-[50px] sticky left-0 bg-white z-10 py-3 px-4">
+                    <TableHead className="w-[40px] py-2 px-2">
                       <input
                         type="checkbox"
                         checked={selectedVehicles.length === paginatedVehicles.length && paginatedVehicles.length > 0}
@@ -647,23 +653,23 @@ Reply STOP to opt out.`
                         className="rounded"
                       />
                     </TableHead>
-                    <TableHead className="min-w-[120px] sticky left-0 bg-white z-10 font-semibold text-sm py-3 px-4">URGENCY</TableHead>
-                    <TableHead className="min-w-[120px] font-semibold text-sm py-3 px-4">REGISTRATION</TableHead>
-                    <TableHead className="min-w-[100px] font-semibold text-sm py-3 px-4">MAKE</TableHead>
-                    <TableHead className="min-w-[220px] font-semibold text-sm py-3 px-4">MODEL</TableHead>
-                    <TableHead className="min-w-[180px] font-semibold text-sm py-3 px-4">CUSTOMER</TableHead>
-                    <TableHead className="min-w-[300px] font-semibold text-sm py-3 px-4">ADDRESS</TableHead>
-                    <TableHead className="min-w-[100px] font-semibold text-sm py-3 px-4">CONTACT</TableHead>
-                    <TableHead className="min-w-[120px] font-semibold text-sm py-3 px-4">MOT EXPIRY</TableHead>
-                    <TableHead className="min-w-[90px] font-semibold text-sm py-3 px-4">DAYS</TableHead>
-                    <TableHead className="min-w-[150px] font-semibold text-sm py-3 px-4">LAST VISIT</TableHead>
-                    <TableHead className="min-w-[160px] font-semibold text-sm py-3 px-4">ACTIONS</TableHead>
+                    <TableHead className="w-[90px] font-semibold text-xs py-2 px-2">URGENCY</TableHead>
+                    <TableHead className="w-[90px] font-semibold text-xs py-2 px-2">REG</TableHead>
+                    <TableHead className="w-[70px] font-semibold text-xs py-2 px-2 hidden sm:table-cell">MAKE</TableHead>
+                    <TableHead className="w-[100px] font-semibold text-xs py-2 px-2 hidden md:table-cell">MODEL</TableHead>
+                    <TableHead className="w-[120px] font-semibold text-xs py-2 px-2">CUSTOMER</TableHead>
+                    <TableHead className="w-[150px] font-semibold text-xs py-2 px-2 hidden lg:table-cell">ADDRESS</TableHead>
+                    <TableHead className="w-[60px] font-semibold text-xs py-2 px-2">CONTACT</TableHead>
+                    <TableHead className="w-[90px] font-semibold text-xs py-2 px-2">MOT EXPIRY</TableHead>
+                    <TableHead className="w-[60px] font-semibold text-xs py-2 px-2 hidden sm:table-cell">DAYS</TableHead>
+                    <TableHead className="w-[90px] font-semibold text-xs py-2 px-2 hidden md:table-cell">LAST VISIT</TableHead>
+                    <TableHead className="w-[140px] font-semibold text-xs py-2 px-2">ACTIONS</TableHead>
                   </TableRow>
                 </TableHeader>
               <TableBody>
                 {paginatedVehicles.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={11} className="text-center py-8 text-muted-foreground">
+                    <TableCell colSpan={12} className="text-center py-8 text-muted-foreground">
                       {searchTerm || statusFilter !== "all"
                         ? "No vehicles match your search criteria"
                         : "No critical MOT issues found"}
@@ -678,7 +684,7 @@ Reply STOP to opt out.`
 
                     return (
                       <TableRow key={`${vehicle.id}-${index}`}>
-                        <TableCell className="sticky left-0 bg-white z-10 py-3 px-4">
+                        <TableCell className="py-2 px-2">
                           <input
                             type="checkbox"
                             checked={selectedVehicles.includes(vehicle.id)}
@@ -686,49 +692,52 @@ Reply STOP to opt out.`
                             className="rounded"
                           />
                         </TableCell>
-                        <TableCell className="sticky left-0 bg-white z-10 py-3 px-4">
+                        <TableCell className="py-2 px-2">
                           <Badge
                             variant={urgencyInfo.variant}
                             className={`text-xs ${urgencyInfo.className}`}
                           >
                             <urgencyInfo.icon className="h-3 w-3 mr-1" />
-                            <span className="hidden sm:inline">{vehicle.urgency === 'expired' ? 'EXPIRED' : 'DUE SOON'}</span>
-                            <span className="sm:hidden">{vehicle.urgency === 'expired' ? 'EXP' : 'DUE'}</span>
+                            <span className="hidden sm:inline">{vehicle.urgency === 'expired' ? 'EXP' : 'DUE'}</span>
+                            <span className="sm:hidden">{vehicle.urgency === 'expired' ? 'E' : 'D'}</span>
                           </Badge>
                         </TableCell>
-                        <TableCell className="font-medium py-3 px-4">
+                        <TableCell className="font-medium py-2 px-2">
                           <button
                             onClick={() => openVehicleRecord(vehicle)}
-                            className="text-blue-600 hover:text-blue-800 hover:underline font-semibold text-sm transition-colors cursor-pointer uppercase"
+                            className="text-blue-700 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 hover:underline font-semibold text-xs transition-colors cursor-pointer uppercase"
                             title="Click to view vehicle record and customer details"
                           >
                             {vehicle.registration?.toUpperCase()}
                           </button>
+                          <div className="sm:hidden text-xs text-muted-foreground font-medium">
+                            {vehicle.make} {vehicle.model}
+                          </div>
                         </TableCell>
-                        <TableCell className="font-semibold text-sm uppercase py-3 px-4">{(vehicle.make || 'UNKNOWN').toUpperCase()}</TableCell>
-                        <TableCell className="font-semibold text-sm uppercase py-3 px-4">
+                        <TableCell className="font-semibold text-xs uppercase py-2 px-2 hidden sm:table-cell">{(vehicle.make || 'UNKNOWN').toUpperCase()}</TableCell>
+                        <TableCell className="font-semibold text-xs uppercase py-2 px-2 hidden md:table-cell">
                           <div className="whitespace-nowrap">
                             {(vehicle.model || 'UNKNOWN').toUpperCase()}
                             {vehicle.year && (
-                              <span className="text-muted-foreground ml-1 text-sm font-medium">({vehicle.year})</span>
+                              <span className="text-muted-foreground ml-1 text-xs font-medium">({vehicle.year})</span>
                             )}
                           </div>
                         </TableCell>
-                        <TableCell className="font-medium py-3 px-4">
-                          <span className="font-semibold text-sm uppercase">{customerName?.toUpperCase()}</span>
+                        <TableCell className="font-medium py-2 px-2">
+                          <span className="font-semibold text-xs uppercase">{customerName?.toUpperCase()}</span>
                         </TableCell>
-                        <TableCell className="text-sm text-muted-foreground font-medium uppercase py-3 px-4">
-                          <div className="whitespace-nowrap">
+                        <TableCell className="text-xs text-muted-foreground font-medium uppercase py-2 px-2 hidden lg:table-cell">
+                          <div className="whitespace-nowrap truncate max-w-[140px]">
                             {customerAddress?.toUpperCase()}
                           </div>
                         </TableCell>
-                        <TableCell className="py-3 px-4">
+                        <TableCell className="py-2 px-2">
                           <div className="flex items-center space-x-1">
                             {phone && (
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="h-6 w-6 p-0"
+                                className="h-5 w-5 p-0"
                                 onClick={() => window.open(`tel:${phone}`, '_self')}
                               >
                                 <Phone className="h-3 w-3" />
@@ -738,7 +747,7 @@ Reply STOP to opt out.`
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="h-6 w-6 p-0"
+                                className="h-5 w-5 p-0"
                                 onClick={() => window.open(`mailto:${email}`, '_self')}
                               >
                                 <Mail className="h-3 w-3" />
@@ -746,87 +755,94 @@ Reply STOP to opt out.`
                             )}
                           </div>
                         </TableCell>
-                        <TableCell className="text-sm font-semibold py-3 px-4">
+                        <TableCell className="text-xs font-semibold py-2 px-2">
                           <span className="font-semibold">{formatDisplayDate(vehicle.motExpiryDate)}</span>
                         </TableCell>
-                        <TableCell className="whitespace-nowrap py-3 px-4">
-                          <span className={vehicle.urgency === 'expired' ? 'text-red-600 font-semibold' : 'text-yellow-600 font-semibold'}>
+                        <TableCell className="whitespace-nowrap py-2 px-2 hidden sm:table-cell">
+                          <span className={vehicle.urgency === 'expired' ? 'text-red-600 font-semibold text-xs' : 'text-yellow-600 font-semibold text-xs'}>
                             {vehicle.urgency === 'expired'
-                              ? `${vehicle.daysUntilExpiry} AGO`
-                              : `${vehicle.daysUntilExpiry} LEFT`
+                              ? `${vehicle.daysUntilExpiry}`
+                              : `${vehicle.daysUntilExpiry}`
                             }
                           </span>
                         </TableCell>
-                        <TableCell className="text-xs uppercase py-3 px-4">
+                        <TableCell className="text-xs uppercase py-2 px-2 hidden md:table-cell">
                           {vehicle.lastVisit.date ? (
-                            <span className="font-semibold text-gray-900">
+                            <span className="font-semibold text-gray-900 text-xs">
                               {formatDisplayDate(vehicle.lastVisit.date)}
                               {vehicle.lastVisit.amount && (
-                                <span className="text-gray-600 font-medium ml-1">
+                                <div className="text-gray-600 font-medium text-xs">
                                   £{vehicle.lastVisit.amount.toFixed(2)}
-                                </span>
+                                </div>
                               )}
                             </span>
                           ) : (
-                            <span className="text-gray-400">NO RECENT VISITS</span>
+                            <span className="text-gray-400 text-xs">NO VISITS</span>
                           )}
                         </TableCell>
-                        <TableCell className="py-3 px-4">
-                          <div className="flex items-center space-x-1">
-                            {phone && (
-                              <>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="h-8 px-2 text-xs bg-green-50 border-green-200 hover:bg-green-100 text-green-700"
-                                  onClick={() => handleSendIndividualWhatsApp(vehicle)}
-                                  disabled={sendingWhatsApp === vehicle.id}
-                                  title={`Send MOT reminder WhatsApp to ${phone} (87.5% cheaper than SMS!)`}
-                                >
-                                  {sendingWhatsApp === vehicle.id ? (
-                                    <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-                                  ) : (
-                                    <MessageSquare className="h-3 w-3 mr-1" />
-                                  )}
-                                  WhatsApp
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="h-8 px-2 text-xs bg-orange-50 border-orange-200 hover:bg-orange-100 text-orange-700"
-                                  onClick={() => handleSendIndividualSMS(vehicle)}
-                                  disabled={sendingSMS === vehicle.id}
-                                  title={`Send MOT reminder SMS to ${phone}`}
-                                >
-                                  {sendingSMS === vehicle.id ? (
-                                    <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-                                  ) : (
-                                    <MessageSquare className="h-3 w-3 mr-1" />
-                                  )}
-                                  SMS
-                                </Button>
-                              </>
-                            )}
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="h-8 px-2 text-xs bg-green-50 border-green-200 hover:bg-green-100 text-green-700"
-                              onClick={() => openDVLAMOTCheck(vehicle.registration)}
-                              title="Check MOT history on DVLA (100% verification) - Opens official government website"
-                            >
-                              <ExternalLink className="h-3 w-3 mr-1" />
-                              DVLA ✓
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="h-8 px-2 text-xs bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700"
-                              onClick={() => openVehicleRecord(vehicle)}
-                              title="View complete vehicle record, service history, and customer details"
-                            >
-                              <FileText className="h-3 w-3 mr-1" />
-                              Record
-                            </Button>
+                        <TableCell className="py-2 px-2">
+                          <div className="flex flex-col space-y-1">
+                            <div className="flex items-center space-x-1">
+                              {phone && (
+                                <>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="h-6 px-1 text-xs bg-green-600 border-green-600 hover:bg-green-700 text-white dark:bg-green-500 dark:border-green-500 dark:hover:bg-green-600"
+                                    onClick={() => handleSendIndividualWhatsApp(vehicle)}
+                                    disabled={sendingWhatsApp === vehicle.id}
+                                    title={`Send MOT reminder WhatsApp to ${phone} (87.5% cheaper than SMS!)`}
+                                  >
+                                    {sendingWhatsApp === vehicle.id ? (
+                                      <Loader2 className="h-3 w-3 animate-spin" />
+                                    ) : (
+                                      <MessageSquare className="h-3 w-3" />
+                                    )}
+                                    <span className="hidden sm:inline ml-1">WA</span>
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="h-6 px-1 text-xs bg-orange-600 border-orange-600 hover:bg-orange-700 text-white dark:bg-orange-500 dark:border-orange-500 dark:hover:bg-orange-600"
+                                    onClick={() => handleSendIndividualSMS(vehicle)}
+                                    disabled={sendingSMS === vehicle.id}
+                                    title={`Send MOT reminder SMS to ${phone}`}
+                                  >
+                                    {sendingSMS === vehicle.id ? (
+                                      <Loader2 className="h-3 w-3 animate-spin" />
+                                    ) : (
+                                      <MessageSquare className="h-3 w-3" />
+                                    )}
+                                    <span className="hidden sm:inline ml-1">SMS</span>
+                                  </Button>
+                                </>
+                              )}
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="h-6 px-1 text-xs bg-green-600 border-green-600 hover:bg-green-700 text-white dark:bg-green-500 dark:border-green-500 dark:hover:bg-green-600"
+                                onClick={() => openDVLAMOTCheck(vehicle.registration)}
+                                title="Check MOT history on DVLA (100% verification) - Opens official government website"
+                              >
+                                <ExternalLink className="h-3 w-3" />
+                                <span className="hidden sm:inline ml-1">DVLA</span>
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="h-6 px-1 text-xs bg-blue-600 border-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:border-blue-500 dark:hover:bg-blue-600"
+                                onClick={() => {
+                                  console.log('View button clicked for vehicle:', vehicle.registration)
+                                  openVehicleRecord(vehicle)
+                                }}
+                                title="View complete vehicle record, service history, and customer details"
+                              >
+                                <FileText className="h-3 w-3" />
+                                <span className="hidden sm:inline ml-1">View</span>
+                              </Button>
+                            </div>
                           </div>
                         </TableCell>
                       </TableRow>

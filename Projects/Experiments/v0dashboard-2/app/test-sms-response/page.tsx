@@ -90,7 +90,7 @@ export default function TestSMSResponsePage() {
       {/* Header */}
       <div className="flex items-center gap-4">
         <Link href="/customer-database-management">
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="bg-gray-600 border-gray-600 text-white hover:bg-gray-700 dark:bg-gray-500 dark:border-gray-500 dark:hover:bg-gray-600">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Database Management
           </Button>

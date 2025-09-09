@@ -124,7 +124,7 @@ export default function EditCustomerPage() {
             <User className="h-16 w-16 mx-auto text-gray-400 mb-4" />
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Customer Not Found</h2>
             <p className="text-gray-600 mb-6">{error}</p>
-            <Button onClick={() => router.back()}>
+            <Button onClick={() => router.back()} className="bg-gray-600 border-gray-600 text-white hover:bg-gray-700 dark:bg-gray-500 dark:border-gray-500 dark:hover:bg-gray-600">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Go Back
             </Button>
@@ -140,7 +140,7 @@ export default function EditCustomerPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button variant="outline" size="sm" onClick={() => router.back()}>
+            <Button variant="outline" size="sm" onClick={() => router.back()} className="bg-gray-600 border-gray-600 text-white hover:bg-gray-700 dark:bg-gray-500 dark:border-gray-500 dark:hover:bg-gray-600">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back
             </Button>

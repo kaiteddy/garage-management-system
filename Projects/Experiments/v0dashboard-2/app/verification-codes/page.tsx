@@ -77,7 +77,7 @@ export default function VerificationCodesPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+447488896449</div>
+            <div className="text-2xl font-bold">+15558340240</div>
             <div className="text-sm text-muted-foreground">Auto-detects verification calls</div>
           </CardContent>
         </Card>
@@ -224,7 +224,7 @@ export default function VerificationCodesPage() {
               <Alert>
                 <AlertDescription>
                   <div className="space-y-2">
-                    <p><strong>🎯 When Meta calls +447488896449:</strong></p>
+                    <p><strong>🎯 When Meta calls +15558340240:</strong></p>
                     <ol className="list-decimal list-inside space-y-1 text-sm ml-4">
                       <li>System detects it's a verification call</li>
                       <li>Records the call with transcription</li>
@@ -259,7 +259,7 @@ export default function VerificationCodesPage() {
                 <div className="border rounded p-3">
                   <div className="font-semibold text-green-600">Step 2: Use Your Twilio Number</div>
                   <p className="text-sm mt-1">
-                    Enter +447488896449 as your business phone number in WhatsApp Business setup
+                    Enter +15558340240 as your business phone number in WhatsApp Business setup
                   </p>
                 </div>
 

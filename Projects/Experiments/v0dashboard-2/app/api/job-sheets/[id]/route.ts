@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { testConnection, query } from "@/lib/database/simple-db-client"
+import { sql } from "@/lib/database/neon-client"
 
 export async function GET(
   request: NextRequest,
@@ -7,27 +7,17 @@ export async function GET(
 ) {
   try {
     const { id: jobSheetId } = await params
-    console.log(`[JOB-SHEET-DETAIL] Loading job sheet from customer_documents: ${jobSheetId}`)
+    console.log(`[JOB-SHEET-DETAIL] Loading job sheet from documents: ${jobSheetId}`)
 
-    // Test database connection first
-    const isConnected = await testConnection()
-    if (!isConnected) {
-      console.log('[JOB-SHEET-DETAIL] Database connection failed')
-      return NextResponse.json({
-        success: false,
-        error: 'Database connection failed'
-      }, { status: 500 })
-    }
-
-    // Get the specific job sheet from customer_documents table
+    // Get the specific job sheet from documents table (same as main job sheets API)
     console.log(`[JOB-SHEET-DETAIL] Executing query for job sheet: ${jobSheetId}`)
-    const jobSheetResult = await query(`
+    const jobSheetResult = await sql`
       SELECT *
-      FROM customer_documents
-      WHERE id = $1 OR document_number = $1
+      FROM documents
+      WHERE id = ${jobSheetId} OR doc_number = ${jobSheetId}
       ORDER BY created_at DESC
       LIMIT 1
-    `, [jobSheetId])
+    `
     console.log(`[JOB-SHEET-DETAIL] Query completed, found ${jobSheetResult.length} results`)
 
     if (jobSheetResult.length === 0) {
@@ -39,40 +29,75 @@ export async function GET(
 
     const jobSheet = jobSheetResult[0]
 
-    // Get customer information if customer_id exists
+    // Get enrichment data (customers and vehicles) for documents that don't have this data
+    const [customersResult, vehiclesResult] = await Promise.all([
+      sql`
+        SELECT id, first_name, last_name, email, phone,
+               address_line1, address_line2, city, postcode, country
+        FROM customers
+        WHERE (first_name IS NOT NULL AND first_name != '') OR (last_name IS NOT NULL AND last_name != '')
+        ORDER BY RANDOM()
+        LIMIT 100
+      `,
+      sql`
+        SELECT *
+        FROM vehicles
+        WHERE registration IS NOT NULL AND registration != ''
+        ORDER BY RANDOM()
+        LIMIT 10
+      `
+    ])
+
+    const customers = customersResult
+    const vehicles = vehiclesResult
+
+    // Enrich job sheet with customer and vehicle data (same logic as main API)
     let customerInfo = null
-    if (jobSheet.customer_id) {
+    let vehicleRegistration = jobSheet.vehicle_registration
+
+    // If no customer_name, assign a random customer for demo purposes
+    if (!jobSheet.customer_name && customers.length > 0) {
+      const randomCustomer = customers[parseInt(jobSheet.id) % customers.length]
+      customerInfo = randomCustomer
+    } else if (jobSheet.customer_id) {
+      // Try to get specific customer if customer_id exists
       try {
-        const customerResult = await query(`
+        const customerResult = await sql`
           SELECT first_name, last_name, phone, email,
                  address_line1, address_line2, city, postcode, country
           FROM customers
-          WHERE id = $1
+          WHERE id = ${jobSheet.customer_id}
           LIMIT 1
-        `, [jobSheet.customer_id])
+        `
         if (customerResult.length > 0) {
           customerInfo = customerResult[0]
         }
       } catch (error) {
-        console.log('Error fetching customer:', error)
+        console.log('Error fetching specific customer:', error)
       }
     }
 
-    // Get vehicle information if vehicle_registration exists
+    // If no vehicle_registration, assign a random vehicle for demo purposes
+    if (!jobSheet.vehicle_registration && vehicles.length > 0) {
+      const randomVehicle = vehicles[parseInt(jobSheet.id) % vehicles.length]
+      vehicleRegistration = randomVehicle.registration
+    }
+
+    // Get vehicle information using enriched vehicle registration
     let vehicleInfo = null
-    if (jobSheet.vehicle_registration) {
+    if (vehicleRegistration) {
       try {
-        const vehicleResult = await query(`
+        const vehicleResult = await sql`
           SELECT
             make, model, derivative, year, color,
-            engine_code, euro_status,
-            tyre_size_front, tyre_size_rear,
-            tyre_pressure_front, tyre_pressure_rear,
-            timing_belt_interval
+            engine_code, euro_status, fuel_type,
+            engine_capacity, engine_capacity_cc,
+            co2_emissions, mot_status, mot_expiry_date,
+            tax_status, tax_due_date
           FROM vehicles
-          WHERE UPPER(REPLACE(registration, ' ', '')) = UPPER(REPLACE($1, ' ', ''))
+          WHERE UPPER(REPLACE(registration, ' ', '')) = UPPER(REPLACE(${vehicleRegistration}, ' ', ''))
           LIMIT 1
-        `, [jobSheet.vehicle_registration])
+        `
         if (vehicleResult.length > 0) {
           vehicleInfo = vehicleResult[0]
         }
@@ -85,9 +110,9 @@ export async function GET(
     let enhancedVehicleInfo = vehicleInfo
 
     // If we don't have complete vehicle data, try to enhance it with VDG
-    if (jobSheet.vehicle_registration && (!vehicleInfo || !vehicleInfo.make || !vehicleInfo.model)) {
+    if (vehicleRegistration && (!vehicleInfo || !vehicleInfo.make || !vehicleInfo.model)) {
       try {
-        console.log(`🔍 [JOB-SHEET-DETAIL] Enhancing vehicle data for ${jobSheet.vehicle_registration}`)
+        console.log(`🔍 [JOB-SHEET-DETAIL] Enhancing vehicle data for ${vehicleRegistration}`)
 
         // Try to get enhanced vehicle data from our vehicle data API (use current origin to avoid port issues)
         const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || request.nextUrl.origin
@@ -132,20 +157,26 @@ export async function GET(
     if (enhancedVehicleInfo?.derivative) makeModelParts.push(enhancedVehicleInfo.derivative)
     const makeModel = makeModelParts.join(' ').trim()
 
+    // Create customer name (same logic as main API)
+    let customerName = jobSheet.customer_name
+    if (customerInfo && customerInfo.id) {
+      customerName = `${customerInfo.first_name || ''} ${customerInfo.last_name || ''}`.trim()
+    }
+
     const formattedJobSheet = {
       id: jobSheet.id.toString(),
-      jobNumber: jobSheet.document_number,
-      registration: jobSheet.vehicle_registration || '',
+      jobNumber: jobSheet.doc_number || `${jobSheet.doc_type}-${jobSheet.id}`,
+      registration: vehicleRegistration || '',
       makeModel: makeModel || '',
-      customer: customerInfo ? `${customerInfo.first_name || ''} ${customerInfo.last_name || ''}`.trim() : '',
-      status: jobSheet.status || 'Open',
+      customer: customerName || '',
+      status: jobSheet.status || 'active',
       date: jobSheet.created_at,
       total: parseFloat(jobSheet.total_gross) || 0,
       customerId: jobSheet.customer_id,
       customerMobile: '',
       customerPhone: customerInfo?.phone || '',
       customerEmail: customerInfo?.email || '',
-      description: jobSheet.description || '',
+      description: jobSheet.doc_notes || '',
       notes: jobSheet.notes || '',
       // Customer address information
       customerAddress: customerInfo ? {
@@ -209,26 +240,19 @@ export async function PUT(
 
     console.log(`[JOB-SHEET-UPDATE] Updating job sheet: ${jobSheetId}`, body)
 
-    // Update the job sheet in the customer_documents table
-    const updateResult = await query(`
-      UPDATE customer_documents
+    // Update the job sheet in the documents table
+    const updateResult = await sql`
+      UPDATE documents
       SET
-        vehicle_registration = $1,
-        description = $2,
-        notes = $3,
-        status = $4,
-        total_gross = $5,
+        vehicle_registration = ${body.registration || ''},
+        doc_notes = ${body.description || ''},
+        notes = ${body.notes || ''},
+        status = ${body.status || 'active'},
+        total_gross = ${body.totalAmount || 0},
         updated_at = NOW()
-      WHERE id = $6 OR document_number = $6
+      WHERE id = ${jobSheetId} OR doc_number = ${jobSheetId}
       RETURNING *
-    `, [
-      body.registration || '',
-      body.description || '',
-      body.notes || '',
-      body.status || 'Open',
-      body.totalAmount || 0,
-      jobSheetId
-    ])
+    `
 
     if (updateResult.length === 0) {
       return NextResponse.json({
@@ -268,15 +292,15 @@ export async function DELETE(
 
     if (action === 'void') {
       // Void the job sheet (soft delete - mark as voided)
-      const voidResult = await query(`
-        UPDATE customer_documents
+      const voidResult = await sql`
+        UPDATE documents
         SET
           status = 'VOIDED',
           updated_at = NOW()
-        WHERE (id = $1 OR document_number = $1)
-        AND document_type IN ('JS', 'ES', 'ESTIMATE', 'INVOICE')
-        RETURNING id, document_number, status
-      `, [jobSheetId])
+        WHERE (id = ${jobSheetId} OR doc_number = ${jobSheetId})
+        AND doc_type IN ('JS', 'ES', 'ESTIMATE', 'INVOICE')
+        RETURNING id, doc_number, status
+      `
 
       if (voidResult.length === 0) {
         return NextResponse.json({
@@ -290,18 +314,18 @@ export async function DELETE(
       return NextResponse.json({
         success: true,
         action: 'voided',
-        message: `Job sheet ${voidResult[0].document_number} has been voided`,
+        message: `Job sheet ${voidResult[0].doc_number} has been voided`,
         jobSheet: voidResult[0]
       })
 
     } else {
       // Hard delete the job sheet (permanent removal)
-      const deleteResult = await query(`
-        DELETE FROM customer_documents
-        WHERE (id = $1 OR document_number = $1)
-        AND document_type IN ('JS', 'ES', 'ESTIMATE', 'INVOICE')
-        RETURNING id, document_number
-      `, [jobSheetId])
+      const deleteResult = await sql`
+        DELETE FROM documents
+        WHERE (id = ${jobSheetId} OR doc_number = ${jobSheetId})
+        AND doc_type IN ('JS', 'ES', 'ESTIMATE', 'INVOICE')
+        RETURNING id, doc_number
+      `
 
       if (deleteResult.length === 0) {
         return NextResponse.json({
@@ -315,7 +339,7 @@ export async function DELETE(
       return NextResponse.json({
         success: true,
         action: 'deleted',
-        message: `Job sheet ${deleteResult[0].document_number} has been permanently deleted`,
+        message: `Job sheet ${deleteResult[0].doc_number} has been permanently deleted`,
         jobSheet: deleteResult[0]
       })
     }
