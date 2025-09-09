@@ -384,9 +384,14 @@ export async function GET(request: Request) {
         console.log(`[WEBHOOK-RESPONSES] ✅ ${verifyType} webhook verification successful`)
 
         // WhatsApp requires plain text response, Twilio accepts either
+        console.log(`[WEBHOOK-RESPONSES] ✅ Returning challenge: "${hubChallenge}" at ${new Date().toISOString()}`)
         return new Response(hubChallenge, {
           status: 200,
-          headers: { 'Content-Type': 'text/plain' }
+          headers: {
+            'Content-Type': 'text/plain',
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'X-Timestamp': new Date().toISOString()
+          }
         })
       } else {
         console.log('[WEBHOOK-RESPONSES] ❌ Webhook verification failed - invalid token')
