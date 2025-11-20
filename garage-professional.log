@@ -1,0 +1,13 @@
+t=2025-07-17T21:45:38+0100 lvl=info msg="command usage" msg="Flag --subdomain has been deprecated, host tunnel on a custom subdomain"
+t=2025-07-17T21:45:38+0100 lvl=info msg="no configuration paths supplied"
+t=2025-07-17T21:45:38+0100 lvl=info msg="using configuration at default config path" path="/Users/adamrutstein/Library/Application Support/ngrok/ngrok.yml"
+t=2025-07-17T21:45:38+0100 lvl=info msg="open config file" path="/Users/adamrutstein/Library/Application Support/ngrok/ngrok.yml" err=nil
+t=2025-07-17T21:45:38+0100 lvl=info msg="starting web service" obj=web addr=127.0.0.1:4040 allow_hosts=[]
+t=2025-07-17T21:45:38+0100 lvl=info msg="client session established" obj=tunnels.session
+t=2025-07-17T21:45:38+0100 lvl=info msg="tunnel session started" obj=tunnels.session
+t=2025-07-17T21:45:38+0100 lvl=info msg="started tunnel" obj=tunnels name=command_line addr=http://localhost:3002 url=https://garage-manager.eu.ngrok.io
+t=2025-07-17T21:45:38+0100 lvl=info msg="update available" obj=updater
+t=2025-07-17T21:46:14+0100 lvl=info msg=start pg=/api/tunnels id=de504f8d6b086613
+t=2025-07-17T21:46:14+0100 lvl=info msg=end pg=/api/tunnels id=de504f8d6b086613 status=200 dur=531.542µs
+t=2025-07-17T21:47:23+0100 lvl=info msg=start pg=/api/tunnels id=2821d7fc83de2504
+t=2025-07-17T21:47:23+0100 lvl=info msg=end pg=/api/tunnels id=2821d7fc83de2504 status=200 dur=347.667µs

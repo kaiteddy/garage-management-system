@@ -1,0 +1,39 @@
+# ELI MOTORS LTD - Professional Tailscale URLs
+# ===========================================
+
+## Professional Server: elimotors-server.taila0aa39.ts.net
+## Secure, Permanent, Professional URLs
+
+## GarageManagerPro - MOT Management Platform
+Dashboard: https://elimotors-server.taila0aa39.ts.net/GarageManagerPro
+
+Webhook URLs:
+- WhatsApp: https://elimotors-server.taila0aa39.ts.net/GarageManagerPro/api/webhooks/whatsapp
+- SMS: https://elimotors-server.taila0aa39.ts.net/GarageManagerPro/api/webhooks/sms
+- Voice: https://elimotors-server.taila0aa39.ts.net/GarageManagerPro/api/webhooks/voice
+- Status: https://elimotors-server.taila0aa39.ts.net/GarageManagerPro/api/webhooks/status
+
+## ProSearchIntelligence - Analytics Platform
+Dashboard: https://elimotors-server.taila0aa39.ts.net/ProSearchIntelligence
+
+Webhook URLs:
+- Analytics: https://elimotors-server.taila0aa39.ts.net/ProSearchIntelligence/api/webhooks/analytics
+- Reports: https://elimotors-server.taila0aa39.ts.net/ProSearchIntelligence/api/webhooks/reports
+- Search: https://elimotors-server.taila0aa39.ts.net/ProSearchIntelligence/api/webhooks/search
+
+## Configuration Commands:
+# GarageManagerPro (Active):
+tailscale serve --bg --https=443 --set-path=/GarageManagerPro http://localhost:3001
+
+# ProSearchIntelligence (When ready):
+tailscale serve --bg --https=443 --set-path=/ProSearchIntelligence http://localhost:3000
+
+## Professional Benefits:
+✅ Professional hostname: elimotors-server
+✅ Branded URL structure
+✅ Permanent, stable URLs
+✅ No session limits or disconnections
+✅ Secure WireGuard encryption
+✅ Perfect for production webhooks
+✅ Both platforms can run simultaneously
+✅ Professional appearance for clients/partners

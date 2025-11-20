@@ -1,0 +1,40 @@
+# line_items.yml
+# Maps CSV columns to database fields for the line_items table
+
+required_fields:
+  - _ID
+  - _ID_Document
+  - itemDescription
+  - itemQuantity
+  - itemUnitPrice
+  - itemTaxRate
+
+field_mappings:
+  _ID: id
+  _ID_Document: document_id
+  _ID_Stock: stock_id
+  itemDescription: description
+  itemQuantity: quantity
+  itemUnitPrice: unit_price
+  itemSub_Gross: total_amount
+  itemTaxRate: tax_rate
+  itemTaxAmount: tax_amount
+  itemType: line_type
+  itemNotes: notes
+  itemPartNumber: part_number
+  itemNominalCode: nominal_code
+
+type_casting:
+  quantity: decimal
+  unit_price: decimal
+  total_amount: decimal
+  tax_rate: decimal
+  tax_amount: decimal
+
+defaults:
+  line_type: "part"  # Default to 'part' if not specified
+  tax_rate: 20.0     # Default VAT rate if not specified
+
+# Fields to ignore from CSV (won't be imported)
+ignore_fields:
+  - ""  # Add any fields to explicitly ignore here

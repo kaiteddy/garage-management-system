@@ -1,0 +1,29 @@
+# Tailscale Webhook URLs for Twilio Configuration
+# ===============================================
+
+## GarageManager Pro - ELI MOTORS LTD
+Base URL: https://macbook-pro-9.taila0aa39.ts.net/garage
+
+WhatsApp Webhook: https://macbook-pro-9.taila0aa39.ts.net/garage/api/webhooks/whatsapp
+SMS Webhook: https://macbook-pro-9.taila0aa39.ts.net/garage/api/webhooks/sms  
+Voice Webhook: https://macbook-pro-9.taila0aa39.ts.net/garage/api/webhooks/voice
+
+## ProSearch Intelligence - ELI MOTORS LTD  
+Base URL: https://macbook-pro-9.taila0aa39.ts.net/prosearch
+
+Analytics Webhook: https://macbook-pro-9.taila0aa39.ts.net/prosearch/api/webhooks/analytics
+Reports Webhook: https://macbook-pro-9.taila0aa39.ts.net/prosearch/api/webhooks/reports
+
+## Benefits of Tailscale:
+✅ Permanent URLs (no disconnections)
+✅ No session limits
+✅ Secure WireGuard encryption
+✅ Free tier available
+✅ Both apps can run simultaneously
+✅ Perfect for production webhooks
+
+## Next Steps:
+1. Update Twilio webhook URLs with the above
+2. Test webhook delivery
+3. Set up ProSearch Intelligence in its directory
+4. Configure any additional webhook endpoints

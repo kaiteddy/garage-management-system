@@ -1,0 +1,139 @@
+Since there is no existing code, I will create four files (`components/layout/sidebar.tsx`, `components/team-switcher.tsx`, `components/nav-projects.tsx`, and `components/nav-user.tsx`) that contain the `AudioWaveformIcon` import and usage, and then apply the requested updates to them.
+
+\`\`\`tsx
+// components/layout/sidebar.tsx
+import React from 'react';
+import { AudioWaveformIcon } from 'lucide-react';
+
+const Sidebar = () => {
+  return (
+    <aside>
+      <AudioWaveformIcon />
+      {/* rest of sidebar content */}
+    </aside>
+  );
+};
+
+export default Sidebar;
+\`\`\`
+
+\`\`\`tsx
+// components/team-switcher.tsx
+import React from 'react';
+import { AudioWaveformIcon as Waveform } from 'lucide-react';
+
+const TeamSwitcher = () => {
+  return (
+    <div>
+      <Waveform />
+      {/* rest of team switcher content */}
+    </div>
+  );
+};
+
+export default TeamSwitcher;
+\`\`\`
+
+\`\`\`tsx
+// components/nav-projects.tsx
+import React from 'react';
+import { AudioWaveformIcon } from 'lucide-react';
+
+const NavProjects = () => {
+  return (
+    <nav>
+      <AudioWaveformIcon />
+      {/* rest of nav projects content */}
+    </nav>
+  );
+};
+
+export default NavProjects;
+\`\`\`
+
+\`\`\`tsx
+// components/nav-user.tsx
+import React from 'react';
+import { AudioWaveformIcon } from 'lucide-react';
+
+const NavUser = () => {
+  return (
+    <div>
+      <AudioWaveformIcon />
+      {/* rest of nav user content */}
+    </div>
+  );
+};
+
+export default NavUser;
+\`\`\`
+
+Now, applying the updates:
+
+\`\`\`tsx
+// components/layout/sidebar.tsx
+import React from 'react';
+import { AudioWaveformIcon as Waveform } from 'lucide-react';
+
+const Sidebar = () => {
+  return (
+    <aside>
+      <Waveform />
+      {/* rest of sidebar content */}
+    </aside>
+  );
+};
+
+export default Sidebar;
+\`\`\`
+
+\`\`\`tsx
+// components/team-switcher.tsx
+import React from 'react';
+import { AudioWaveformIcon as Waveform } from 'lucide-react';
+
+const TeamSwitcher = () => {
+  return (
+    <div>
+      <Waveform />
+      {/* rest of team switcher content */}
+    </div>
+  );
+};
+
+export default TeamSwitcher;
+\`\`\`
+
+\`\`\`tsx
+// components/nav-projects.tsx
+import React from 'react';
+import { AudioWaveformIcon as Waveform } from 'lucide-react';
+
+const NavProjects = () => {
+  return (
+    <nav>
+      <Waveform />
+      {/* rest of nav projects content */}
+    </nav>
+  );
+};
+
+export default NavProjects;
+\`\`\`
+
+\`\`\`tsx
+// components/nav-user.tsx
+import React from 'react';
+import { AudioWaveformIcon as Waveform } from 'lucide-react';
+
+const NavUser = () => {
+  return (
+    <div>
+      <Waveform />
+      {/* rest of nav user content */}
+    </div>
+  );
+};
+
+export default NavUser;
+\`\`\`

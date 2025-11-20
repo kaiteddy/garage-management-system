@@ -1,0 +1,18 @@
+name: garage-manager-final
+services:
+- name: web
+  image:
+    registry_type: DOCR
+    repository: garage-manager-pro
+    tag: latest
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  routes:
+  - path: /
+  health_check:
+    http_path: /api/health
+  envs:
+  - key: NODE_ENV
+    value: production
+  - key: DATABASE_URL
+    value: postgresql://kaiteddy:XLzCFxhQOHdh@ep-rough-voice-a2hs7gqv.eu-central-1.aws.neon.tech/neondb?sslmode=require

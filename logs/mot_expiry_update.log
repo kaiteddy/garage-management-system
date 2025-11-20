@@ -1,0 +1,656 @@
+[2025-07-11T10:10:41.756Z] 🔧 Starting MOT Expiry Date Update 🔧
+
+[2025-07-11T10:10:42.056Z] 🔍 Found 8952 vehicles that need MOT expiry date updates
+
+[2025-07-11T10:10:42.107Z] 
+Processing batch #1 (100 vehicles)...
+[2025-07-11T10:10:42.107Z] Processing WK17 WXV ("Seat" "Leon Tsi Fr Technology Dsg")
+[2025-07-11T10:10:42.125Z] Processing DU62 JBY ("Vauxhall" "Corsa Se")
+[2025-07-11T10:10:42.125Z] Processing OE60 LWT ("Honda" "Jazz I-Vtec Ex")
+[2025-07-11T10:10:42.125Z] Processing BD65 VYH ("Fiat" "Doblo Easy")
+[2025-07-11T10:10:42.126Z] Processing BF65 CPZ ("Bmw" "5 Series 520d Se Touring")
+[2025-07-11T10:10:42.410Z] Obtained new access token, valid for 3239 seconds
+[2025-07-11T10:10:42.413Z] Obtained new access token, valid for 3239 seconds
+[2025-07-11T10:10:42.420Z] Obtained new access token, valid for 3239 seconds
+[2025-07-11T10:10:42.427Z] Obtained new access token, valid for 3239 seconds
+[2025-07-11T10:10:42.428Z] Obtained new access token, valid for 3239 seconds
+[2025-07-11T10:10:43.095Z] No MOT tests found for BF65 CPZ
+[2025-07-11T10:10:43.107Z] No MOT tests found for BD65 VYH
+[2025-07-11T10:10:43.147Z] No MOT tests found for OE60 LWT
+[2025-07-11T10:10:43.161Z] No MOT tests found for DU62 JBY
+[2025-07-11T10:10:43.620Z] No MOT tests found for WK17 WXV
+[2025-07-11T10:10:43.821Z] Processing GD08 BVP ("Vauxhall" "Corsa Breeze")
+[2025-07-11T10:10:43.821Z] Processing EO60 LWT ("Mercedes" "C-Class C220 Cdi Blueefficiency Se")
+[2025-07-11T10:10:43.821Z] Processing GD08 BYP ("Isuzu" "Rodeo Rodeo Denver Max Td Lwb D/C")
+[2025-07-11T10:10:43.821Z] Processing EA13 YKD ("Toyota" "Verso Valvematic Icon")
+[2025-07-11T10:10:43.821Z] Processing DU62 GJY ("Vauxhall" "Corsa Sxi Ac Cdti Ecoflex")
+[2025-07-11T10:10:44.227Z] No MOT tests found for EA13 YKD
+[2025-07-11T10:10:44.274Z] No MOT tests found for DU62 GJY
+[2025-07-11T10:10:44.314Z] No MOT tests found for EO60 LWT
+[2025-07-11T10:10:44.707Z] No MOT tests found for GD08 BYP
+[2025-07-11T10:10:44.721Z] No MOT tests found for GD08 BVP
+[2025-07-11T10:10:44.921Z] Processing MM21 WDV ("Honda" "Jazz I-Mmd Sr")
+[2025-07-11T10:10:44.921Z] Processing LS08 OEX ("Mercedes" "Clk Clk350 Sport")
+[2025-07-11T10:10:44.921Z] Processing GC17 ONO ("Skoda" "Fabia Se Tsi")
+[2025-07-11T10:10:44.921Z] Processing SG10 NBM ("Mazda" "3 Tamura")
+[2025-07-11T10:10:44.921Z] Processing GL08 UKF ("Citroen" "C4 Vtr 16v")
+[2025-07-11T10:10:45.280Z] No MOT tests found for LS08 OEX
+[2025-07-11T10:10:45.314Z] No MOT tests found for GC17 ONO
+[2025-07-11T10:10:45.340Z] No MOT tests found for SG10 NBM
+[2025-07-11T10:10:45.373Z] No MOT tests found for GL08 UKF
+[2025-07-11T10:10:45.420Z] No MOT tests found for MM21 WDV
+[2025-07-11T10:10:45.621Z] Processing LP15 YFX ("Honda" "Jazz I-Vtec Es Plus")
+[2025-07-11T10:10:45.621Z] Processing LJ74 UJA ("Porsche" "Macan Pdk")
+[2025-07-11T10:10:45.621Z] Processing ST08 XON ("Renault" "Clio Campus Campus 8v")
+[2025-07-11T10:10:45.621Z] Processing SH14 MFN ("Nissan" "Qashqai Acenta Dig-T")
+[2025-07-11T10:10:45.621Z] Processing S8 BEP ("Volvo" "Xc40 T3 Inscription")
+[2025-07-11T10:10:45.961Z] No MOT tests found for S8 BEP
+[2025-07-11T10:10:45.973Z] No MOT tests found for SH14 MFN
+[2025-07-11T10:10:45.994Z] No MOT tests found for LP15 YFX
+[2025-07-11T10:10:46.174Z] No MOT tests found for LJ74 UJA
+[2025-07-11T10:10:46.507Z] No MOT tests found for ST08 XON
+[2025-07-11T10:10:46.707Z] Processing VN13 TNK ("Hyundai" "I10 Active")
+[2025-07-11T10:10:46.707Z] Processing CV59 MTX ("Mazda" "3 S")
+[2025-07-11T10:10:46.708Z] Processing LP69 UPM ("Nissan" "Qashqai Dig-T N-Motion")
+[2025-07-11T10:10:46.708Z] Processing LS62 DVU ("Mini" "Countryman One")
+[2025-07-11T10:10:46.708Z] Processing YP25 LYO ("Hyundai" "Santa Fe Ultimate")
+[2025-07-11T10:10:47.074Z] No MOT tests found for LP69 UPM
+[2025-07-11T10:10:47.075Z] No MOT tests found for LS62 DVU
+[2025-07-11T10:10:47.134Z] No MOT tests found for VN13 TNK
+[2025-07-11T10:10:47.200Z] No MOT tests found for CV59 MTX
+[2025-07-11T10:10:47.567Z] No MOT tests found for YP25 LYO
+[2025-07-11T10:10:47.769Z] Processing LL05 CZK ("Peugeot" "307 Style X-Line")
+[2025-07-11T10:10:47.769Z] Processing AJ67 LLD ("Bmw" "5 Series 520d Se")
+[2025-07-11T10:10:47.769Z] Processing BU70 SVD ("Mercedes" "Gle-Class Gle 300 D 4matic Amg Line")
+[2025-07-11T10:10:47.769Z] Processing EX17 ZDT ("Vauxhall" "Meriva Club")
+[2025-07-11T10:10:47.769Z] Processing LT64 VSY ("Mini" "Countryman Cooper")
+[2025-07-11T10:10:48.214Z] No MOT tests found for EX17 ZDT
+[2025-07-11T10:10:48.233Z] No MOT tests found for LL05 CZK
+[2025-07-11T10:10:48.474Z] No MOT tests found for BU70 SVD
+[2025-07-11T10:10:48.513Z] No MOT tests found for AJ67 LLD
+[2025-07-11T10:10:48.841Z] No MOT tests found for LT64 VSY
+[2025-07-11T10:10:49.043Z] Processing WN70 VUX ("Mercedes" "A-Class A 250 E Amg Line")
+[2025-07-11T10:10:49.043Z] Processing HG13 UVN ("Mercedes" "C-Class C180 Blueefficiency Amg Sport")
+[2025-07-11T10:10:49.048Z] Processing MW11 JFU ("Toyota" "Verso T2 Valvematic")
+[2025-07-11T10:10:49.048Z] Processing RX15 WTV ("Lexus" "Nx 300h Luxury")
+[2025-07-11T10:10:49.049Z] Processing LO09 GYN ("Toyota" "Auris Tr Vvt-I S/S")
+[2025-07-11T10:10:49.434Z] No MOT tests found for LO09 GYN
+[2025-07-11T10:10:49.494Z] No MOT tests found for HG13 UVN
+[2025-07-11T10:10:49.520Z] No MOT tests found for MW11 JFU
+[2025-07-11T10:10:49.534Z] No MOT tests found for WN70 VUX
+[2025-07-11T10:10:49.577Z] No MOT tests found for RX15 WTV
+[2025-07-11T10:10:49.779Z] Processing FA18 DVY ("Ford" "Transit 350 L3 H2 P/V Drw")
+[2025-07-11T10:10:49.779Z] Processing YA05 AVJ ("Nissan" "Micra S")
+[2025-07-11T10:10:49.779Z] Processing FH69 NKW ("Hyundai" "Kona Gdi Premium Se")
+[2025-07-11T10:10:49.779Z] Processing SL61 XRP ("Vauxhall" "Corsa S Ecoflex")
+[2025-07-11T10:10:49.779Z] Processing KM67 TEY ("Hyundai" "I10 Premium Se")
+[2025-07-11T10:10:50.187Z] No MOT tests found for KM67 TEY
+[2025-07-11T10:10:50.407Z] No MOT tests found for FA18 DVY
+[2025-07-11T10:10:50.408Z] No MOT tests found for YA05 AVJ
+[2025-07-11T10:10:50.413Z] No MOT tests found for SL61 XRP
+[2025-07-11T10:10:50.640Z] No MOT tests found for FH69 NKW
+[2025-07-11T10:10:50.841Z] Processing LO62 UYT ("Toyota" "Prius Plus T4")
+[2025-07-11T10:10:50.841Z] Processing LL53 AXP ("Honda" "Jazz Dsi Sport")
+[2025-07-11T10:10:50.841Z] Processing DL21 UCP ("Vauxhall" "Corsa Sri Premium")
+[2025-07-11T10:10:50.841Z] Processing LK70 PXT ("Volvo" "Xc90 B5 Momentum Awd Mhev")
+[2025-07-11T10:10:50.841Z] Processing LG65 HJU ("Renault" "Clio Dynamique S Nav Dci")
+[2025-07-11T10:10:51.534Z] No MOT tests found for LL53 AXP
+[2025-07-11T10:10:51.620Z] No MOT tests found for LO62 UYT
+[2025-07-11T10:10:51.741Z] No MOT tests found for LG65 HJU
+[2025-07-11T10:10:51.760Z] No MOT tests found for LK70 PXT
+[2025-07-11T10:10:51.840Z] No MOT tests found for DL21 UCP
+[2025-07-11T10:10:52.041Z] Processing CU19 HHX ("Seat" "Alhambra Tdi Xcellence Dsg")
+[2025-07-11T10:10:52.042Z] Processing LC11 BKK ("Bmw" "5 Series 520d M Sport Touring")
+[2025-07-11T10:10:52.042Z] Processing KP18 GUA ("Volvo" "V60 T4 R-Design Lux Nav")
+[2025-07-11T10:10:52.042Z] Processing NU16 NSN ("Nissan" "Qashqai N-Connecta Dci")
+[2025-07-11T10:10:52.042Z] Processing KP18 GKA ("Mercedes" "A-Class A 180 Sport Edition")
+[2025-07-11T10:10:52.367Z] No MOT tests found for CU19 HHX
+[2025-07-11T10:10:52.394Z] No MOT tests found for KP18 GUA
+[2025-07-11T10:10:52.420Z] No MOT tests found for KP18 GKA
+[2025-07-11T10:10:52.554Z] No MOT tests found for LC11 BKK
+[2025-07-11T10:10:53.034Z] No MOT tests found for NU16 NSN
+[2025-07-11T10:10:53.235Z] Processing LC59 HMX ("Vauxhall" "Corsa Sxi A/C 16v")
+[2025-07-11T10:10:53.235Z] Processing GM16 TZC ("Vauxhall" "Zafira Tourer Sri")
+[2025-07-11T10:10:53.235Z] Processing DF19 YEL ("Nissan" "Juke Bose Personal Edition Xtronic")
+[2025-07-11T10:10:53.235Z] Processing LK25 XJT ("Mini" "Cooper C Classic")
+[2025-07-11T10:10:53.235Z] Processing LO18 UFG ("Peugeot" "5008 Puretech S/S Allure")
+[2025-07-11T10:10:53.554Z] No MOT tests found for LO18 UFG
+[2025-07-11T10:10:53.661Z] No MOT tests found for LK25 XJT
+[2025-07-11T10:10:53.661Z] No MOT tests found for LC59 HMX
+[2025-07-11T10:10:53.761Z] No MOT tests found for GM16 TZC
+[2025-07-11T10:10:54.221Z] No MOT tests found for DF19 YEL
+[2025-07-11T10:10:54.422Z] Processing ML66 OEK ("Vauxhall" "Astra Energy")
+[2025-07-11T10:10:54.422Z] Processing GP19 ONF ("Volkswagen" "Tiguan R-Line Tech Tsi 4motion Dsg")
+[2025-07-11T10:10:54.422Z] Processing CP16 EFT ("Peugeot" "2008 Puretech S/S Allure")
+[2025-07-11T10:10:54.422Z] Processing YT56 PXG ("Honda" "Jazz Dsi Se")
+[2025-07-11T10:10:54.422Z] Processing VE10 MWY ("Volkswagen" "Golf Match Tsi")
+[2025-07-11T10:10:54.854Z] No MOT tests found for GP19 ONF
+[2025-07-11T10:10:54.987Z] No MOT tests found for YT56 PXG
+[2025-07-11T10:10:55.074Z] No MOT tests found for CP16 EFT
+[2025-07-11T10:10:55.087Z] No MOT tests found for ML66 OEK
+[2025-07-11T10:10:55.334Z] No MOT tests found for VE10 MWY
+[2025-07-11T10:10:55.535Z] Processing RJ15 DRV ("Kia" "Ceed 2 Ecodynamics Crdi")
+[2025-07-11T10:10:55.535Z] Processing RF15 DPV ("Toyota" "Auris Vvt-I Icon Plus")
+[2025-07-11T10:10:55.536Z] Processing LL67 BNJ ("Kia" "Picanto 3")
+[2025-07-11T10:10:55.536Z] Processing T4 KCX ("Volvo" "Xc60 D4 R-Design Awd")
+[2025-07-11T10:10:55.536Z] Processing AB11 MDB ("Smart" "Fortwo Coupe Passion Mhd")
+[2025-07-11T10:10:55.908Z] No MOT tests found for RJ15 DRV
+[2025-07-11T10:10:55.940Z] No MOT tests found for AB11 MDB
+[2025-07-11T10:10:55.987Z] No MOT tests found for RF15 DPV
+[2025-07-11T10:10:55.993Z] No MOT tests found for LL67 BNJ
+[2025-07-11T10:10:56.387Z] No MOT tests found for T4 KCX
+[2025-07-11T10:10:56.588Z] Processing FV64 VVF ("Hyundai" "I30 Active")
+[2025-07-11T10:10:56.588Z] Processing KH57 YHS ("Nissan" "Note Tekna")
+[2025-07-11T10:10:56.588Z] Processing LV14 FVW ("Nissan" "Leaf Visia")
+[2025-07-11T10:10:56.588Z] Processing CP24 GHH ("Kia" "Sportage Gt-Line S")
+[2025-07-11T10:10:56.588Z] Processing RJ15 DPV ("Kia" "Ceed 2 Ecodynamics Crdi")
+[2025-07-11T10:10:56.940Z] No MOT tests found for LV14 FVW
+[2025-07-11T10:10:57.032Z] No MOT tests found for RJ15 DPV
+[2025-07-11T10:10:57.075Z] No MOT tests found for FV64 VVF
+[2025-07-11T10:10:57.259Z] No MOT tests found for CP24 GHH
+[2025-07-11T10:10:57.436Z] No MOT tests found for KH57 YHS
+[2025-07-11T10:10:57.638Z] Processing GY16 JFO ("Ford" "Fiesta Titanium X")
+[2025-07-11T10:10:57.638Z] Processing RO14 YSA ("Vauxhall" "Corsa Excite Ac Cdti Ecoflex")
+[2025-07-11T10:10:57.638Z] Processing LL67 XMT ("Bmw" "3 Series 320i M Sport Touring")
+[2025-07-11T10:10:57.638Z] Processing LN16 XHP ("" "")
+[2025-07-11T10:10:57.638Z] Processing LT20 HCJ ("Toyota" "Rav-4 Vvt-I Design")
+[2025-07-11T10:10:58.045Z] No MOT tests found for LT20 HCJ
+[2025-07-11T10:10:58.101Z] No MOT tests found for LL67 XMT
+[2025-07-11T10:10:58.101Z] No MOT tests found for LN16 XHP
+[2025-07-11T10:10:58.237Z] No MOT tests found for RO14 YSA
+[2025-07-11T10:10:58.342Z] No MOT tests found for GY16 JFO
+[2025-07-11T10:10:58.544Z] Processing LL62 ONO ("Mercedes" "Sprinter 210 Cdi Swb")
+[2025-07-11T10:10:58.544Z] Processing HY66 DNJ ("Skoda" "Citigo Black Edition Mpi")
+[2025-07-11T10:10:58.544Z] Processing LT20 HCG ("Toyota" "Aygo Vvt-I X-Play")
+[2025-07-11T10:10:58.544Z] Processing DU71 WYC ("Hyundai" "Kona Gdi Premium")
+[2025-07-11T10:10:58.544Z] Processing EF22 HWS ("Toyota" "Yaris Excel")
+[2025-07-11T10:10:58.902Z] No MOT tests found for HY66 DNJ
+[2025-07-11T10:10:58.966Z] No MOT tests found for EF22 HWS
+[2025-07-11T10:10:58.986Z] No MOT tests found for LT20 HCG
+[2025-07-11T10:10:59.222Z] No MOT tests found for DU71 WYC
+[2025-07-11T10:10:59.488Z] No MOT tests found for LL62 ONO
+[2025-07-11T10:10:59.689Z] Processing SH59 CVK ("Mazda" "6 Ts")
+[2025-07-11T10:10:59.689Z] Processing LL64 MKE ("Hyundai" "I10 Premium")
+[2025-07-11T10:10:59.689Z] Processing HN08 XYB ("Honda" "Jazz Dsi Se")
+[2025-07-11T10:10:59.689Z] Processing LK59 HMX ("Thwaites" "All Models All Variants")
+[2025-07-11T10:10:59.689Z] Processing MT21 HGN ("Peugeot" "3008 S/S Gt Premium")
+[2025-07-11T10:11:00.139Z] No MOT tests found for MT21 HGN
+[2025-07-11T10:11:00.159Z] No MOT tests found for LL64 MKE
+[2025-07-11T10:11:00.243Z] No MOT tests found for SH59 CVK
+[2025-07-11T10:11:00.496Z] No MOT tests found for LK59 HMX
+[2025-07-11T10:11:00.496Z] No MOT tests found for HN08 XYB
+[2025-07-11T10:11:00.698Z] Processing WP53 CYT ("Fiat" "Punto 8v Active")
+[2025-07-11T10:11:00.698Z] Processing ST11 LZG ("Vauxhall" "Corsa Se")
+[2025-07-11T10:11:00.698Z] Processing PJ62 DFL ("Ford" "Focus Zetec")
+[2025-07-11T10:11:00.699Z] Processing NU61 BEY ("Kia" "Rio Domino")
+[2025-07-11T10:11:00.699Z] Processing YM56 RVK ("Toyota" "Estima/Esutima/Previa Import Fwd")
+[2025-07-11T10:11:01.082Z] No MOT tests found for NU61 BEY
+[2025-07-11T10:11:01.092Z] No MOT tests found for WP53 CYT
+[2025-07-11T10:11:01.140Z] No MOT tests found for YM56 RVK
+[2025-07-11T10:11:01.187Z] No MOT tests found for ST11 LZG
+[2025-07-11T10:11:01.266Z] No MOT tests found for PJ62 DFL
+[2025-07-11T10:11:01.466Z] Processing GX15 OYK ("Honda" "Civic I-Vtec Se Plus")
+[2025-07-11T10:11:01.466Z] Processing YG21 JKD ("Cupra" "Formentor Tsi V1 Dsg")
+[2025-07-11T10:11:01.466Z] Processing MT64 UKA ("Ford" "Fiesta Studio")
+[2025-07-11T10:11:01.467Z] Processing EK54 WWJ ("Ford" "Fiesta Ghia 16v")
+[2025-07-11T10:11:01.467Z] Processing RK67 UCD ("Volkswagen" "Golf Gte Advance Dsg")
+[2025-07-11T10:11:01.879Z] No MOT tests found for GX15 OYK
+[2025-07-11T10:11:01.951Z] No MOT tests found for EK54 WWJ
+[2025-07-11T10:11:01.957Z] No MOT tests found for YG21 JKD
+[2025-07-11T10:11:02.072Z] No MOT tests found for RK67 UCD
+[2025-07-11T10:11:02.398Z] No MOT tests found for MT64 UKA
+[2025-07-11T10:11:02.598Z] Processing AP22 HTD ("Mercedes" "A-Class A 200 Amg Line Executive")
+[2025-07-11T10:11:02.599Z] Processing HV57 LFS ("Mercedes" "Gl-Class Gl320 Cdi")
+[2025-07-11T10:11:02.599Z] Processing RF17 XOP ("Dacia" "Sandero Laureate Tce")
+[2025-07-11T10:11:02.599Z] Processing EO70 XMV ("Mercedes" "Vito 116cdi Tourer Select L2")
+[2025-07-11T10:11:02.599Z] Processing FG12 SYO ("Vauxhall" "Corsa Active Ac")
+[2025-07-11T10:11:03.031Z] No MOT tests found for AP22 HTD
+[2025-07-11T10:11:03.032Z] No MOT tests found for EO70 XMV
+[2025-07-11T10:11:03.109Z] No MOT tests found for FG12 SYO
+[2025-07-11T10:11:03.272Z] No MOT tests found for HV57 LFS
+[2025-07-11T10:11:03.481Z] No MOT tests found for RF17 XOP
+[2025-07-11T10:11:03.682Z] 
+=== Progress Update ===
+[2025-07-11T10:11:03.682Z] Processed: 100/8952 (1.12%)
+[2025-07-11T10:11:03.683Z] Updated: 0 | Not Found: 0 | Errors: 0
+[2025-07-11T10:11:03.683Z] Rate: 4.76 vehicles/second | ETA: 1860s | Elapsed: 21s
+[2025-07-11T10:11:03.683Z] ========================
+
+[2025-07-11T10:11:04.723Z] 
+Processing batch #2 (100 vehicles)...
+[2025-07-11T10:11:04.723Z] Processing DY22 MMX ("Nissan" "Qashqai Dig-T N-Connecta Dct")
+[2025-07-11T10:11:04.723Z] Processing EJ67 EXL ("Hyundai" "I10 Se")
+[2025-07-11T10:11:04.723Z] Processing EG54 ZNJ ("Toyota" "Yaris T Spirit Vvt-I")
+[2025-07-11T10:11:04.723Z] Processing BL67 DPX ("Volkswagen" "Golf Gtd Tdi Dsg")
+[2025-07-11T10:11:04.723Z] Processing BT08 PGZ ("Nissan" "Qashqai Acenta")
+[2025-07-11T10:11:05.136Z] No MOT tests found for DY22 MMX
+[2025-07-11T10:11:05.180Z] No MOT tests found for BL67 DPX
+[2025-07-11T10:11:05.230Z] No MOT tests found for BT08 PGZ
+[2025-07-11T10:11:05.231Z] No MOT tests found for EG54 ZNJ
+[2025-07-11T10:11:05.252Z] No MOT tests found for EJ67 EXL
+[2025-07-11T10:11:05.452Z] Processing LM22 FJO ("Kia" "Ev6 Air")
+[2025-07-11T10:11:05.452Z] Processing EJ19 PYF ("Nissan" "Juke Tekna Xtronic")
+[2025-07-11T10:11:05.452Z] Processing EK65 DYF ("Peugeot" "Rcz Thp Gt")
+[2025-07-11T10:11:05.452Z] Processing KF16 AZV ("Nissan" "Qashqai Tekna Dig-T")
+[2025-07-11T10:11:05.452Z] Processing EA68 FAO ("Skoda" "Kodiaq Edition Tsi Dsg")
+[2025-07-11T10:11:05.828Z] No MOT tests found for EK65 DYF
+[2025-07-11T10:11:05.838Z] No MOT tests found for EA68 FAO
+[2025-07-11T10:11:05.840Z] No MOT tests found for EJ19 PYF
+[2025-07-11T10:11:05.849Z] No MOT tests found for LM22 FJO
+[2025-07-11T10:11:05.869Z] No MOT tests found for KF16 AZV
+[2025-07-11T10:11:06.071Z] Processing FRE 120 ("Lexus" "Ct 200h Advance")
+[2025-07-11T10:11:06.071Z] Processing YC22 MYF ("Nissan" "Qashqai Dig-T Acenta Premium Dct")
+[2025-07-11T10:11:06.071Z] Processing LL65 UHP ("Honda" "Hr-V I-Vtec Ex")
+[2025-07-11T10:11:06.071Z] Processing LP[66TFZ ("" "")
+[2025-07-11T10:11:06.072Z] Processing LD18 DYF ("Honda" "Jazz I-Vtec Ex Navi")
+[2025-07-11T10:11:06.269Z] Retry 1/3 for LP[66TFZ after 2000ms
+[2025-07-11T10:11:06.446Z] No MOT tests found for LL65 UHP
+[2025-07-11T10:11:06.510Z] No MOT tests found for LD18 DYF
+[2025-07-11T10:11:06.530Z] No MOT tests found for YC22 MYF
+[2025-07-11T10:11:06.686Z] No MOT tests found for FRE 120
+[2025-07-11T10:11:08.457Z] Retry 2/3 for LP[66TFZ after 4000ms
+[2025-07-11T10:11:12.573Z] Retry 3/3 for LP[66TFZ after 8000ms
+[2025-07-11T10:11:20.817Z] Error checking MOT for LP[66TFZ: ERROR
+[2025-07-11T10:11:21.018Z] Processing V3 CHT ("Fiat" "500 Lounge")
+[2025-07-11T10:11:21.019Z] Processing YN65 WRJ ("Mini" "Hatch Cooper")
+[2025-07-11T10:11:21.019Z] Processing VK71 HPO ("Hyundai" "Tucson T-Gdi Ultimate")
+[2025-07-11T10:11:21.019Z] Processing LY18 DYF ("Volkswagen" "Polo Se Tsi")
+[2025-07-11T10:11:21.019Z] Processing GN55 XVW ("Ford" "Focus Zetec")
+[2025-07-11T10:11:21.568Z] No MOT tests found for YN65 WRJ
+[2025-07-11T10:11:21.744Z] No MOT tests found for GN55 XVW
+[2025-07-11T10:11:21.829Z] No MOT tests found for V3 CHT
+[2025-07-11T10:11:21.936Z] No MOT tests found for LY18 DYF
+[2025-07-11T10:11:22.073Z] No MOT tests found for VK71 HPO
+[2025-07-11T10:11:22.273Z] Processing VK71 HBO ("Toyota" "C-Hr Excel")
+[2025-07-11T10:11:22.273Z] Processing RN59 ALN ("Toyota" "Verso T Spirit Valvematic")
+[2025-07-11T10:11:22.273Z] Processing XX55 PAU ("Audi" "E-Tron Quattro Technik 50")
+[2025-07-11T10:11:22.273Z] Processing SM12 NFY ("Vauxhall" "Corsa Active")
+[2025-07-11T10:11:22.273Z] Processing NX09 UAJ ("Toyota" "Corolla Verso T2 Vvt-I")
+[2025-07-11T10:11:22.700Z] No MOT tests found for XX55 PAU
+[2025-07-11T10:11:22.716Z] No MOT tests found for NX09 UAJ
+[2025-07-11T10:11:22.749Z] No MOT tests found for VK71 HBO
+[2025-07-11T10:11:22.788Z] No MOT tests found for SM12 NFY
+[2025-07-11T10:11:23.297Z] No MOT tests found for RN59 ALN
+[2025-07-11T10:11:23.497Z] Processing SM17 BXP ("Mazda" "6 D Sport Nav")
+[2025-07-11T10:11:23.497Z] Processing NU57 MDO ("Ford" "Transit 280 Swb Lr")
+[2025-07-11T10:11:23.497Z] Processing EJ15 DCF ("Audi" "A3 Tfsi Sport")
+[2025-07-11T10:11:23.497Z] Processing LL21 OZR ("Kia" "Sportage Jbl Black Edition Isg")
+[2025-07-11T10:11:23.497Z] Processing LT17 NWL ("Toyota" "Yaris Vvt-I Icon")
+[2025-07-11T10:11:23.888Z] No MOT tests found for LT17 NWL
+[2025-07-11T10:11:23.904Z] No MOT tests found for SM17 BXP
+[2025-07-11T10:11:24.076Z] No MOT tests found for NU57 MDO
+[2025-07-11T10:11:24.093Z] No MOT tests found for EJ15 DCF
+[2025-07-11T10:11:24.557Z] No MOT tests found for LL21 OZR
+[2025-07-11T10:11:24.758Z] Processing LG15 YSX ("Kia" "Picanto Vr7")
+[2025-07-11T10:11:24.758Z] Processing PF10 YCV ("" "")
+[2025-07-11T10:11:24.758Z] Processing ML09 NUE ("Toyota" "Yaris Tr Vvt-I")
+[2025-07-11T10:11:24.758Z] Processing YR69 OCD ("Ford" "Fiesta Trend")
+[2025-07-11T10:11:24.758Z] Processing LS11 CHX ("Ford" "Fiesta Titanium")
+[2025-07-11T10:11:25.101Z] No MOT tests found for YR69 OCD
+[2025-07-11T10:11:25.121Z] No MOT tests found for PF10 YCV
+[2025-07-11T10:11:25.125Z] No MOT tests found for LG15 YSX
+[2025-07-11T10:11:25.297Z] No MOT tests found for ML09 NUE
+[2025-07-11T10:11:25.437Z] No MOT tests found for LS11 CHX
+[2025-07-11T10:11:25.638Z] Processing SD18 VZO ("Hyundai" "Ioniq Premium Hev")
+[2025-07-11T10:11:25.639Z] Processing OY18 ETU ("Nissan" "Qashqai Dci Acenta")
+[2025-07-11T10:11:25.639Z] Processing BJ16 KHH ("Land Rover" "Discovery Sport Td4 Hse Black")
+[2025-07-11T10:11:25.639Z] Processing SN71 WLZ ("Honda" "Jazz I-Mmd Se")
+[2025-07-11T10:11:25.639Z] Processing SG60 WHN ("Fiat" "500 Pop")
+[2025-07-11T10:11:26.016Z] No MOT tests found for SD18 VZO
+[2025-07-11T10:11:26.024Z] No MOT tests found for SN71 WLZ
+[2025-07-11T10:11:26.040Z] No MOT tests found for OY18 ETU
+[2025-07-11T10:11:26.573Z] No MOT tests found for BJ16 KHH
+[2025-07-11T10:11:26.836Z] No MOT tests found for SG60 WHN
+[2025-07-11T10:11:27.038Z] Processing YM15 YYT ("Ford" "Focus Zetec Tdci")
+[2025-07-11T10:11:27.038Z] Processing LF21 WFL ("Skoda" "Kodiaq Se L Tsi Dsg")
+[2025-07-11T10:11:27.038Z] Processing NU57 FMX ("Volkswagen" "Polo E")
+[2025-07-11T10:11:27.038Z] Processing KX55 EPD ("Volkswagen" "Golf Gti")
+[2025-07-11T10:11:27.038Z] Processing LL72 SGV ("Volkswagen" "Polo Life")
+[2025-07-11T10:11:27.478Z] No MOT tests found for LF21 WFL
+[2025-07-11T10:11:27.551Z] No MOT tests found for KX55 EPD
+[2025-07-11T10:11:27.558Z] No MOT tests found for YM15 YYT
+[2025-07-11T10:11:27.598Z] No MOT tests found for LL72 SGV
+[2025-07-11T10:11:27.602Z] No MOT tests found for NU57 FMX
+[2025-07-11T10:11:27.802Z] Processing PN20 TKF ("Nissan" "Qashqai Dig-T Acenta Premium Dct")
+[2025-07-11T10:11:27.803Z] Processing WN10 APU ("Hyundai" "I20 Classic")
+[2025-07-11T10:11:27.803Z] Processing LL22 UGR ("Peugeot" "3008 Bluehdi S/S Gt Premium")
+[2025-07-11T10:11:27.803Z] Processing LL22 EPC ("Hyundai" "Tucson T-Gdi Se Connect")
+[2025-07-11T10:11:27.803Z] Processing FG12 ULL ("Toyota" "Auris T Spirit")
+[2025-07-11T10:11:28.158Z] No MOT tests found for LL22 UGR
+[2025-07-11T10:11:28.198Z] No MOT tests found for LL22 EPC
+[2025-07-11T10:11:28.257Z] No MOT tests found for WN10 APU
+[2025-07-11T10:11:28.318Z] No MOT tests found for FG12 ULL
+[2025-07-11T10:11:28.606Z] No MOT tests found for PN20 TKF
+[2025-07-11T10:11:28.807Z] Processing PK60 DBV ("Ford" "Focus Zetec")
+[2025-07-11T10:11:28.808Z] Processing VN10 APU ("Volkswagen" "Golf Se Tsi")
+[2025-07-11T10:11:28.808Z] Processing RJ15 BZX ("Bmw" "2 Series 218i Se Active Tourer")
+[2025-07-11T10:11:28.808Z] Processing WN21 KCZ ("Ford" "Fiesta St-Line Edition")
+[2025-07-11T10:11:28.808Z] Processing BN65 VPC ("Nissan" "Pulsar Acenta Dig-T Xtronic")
+[2025-07-11T10:11:29.146Z] No MOT tests found for BN65 VPC
+[2025-07-11T10:11:29.246Z] No MOT tests found for WN21 KCZ
+[2025-07-11T10:11:29.298Z] No MOT tests found for VN10 APU
+[2025-07-11T10:11:29.314Z] No MOT tests found for RJ15 BZX
+[2025-07-11T10:11:29.923Z] No MOT tests found for PK60 DBV
+[2025-07-11T10:11:30.123Z] Processing LR21 YDT ("Volkswagen" "Polo Match Tsi Dsg")
+[2025-07-11T10:11:30.124Z] Processing LM22 BHN ("Volkswagen" "Golf Style Tsi Dsg")
+[2025-07-11T10:11:30.124Z] Processing SN19 MPV ("Mercedes" "Glc-Class Glc 250 4matic Amg Line Premium")
+[2025-07-11T10:11:30.124Z] Processing DV74 NTD ("Hyundai" "I10 Advance")
+[2025-07-11T10:11:30.124Z] Processing ML22 MKP ("Volkswagen" "Arteon R-Line Tdi Dsg")
+[2025-07-11T10:11:30.485Z] No MOT tests found for LR21 YDT
+[2025-07-11T10:11:30.529Z] No MOT tests found for ML22 MKP
+[2025-07-11T10:11:30.615Z] No MOT tests found for LM22 BHN
+[2025-07-11T10:11:30.706Z] No MOT tests found for DV74 NTD
+[2025-07-11T10:11:30.991Z] No MOT tests found for SN19 MPV
+[2025-07-11T10:11:31.191Z] Processing LD71 OFC ("Skoda" "Enyaq Iv 60 Nav Loft")
+[2025-07-11T10:11:31.192Z] Processing BL23 XYB ("Ford" "Transit Custom 280 Trend P/V Ecoblue")
+[2025-07-11T10:11:31.192Z] Processing ML22 NKP ("Volkswagen" "Touareg V6 Black Edition Tsi")
+[2025-07-11T10:11:31.192Z] Processing YR10 YSX ("Bmw" "1 Series 116i Sport")
+[2025-07-11T10:11:31.192Z] Processing HD54 ROU ("Nissan" "Micra S")
+[2025-07-11T10:11:31.619Z] No MOT tests found for ML22 NKP
+[2025-07-11T10:11:31.722Z] No MOT tests found for BL23 XYB
+[2025-07-11T10:11:31.730Z] No MOT tests found for YR10 YSX
+[2025-07-11T10:11:31.866Z] No MOT tests found for LD71 OFC
+[2025-07-11T10:11:32.498Z] No MOT tests found for HD54 ROU
+[2025-07-11T10:11:32.699Z] Processing AV16 FCL ("Ford" "Tourneo Custom 300 Limited Tdci")
+[2025-07-11T10:11:32.700Z] Processing LK21 UVD ("Ford" "Fiesta Titanium")
+[2025-07-11T10:11:32.700Z] Processing CK22 WNV ("Citroen" "C4 Shine")
+[2025-07-11T10:11:32.700Z] Processing KW15 XJB ("Peugeot" "308 Blue Hdi S/S Sw Allure")
+[2025-07-11T10:11:32.700Z] Processing KX18 VVF ("Nissan" "Juke N-Connecta Xtronic")
+[2025-07-11T10:11:33.230Z] No MOT tests found for CK22 WNV
+[2025-07-11T10:11:33.402Z] No MOT tests found for KW15 XJB
+[2025-07-11T10:11:33.458Z] No MOT tests found for KX18 VVF
+[2025-07-11T10:11:33.466Z] No MOT tests found for LK21 UVD
+[2025-07-11T10:11:33.805Z] No MOT tests found for AV16 FCL
+[2025-07-11T10:11:34.007Z] Processing KX18 VVE ("Nissan" "Micra Acenta Limited Edition")
+[2025-07-11T10:11:34.007Z] Processing DV22 PYY ("Nissan" "Micra Ig-T Tekna Xtronic")
+[2025-07-11T10:11:34.007Z] Processing BA18 PTU ("Honda" "Civic Vtec Sport")
+[2025-07-11T10:11:34.008Z] Processing LO67 KWE ("Mercedes" "A-Class A 180 Se Executive")
+[2025-07-11T10:11:34.008Z] Processing HJ20 OMY ("Audi" "Q2 Tfsi Technik 35")
+[2025-07-11T10:11:34.346Z] No MOT tests found for HJ20 OMY
+[2025-07-11T10:11:34.434Z] No MOT tests found for DV22 PYY
+[2025-07-11T10:11:34.451Z] No MOT tests found for BA18 PTU
+[2025-07-11T10:11:34.810Z] No MOT tests found for LO67 KWE
+[2025-07-11T10:11:34.890Z] No MOT tests found for KX18 VVE
+[2025-07-11T10:11:35.091Z] Processing LO69 WJV ("Volkswagen" "Sharan Se Navigation Tsi Dsg")
+[2025-07-11T10:11:35.092Z] Processing Y458 NLC ("Audi" "Tt Quattro")
+[2025-07-11T10:11:35.092Z] Processing XO11 CER ("Lexus" "Ct 200h F Sport")
+[2025-07-11T10:11:35.092Z] Processing GJ08 UKF ("Fiat" "500 Pop")
+[2025-07-11T10:11:35.092Z] Processing NV18 HVR ("Toyota" "Rav-4 Vvt-I Design Tss")
+[2025-07-11T10:11:35.458Z] No MOT tests found for NV18 HVR
+[2025-07-11T10:11:35.523Z] No MOT tests found for LO69 WJV
+[2025-07-11T10:11:35.530Z] No MOT tests found for GJ08 UKF
+[2025-07-11T10:11:35.595Z] No MOT tests found for XO11 CER
+[2025-07-11T10:11:35.638Z] No MOT tests found for Y458 NLC
+[2025-07-11T10:11:35.840Z] Processing LG71 TYU ("Honda" "Jazz I-Mmd Sr")
+[2025-07-11T10:11:35.840Z] Processing NJ13 XEH ("Hyundai" "I10 Active")
+[2025-07-11T10:11:35.840Z] Processing YT62 EZX ("Kia" "Venga 2")
+[2025-07-11T10:11:35.840Z] Processing HN11 CFA ("Hyundai" "Ix20 Style")
+[2025-07-11T10:11:35.840Z] Processing EP19 UJK ("Mitsubishi" "Outlander Exceed")
+[2025-07-11T10:11:36.211Z] No MOT tests found for EP19 UJK
+[2025-07-11T10:11:36.211Z] No MOT tests found for LG71 TYU
+[2025-07-11T10:11:36.270Z] No MOT tests found for NJ13 XEH
+[2025-07-11T10:11:36.358Z] No MOT tests found for YT62 EZX
+[2025-07-11T10:11:36.602Z] No MOT tests found for HN11 CFA
+[2025-07-11T10:11:36.802Z] Processing LS22 HZH ("Mg" "Hs Exclusive Dct")
+[2025-07-11T10:11:36.803Z] Processing MC65 YRY ("Peugeot" "2008 Blue Hdi S/S Allure")
+[2025-07-11T10:11:36.803Z] Processing EA64 KVJ ("Ford" "Fiesta Zetec")
+[2025-07-11T10:11:36.803Z] Processing LT02 AYJ ("Peugeot" "307 Glx")
+[2025-07-11T10:11:36.803Z] Processing EA11 KOW ("Mini" "Countryman Cooper D")
+[2025-07-11T10:11:37.186Z] No MOT tests found for LS22 HZH
+[2025-07-11T10:11:37.226Z] No MOT tests found for LT02 AYJ
+[2025-07-11T10:11:37.234Z] No MOT tests found for EA11 KOW
+[2025-07-11T10:11:37.254Z] No MOT tests found for EA64 KVJ
+[2025-07-11T10:11:37.623Z] No MOT tests found for MC65 YRY
+[2025-07-11T10:11:37.824Z] Processing WK05 XDZ ("Renault" "Megane Dynamique Sport Tourer Dci")
+[2025-07-11T10:11:37.824Z] Processing EA11 KOU ("Hyundai" "I10 Blue")
+[2025-07-11T10:11:37.824Z] Processing WK09 JZM ("Lexus" "Rx 400h Limited Edition Executive")
+[2025-07-11T10:11:37.824Z] Processing GY22 DSV ("Mercedes" "E-Class E 200 Sport Mhev")
+[2025-07-11T10:11:37.824Z] Processing KW20 KYP ("" "")
+[2025-07-11T10:11:38.254Z] No MOT tests found for KW20 KYP
+[2025-07-11T10:11:38.418Z] No MOT tests found for WK05 XDZ
+[2025-07-11T10:11:38.442Z] No MOT tests found for WK09 JZM
+[2025-07-11T10:11:38.714Z] No MOT tests found for GY22 DSV
+[2025-07-11T10:11:38.866Z] No MOT tests found for EA11 KOU
+[2025-07-11T10:11:39.066Z] Processing LF21 WFE ("Skoda" "Kodiaq Se Drive Tsi Dsg")
+[2025-07-11T10:11:39.067Z] Processing LF65 XWZ ("Hyundai" "I30 Se Nav")
+[2025-07-11T10:11:39.067Z] Processing LM14 ZNN ("Honda" "Cr-V I-Vtec Ex")
+[2025-07-11T10:11:39.067Z] Processing MW05 NXJ ("Volkswagen" "Touran Se Tdi 7 Str")
+[2025-07-11T10:11:39.068Z] Processing LS60 NCF ("Mercedes" "C-Class C180 Cgi Blueefficiency Executive Se")
+[2025-07-11T10:11:39.438Z] No MOT tests found for LM14 ZNN
+[2025-07-11T10:11:39.474Z] No MOT tests found for LF21 WFE
+[2025-07-11T10:11:39.582Z] No MOT tests found for MW05 NXJ
+[2025-07-11T10:11:39.770Z] No MOT tests found for LS60 NCF
+[2025-07-11T10:11:40.189Z] No MOT tests found for LF65 XWZ
+[2025-07-11T10:11:40.391Z] 
+=== Progress Update ===
+[2025-07-11T10:11:40.391Z] Processed: 200/8952 (2.23%)
+[2025-07-11T10:11:40.391Z] Updated: 0 | Not Found: 0 | Errors: 1
+[2025-07-11T10:11:40.391Z] Rate: 3.45 vehicles/second | ETA: 2537s | Elapsed: 58s
+[2025-07-11T10:11:40.391Z] ========================
+
+[2025-07-11T10:11:41.627Z] 
+Processing batch #3 (100 vehicles)...
+[2025-07-11T10:11:41.627Z] Processing KS18 BYA ("Mercedes" "E-Class E 220 D Se")
+[2025-07-11T10:11:41.627Z] Processing SL63 CTX ("Toyota" "Aygo Vvt-I Mode Ac")
+[2025-07-11T10:11:41.627Z] Processing MW05 NXG ("Nissan" "Almera Sve")
+[2025-07-11T10:11:41.627Z] Processing DU67 WOC ("Vauxhall" "Vivaro L2h1 2900 Sportive Cdti Biturbo S/S")
+[2025-07-11T10:11:41.627Z] Processing DU67 WOX ("Vauxhall" "Vivaro L2h1 2900 Sportive Cdti Biturbo S/S")
+[2025-07-11T10:11:42.043Z] No MOT tests found for MW05 NXG
+[2025-07-11T10:11:42.082Z] No MOT tests found for DU67 WOX
+[2025-07-11T10:11:42.182Z] No MOT tests found for KS18 BYA
+[2025-07-11T10:11:42.259Z] No MOT tests found for DU67 WOC
+[2025-07-11T10:11:42.758Z] No MOT tests found for SL63 CTX
+[2025-07-11T10:11:42.959Z] Processing OU67 WDC ("Nissan" "Qashqai N-Connecta Dig-T")
+[2025-07-11T10:11:42.959Z] Processing DU67 OUC ("" "")
+[2025-07-11T10:11:42.959Z] Processing GF71 UDZ ("Kia" "Sorento 3")
+[2025-07-11T10:11:42.959Z] Processing DU67 WDC ("Vauxhall" "Vivaro L2h1 2900 Combi Cdti Biturbo S/S")
+[2025-07-11T10:11:42.959Z] Processing HK70 WBJ ("Vauxhall" "Combo Life Energy Xl S/S")
+[2025-07-11T10:11:43.370Z] No MOT tests found for HK70 WBJ
+[2025-07-11T10:11:43.382Z] No MOT tests found for DU67 WDC
+[2025-07-11T10:11:43.450Z] No MOT tests found for OU67 WDC
+[2025-07-11T10:11:43.458Z] No MOT tests found for GF71 UDZ
+[2025-07-11T10:11:43.650Z] No MOT tests found for DU67 OUC
+[2025-07-11T10:11:43.851Z] Processing HK70 WVJ ("Ford" "Fiesta St-Line Edition")
+[2025-07-11T10:11:43.851Z] Processing GD16 BMU ("Audi" "A3 Tfsi Sport Nav")
+[2025-07-11T10:11:43.851Z] Processing HK70 WWJ ("Audi" "Q2 Tfsi S Line Black Edition 35")
+[2025-07-11T10:11:43.852Z] Processing HK70 WWY ("Honda" "Jazz I-Mmd Sr")
+[2025-07-11T10:11:43.852Z] Processing SK12 GNN ("Nissan" "Note N-Tec Plus")
+[2025-07-11T10:11:44.234Z] No MOT tests found for HK70 WVJ
+[2025-07-11T10:11:44.258Z] No MOT tests found for HK70 WWY
+[2025-07-11T10:11:44.354Z] No MOT tests found for HK70 WWJ
+[2025-07-11T10:11:44.378Z] No MOT tests found for SK12 GNN
+[2025-07-11T10:11:44.482Z] No MOT tests found for GD16 BMU
+[2025-07-11T10:11:44.681Z] Processing VE21 DWX ("Bmw" "1 Series 118i M Sport")
+[2025-07-11T10:11:44.682Z] Processing LO71 OCJ ("Mercedes" "E-Class E 300 De Amg Line Edition")
+[2025-07-11T10:11:44.682Z] Processing EJ72 LUF ("Kia" "Sorento 2")
+[2025-07-11T10:11:44.682Z] Processing KE22 MGX ("Bmw" "X1 Xdrive25e M Sport")
+[2025-07-11T10:11:44.682Z] Processing KS64 EGD ("Nissan" "Micra Tekna")
+[2025-07-11T10:11:45.026Z] No MOT tests found for EJ72 LUF
+[2025-07-11T10:11:45.058Z] No MOT tests found for KE22 MGX
+[2025-07-11T10:11:45.061Z] No MOT tests found for KS64 EGD
+[2025-07-11T10:11:45.105Z] No MOT tests found for VE21 DWX
+[2025-07-11T10:11:45.413Z] No MOT tests found for LO71 OCJ
+[2025-07-11T10:11:45.615Z] Processing CV17 DFZ ("Kia" "Niro 2")
+[2025-07-11T10:11:45.615Z] Processing KF21 FMD ("Ford" "Kuga St-Line")
+[2025-07-11T10:11:45.615Z] Processing LJ63 OPN ("Nissan" "Qashqai 360 Plus 2")
+[2025-07-11T10:11:45.615Z] Processing FX67 XZU ("Honda" "Jazz I-Vtec Se")
+[2025-07-11T10:11:45.615Z] Processing WK66 HXX ("Seat" "Alhambra Tdi Se Lux")
+[2025-07-11T10:11:45.962Z] No MOT tests found for FX67 XZU
+[2025-07-11T10:11:46.055Z] No MOT tests found for CV17 DFZ
+[2025-07-11T10:11:46.109Z] No MOT tests found for LJ63 OPN
+[2025-07-11T10:11:46.390Z] No MOT tests found for WK66 HXX
+[2025-07-11T10:11:46.770Z] No MOT tests found for KF21 FMD
+[2025-07-11T10:11:46.971Z] Processing LO71 XPD ("Toyota" "Yaris Cross Dynamic")
+[2025-07-11T10:11:46.971Z] Processing AG07 BVJ ("Volkswagen" "Golf Match Fsi")
+[2025-07-11T10:11:46.971Z] Processing BG07 CVJ ("Ford" "Transit 350 Lwb Dcc")
+[2025-07-11T10:11:46.971Z] Processing YB62 TJV ("Toyota" "Yaris T Spirit Hybrid")
+[2025-07-11T10:11:46.971Z] Processing BG07 BVJ ("Renault" "Megane Renaultsport 225")
+[2025-07-11T10:11:47.342Z] No MOT tests found for BG07 BVJ
+[2025-07-11T10:11:47.346Z] No MOT tests found for LO71 XPD
+[2025-07-11T10:11:47.605Z] No MOT tests found for YB62 TJV
+[2025-07-11T10:11:47.698Z] No MOT tests found for AG07 BVJ
+[2025-07-11T10:11:47.987Z] No MOT tests found for BG07 CVJ
+[2025-07-11T10:11:48.188Z] Processing LM12 DFC ("Lexus" "Ct 200h Se-L")
+[2025-07-11T10:11:48.188Z] Processing YS60 CKL ("Honda" "Jazz I-Vtec Es")
+[2025-07-11T10:11:48.188Z] Processing CF13 JLV ("Ford" "Focus Zetec")
+[2025-07-11T10:11:48.188Z] Processing YS6 0 ("" "")
+[2025-07-11T10:11:48.188Z] Processing LK14 LAA ("Toyota" "Estima")
+[2025-07-11T10:11:48.558Z] No MOT tests found for YS6 0
+[2025-07-11T10:11:48.562Z] No MOT tests found for LM12 DFC
+[2025-07-11T10:11:48.638Z] No MOT tests found for LK14 LAA
+[2025-07-11T10:11:49.018Z] No MOT tests found for YS60 CKL
+[2025-07-11T10:11:49.166Z] No MOT tests found for CF13 JLV
+[2025-07-11T10:11:49.366Z] Processing LN07 BYS ("Toyota" "Estima Fwd")
+[2025-07-11T10:11:49.367Z] Processing EY12 OJA ("Audi" "A1 Tfsi Se")
+[2025-07-11T10:11:49.367Z] Processing LK58 FTY ("Honda" "Accord I-Vtec Ex")
+[2025-07-11T10:11:49.367Z] Processing LY13 EZM ("Audi" "Q5 Tfsi Quattro S Line Plus")
+[2025-07-11T10:11:49.367Z] Processing BF12 EPP ("Vauxhall" "Corsa Exclusiv Ac")
+[2025-07-11T10:11:49.682Z] No MOT tests found for LN07 BYS
+[2025-07-11T10:11:49.706Z] No MOT tests found for BF12 EPP
+[2025-07-11T10:11:49.775Z] No MOT tests found for LY13 EZM
+[2025-07-11T10:11:50.261Z] No MOT tests found for EY12 OJA
+[2025-07-11T10:11:50.346Z] No MOT tests found for LK58 FTY
+[2025-07-11T10:11:50.547Z] Processing VN65 EMX ("Vauxhall" "Corsa Se Ecoflex")
+[2025-07-11T10:11:50.547Z] Processing HJ17 TFA ("Hyundai" "Ix20 Mpi Premium Nav")
+[2025-07-11T10:11:50.547Z] Processing LT22 TXP ("Peugeot" "208 Puretech Active Premium S/S")
+[2025-07-11T10:11:50.547Z] Processing GF21 ZBL ("Volkswagen" "Golf Life Tsi")
+[2025-07-11T10:11:50.547Z] Processing HJ10 XNP ("Audi" "A3 Mpi Technik")
+[2025-07-11T10:11:50.890Z] No MOT tests found for VN65 EMX
+[2025-07-11T10:11:50.898Z] No MOT tests found for GF21 ZBL
+[2025-07-11T10:11:50.990Z] No MOT tests found for HJ10 XNP
+[2025-07-11T10:11:51.386Z] No MOT tests found for LT22 TXP
+[2025-07-11T10:11:51.601Z] No MOT tests found for HJ17 TFA
+[2025-07-11T10:11:51.803Z] Processing NA58 FPX ("Nissan" "Qashqai Acenta")
+[2025-07-11T10:11:51.803Z] Processing CK13 GNN ("Vauxhall" "Zafira Exclusiv")
+[2025-07-11T10:11:51.803Z] Processing AP13 OBZ ("Fiat" "500 Lounge")
+[2025-07-11T10:11:51.803Z] Processing CP69 JZO ("Hyundai" "I10 Premium Se")
+[2025-07-11T10:11:51.803Z] Processing LK20 HHB ("Fiat" "500 C Star Dualogic")
+[2025-07-11T10:11:52.161Z] No MOT tests found for LK20 HHB
+[2025-07-11T10:11:52.254Z] No MOT tests found for CP69 JZO
+[2025-07-11T10:11:52.286Z] No MOT tests found for AP13 OBZ
+[2025-07-11T10:11:52.370Z] No MOT tests found for NA58 FPX
+[2025-07-11T10:11:52.897Z] No MOT tests found for CK13 GNN
+[2025-07-11T10:11:53.098Z] Processing GD73 CBY ("Volkswagen" "T-Roc R-Line Tsi 4motion Dsg")
+[2025-07-11T10:11:53.098Z] Processing BD53 HKV ("Ford" "Focus Zetec")
+[2025-07-11T10:11:53.098Z] Processing ST67 WKY ("Hyundai" "Ioniq Premium Se Hev")
+[2025-07-11T10:11:53.098Z] Processing HN62 GXD ("Yamaha" "Ybr 125")
+[2025-07-11T10:11:53.099Z] Processing YH73 VEV ("Mini" "Countryman Cooper Exclusive")
+[2025-07-11T10:11:53.494Z] No MOT tests found for YH73 VEV
+[2025-07-11T10:11:53.525Z] No MOT tests found for ST67 WKY
+[2025-07-11T10:11:53.606Z] No MOT tests found for GD73 CBY
+[2025-07-11T10:11:54.274Z] No MOT tests found for BD53 HKV
+[2025-07-11T10:11:54.739Z] No MOT tests found for HN62 GXD
+[2025-07-11T10:11:54.939Z] Processing RK08 SVO ("Fiat" "500 Lounge")
+[2025-07-11T10:11:54.940Z] Processing LS19 YFN ("Skoda" "Kodiaq Se L Tsi Dsg")
+[2025-07-11T10:11:54.940Z] Processing MD12 ZVT ("Toyota" "Estima Fwd")
+[2025-07-11T10:11:54.940Z] Processing LL65 OUU ("Peugeot" "108 Active")
+[2025-07-11T10:11:54.940Z] Processing LL63 GLY ("Nissan" "Qashqai 360")
+[2025-07-11T10:11:55.362Z] No MOT tests found for MD12 ZVT
+[2025-07-11T10:11:55.507Z] No MOT tests found for LL65 OUU
+[2025-07-11T10:11:55.594Z] No MOT tests found for RK08 SVO
+[2025-07-11T10:11:55.598Z] No MOT tests found for LL63 GLY
+[2025-07-11T10:11:55.635Z] No MOT tests found for LS19 YFN
+[2025-07-11T10:11:55.836Z] Processing DK68 GJX ("Volvo" "Xc90 T6 Inscription Pro Awd")
+[2025-07-11T10:11:55.836Z] Processing LF69 XEW ("Mini" "Hatch Cooper Classic")
+[2025-07-11T10:11:55.836Z] Processing MT67 ASO ("Ford" "Galaxy Titanium X Tdci")
+[2025-07-11T10:11:55.836Z] Processing YA64 LRK ("Toyota" "Auris Valvematic Icon Plus")
+[2025-07-11T10:11:55.836Z] Processing RE59 RFK ("Volkswagen" "Golf Gt Tsi")
+[2025-07-11T10:11:56.346Z] No MOT tests found for DK68 GJX
+[2025-07-11T10:11:56.510Z] No MOT tests found for YA64 LRK
+[2025-07-11T10:11:56.527Z] No MOT tests found for RE59 RFK
+[2025-07-11T10:11:56.622Z] No MOT tests found for LF69 XEW
+[2025-07-11T10:11:56.727Z] No MOT tests found for MT67 ASO
+[2025-07-11T10:11:56.927Z] Processing LP08 ZRE ("Suzuki" "Splash Gls Plus")
+[2025-07-11T10:11:56.928Z] Processing KW69 UHP ("Mini" "Hatch Cooper Classic")
+[2025-07-11T10:11:56.928Z] Processing FY57 NWP ("Honda" "Cr-V I-Vtec Ex")
+[2025-07-11T10:11:56.928Z] Processing GM66 NEF ("Hyundai" "I10 Se")
+[2025-07-11T10:11:56.928Z] Processing LR20 LKY ("Mini" "Hatch One Classic")
+[2025-07-11T10:11:57.285Z] No MOT tests found for LR20 LKY
+[2025-07-11T10:11:57.414Z] No MOT tests found for LP08 ZRE
+[2025-07-11T10:11:57.557Z] No MOT tests found for GM66 NEF
+[2025-07-11T10:11:57.685Z] No MOT tests found for FY57 NWP
+[2025-07-11T10:11:57.792Z] No MOT tests found for KW69 UHP
+[2025-07-11T10:11:57.993Z] Processing LO69 MUU ("Honda" "Jazz I-Vtec Se Navi")
+[2025-07-11T10:11:57.993Z] Processing RE70 UHO ("Volkswagen" "Sharan Se Navigation Tsi Dsg")
+[2025-07-11T10:11:57.993Z] Processing KJ68 CXA ("Mercedes" "Gla-Class Gla 200 D Sport Premium Plus")
+[2025-07-11T10:11:57.994Z] Processing LP64 DLO ("Honda" "Jazz I-Vtec Es Plus")
+[2025-07-11T10:11:57.994Z] Processing LP67 DCE ("Nissan" "Qashqai N-Connecta Dig-T Xtronic")
+[2025-07-11T10:11:58.301Z] No MOT tests found for LO69 MUU
+[2025-07-11T10:11:58.349Z] No MOT tests found for LP67 DCE
+[2025-07-11T10:11:58.373Z] No MOT tests found for LP64 DLO
+[2025-07-11T10:11:58.809Z] No MOT tests found for KJ68 CXA
+[2025-07-11T10:11:59.373Z] No MOT tests found for RE70 UHO
+[2025-07-11T10:11:59.575Z] Processing HT18 WWJ ("Kia" "Picanto X-Line")
+[2025-07-11T10:11:59.575Z] Processing FE17 CDN ("Hyundai" "I10 Premium Se")
+[2025-07-11T10:11:59.575Z] Processing LT06 VDO ("Volvo" "S40 Se")
+[2025-07-11T10:11:59.576Z] Processing LP64 OLO ("Mercedes" "A-Class A 180 Cdi Blueefficiency Amg Sport")
+[2025-07-11T10:11:59.576Z] Processing LL67 ZDZ ("Audi" "A5 Sportback Tfsi Quattro S Line")
+[2025-07-11T10:11:59.946Z] No MOT tests found for LL67 ZDZ
+[2025-07-11T10:12:00.018Z] No MOT tests found for LP64 OLO
+[2025-07-11T10:12:00.057Z] No MOT tests found for HT18 WWJ
+[2025-07-11T10:12:00.281Z] No MOT tests found for LT06 VDO
+[2025-07-11T10:12:00.758Z] No MOT tests found for FE17 CDN
+[2025-07-11T10:12:00.958Z] Processing KY15 LZT ("Mercedes" "C-Class C200 Se")
+[2025-07-11T10:12:00.958Z] Processing LJ18 FVF ("Ford" "C-Max")
+[2025-07-11T10:12:00.958Z] Processing LN23 XGO ("Nissan" "Juke Tekna Plus")
+[2025-07-11T10:12:00.958Z] Processing KV65 RXL ("Volvo" "V40 D4 Se Lux Nav")
+[2025-07-11T10:12:00.959Z] Processing EY20 VBO ("Volkswagen" "Polo Match Tsi Dsg")
+[2025-07-11T10:12:01.341Z] No MOT tests found for EY20 VBO
+[2025-07-11T10:12:01.481Z] No MOT tests found for LN23 XGO
+[2025-07-11T10:12:01.518Z] No MOT tests found for LJ18 FVF
+[2025-07-11T10:12:01.677Z] No MOT tests found for KY15 LZT
+[2025-07-11T10:12:02.086Z] No MOT tests found for KV65 RXL
+[2025-07-11T10:12:02.287Z] Processing RO56 YPZ ("Honda" "Jazz Dsi Se")
+[2025-07-11T10:12:02.287Z] Processing OO05 AUR ("Mini" "Hatch Cooper Exclusive")
+[2025-07-11T10:12:02.287Z] Processing YA70 HMX ("Land Rover" "Discovery Sport Black Mhev")
+[2025-07-11T10:12:02.287Z] Processing YM70 DZY ("Audi" "A3 Sportback Tfsi E S Line 40")
+[2025-07-11T10:12:02.288Z] Processing LE71 EWV ("Ds" "Ds 3 Crossback E-Tense Bastille")
+[2025-07-11T10:12:02.726Z] No MOT tests found for YM70 DZY
+[2025-07-11T10:12:02.750Z] No MOT tests found for RO56 YPZ
+[2025-07-11T10:12:02.773Z] No MOT tests found for OO05 AUR
+[2025-07-11T10:12:02.894Z] No MOT tests found for YA70 HMX
+[2025-07-11T10:12:03.249Z] No MOT tests found for LE71 EWV
+[2025-07-11T10:12:03.451Z] Processing LB5 ("" "")
+[2025-07-11T10:12:03.451Z] Processing LL71 KHB ("Honda" "Jazz I-Mmd Ex")
+[2025-07-11T10:12:03.451Z] Processing LB65 HRP ("Toyota" "Prius Plus Icon")
+[2025-07-11T10:12:03.452Z] Processing LS73 OTY ("Seat" "Tarraco Ecotsi Se Technology Dsg")
+[2025-07-11T10:12:03.452Z] Processing KY55 KZE ("Peugeot" "206 S")
+[2025-07-11T10:12:03.869Z] No MOT tests found for KY55 KZE
+[2025-07-11T10:12:03.974Z] No MOT tests found for LB65 HRP
+[2025-07-11T10:12:04.054Z] No MOT tests found for LS73 OTY
+[2025-07-11T10:12:04.102Z] No MOT tests found for LB5
+[2025-07-11T10:12:04.501Z] No MOT tests found for LL71 KHB
+[2025-07-11T10:12:04.701Z] Processing ND19 ZJO ("Suzuki" "Vitara Sz-T Boosterjet")
+[2025-07-11T10:12:04.702Z] Processing RO17 ZTW ("Volkswagen" "Golf Match Edition Tdi Bmt")
+[2025-07-11T10:12:04.702Z] Processing AJ66 BPK ("Mini" "Hatch Cooper S")
+[2025-07-11T10:12:04.702Z] Processing AV12 ERO ("Honda" "Jazz Ima Hs")
+[2025-07-11T10:12:04.702Z] Processing BN61 YUY ("Hyundai" "I10 Classic")
+[2025-07-11T10:12:05.045Z] No MOT tests found for AJ66 BPK
+[2025-07-11T10:12:05.098Z] No MOT tests found for AV12 ERO
+[2025-07-11T10:12:05.285Z] No MOT tests found for RO17 ZTW
+[2025-07-11T10:12:05.344Z] No MOT tests found for ND19 ZJO
+[2025-07-11T10:12:05.537Z] No MOT tests found for BN61 YUY
+[2025-07-11T10:12:05.739Z] 
+=== Progress Update ===
+[2025-07-11T10:12:05.739Z] Processed: 300/8952 (3.35%)
+[2025-07-11T10:12:05.739Z] Updated: 0 | Not Found: 0 | Errors: 1
+[2025-07-11T10:12:05.739Z] Rate: 3.61 vehicles/second | ETA: 2397s | Elapsed: 83s
+[2025-07-11T10:12:05.739Z] ========================
+
+[2025-07-11T10:12:06.789Z] 
+Processing batch #4 (100 vehicles)...
+[2025-07-11T10:12:06.789Z] Processing LA71 FSK ("Bmw" "5 Series M550i Xdrive")
+[2025-07-11T10:12:06.789Z] Processing DM19 WWX ("Vauxhall" "Corsa Griffin")
+[2025-07-11T10:12:06.789Z] Processing DY67 UDB ("Bmw" "X1 Sdrive18d Se")
+[2025-07-11T10:12:06.789Z] Processing ML18 AZJ ("Nissan" "Qashqai Acenta Dig-T")
+[2025-07-11T10:12:06.789Z] Processing YC67 EBZ ("Peugeot" "208 Active")
+[2025-07-11T10:12:07.202Z] No MOT tests found for DY67 UDB
+[2025-07-11T10:12:07.293Z] No MOT tests found for YC67 EBZ
+[2025-07-11T10:12:07.369Z] No MOT tests found for LA71 FSK
+[2025-07-11T10:12:07.529Z] No MOT tests found for DM19 WWX
+[2025-07-11T10:12:07.573Z] No MOT tests found for ML18 AZJ
+[2025-07-11T10:12:07.774Z] Processing NK20 GYW ("Skoda" "Kodiaq Se L Tsi Dsg")
+[2025-07-11T10:12:07.774Z] Processing LD65 UFM ("Honda" "Civic I-Vtec Sr")
+[2025-07-11T10:12:07.774Z] Processing AO65 YNC ("Volkswagen" "Polo Se Tsi Dsg")
+[2025-07-11T10:12:07.775Z] Processing LP66 FTZ ("Ford" "Focus Titanium")
+[2025-07-11T10:12:07.775Z] Processing AO65 NPU ("Nissan" "Note Acenta Premium Dci")

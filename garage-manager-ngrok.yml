@@ -1,0 +1,13 @@
+version: "2"
+authtoken: 2zrEXdLJO1jMrxOFOSiKWP0Qwln_3zT3rWjW4kwadPKHTFAGA
+api_key: ak_2zrH0SRxhKbyASvEr80gz2MnvNV
+
+tunnels:
+  garage-manager:
+    addr: 3002
+    proto: http
+    hostname: "garage-manager.eu.ngrok.io"
+    inspect: true
+
+web_addr: localhost:4043
+log_level: info

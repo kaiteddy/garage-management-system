@@ -1,0 +1,59 @@
+name: garage-manager-github
+services:
+- name: web
+  source_dir: /
+  github:
+    repo: kaiteddy/v0dashboard
+    branch: main
+    deploy_on_push: true
+  build_command: npm run build
+  run_command: npm start
+  environment_slug: node-js
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  routes:
+  - path: /
+  health_check:
+    http_path: /api/health
+  envs:
+  - key: NODE_ENV
+    value: production
+  - key: NEXT_PUBLIC_APP_URL
+    value: ${APP_URL}
+  - key: DATABASE_URL
+    value: ${garage-manager-db.DATABASE_URL}
+  - key: MOT_HISTORY_API_KEY
+    value: 8TfF8vnU2s5sP1CRm7ij69anVlLe5SRm4cNGn9yq
+  - key: MOT_HISTORY_BASE_URL
+    value: https://history.mot.api.gov.uk/v1/trade/vehicles
+  - key: TAPI_CLIENT_ID
+    value: 2b3911f4-55f5-4a86-a9f0-0fc02c2bff0f
+  - key: TAPI_CLIENT_SECRET
+    value: rWe8Q~vhlVo7Z_fFuy~zBfAOY5BqCg_PviCwIa74
+  - key: TAPI_SCOPE
+    value: https://tapi.dvsa.gov.uk/.default
+  - key: TAPI_TOKEN_URL
+    value: https://login.microsoftonline.com/a455b827-244f-4c97-b5b4-ce5d13b4d00c/oauth2/v2.0/token
+  - key: TWILIO_ACCOUNT_SID
+    value: AC1572c0e5e4b55bb7440c3d9da482fd36
+  - key: TWILIO_AUTH_TOKEN
+    value: 70abf8e7b760180b3a02ae0478b101a8
+  - key: TWILIO_PHONE_NUMBER
+    value: "+447488896449"
+  - key: TWILIO_WHATSAPP_NUMBER
+    value: "whatsapp:+14155238886"
+  - key: WHATSAPP_WEBHOOK_VERIFY_TOKEN
+    value: eli_motors_whatsapp_2025
+  - key: MINIMAX_API_KEY
+    value: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cE5hbWUiOiJBZGFtIE1vdG9ycyIsIlVzZXJOYW1lIjoiQWRhbSBNb3RvcnMiLCJBY2NvdW50IjoiIiwiU3ViamVjdElEIjoiMTk0NzcwNzE0NzA1NTc5NjY1OCIsIlBob25lIjoiIiwiR3JvdXBJRCI6IjE5NDc3MDcxNDcwNDc0MDgwNTAiLCJQYWdlTmFtZSI6IiIsIk1haWwiOiJhZGFtQGVsaW1vdG9ycy5jby51ayIsIkNyZWF0ZVRpbWUiOiIyMDI1LTA3LTIzIDAyOjMzOjA1IiwiVG9rZW5UeXBlIjoxLCJpc3MiOiJtaW5pbWF4In0.drEYj7gLaV7faA273ZOGDWV0adgcjePapb1-Frq9mjl5Bm5dw_YkXf1du5VpuND96KTgc3tsoGtbVqCXRZgr43FQ5_TTHjjtl2indoYQvn8kZIJa71E4l2-HNo-LFlC160cL6K4yVZmOgpURnfUKvHv5L-g96sAjhcsjf9T1fvf7eUZ7wZqdWd-PriRhyVMlUOWMbELl9s_FwLgR-MO6rCC3cpImFTtOdK7qN69mXIcXLxohEx7wWcO17ZQHbb6D2Dh1mFyKm4vCJjPyJoDqd7c2NE6eBxKyn_iv_Y24mwDQbWBI2kjNJTdCUFhRkXS7gkT0ZozLuCWVctg9QaSj7g
+  - key: BUSINESS_NAME
+    value: ELI MOTORS LTD
+  - key: BUSINESS_TAGLINE
+    value: Serving Hendon since 1979
+
+databases:
+- name: garage-manager-db
+  engine: PG
+  version: "15"
+  size: basic
+  num_nodes: 1

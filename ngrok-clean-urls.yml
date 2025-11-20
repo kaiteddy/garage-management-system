@@ -1,0 +1,23 @@
+version: "2"
+authtoken: 2zrEXdLJO1jMrxOFOSiKWP0Qwln_3zT3rWjW4kwadPKHTFAGA
+api_key: ak_2zrH0SRxhKbyASvEr80gz2MnvNV
+
+tunnels:
+  # GarageManagerPro - Clean Professional URL
+  garage-manager-pro:
+    addr: 3001
+    proto: http
+    name: "GarageManagerPro - ELI MOTORS LTD"
+    hostname: "garage-manager.eu.ngrok.io"
+    inspect: true
+
+  # ProSearchIntelligence - Clean Professional URL
+  pro-search-intelligence:
+    addr: 3000
+    proto: http
+    name: "ProSearchIntelligence - ELI MOTORS LTD"
+    hostname: "pro-search.eu.ngrok.io"
+    inspect: true
+
+web_addr: localhost:4041
+log_level: info

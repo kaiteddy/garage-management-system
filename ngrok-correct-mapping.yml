@@ -1,0 +1,23 @@
+version: "2"
+authtoken: 2zrEXdLJO1jMrxOFOSiKWP0Qwln_3zT3rWjW4kwadPKHTFAGA
+api_key: ak_2zrH0SRxhKbyASvEr80gz2MnvNV
+
+tunnels:
+  # GarageManagerPro (v0dashboard-2) - Port 3000 (default Next.js port)
+  garage-manager:
+    addr: 3000
+    proto: http
+    name: "GarageManagerPro v0dashboard-2 - ELI MOTORS LTD"
+    hostname: "garage-manager.eu.ngrok.io"
+    inspect: true
+
+  # ProSearchIntelligence - Port 3001 (running via PM2)
+  pro-search:
+    addr: 3001
+    proto: http
+    name: "ProSearchIntelligence - ELI MOTORS LTD"
+    hostname: "pro-search.eu.ngrok.io"
+    inspect: true
+
+web_addr: localhost:4044
+log_level: info

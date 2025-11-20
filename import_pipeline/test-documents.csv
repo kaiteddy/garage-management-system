@@ -1,0 +1,4 @@
+id,document_type,document_number,issue_date,due_date,status,subtotal,tax_amount,total_amount,paid_amount,balance_due,notes
+1,invoice,INV-2023-001,2023-01-15,2023-02-15,paid,100.00,20.00,120.00,120.00,0.00,Test invoice 1
+2,estimate,EST-2023-001,2023-01-10,2023-02-10,sent,150.00,30.00,180.00,0.00,180.00,Test estimate 1
+3,receipt,RCPT-2023-001,2023-01-20,2023-01-20,paid,200.00,40.00,240.00,240.00,0.00,Test receipt 1

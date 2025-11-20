@@ -1,0 +1,23 @@
+
+> service-data-table@0.1.0 dev
+> next dev
+
+Environment variables in next.config.mjs: {
+  DATABASE_URL: '***',
+  NEXT_PUBLIC_APP_URL: 'http://localhost:3000',
+  NODE_ENV: 'development'
+}
+Exposing environment variables to the browser: [ 'NEXT_PUBLIC_APP_URL', 'NEXT_PUBLIC_DVSA_API_ENABLED' ]
+Environment variables in next.config.mjs: {
+  DATABASE_URL: '***',
+  NEXT_PUBLIC_APP_URL: 'http://localhost:3000',
+  NODE_ENV: 'development'
+}
+Exposing environment variables to the browser: [ 'NEXT_PUBLIC_APP_URL', 'NEXT_PUBLIC_DVSA_API_ENABLED' ]
+   ▲ Next.js 15.2.4
+   - Local:        http://localhost:3000
+   - Network:      http://127.0.2.2:3000
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 1460ms

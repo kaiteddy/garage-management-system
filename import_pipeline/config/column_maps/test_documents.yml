@@ -1,0 +1,96 @@
+# Test document import configuration
+table: documents
+
+# Required fields (must be present in the CSV)
+required_fields:
+  - id
+  - document_type
+
+# Field mappings (CSV column -> database column)
+field_mappings:
+  id: id
+  document_type: document_type
+  document_number: document_number
+  issue_date: issue_date
+  due_date: due_date
+  status: status
+  subtotal: subtotal
+  tax_amount: tax_amount
+  total_amount: total_amount
+  paid_amount: paid_amount
+  balance_due: balance_due
+  notes: notes
+
+# Type casting for fields
+type_casting:
+  id: str
+  document_type: str
+  document_number: str
+  issue_date: datetime
+  due_date: datetime
+  status: str
+  subtotal: decimal
+  tax_amount: decimal
+  total_amount: decimal
+  paid_amount: decimal
+  balance_due: decimal
+  notes: str
+
+# Default values for fields (if not provided in CSV)
+defaults:
+  status: 'draft'
+  subtotal: 0
+  tax_amount: 0
+  total_amount: 0
+  paid_amount: 0
+  balance_due: 0
+
+# Fields to ignore (will not be imported)
+ignored_fields: []
+
+# Validation rules
+validations:
+  - field: id
+    type: str
+    required: true
+    min_length: 1
+  - field: document_type
+    type: str
+    required: true
+    allowed_values: ['invoice', 'estimate', 'receipt', 'other']
+  - field: document_number
+    type: str
+    required: false
+    max_length: 100
+  - field: issue_date
+    type: datetime
+    required: false
+  - field: due_date
+    type: datetime
+    required: false
+  - field: status
+    type: str
+    required: false
+    allowed_values: ['draft', 'sent', 'paid', 'overdue', 'void']
+  - field: subtotal
+    type: decimal
+    required: false
+    min: 0
+  - field: tax_amount
+    type: decimal
+    required: false
+    min: 0
+  - field: total_amount
+    type: decimal
+    required: false
+    min: 0
+  - field: paid_amount
+    type: decimal
+    required: false
+    min: 0
+  - field: balance_due
+    type: decimal
+    required: false
+  - field: notes
+    type: str
+    required: false

@@ -1,0 +1,424 @@
+ERROR:  authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.
+ERROR:  You can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.
+ERROR:  Read more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config
+ERROR:  You can view your current agent sessions in the dashboard:
+ERROR:  https://dashboard.ngrok.com/agents
+ERROR:  
+ERROR:  ERR_NGROK_108
+ERROR:  https://ngrok.com/docs/errors/err_ngrok_108
+ERROR:  
+t=2025-07-21T18:45:58+0100 lvl=crit msg="command failed" err="listen tcp 127.0.0.1:4040: bind: address already in use"
+t=2025-07-21T18:46:13+0100 lvl=crit msg="command failed" err="listen tcp 127.0.0.1:4040: bind: address already in use"
+t=2025-07-21T18:46:45+0100 lvl=crit msg="command failed" err="listen tcp 127.0.0.1:4040: bind: address already in use"
+t=2025-07-21T18:49:44+0100 lvl=crit msg="command failed" err="listen tcp 127.0.0.1:4040: bind: address already in use"
+t=2025-07-21T18:56:20+0100 lvl=crit msg="command failed" err="listen tcp 127.0.0.1:4040: bind: address already in use"
+t=2025-07-21T19:10:17+0100 lvl=crit msg="command failed" err="listen tcp 127.0.0.1:4040: bind: address already in use"
+t=2025-07-21T19:10:37+0100 lvl=crit msg="command failed" err="listen tcp 127.0.0.1:4040: bind: address already in use"
+t=2025-07-21T19:13:09+0100 lvl=crit msg="command failed" err="listen tcp 127.0.0.1:4040: bind: address already in use"
+t=2025-07-21T19:14:02+0100 lvl=crit msg="command failed" err="listen tcp 127.0.0.1:4040: bind: address already in use"
+t=2025-07-21T19:14:21+0100 lvl=crit msg="command failed" err="listen tcp 127.0.0.1:4040: bind: address already in use"
+t=2025-07-21T19:15:43+0100 lvl=crit msg="command failed" err="listen tcp 127.0.0.1:4040: bind: address already in use"
+t=2025-07-21T19:16:19+0100 lvl=info msg="starting web service" obj=web addr=localhost:4041 allow_hosts=[]
+t=2025-07-21T19:16:19+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-21T19:16:19+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-21T19:16:19+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x140001166a0}} restart:false}"
+t=2025-07-21T19:16:19+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-21T19:16:19+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-21T19:16:19+0100 lvl=info msg="no more state changes" obj=tunnels.session
+t=2025-07-22T12:04:28+0100 lvl=crit msg="command failed" err="listen tcp 127.0.0.1:4041: bind: address already in use"
+t=2025-07-22T12:05:13+0100 lvl=crit msg="command failed" err="listen tcp 127.0.0.1:4040: bind: address already in use"
+t=2025-07-22T12:06:27+0100 lvl=crit msg="command failed" err="listen tcp 127.0.0.1:4040: bind: address already in use"
+t=2025-07-22T12:06:58+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-22T12:06:59+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T12:06:59+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T12:06:59+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x14000486670}} restart:false}"
+t=2025-07-22T12:06:59+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T12:06:59+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T12:06:59+0100 lvl=info msg="no more state changes" obj=tunnels.session
+t=2025-07-22T12:28:37+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-22T12:28:37+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T12:28:37+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T12:28:37+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x14000500250}} restart:false}"
+t=2025-07-22T12:28:37+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T12:28:37+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T12:28:37+0100 lvl=info msg="no more state changes" obj=tunnels.session
+t=2025-07-22T12:29:40+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-22T12:29:41+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T12:29:41+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T12:29:41+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x140000566e0}} restart:false}"
+t=2025-07-22T12:29:41+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T12:29:41+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T16:30:09+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-22T16:30:10+0100 lvl=info msg="client session established" obj=tunnels.session
+t=2025-07-22T16:30:10+0100 lvl=info msg="tunnel session started" obj=tunnels.session
+t=2025-07-22T16:30:10+0100 lvl=info msg="started tunnel" obj=tunnels name=pro-search addr=http://localhost:3001 url=https://pro-search.eu.ngrok.io
+t=2025-07-22T16:30:10+0100 lvl=info msg="started tunnel" obj=tunnels name=garage-manager addr=http://localhost:3000 url=https://garage-manager.eu.ngrok.io
+t=2025-07-22T16:30:25+0100 lvl=info msg="join connections" obj=join id=d5f7bf73943b l=[::1]:3000 r=104.28.224.60:38037
+t=2025-07-22T16:30:27+0100 lvl=info msg="join connections" obj=join id=797fa2ca953e l=[::1]:3000 r=104.28.224.60:38053
+t=2025-07-22T16:30:27+0100 lvl=info msg="join connections" obj=join id=dc8fe2f6f8a2 l=[::1]:3001 r=104.28.224.60:37959
+t=2025-07-22T16:31:27+0100 lvl=info msg="join connections" obj=join id=e227b7cdcf9d l=[::1]:3000 r=104.28.224.60:38241
+t=2025-07-22T16:31:48+0100 lvl=info msg="join connections" obj=join id=b025f10c4f10 l=[::1]:3001 r=104.28.224.60:37995
+t=2025-07-22T16:31:48+0100 lvl=info msg="join connections" obj=join id=b087a1aefc5d l=[::1]:3001 r=104.28.224.60:37995
+t=2025-07-22T16:31:48+0100 lvl=info msg="join connections" obj=join id=5b45158337a2 l=[::1]:3001 r=104.28.224.60:37995
+t=2025-07-22T16:31:48+0100 lvl=info msg="join connections" obj=join id=d30dbfb2c03f l=[::1]:3001 r=104.28.224.60:37995
+t=2025-07-22T16:31:48+0100 lvl=info msg="join connections" obj=join id=7c4d42f2ac1e l=[::1]:3001 r=104.28.224.60:37995
+t=2025-07-22T16:31:54+0100 lvl=info msg="join connections" obj=join id=7a392c290bc1 l=[::1]:3001 r=104.28.224.60:38250
+t=2025-07-22T16:31:54+0100 lvl=info msg="join connections" obj=join id=b0b33a0cc450 l=[::1]:3001 r=104.28.224.60:37934
+t=2025-07-22T16:31:55+0100 lvl=info msg="join connections" obj=join id=6a3814bd45d9 l=[::1]:3001 r=104.28.224.60:37920
+t=2025-07-22T16:31:55+0100 lvl=info msg="join connections" obj=join id=4c781f517db3 l=[::1]:3001 r=104.28.224.60:38316
+t=2025-07-22T16:31:59+0100 lvl=info msg="join connections" obj=join id=c47b56acbdaa l=[::1]:3001 r=104.28.224.60:38015
+t=2025-07-22T16:32:09+0100 lvl=info msg="join connections" obj=join id=dc31700e55d4 l=[::1]:3000 r=104.28.224.60:38379
+t=2025-07-22T16:32:10+0100 lvl=info msg="join connections" obj=join id=eabfbbc97739 l=[::1]:3000 r=104.28.224.60:38379
+t=2025-07-22T16:32:10+0100 lvl=info msg="join connections" obj=join id=99250a609d0d l=[::1]:3000 r=104.28.224.60:38379
+t=2025-07-22T16:32:10+0100 lvl=info msg="join connections" obj=join id=ef35483dbd9e l=[::1]:3000 r=104.28.224.60:38379
+t=2025-07-22T16:32:10+0100 lvl=info msg="join connections" obj=join id=6a5b8dde81c5 l=[::1]:3000 r=104.28.224.60:38379
+t=2025-07-22T16:32:10+0100 lvl=info msg="join connections" obj=join id=0c1d0918aa4e l=[::1]:3000 r=104.28.224.60:38379
+t=2025-07-22T16:32:18+0100 lvl=info msg="join connections" obj=join id=96ee0996645c l=[::1]:3000 r=104.28.224.60:38379
+t=2025-07-22T16:32:18+0100 lvl=info msg="join connections" obj=join id=0ff0dda21b6d l=[::1]:3000 r=104.28.224.60:38379
+t=2025-07-22T16:32:19+0100 lvl=info msg="join connections" obj=join id=922ee5e0a4cd l=[::1]:3000 r=104.28.224.60:38238
+t=2025-07-22T16:32:19+0100 lvl=info msg="join connections" obj=join id=f14adbf40832 l=[::1]:3000 r=104.28.224.60:38073
+t=2025-07-22T16:32:19+0100 lvl=info msg="join connections" obj=join id=94de99b5ec43 l=[::1]:3000 r=104.28.224.60:38220
+t=2025-07-22T16:32:28+0100 lvl=info msg="join connections" obj=join id=742cd465c7f6 l=[::1]:3000 r=104.28.224.60:38327
+t=2025-07-22T16:32:31+0100 lvl=info msg="join connections" obj=join id=139dfc68070c l=[::1]:3000 r=104.28.224.60:38220
+t=2025-07-22T16:32:32+0100 lvl=info msg="join connections" obj=join id=da205ab75b67 l=[::1]:3000 r=104.28.224.60:38073
+t=2025-07-22T16:32:34+0100 lvl=info msg="join connections" obj=join id=3dc25983b9a7 l=[::1]:3000 r=104.28.224.60:37938
+t=2025-07-22T16:32:34+0100 lvl=info msg="join connections" obj=join id=1fcd90afd445 l=[::1]:3000 r=104.28.224.60:38032
+t=2025-07-22T16:32:35+0100 lvl=info msg="join connections" obj=join id=f68793b5fa68 l=[::1]:3000 r=104.28.224.60:38027
+t=2025-07-22T16:33:09+0100 lvl=info msg="join connections" obj=join id=3ee7174edd89 l=[::1]:3000 r=104.28.224.60:38062
+t=2025-07-22T16:33:09+0100 lvl=info msg="join connections" obj=join id=61f9a76872c8 l=[::1]:3000 r=104.28.224.60:38251
+t=2025-07-22T16:33:10+0100 lvl=info msg="join connections" obj=join id=43a52116790f l=[::1]:3000 r=104.28.224.60:38248
+t=2025-07-22T16:33:20+0100 lvl=info msg="join connections" obj=join id=0f0b3441ce7f l=[::1]:3000 r=104.28.224.60:38251
+t=2025-07-22T16:33:29+0100 lvl=info msg="join connections" obj=join id=32c87d072592 l=[::1]:3000 r=104.28.224.60:38345
+t=2025-07-22T16:33:41+0100 lvl=info msg="join connections" obj=join id=0322e3a6ddee l=[::1]:3000 r=104.28.224.60:38248
+t=2025-07-22T16:33:41+0100 lvl=info msg="join connections" obj=join id=a48efa544817 l=[::1]:3000 r=104.28.224.60:38062
+t=2025-07-22T16:33:41+0100 lvl=info msg="join connections" obj=join id=31e964e95818 l=[::1]:3000 r=104.28.224.60:38251
+t=2025-07-22T16:33:55+0100 lvl=info msg="join connections" obj=join id=a958c7d982a7 l=[::1]:3000 r=104.28.224.60:38248
+t=2025-07-22T16:33:56+0100 lvl=info msg="join connections" obj=join id=a4d94833730b l=[::1]:3000 r=104.28.224.60:38062
+t=2025-07-22T16:33:56+0100 lvl=info msg="join connections" obj=join id=bf1ecac6eed6 l=[::1]:3000 r=104.28.224.60:38049
+t=2025-07-22T16:34:09+0100 lvl=info msg="join connections" obj=join id=8bb6d321f1e2 l=[::1]:3000 r=104.28.224.60:38248
+t=2025-07-22T16:34:30+0100 lvl=info msg="join connections" obj=join id=7942e9141bf4 l=[::1]:3000 r=104.28.224.60:38125
+t=2025-07-22T16:34:31+0100 lvl=info msg="join connections" obj=join id=b129f7bb0d81 l=[::1]:3000 r=104.28.224.60:38248
+t=2025-07-22T16:35:01+0100 lvl=info msg="join connections" obj=join id=bcb3b1bbcdf6 l=[::1]:3000 r=104.28.224.60:38022
+t=2025-07-22T16:35:29+0100 lvl=info msg="join connections" obj=join id=e2bb80c7fe33 l=[::1]:3000 r=104.28.224.60:38085
+t=2025-07-22T16:35:31+0100 lvl=info msg="join connections" obj=join id=6a856fdd61ea l=[::1]:3001 r=104.28.224.60:38236
+t=2025-07-22T16:35:31+0100 lvl=info msg="join connections" obj=join id=8f3da2737a95 l=[::1]:3000 r=104.28.224.60:38354
+t=2025-07-22T16:35:31+0100 lvl=info msg="join connections" obj=join id=c01fb4ceac1a l=[::1]:3000 r=104.28.224.60:38285
+t=2025-07-22T16:36:01+0100 lvl=info msg="join connections" obj=join id=2a9ca309796e l=[::1]:3000 r=104.28.224.60:38358
+t=2025-07-22T16:36:31+0100 lvl=info msg="join connections" obj=join id=1a77b8716be9 l=[::1]:3000 r=104.28.224.60:38358
+t=2025-07-22T16:36:32+0100 lvl=info msg="join connections" obj=join id=e479a54874a3 l=[::1]:3000 r=104.28.224.60:38274
+t=2025-07-22T16:36:50+0100 lvl=info msg="join connections" obj=join id=3777a7d0883a l=[::1]:3001 r=104.28.224.60:38024
+t=2025-07-22T16:36:51+0100 lvl=info msg="join connections" obj=join id=4d3aba2d942d l=[::1]:3001 r=104.28.224.60:38380
+t=2025-07-22T16:36:51+0100 lvl=info msg="join connections" obj=join id=7c4e4239c198 l=[::1]:3001 r=104.28.224.60:38197
+t=2025-07-22T16:36:57+0100 lvl=info msg="join connections" obj=join id=282ebf8883c0 l=[::1]:3001 r=104.28.224.60:38316
+t=2025-07-22T16:36:57+0100 lvl=info msg="join connections" obj=join id=96f44d8ce20b l=[::1]:3001 r=104.28.224.60:38015
+t=2025-07-22T16:36:58+0100 lvl=info msg="join connections" obj=join id=45d554679a1f l=[::1]:3001 r=104.28.224.60:37934
+t=2025-07-22T16:36:58+0100 lvl=info msg="join connections" obj=join id=9b2fb94237a6 l=[::1]:3001 r=104.28.224.60:38024
+t=2025-07-22T16:36:58+0100 lvl=info msg="join connections" obj=join id=fcb34256555a l=[::1]:3001 r=104.28.224.60:38380
+t=2025-07-22T16:37:01+0100 lvl=info msg="join connections" obj=join id=97d8bef378dc l=[::1]:3000 r=104.28.224.60:38358
+t=2025-07-22T16:37:28+0100 lvl=info msg="join connections" obj=join id=19a41b138fb1 l=[::1]:3000 r=104.28.224.60:38327
+t=2025-07-22T16:37:28+0100 lvl=info msg="join connections" obj=join id=20163115e959 l=[::1]:3000 r=104.28.224.60:38358
+t=2025-07-22T16:37:32+0100 lvl=info msg="join connections" obj=join id=8ca1cff084dc l=[::1]:3000 r=104.28.224.60:38063
+t=2025-07-22T16:38:01+0100 lvl=info msg="join connections" obj=join id=0d18f31d6b09 l=[::1]:3000 r=104.28.224.60:38062
+t=2025-07-22T16:38:12+0100 lvl=info msg="join connections" obj=join id=600c44fef627 l=[::1]:3000 r=104.28.224.60:38008
+t=2025-07-22T16:38:31+0100 lvl=info msg="join connections" obj=join id=150ccb51b156 l=[::1]:3000 r=104.28.224.60:38062
+t=2025-07-22T16:38:33+0100 lvl=info msg="join connections" obj=join id=072c18dece8d l=[::1]:3000 r=104.28.224.60:38229
+t=2025-07-22T16:38:55+0100 lvl=info msg="join connections" obj=join id=86878463fe7a l=[::1]:3000 r=104.28.224.60:38062
+t=2025-07-22T16:38:56+0100 lvl=info msg="join connections" obj=join id=18ef5f1a1259 l=[::1]:3000 r=104.28.224.60:38124
+t=2025-07-22T16:38:56+0100 lvl=info msg="join connections" obj=join id=73106ef12f7a l=[::1]:3000 r=104.28.224.60:37963
+t=2025-07-22T16:38:57+0100 lvl=info msg="join connections" obj=join id=8b9d0f1f21b7 l=[::1]:3000 r=104.28.224.60:38080
+t=2025-07-22T16:38:57+0100 lvl=info msg="join connections" obj=join id=70a70b3a0f14 l=[::1]:3000 r=104.28.224.60:37920
+t=2025-07-22T16:38:57+0100 lvl=info msg="join connections" obj=join id=0528d3db5ee6 l=[::1]:3000 r=104.28.224.60:37967
+t=2025-07-22T16:39:01+0100 lvl=info msg="join connections" obj=join id=9e32fe73900c l=[::1]:3000 r=104.28.224.60:37967
+t=2025-07-22T16:39:10+0100 lvl=info msg="join connections" obj=join id=efaa4e92aeda l=[::1]:3000 r=104.28.224.60:38124
+t=2025-07-22T16:39:11+0100 lvl=info msg="join connections" obj=join id=9a2e4cb8a664 l=[::1]:3000 r=104.28.224.60:37963
+t=2025-07-22T16:39:11+0100 lvl=info msg="join connections" obj=join id=47bde8ef0d84 l=[::1]:3000 r=104.28.224.60:38080
+t=2025-07-22T16:39:11+0100 lvl=info msg="join connections" obj=join id=09f319fc3483 l=[::1]:3000 r=104.28.224.60:37920
+t=2025-07-22T16:39:11+0100 lvl=info msg="join connections" obj=join id=baf341a8816b l=[::1]:3000 r=104.28.224.60:38062
+t=2025-07-22T16:39:29+0100 lvl=info msg="join connections" obj=join id=d1b3ed6ee091 l=[::1]:3000 r=104.28.224.60:38124
+t=2025-07-22T16:39:29+0100 lvl=info msg="join connections" obj=join id=5a2461ba8632 l=[::1]:3000 r=104.28.224.60:37963
+t=2025-07-22T16:39:30+0100 lvl=info msg="join connections" obj=join id=363bc9d144f5 l=[::1]:3000 r=104.28.224.60:38062
+t=2025-07-22T16:39:30+0100 lvl=info msg="join connections" obj=join id=f94038d2aac5 l=[::1]:3000 r=104.28.224.60:37920
+t=2025-07-22T16:39:30+0100 lvl=info msg="join connections" obj=join id=06750ee92dd0 l=[::1]:3000 r=104.28.224.60:38080
+t=2025-07-22T16:39:34+0100 lvl=info msg="join connections" obj=join id=fdfbb907a897 l=[::1]:3000 r=104.28.224.60:38089
+t=2025-07-22T16:39:39+0100 lvl=info msg="join connections" obj=join id=55fcf4ba1886 l=[::1]:3000 r=104.28.224.60:38062
+t=2025-07-22T16:39:43+0100 lvl=info msg="join connections" obj=join id=a45365abe3b1 l=[::1]:3000 r=104.28.224.60:37935
+t=2025-07-22T16:39:44+0100 lvl=info msg="join connections" obj=join id=752daf1ec7b9 l=[::1]:3000 r=104.28.224.60:37920
+t=2025-07-22T16:39:44+0100 lvl=info msg="join connections" obj=join id=8e11110daa84 l=[::1]:3000 r=104.28.224.60:38080
+t=2025-07-22T16:39:44+0100 lvl=info msg="join connections" obj=join id=d5ab06084a87 l=[::1]:3000 r=104.28.224.60:38124
+t=2025-07-22T16:39:45+0100 lvl=info msg="join connections" obj=join id=58b0ef74d417 l=[::1]:3000 r=104.28.224.60:37963
+t=2025-07-22T16:39:45+0100 lvl=info msg="join connections" obj=join id=a2503ff285ef l=[::1]:3000 r=104.28.224.60:38194
+t=2025-07-22T16:39:45+0100 lvl=info msg="join connections" obj=join id=560014c57781 l=[::1]:3000 r=104.28.224.60:37965
+t=2025-07-22T16:39:52+0100 lvl=info msg="join connections" obj=join id=8f2ec830abfc l=[::1]:3000 r=104.28.224.60:38062
+t=2025-07-22T16:39:52+0100 lvl=info msg="join connections" obj=join id=1b9348cadf39 l=[::1]:3000 r=104.28.224.60:38080
+t=2025-07-22T16:39:52+0100 lvl=info msg="join connections" obj=join id=023c16462cc2 l=[::1]:3000 r=104.28.224.60:37963
+t=2025-07-22T16:39:52+0100 lvl=info msg="join connections" obj=join id=71c77166eb01 l=[::1]:3000 r=104.28.224.60:38194
+t=2025-07-22T16:39:52+0100 lvl=info msg="join connections" obj=join id=5cc75fd5805e l=[::1]:3000 r=104.28.224.60:38124
+t=2025-07-22T16:40:06+0100 lvl=info msg="join connections" obj=join id=8ef39191dad1 l=[::1]:3000 r=104.28.224.60:37920
+t=2025-07-22T16:40:13+0100 lvl=info msg="join connections" obj=join id=f59746d09d91 l=[::1]:3001 r=104.28.224.60:37934
+t=2025-07-22T16:40:13+0100 lvl=info msg="join connections" obj=join id=cfc4410f5e87 l=[::1]:3001 r=104.28.224.60:38197
+t=2025-07-22T16:40:13+0100 lvl=info msg="join connections" obj=join id=484c9a6287c1 l=[::1]:3001 r=104.28.224.60:38380
+t=2025-07-22T16:40:13+0100 lvl=info msg="join connections" obj=join id=95673c4d1075 l=[::1]:3001 r=104.28.224.60:38015
+t=2025-07-22T16:40:14+0100 lvl=info msg="join connections" obj=join id=67a26c6a4a1c l=[::1]:3001 r=104.28.224.60:38024
+t=2025-07-22T16:40:26+0100 lvl=info msg="join connections" obj=join id=5bd437c22ed3 l=[::1]:3000 r=104.28.224.60:37920
+t=2025-07-22T16:40:29+0100 lvl=info msg="join connections" obj=join id=f11dcf08bf74 l=[::1]:3000 r=104.28.224.60:37975
+t=2025-07-22T16:40:32+0100 lvl=info msg="join connections" obj=join id=82dc67116de4 l=[::1]:3000 r=104.28.224.60:38341
+t=2025-07-22T16:40:33+0100 lvl=info msg="join connections" obj=join id=a25dc14adcbc l=[::1]:3001 r=104.28.224.60:38252
+t=2025-07-22T16:40:35+0100 lvl=info msg="join connections" obj=join id=7ce045550892 l=[::1]:3000 r=104.28.224.60:37973
+t=2025-07-22T16:41:36+0100 lvl=info msg="join connections" obj=join id=bdb74cc87cc4 l=[::1]:3000 r=104.28.224.60:38173
+t=2025-07-22T16:41:46+0100 lvl=info msg="join connections" obj=join id=b441a83bc1a7 l=[::1]:3000 r=104.28.224.60:38197
+t=2025-07-22T16:41:47+0100 lvl=info msg="join connections" obj=join id=0b7abdf907c5 l=[::1]:3000 r=104.28.224.60:38197
+t=2025-07-22T16:41:47+0100 lvl=info msg="join connections" obj=join id=ad3396a8da32 l=[::1]:3000 r=104.28.224.60:38197
+t=2025-07-22T16:41:47+0100 lvl=info msg="join connections" obj=join id=9b983aed2c1c l=[::1]:3000 r=104.28.224.60:38197
+t=2025-07-22T16:41:47+0100 lvl=info msg="join connections" obj=join id=e439e14cf3c9 l=[::1]:3000 r=104.28.224.60:38197
+t=2025-07-22T16:41:47+0100 lvl=info msg="join connections" obj=join id=447313418f61 l=[::1]:3000 r=104.28.224.60:38197
+t=2025-07-22T16:41:55+0100 lvl=info msg="join connections" obj=join id=17de6665b556 l=[::1]:3000 r=104.28.224.60:38098
+t=2025-07-22T16:41:55+0100 lvl=info msg="join connections" obj=join id=1f6e3a2c0e1d l=[::1]:3000 r=104.28.224.60:38087
+t=2025-07-22T16:41:56+0100 lvl=info msg="join connections" obj=join id=38a73fe91c0e l=[::1]:3000 r=104.28.224.60:38204
+t=2025-07-22T16:42:04+0100 lvl=info msg="join connections" obj=join id=012834e26473 l=[::1]:3000 r=34.227.75.182:52686
+t=2025-07-22T16:42:05+0100 lvl=info msg="join connections" obj=join id=caea9cbbc9ff l=[::1]:3000 r=104.28.224.60:38087
+t=2025-07-22T16:42:10+0100 lvl=info msg="join connections" obj=join id=93919e016498 l=[::1]:3000 r=3.85.189.57:28970
+t=2025-07-22T16:42:37+0100 lvl=info msg="join connections" obj=join id=b88f880298f2 l=[::1]:3000 r=104.28.224.60:38358
+t=2025-07-22T16:43:28+0100 lvl=info msg="join connections" obj=join id=f27da7d6fe68 l=[::1]:3000 r=104.28.224.60:38244
+t=2025-07-22T16:43:28+0100 lvl=info msg="join connections" obj=join id=933be7f55932 l=[::1]:3000 r=104.28.224.60:38243
+t=2025-07-22T16:43:37+0100 lvl=info msg="join connections" obj=join id=fdbaf01eb4ab l=[::1]:3000 r=104.28.224.60:38279
+t=2025-07-22T16:43:55+0100 lvl=info msg="join connections" obj=join id=9e57f1c48146 l=[::1]:3000 r=104.28.224.60:38041
+t=2025-07-22T16:43:56+0100 lvl=info msg="join connections" obj=join id=d0e4a6d14b7d l=[::1]:3000 r=104.28.224.60:38244
+t=2025-07-22T16:43:56+0100 lvl=info msg="join connections" obj=join id=a0c0796df5ee l=[::1]:3000 r=104.28.224.60:38243
+t=2025-07-22T16:43:57+0100 lvl=info msg="join connections" obj=join id=b99ed328c772 l=[::1]:3000 r=104.28.224.60:38029
+t=2025-07-22T16:44:38+0100 lvl=info msg="join connections" obj=join id=83f34b06df39 l=[::1]:3000 r=104.28.224.60:38208
+t=2025-07-22T16:44:39+0100 lvl=info msg="join connections" obj=join id=2cbaded046f9 l=[::1]:3000 r=104.28.224.60:38204
+t=2025-07-22T16:45:06+0100 lvl=info msg="join connections" obj=join id=c2fc39d377e0 l=[::1]:3000 r=104.28.224.60:38388
+t=2025-07-22T16:45:34+0100 lvl=info msg="join connections" obj=join id=9d4f90740075 l=[::1]:3000 r=104.28.224.60:38388
+t=2025-07-22T16:45:34+0100 lvl=info msg="join connections" obj=join id=7a2c4575a884 l=[::1]:3000 r=104.28.224.60:37994
+t=2025-07-22T16:45:35+0100 lvl=info msg="join connections" obj=join id=3bd1d0b9a187 l=[::1]:3000 r=104.28.224.60:38251
+t=2025-07-22T16:45:36+0100 lvl=info msg="join connections" obj=join id=1e012c3aa0a3 l=[::1]:3000 r=104.28.224.60:38184
+t=2025-07-22T16:45:36+0100 lvl=info msg="join connections" obj=join id=ac296885bbf8 l=[::1]:3000 r=104.28.224.60:37976
+t=2025-07-22T16:45:36+0100 lvl=info msg="join connections" obj=join id=b91a24f10291 l=[::1]:3000 r=104.28.224.60:38365
+t=2025-07-22T16:45:36+0100 lvl=info msg="join connections" obj=join id=64393ab27d19 l=[::1]:3000 r=104.28.224.60:38014
+t=2025-07-22T16:45:36+0100 lvl=info msg="join connections" obj=join id=c7c820d630c3 l=[::1]:3001 r=104.28.224.60:38223
+t=2025-07-22T16:45:39+0100 lvl=info msg="join connections" obj=join id=d9a87e458be0 l=[::1]:3000 r=104.28.224.60:37958
+t=2025-07-22T16:45:42+0100 lvl=info msg="join connections" obj=join id=f70ec1717e1e l=[::1]:3000 r=104.28.224.60:38251
+t=2025-07-22T16:45:43+0100 lvl=info msg="join connections" obj=join id=7e18b3ede64d l=[::1]:3000 r=104.28.224.60:38365
+t=2025-07-22T16:45:43+0100 lvl=info msg="join connections" obj=join id=8f0328266153 l=[::1]:3000 r=104.28.224.60:38014
+t=2025-07-22T16:46:10+0100 lvl=info msg="join connections" obj=join id=a8f1bfa0577f l=[::1]:3000 r=104.28.224.60:38184
+t=2025-07-22T16:46:10+0100 lvl=info msg="join connections" obj=join id=8d7c56d712a5 l=[::1]:3000 r=104.28.224.60:38365
+t=2025-07-22T16:46:24+0100 lvl=info msg="join connections" obj=join id=fb796496389e l=[::1]:3000 r=3.80.244.58:30812
+t=2025-07-22T16:46:32+0100 lvl=info msg="join connections" obj=join id=38197436dba1 l=[::1]:3000 r=3.87.58.108:23620
+t=2025-07-22T16:46:36+0100 lvl=info msg="join connections" obj=join id=fc49ed722a0a l=[::1]:3000 r=3.88.220.83:49296
+t=2025-07-22T16:46:36+0100 lvl=info msg="join connections" obj=join id=c2cbb3c187a7 l=[::1]:3000 r=3.85.189.57:54010
+t=2025-07-22T16:46:36+0100 lvl=info msg="join connections" obj=join id=87fc740c4586 l=[::1]:3000 r=104.28.224.60:38184
+t=2025-07-22T16:46:37+0100 lvl=info msg="join connections" obj=join id=3680030f4725 l=[::1]:3000 r=104.28.224.60:38365
+t=2025-07-22T16:46:40+0100 lvl=info msg="join connections" obj=join id=672959b542b1 l=[::1]:3000 r=104.28.224.60:38218
+t=2025-07-22T16:47:41+0100 lvl=info msg="join connections" obj=join id=30b4618f2377 l=[::1]:3000 r=104.28.224.60:37999
+t=2025-07-22T16:48:42+0100 lvl=info msg="join connections" obj=join id=6c3a9efa9ab1 l=[::1]:3000 r=104.28.224.60:38392
+t=2025-07-22T16:49:17+0100 lvl=info msg="join connections" obj=join id=5ba98bd36c88 l=[::1]:3000 r=104.28.224.60:37949
+t=2025-07-22T16:49:17+0100 lvl=info msg="join connections" obj=join id=ce015f444e48 l=[::1]:3000 r=104.28.224.60:38313
+t=2025-07-22T16:49:34+0100 lvl=info msg="join connections" obj=join id=0889e5d46bbb l=[::1]:3000 r=104.28.224.60:38313
+t=2025-07-22T16:49:35+0100 lvl=info msg="join connections" obj=join id=4cf85e38c26e l=[::1]:3000 r=104.28.224.60:37949
+t=2025-07-22T16:49:43+0100 lvl=info msg="join connections" obj=join id=195ffee1a3f9 l=[::1]:3000 r=104.28.224.60:38048
+t=2025-07-22T16:50:30+0100 lvl=info msg="join connections" obj=join id=30ba23e4e632 l=[::1]:3000 r=104.28.224.60:38288
+t=2025-07-22T16:50:31+0100 lvl=info msg="join connections" obj=join id=f95b63bd6f74 l=[::1]:3000 r=104.28.224.60:38082
+t=2025-07-22T16:50:38+0100 lvl=info msg="join connections" obj=join id=77184f7cd4dc l=[::1]:3000 r=104.28.224.60:38297
+t=2025-07-22T16:50:39+0100 lvl=info msg="join connections" obj=join id=83e2b6beb169 l=[::1]:3001 r=104.28.224.60:38141
+t=2025-07-22T16:50:42+0100 lvl=info msg="join connections" obj=join id=14f4662719d2 l=[::1]:3000 r=104.28.224.60:38288
+t=2025-07-22T16:50:43+0100 lvl=info msg="join connections" obj=join id=c79e3e1f94a6 l=[::1]:3000 r=104.28.224.60:38082
+t=2025-07-22T16:50:44+0100 lvl=info msg="join connections" obj=join id=3a4fc7554c2f l=[::1]:3000 r=104.28.224.60:37956
+t=2025-07-22T16:51:44+0100 lvl=info msg="join connections" obj=join id=6054996b4bd3 l=[::1]:3000 r=104.28.224.60:37917
+t=2025-07-22T16:51:50+0100 lvl=info msg="join connections" obj=join id=c8f94f8ccf0d l=[::1]:3000 r=50.19.198.176:24416
+t=2025-07-22T16:51:50+0100 lvl=info msg="join connections" obj=join id=5d6af8b5a7a1 l=[::1]:3000 r=104.28.224.60:38341
+t=2025-07-22T16:52:03+0100 lvl=info msg="join connections" obj=join id=cd65431fda88 l=[::1]:3000 r=3.84.251.194:41270
+t=2025-07-22T16:52:04+0100 lvl=info msg="join connections" obj=join id=581e707bf166 l=[::1]:3000 r=104.28.224.60:38341
+t=2025-07-22T16:52:45+0100 lvl=info msg="join connections" obj=join id=83ef10755b90 l=[::1]:3000 r=104.28.224.60:38258
+t=2025-07-22T16:53:46+0100 lvl=info msg="join connections" obj=join id=1cb71b604c25 l=[::1]:3000 r=104.28.224.60:38066
+t=2025-07-22T16:54:47+0100 lvl=info msg="join connections" obj=join id=60e01c8946c7 l=[::1]:3000 r=104.28.224.60:38139
+t=2025-07-22T16:55:29+0100 lvl=info msg="join connections" obj=join id=aa3b6beda99b l=[::1]:3000 r=104.28.224.60:37971
+t=2025-07-22T16:55:29+0100 lvl=info msg="join connections" obj=join id=9765b4109d6f l=[::1]:3000 r=104.28.224.60:37972
+t=2025-07-22T16:55:43+0100 lvl=info msg="join connections" obj=join id=b4d4579c067e l=[::1]:3000 r=104.28.224.60:38161
+t=2025-07-22T16:55:45+0100 lvl=info msg="join connections" obj=join id=e6f8b6c3a09b l=[::1]:3001 r=104.28.224.60:38015
+t=2025-07-22T16:55:48+0100 lvl=info msg="join connections" obj=join id=55eb8c6917cb l=[::1]:3000 r=104.28.224.60:38262
+t=2025-07-22T16:55:51+0100 lvl=info msg="join connections" obj=join id=3f62bdb9cab5 l=[::1]:3000 r=104.28.224.60:37972
+t=2025-07-22T16:55:51+0100 lvl=info msg="join connections" obj=join id=2040e37f0e37 l=[::1]:3000 r=104.28.224.60:37971
+t=2025-07-22T16:56:36+0100 lvl=info msg="join connections" obj=join id=c9f1c6dcb889 l=[::1]:3000 r=104.28.224.60:38046
+t=2025-07-22T16:56:48+0100 lvl=info msg="join connections" obj=join id=ec4be950eec0 l=[::1]:3000 r=104.28.224.60:38046
+t=2025-07-22T16:56:49+0100 lvl=info msg="join connections" obj=join id=16e1d5a0017e l=[::1]:3000 r=104.28.224.60:38053
+t=2025-07-22T16:57:05+0100 lvl=info msg="join connections" obj=join id=82c16594398c l=[::1]:3000 r=104.28.224.60:38046
+t=2025-07-22T16:57:50+0100 lvl=info msg="join connections" obj=join id=0120d8dab4d9 l=[::1]:3000 r=104.28.224.60:38015
+t=2025-07-22T16:57:55+0100 lvl=info msg="join connections" obj=join id=cffc7664ac36 l=[::1]:3000 r=104.28.224.60:38144
+t=2025-07-22T16:58:03+0100 lvl=info msg="join connections" obj=join id=6c40e2fc0ffb l=[::1]:3000 r=104.28.224.60:38144
+t=2025-07-22T16:58:03+0100 lvl=info msg="join connections" obj=join id=c6d957c598b3 l=[::1]:3000 r=104.28.224.60:38144
+t=2025-07-22T16:58:03+0100 lvl=info msg="join connections" obj=join id=519439b371a0 l=[::1]:3000 r=104.28.224.60:38144
+t=2025-07-22T16:58:03+0100 lvl=info msg="join connections" obj=join id=e4c6d975d70d l=[::1]:3000 r=104.28.224.60:38144
+t=2025-07-22T16:58:03+0100 lvl=info msg="join connections" obj=join id=646fe7374a90 l=[::1]:3000 r=104.28.224.60:38144
+t=2025-07-22T16:58:09+0100 lvl=info msg="join connections" obj=join id=1d74c3475cab l=[::1]:3000 r=104.28.224.60:38144
+t=2025-07-22T16:58:09+0100 lvl=info msg="join connections" obj=join id=3c5bec6b662d l=[::1]:3000 r=104.28.224.60:38043
+t=2025-07-22T16:58:09+0100 lvl=info msg="join connections" obj=join id=ce9dc0f9c4d1 l=[::1]:3000 r=104.28.224.60:38044
+t=2025-07-22T16:58:29+0100 lvl=info msg="join connections" obj=join id=dd21dd6b9dfd l=[::1]:3000 r=98.84.182.16:53306
+t=2025-07-22T16:58:35+0100 lvl=info msg="join connections" obj=join id=e697f47d78b8 l=[::1]:3000 r=52.70.99.0:58290
+t=2025-07-22T16:58:35+0100 lvl=info msg="join connections" obj=join id=43974c856675 l=[::1]:3000 r=104.28.224.60:38044
+t=2025-07-22T16:58:50+0100 lvl=info msg="join connections" obj=join id=f4731c1f4090 l=[::1]:3000 r=104.28.224.60:37888
+t=2025-07-22T16:59:10+0100 lvl=info msg="join connections" obj=join id=f4456eacbfb9 l=[::1]:3000 r=104.28.224.60:38338
+t=2025-07-22T19:30:07+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-22T19:30:08+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T19:30:08+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T19:30:08+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x14000186ac0}} restart:false}"
+t=2025-07-22T19:30:08+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T19:30:08+0100 lvl=warn msg="failed to check for update" obj=updater err="Post \"https://update.equinox.io/check\": context canceled"
+t=2025-07-22T19:30:08+0100 lvl=info msg="no more state changes" obj=tunnels.session
+t=2025-07-22T19:30:08+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:36:05+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-22T21:36:06+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:36:06+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:36:06+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x1400043be70}} restart:false}"
+t=2025-07-22T21:36:06+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:36:06+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:37:59+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-22T21:38:00+0100 lvl=info msg="client session established" obj=tunnels.session
+t=2025-07-22T21:38:00+0100 lvl=info msg="tunnel session started" obj=tunnels.session
+t=2025-07-22T21:38:01+0100 lvl=info msg="started tunnel" obj=tunnels name=garage-manager addr=http://localhost:3000 url=https://garage-manager.eu.ngrok.io
+t=2025-07-22T21:38:15+0100 lvl=info msg="join connections" obj=join id=39c184ce363e l=[::1]:3000 r=104.28.224.61:36737
+t=2025-07-22T21:39:43+0100 lvl=info msg="join connections" obj=join id=40186330c9c8 l=[::1]:3000 r=104.28.192.60:56554
+t=2025-07-22T21:39:44+0100 lvl=info msg="join connections" obj=join id=25f264ada6ab l=[::1]:3000 r=104.28.192.60:56554
+t=2025-07-22T21:39:44+0100 lvl=info msg="join connections" obj=join id=f261592b49e0 l=[::1]:3000 r=104.28.192.60:56554
+t=2025-07-22T21:39:44+0100 lvl=info msg="join connections" obj=join id=51426892e261 l=[::1]:3000 r=104.28.192.60:56554
+t=2025-07-22T21:39:44+0100 lvl=info msg="join connections" obj=join id=adaac84622e7 l=[::1]:3000 r=104.28.192.60:56554
+t=2025-07-22T21:39:44+0100 lvl=info msg="join connections" obj=join id=f3c5f77ecaa6 l=[::1]:3000 r=104.28.192.60:56554
+t=2025-07-22T21:39:51+0100 lvl=info msg="join connections" obj=join id=9f7395c97719 l=[::1]:3000 r=104.28.192.60:56423
+t=2025-07-22T21:39:51+0100 lvl=info msg="join connections" obj=join id=e20b6cf06198 l=[::1]:3000 r=104.28.224.61:25408
+t=2025-07-22T21:39:51+0100 lvl=info msg="join connections" obj=join id=0308cf749f1a l=[::1]:3000 r=104.28.224.61:25265
+t=2025-07-22T21:43:26+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-22T21:43:27+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:43:27+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:43:27+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x1400032d090}} restart:false}"
+t=2025-07-22T21:43:27+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:43:27+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:43:55+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-22T21:43:56+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:43:56+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:43:56+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x14000056f70}} restart:false}"
+t=2025-07-22T21:43:56+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:43:56+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:43:56+0100 lvl=info msg="no more state changes" obj=tunnels.session
+t=2025-07-22T21:45:11+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-22T21:45:12+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:45:12+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:45:12+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x14000186060}} restart:false}"
+t=2025-07-22T21:45:12+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:45:12+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-22T21:45:12+0100 lvl=info msg="no more state changes" obj=tunnels.session
+t=2025-07-23T10:03:47+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-23T10:03:48+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T10:03:48+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T10:03:48+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x14000610390}} restart:false}"
+t=2025-07-23T10:03:48+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T10:03:48+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T10:03:48+0100 lvl=info msg="no more state changes" obj=tunnels.session
+t=2025-07-23T10:07:14+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-23T10:07:14+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T10:07:14+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T10:07:14+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x1400060c2f0}} restart:false}"
+t=2025-07-23T10:07:14+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T10:07:14+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T10:07:14+0100 lvl=info msg="no more state changes" obj=tunnels.session
+t=2025-07-23T10:15:20+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-23T10:15:21+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T10:15:21+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T10:15:21+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x1400053e280}} restart:false}"
+t=2025-07-23T10:15:21+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T10:15:21+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T10:15:21+0100 lvl=info msg="no more state changes" obj=tunnels.session
+t=2025-07-23T10:36:53+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-23T10:36:54+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T10:36:54+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T10:36:54+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x140000570d0}} restart:false}"
+t=2025-07-23T10:36:54+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T10:36:54+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T10:42:35+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-23T10:42:36+0100 lvl=info msg="client session established" obj=tunnels.session
+t=2025-07-23T10:42:36+0100 lvl=info msg="tunnel session started" obj=tunnels.session
+t=2025-07-23T10:42:36+0100 lvl=info msg="started tunnel" obj=tunnels name=pro-search addr=http://localhost:3000 url=https://pro-search.eu.ngrok.io
+t=2025-07-23T10:42:36+0100 lvl=info msg="started tunnel" obj=tunnels name=garage-manager addr=http://localhost:3001 url=https://garage-manager.eu.ngrok.io
+t=2025-07-23T10:43:49+0100 lvl=info msg="join connections" obj=join id=603555dc45c5 l=[::1]:3001 r=104.28.192.66:55804
+t=2025-07-23T10:44:25+0100 lvl=info msg="join connections" obj=join id=64d81aa748ae l=[::1]:3000 r=104.28.192.66:55724
+t=2025-07-23T10:45:49+0100 lvl=info msg="join connections" obj=join id=632268b39efe l=[::1]:3001 r=104.28.192.66:55373
+t=2025-07-23T10:50:34+0100 lvl=info msg="join connections" obj=join id=19a2a8411422 l=[::1]:3000 r=104.28.192.66:55444
+t=2025-07-23T10:50:34+0100 lvl=info msg="join connections" obj=join id=74b1e2f3bbd0 l=[::1]:3000 r=104.28.192.66:55444
+t=2025-07-23T10:50:34+0100 lvl=info msg="join connections" obj=join id=9ec4000e23ec l=[::1]:3000 r=104.28.192.66:55444
+t=2025-07-23T10:50:34+0100 lvl=info msg="join connections" obj=join id=2c01fce9be90 l=[::1]:3000 r=104.28.192.66:55444
+t=2025-07-23T10:50:34+0100 lvl=info msg="join connections" obj=join id=da5ae256bf8c l=[::1]:3000 r=104.28.192.66:55444
+t=2025-07-23T10:50:36+0100 lvl=info msg="join connections" obj=join id=ad439100f319 l=[::1]:3000 r=104.28.192.66:55789
+t=2025-07-23T10:50:36+0100 lvl=info msg="join connections" obj=join id=33802188cfd4 l=[::1]:3000 r=104.28.192.66:55654
+t=2025-07-23T10:50:36+0100 lvl=info msg="join connections" obj=join id=45abbced52ca l=[::1]:3000 r=104.28.192.66:55719
+t=2025-07-23T10:50:37+0100 lvl=info msg="join connections" obj=join id=8b8dbb2f450b l=[::1]:3000 r=104.28.192.66:55558
+t=2025-07-23T10:50:38+0100 lvl=info msg="join connections" obj=join id=44812dc59f4e l=[::1]:3000 r=104.28.192.66:55430
+t=2025-07-23T10:51:41+0100 lvl=info msg=start pg=/api/tunnels id=815f0bd728361361
+t=2025-07-23T10:51:41+0100 lvl=info msg=end pg=/api/tunnels id=815f0bd728361361 status=200 dur=1.145125ms
+t=2025-07-23T10:51:45+0100 lvl=info msg="join connections" obj=join id=0fd5ec8875b0 l=[::1]:3000 r=104.28.192.66:55305
+t=2025-07-23T10:51:51+0100 lvl=info msg="join connections" obj=join id=8281087781d1 l=[::1]:3000 r=104.28.192.66:55305
+t=2025-07-23T10:52:07+0100 lvl=info msg="join connections" obj=join id=1121a0dc6d9e l=[::1]:3001 r=104.28.192.66:55432
+t=2025-07-23T10:53:57+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-23T10:53:57+0100 lvl=info msg="client session established" obj=tunnels.session
+t=2025-07-23T10:53:57+0100 lvl=info msg="tunnel session started" obj=tunnels.session
+t=2025-07-23T10:53:57+0100 lvl=info msg="started tunnel" obj=tunnels name=garage-pro-manager addr=http://localhost:3001 url=https://garage-pro-manager.ngrok.io
+t=2025-07-23T10:53:57+0100 lvl=info msg="started tunnel" obj=tunnels name=garage-manager addr=http://localhost:3001 url=https://garage-manager.eu.ngrok.io
+t=2025-07-23T10:53:57+0100 lvl=info msg="started tunnel" obj=tunnels name=pro-search addr=http://localhost:3000 url=https://pro-search.eu.ngrok.io
+t=2025-07-23T10:55:44+0100 lvl=info msg=start pg=/api/tunnels id=36369097ccd3baa2
+t=2025-07-23T10:55:44+0100 lvl=info msg=end pg=/api/tunnels id=36369097ccd3baa2 status=200 dur=532.041µs
+t=2025-07-23T10:56:46+0100 lvl=info msg="join connections" obj=join id=ea559c6a03b8 l=[::1]:3001 r=104.28.192.66:12020
+t=2025-07-23T10:57:42+0100 lvl=info msg="join connections" obj=join id=7f9392019207 l=[::1]:3001 r=104.28.192.66:11841
+t=2025-07-23T10:57:42+0100 lvl=info msg="join connections" obj=join id=89c1affa8e7d l=[::1]:3001 r=104.28.192.66:11841
+t=2025-07-23T10:57:42+0100 lvl=info msg="join connections" obj=join id=2a7a750f8a20 l=[::1]:3001 r=104.28.192.66:11841
+t=2025-07-23T10:57:42+0100 lvl=info msg="join connections" obj=join id=433b96afc000 l=[::1]:3001 r=104.28.192.66:11841
+t=2025-07-23T10:57:42+0100 lvl=info msg="join connections" obj=join id=3170b9808a35 l=[::1]:3001 r=104.28.192.66:11841
+t=2025-07-23T10:57:42+0100 lvl=info msg="join connections" obj=join id=99775d53061e l=[::1]:3001 r=104.28.192.66:11841
+t=2025-07-23T10:57:44+0100 lvl=info msg="join connections" obj=join id=dd17479015ad l=[::1]:3000 r=104.28.192.66:11777
+t=2025-07-23T10:57:45+0100 lvl=info msg="join connections" obj=join id=aff704882f37 l=[::1]:3000 r=104.28.192.66:11777
+t=2025-07-23T10:57:45+0100 lvl=info msg="join connections" obj=join id=a146b9c66844 l=[::1]:3000 r=104.28.192.66:11777
+t=2025-07-23T10:57:45+0100 lvl=info msg="join connections" obj=join id=142bdce8495d l=[::1]:3000 r=104.28.192.66:11777
+t=2025-07-23T10:57:45+0100 lvl=info msg="join connections" obj=join id=fd74015afea4 l=[::1]:3000 r=104.28.192.66:11777
+t=2025-07-23T10:57:48+0100 lvl=info msg="join connections" obj=join id=6f00f5b2f771 l=[::1]:3001 r=104.28.192.66:11841
+t=2025-07-23T10:57:48+0100 lvl=info msg="join connections" obj=join id=bd28ba95fb79 l=[::1]:3001 r=104.28.192.66:11821
+t=2025-07-23T10:57:49+0100 lvl=info msg="join connections" obj=join id=f68a22566820 l=[::1]:3001 r=104.28.192.66:12086
+t=2025-07-23T10:57:49+0100 lvl=info msg="join connections" obj=join id=642332cd6395 l=[::1]:3001 r=104.28.192.66:12111
+t=2025-07-23T10:57:50+0100 lvl=info msg="join connections" obj=join id=271c807003ff l=[::1]:3001 r=104.28.192.66:12150
+t=2025-07-23T10:57:50+0100 lvl=info msg="join connections" obj=join id=1e1a3c3235c0 l=[::1]:3000 r=104.28.192.66:12203
+t=2025-07-23T10:57:50+0100 lvl=info msg="join connections" obj=join id=16e5f95951d4 l=[::1]:3000 r=104.28.192.66:12262
+t=2025-07-23T10:57:50+0100 lvl=info msg="join connections" obj=join id=2271ed4c27e0 l=[::1]:3000 r=104.28.192.66:11982
+t=2025-07-23T10:57:51+0100 lvl=info msg="join connections" obj=join id=89906bb8798e l=[::1]:3000 r=104.28.192.66:11855
+t=2025-07-23T10:57:52+0100 lvl=info msg="join connections" obj=join id=c675f2074217 l=[::1]:3000 r=104.28.192.66:11973
+t=2025-07-23T10:58:14+0100 lvl=info msg="join connections" obj=join id=ecabcd6818b7 l=[::1]:3000 r=104.28.192.66:11855
+t=2025-07-23T10:58:21+0100 lvl=info msg="join connections" obj=join id=153c99fc1e71 l=[::1]:3000 r=104.28.192.66:12262
+t=2025-07-23T10:58:38+0100 lvl=info msg="join connections" obj=join id=5adb6a812cd1 l=[::1]:3000 r=104.28.192.66:12262
+t=2025-07-23T10:58:38+0100 lvl=info msg="join connections" obj=join id=55b02665f364 l=[::1]:3000 r=104.28.192.66:11855
+t=2025-07-23T10:58:55+0100 lvl=info msg="join connections" obj=join id=75d19893d7c0 l=[::1]:3000 r=104.28.192.66:11855
+t=2025-07-23T10:59:05+0100 lvl=info msg="join connections" obj=join id=e4da926c89c0 l=[::1]:3000 r=104.28.192.66:12262
+t=2025-07-23T10:59:06+0100 lvl=info msg="join connections" obj=join id=be7aaa806a99 l=[::1]:3000 r=104.28.192.66:11855
+t=2025-07-23T10:59:24+0100 lvl=info msg="join connections" obj=join id=e3c0316065b3 l=[::1]:3000 r=104.28.192.66:11855
+t=2025-07-23T10:59:24+0100 lvl=info msg="join connections" obj=join id=6fca3a6eae9e l=[::1]:3000 r=104.28.192.66:12262
+t=2025-07-23T10:59:38+0100 lvl=info msg="join connections" obj=join id=0fee6d068892 l=[::1]:3000 r=104.28.192.66:12262
+t=2025-07-23T11:02:10+0100 lvl=info msg="join connections" obj=join id=9b14a57eec29 l=[::1]:3000 r=104.28.192.66:30124
+t=2025-07-23T11:59:01+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-23T11:59:01+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T11:59:01+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T11:59:01+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x140005906b0}} restart:false}"
+t=2025-07-23T11:59:01+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T11:59:01+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T12:00:09+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-23T12:00:10+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T12:00:10+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T12:00:10+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x14000056fb0}} restart:false}"
+t=2025-07-23T12:00:10+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T12:00:10+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T12:00:10+0100 lvl=info msg="no more state changes" obj=tunnels.session
+t=2025-07-23T12:00:24+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-23T12:00:25+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T12:00:25+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T12:00:25+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x1400043be00}} restart:false}"
+t=2025-07-23T12:00:25+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T12:00:25+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T12:06:20+0100 lvl=info msg="starting web service" obj=web addr=localhost:4042 allow_hosts=[]
+t=2025-07-23T12:06:20+0100 lvl=eror msg="failed to reconnect session" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T12:06:20+0100 lvl=eror msg="session closing" obj=tunnels.session err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T12:06:20+0100 lvl=info msg="received stop request" obj=app stopReq="{err:{Remote:true Inner:{Inner:0x14000056fe0}} restart:false}"
+t=2025-07-23T12:06:20+0100 lvl=eror msg="terminating with error" obj=app err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T12:06:20+0100 lvl=crit msg="command failed" err="authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.\nYou can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.\nRead more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config\nYou can view your current agent sessions in the dashboard:\nhttps://dashboard.ngrok.com/agents\r\n\r\nERR_NGROK_108\r\n"
+t=2025-07-23T12:06:20+0100 lvl=info msg="no more state changes" obj=tunnels.session

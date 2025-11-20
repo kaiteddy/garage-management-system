@@ -1,0 +1,16 @@
+{
+  "customers": {
+    "total": 7072,
+    "inserted": 7072,
+    "updated": 0,
+    "errors": 0,
+    "errorDetails": []
+  },
+  "vehicles": {
+    "total": 332,
+    "inserted": 362,
+    "updated": 0,
+    "errors": 0,
+    "errorDetails": []
+  }
+}

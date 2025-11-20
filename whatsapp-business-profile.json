@@ -1,0 +1,63 @@
+{
+  "business_information": {
+    "legal_business_name": "ELI MOTORS LTD",
+    "display_name": "ELI MOTORS LTD",
+    "business_phone": "+447488896449",
+    "business_public_phone": "0208 203 6449",
+    "business_category": "Automotive Services",
+    "business_subcategory": "Auto Repair Shop",
+    "industry": "Automotive Services",
+    "business_description": "Professional MOT testing and vehicle servicing. Established in 1979, we provide comprehensive automotive services including MOT testing, vehicle servicing, repairs, and maintenance to customers in Hendon and surrounding areas.",
+    "established_year": 1979,
+    "tagline": "Serving Hendon since 1979",
+    "website": "https://www.elimotors.co.uk",
+    "services": [
+      "MOT Testing",
+      "Vehicle Servicing", 
+      "Automotive Repairs",
+      "Vehicle Maintenance",
+      "Safety Inspections"
+    ]
+  },
+  "contact_information": {
+    "primary_phone": "+447488896449",
+    "public_phone": "0208 203 6449",
+    "whatsapp_number": "+447488896449",
+    "website": "https://www.elimotors.co.uk",
+    "email": "info@elimotors.co.uk"
+  },
+  "business_address": {
+    "street": "[Your Business Address]",
+    "city": "Hendon",
+    "county": "London",
+    "postcode": "[Your Postcode]",
+    "country": "United Kingdom"
+  },
+  "business_hours": {
+    "monday": "8:00 AM - 6:00 PM",
+    "tuesday": "8:00 AM - 6:00 PM", 
+    "wednesday": "8:00 AM - 6:00 PM",
+    "thursday": "8:00 AM - 6:00 PM",
+    "friday": "8:00 AM - 6:00 PM",
+    "saturday": "8:00 AM - 4:00 PM",
+    "sunday": "Closed"
+  },
+  "verification_documents_needed": [
+    "Business registration certificate",
+    "Proof of business address",
+    "Government-issued ID of business owner",
+    "Business license (if applicable)",
+    "Utility bill or bank statement showing business address"
+  ],
+  "whatsapp_business_profile": {
+    "about": "Professional MOT testing and vehicle servicing. Call 0208 203 6449 to book your appointment. Serving Hendon since 1979.",
+    "business_hours_display": "Mon-Fri: 8AM-6PM, Sat: 8AM-4PM, Sun: Closed",
+    "response_time": "Within 1 hour during business hours",
+    "greeting_message": "Hello! Welcome to ELI MOTORS LTD. We're here to help with your MOT and vehicle servicing needs. How can we assist you today?"
+  },
+  "message_templates": {
+    "mot_reminder": "🚗 ELI MOTORS LTD - MOT Reminder\n\n📅 Your {{vehicle_make}} {{vehicle_model}} ({{registration}}) MOT expires on {{mot_expiry_date}}.\n\n📞 Book now: 0208 203 6449\n🌐 Check MOT: https://garage-manager.eu.ngrok.io/mot-check\n\n📱 Reply STOP to opt out\n🏢 Serving Hendon since 1979",
+    "appointment_confirmation": "✅ ELI MOTORS LTD - Appointment Confirmed\n\n📅 Date: {{appointment_date}}\n⏰ Time: {{appointment_time}}\n🚗 Vehicle: {{registration}}\n📍 Service: {{service_type}}\n\n📞 Questions? Call 0208 203 6449\n🏢 Serving Hendon since 1979",
+    "service_complete": "✅ ELI MOTORS LTD - Service Complete\n\n🚗 Your {{registration}} service is complete!\n📋 {{service_summary}}\n💰 Total: £{{total_cost}}\n\n📞 Questions? Call 0208 203 6449\n🏢 Serving Hendon since 1979"
+  }
+}

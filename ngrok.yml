@@ -1,0 +1,45 @@
+version: "2"
+authtoken: 2zrEXdLJO1jMrxOFOSiKWP0Qwln_3zT3rWjW4kwadPKHTFAGA
+api_key: ak_2zrH0SRxhKbyASvEr80gz2MnvNV
+
+# ELI MOTORS LTD - Professional Tunnel Configuration
+# Upgraded Account - Reserved Domains & Enhanced Features
+
+tunnels:
+  # GarageManager Pro - Main MOT Management Platform
+  garage-manager:
+    addr: 3001
+    proto: http
+    name: "GarageManager Pro - ELI MOTORS LTD"
+    # Reserved domain for upgraded account
+    hostname: "garage-manager.eu.ngrok.io"
+    # Enhanced features for upgraded account
+    inspect: true
+
+  # ProSearch Intelligence - Analytics Platform
+  pro-search:
+    addr: 3000
+    proto: http
+    name: "ProSearch Intelligence - ELI MOTORS LTD"
+    # Reserved domain for upgraded account
+    hostname: "pro-search.eu.ngrok.io"
+    # Enhanced features for upgraded account
+    inspect: true
+
+  # Temporary redirect for old webhook URLs
+  garage-pro-manager:
+    addr: 3001
+    proto: http
+    name: "Temporary Redirect - Old Webhook URLs"
+    hostname: "garage-pro-manager.ngrok.io"
+    inspect: true
+
+# Global configuration for upgraded account
+web_addr: localhost:4042
+log_level: info
+log_format: logfmt
+log: ngrok.log
+
+# Enhanced security and performance
+update_channel: stable
+update_check: true

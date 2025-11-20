@@ -1,0 +1,30 @@
+2025-07-08 14:09:50,922 - src.importers.base_importer - INFO - Starting import of TestDocumentImporter from test-document.csv
+2025-07-08 14:09:50,923 - src.importers.base_importer - INFO - Loaded configuration from test_documents.yml
+2025-07-08 14:09:50,923 - src.importers.base_importer - INFO - Starting import from test-document.csv
+2025-07-08 14:09:50,923 - src.importers.base_importer - INFO - Processing CSV file in chunks of 1000 records
+2025-07-08 14:09:50,923 - src.importers.base_importer - INFO - Total rows to process: 2
+2025-07-08 14:09:51,203 - src.importers.base_importer - ERROR - Error importing batch: column "title" of relation "documents" does not exist
+LINE 2:         INSERT INTO documents (id, title, description, file_...
+                                           ^
+
+2025-07-08 14:09:51,203 - src.importers.base_importer - INFO - Processed 2 records (imported: 0, skipped: 0, errors: 2)
+2025-07-08 14:09:51,203 - src.importers.base_importer - INFO - Import complete: 0 imported, 0 skipped, 2 errors
+2025-07-08 14:09:51,203 - __main__ - INFO - 
+Import Summary:
+2025-07-08 14:09:51,203 - __main__ - INFO -   Total records: 2
+2025-07-08 14:09:51,203 - __main__ - INFO -   Imported: 0
+2025-07-08 14:09:51,203 - __main__ - INFO -   Skipped: 0
+2025-07-08 14:09:51,203 - __main__ - INFO -   Errors: 2
+2025-07-08 14:14:04,562 - src.importers.base_importer - INFO - Starting import of TestDocumentImporter from test-documents.csv
+2025-07-08 14:14:04,562 - src.importers.base_importer - INFO - Loaded configuration from test_documents.yml
+2025-07-08 14:14:04,562 - src.importers.base_importer - INFO - Starting import from test-documents.csv
+2025-07-08 14:14:04,562 - src.importers.base_importer - INFO - Processing CSV file in chunks of 1000 records
+2025-07-08 14:14:04,562 - src.importers.base_importer - INFO - Total rows to process: 3
+2025-07-08 14:14:05,065 - src.importers.base_importer - INFO - Processed 3 records (imported: 3, skipped: 0, errors: 0)
+2025-07-08 14:14:05,066 - src.importers.base_importer - INFO - Import complete: 3 imported, 0 skipped, 0 errors
+2025-07-08 14:14:05,066 - __main__ - INFO - 
+Import Summary:
+2025-07-08 14:14:05,066 - __main__ - INFO -   Total records: 3
+2025-07-08 14:14:05,066 - __main__ - INFO -   Imported: 3
+2025-07-08 14:14:05,066 - __main__ - INFO -   Skipped: 0
+2025-07-08 14:14:05,066 - __main__ - INFO -   Errors: 0

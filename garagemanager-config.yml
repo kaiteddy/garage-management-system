@@ -1,0 +1,14 @@
+# GarageManager Pro - ELI MOTORS LTD
+# MOT Management & Vehicle Service Platform
+tunnel: 
+credentials-file: /Users/adamrutstein/.cloudflared/garagemanager-pro.json
+
+ingress:
+  # Main application - GarageManager Pro Dashboard
+  - hostname: app.elimotors.co.uk
+    service: http://localhost:3001
+  # Catch-all for any unmatched requests
+  - service: http_status:404
+
+# Enable metrics for monitoring
+metrics: 0.0.0.0:2000

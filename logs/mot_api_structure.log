@@ -1,0 +1,705 @@
+[2025-07-11T10:09:17.945Z] Checking MOT API structure for registration: LN64XFG
+[2025-07-11T10:09:18.604Z] API Response Structure for LN64XFG:
+[2025-07-11T10:09:18.604Z] {
+  "registration": "LN64XFG",
+  "make": "VOLKSWAGEN",
+  "model": "GOLF",
+  "firstUsedDate": "2014-11-06",
+  "fuelType": "Petrol",
+  "primaryColour": "Black",
+  "registrationDate": "2014-11-06",
+  "manufactureDate": "2014-11-06",
+  "engineSize": "1395",
+  "hasOutstandingRecall": "Unknown",
+  "motTests": [
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "222877501459",
+      "completedDate": "2024-10-04T09:25:55.000Z",
+      "expiryDate": "2025-10-04",
+      "odometerValue": "51935",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": []
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "650643132705",
+      "completedDate": "2023-10-05T15:51:42.000Z",
+      "expiryDate": "2024-10-04",
+      "odometerValue": "46023",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": []
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "295290422696",
+      "completedDate": "2022-10-26T09:23:26.000Z",
+      "expiryDate": "2023-11-05",
+      "odometerValue": "41485",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Offside Rear Tyre slightly damaged/cracking or perishing (5.2.3 (d) (ii))",
+          "type": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "117734807459",
+      "completedDate": "2021-10-13T08:22:18.000Z",
+      "expiryDate": "2022-11-05",
+      "odometerValue": "36853",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Brake pad(s) wearing thin o/s/f & n/s/f (1.1.13 (a) (ii))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Offside Rear Tyre slightly damaged/cracking or perishing (5.2.3 (d) (ii))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Nearside Front Tyre has a cut but not deep enough to reach the ply or cords deep cuts (5.2.3 (d) (i))",
+          "type": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "247157341178",
+      "completedDate": "2020-10-21T12:05:51.000Z",
+      "expiryDate": "2021-11-05",
+      "odometerValue": "33254",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": []
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "104062884041",
+      "completedDate": "2019-10-29T16:00:09.000Z",
+      "expiryDate": "2020-11-05",
+      "odometerValue": "29629",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Offside Rear Tyre slightly damaged/cracking or perishing (5.2.3 (d) (ii))",
+          "type": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "157504710635",
+      "completedDate": "2018-10-24T16:04:24.000Z",
+      "expiryDate": "2019-11-05",
+      "odometerValue": "24962",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": []
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "791045554028",
+      "completedDate": "2017-11-01T16:08:31.000Z",
+      "expiryDate": "2018-11-05",
+      "odometerValue": "19559",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": []
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "951222896732",
+      "completedDate": "2017-10-31T16:00:53.000Z",
+      "expiryDate": null,
+      "odometerValue": "19559",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "FAILED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Offside Front Tyre has a cut in excess of the requirements deep enough to reach the ply or cords cut  in  tyre   tread (4.1.D.1a)",
+          "type": "FAIL"
+        }
+      ]
+    }
+  ]
+}
+[2025-07-11T10:09:19.714Z] Checking MOT API structure for registration: WF17VNJ
+[2025-07-11T10:09:20.110Z] Vehicle not found: WF17VNJ
+[2025-07-11T10:09:21.227Z] Checking MOT API structure for registration: FG12SYO
+[2025-07-11T10:09:21.851Z] API Response Structure for FG12SYO:
+[2025-07-11T10:09:21.851Z] {
+  "registration": "FG12SYO",
+  "make": "VAUXHALL",
+  "model": "CORSA",
+  "firstUsedDate": "2012-04-27",
+  "fuelType": "Petrol",
+  "primaryColour": "Black",
+  "registrationDate": "2012-04-27",
+  "manufactureDate": "2012-04-27",
+  "engineSize": "1229",
+  "hasOutstandingRecall": "Unknown",
+  "motTests": [
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "351777521563",
+      "completedDate": "2025-07-02T08:27:05.000Z",
+      "expiryDate": "2026-07-02",
+      "odometerValue": "99715",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Nearside Front Brake pad(s) wearing thin very worn about 2mm (1.1.13 (a) (ii))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Offside Front Brake pad(s) wearing thin (1.1.13 (a) (ii))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Front Brake disc worn, but not excessively o/s/f & n/s/f (1.1.14 (a) (i))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Rear Registration plate deteriorated but not likely to be misread (0.1 (b))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Nearside Front Headlamp lens slightly defective (4.1.1 (b) (i))",
+          "type": "MINOR"
+        },
+        {
+          "dangerous": false,
+          "text": "Oil leak, but not excessive (8.4.1 (a) (i))",
+          "type": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "764467713896",
+      "completedDate": "2025-07-01T15:11:40.000Z",
+      "expiryDate": null,
+      "odometerValue": "99701",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "FAILED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Offside Front Driver's door cannot be opened from inside the vehicle (6.2.3 (a))",
+          "type": "MAJOR"
+        },
+        {
+          "dangerous": false,
+          "text": "Nearside Front Tyre has a cut in excess of the requirements deep enough to reach the ply or cords (5.2.3 (d) (i))",
+          "type": "MAJOR"
+        },
+        {
+          "dangerous": false,
+          "text": "Nearside Front Brake pad(s) wearing thin very worn about 2mm (1.1.13 (a) (ii))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Offside Front Brake pad(s) wearing thin (1.1.13 (a) (ii))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Front Brake disc worn, but not excessively o/s/f & n/s/f (1.1.14 (a) (i))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Rear Registration plate deteriorated but not likely to be misread (0.1 (b))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Nearside Front Headlamp lens slightly defective (4.1.1 (b) (i))",
+          "type": "MINOR"
+        },
+        {
+          "dangerous": false,
+          "text": "Oil leak, but not excessive (8.4.1 (a) (i))",
+          "type": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "664909133119",
+      "completedDate": "2024-07-03T15:35:13.000Z",
+      "expiryDate": "2025-07-02",
+      "odometerValue": "97566",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Oil leak, but not excessive (8.4.1 (a) (i))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Front Brake disc worn, pitted or scored, but not seriously weakened (1.1.14 (a) (ii))",
+          "type": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "348429682899",
+      "completedDate": "2023-08-17T15:12:13.000Z",
+      "expiryDate": "2024-08-16",
+      "odometerValue": "94817",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Front Brake disc worn, pitted or scored, but not seriously weakened (1.1.14 (a) (ii))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Front Oil leak, but not excessive (8.4.1 (a) (i))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Front Coolant leak",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Nearside Rear Shock absorbers has light misting of oil (5.3.2 (b))",
+          "type": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "986155174239",
+      "completedDate": "2023-08-17T12:28:45.000Z",
+      "expiryDate": null,
+      "odometerValue": "94817",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "FAILED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Rear Registration plate lamp likely to become detached (4.7.1 (c) (ii))",
+          "type": "MAJOR"
+        },
+        {
+          "dangerous": false,
+          "text": "Nearside Rear Direction indicator incorrect colour (4.4.3 (a))",
+          "type": "MAJOR"
+        },
+        {
+          "dangerous": false,
+          "text": "Nearside Front Position lamp not working (4.2.1 (a) (ii))",
+          "type": "MAJOR"
+        },
+        {
+          "dangerous": false,
+          "text": "Front Brake disc worn, pitted or scored, but not seriously weakened (1.1.14 (a) (ii))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Front Oil leak, but not excessive (8.4.1 (a) (i))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Front Coolant leak",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Nearside Rear Shock absorbers has light misting of oil (5.3.2 (b))",
+          "type": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "104820597190",
+      "completedDate": "2022-02-07T15:44:07.000Z",
+      "expiryDate": "2023-02-06",
+      "odometerValue": "83582",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": []
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "722056810218",
+      "completedDate": "2020-10-20T12:05:30.000Z",
+      "expiryDate": "2021-11-03",
+      "odometerValue": "77647",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Coolant leak from water pump",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Front Tyre worn close to legal limit/worn on edge both side's (5.2.3 (e))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Front Brake disc worn, pitted or scored, but not seriously weakened both side's (1.1.14 (a) (ii))",
+          "type": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "438354899632",
+      "completedDate": "2020-10-20T12:05:29.000Z",
+      "expiryDate": null,
+      "odometerValue": "77647",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "FAILED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Coolant leak from water pump",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Headlamp not working on dipped beam both (4.1.1 (a) (ii))",
+          "type": "PRS"
+        },
+        {
+          "dangerous": false,
+          "text": "Front Tyre worn close to legal limit/worn on edge both side's (5.2.3 (e))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Front Brake disc worn, pitted or scored, but not seriously weakened both side's (1.1.14 (a) (ii))",
+          "type": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "699292577901",
+      "completedDate": "2019-05-04T13:46:27.000Z",
+      "expiryDate": "2020-11-03",
+      "odometerValue": "67612",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Tyre slightly damaged/cracking or perishing both rear plus nails on the tyres (5.2.3 (d) (ii))",
+          "type": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "465672859592",
+      "completedDate": "2019-05-04T10:53:14.000Z",
+      "expiryDate": null,
+      "odometerValue": "67612",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "FAILED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Nearside Stop lamp(s) not working (4.3.1 (a) (ii))",
+          "type": "MAJOR"
+        },
+        {
+          "dangerous": false,
+          "text": "Tyre slightly damaged/cracking or perishing both rear plus nails on the tyres (5.2.3 (d) (ii))",
+          "type": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "982337350200",
+      "completedDate": "2018-04-23T09:46:21.000Z",
+      "expiryDate": "2019-04-22",
+      "odometerValue": "50139",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Nearside Front Tyre worn close to the legal limit wearing on edges (4.1.E.1)",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Offside Front Tyre worn close to the legal limit wearing on edges (4.1.E.1)",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "both rear tires starting to perish",
+          "type": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "451163254245",
+      "completedDate": "2016-09-23T16:14:19.000Z",
+      "expiryDate": "2017-09-22",
+      "odometerValue": "31400",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": []
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "486952115155",
+      "completedDate": "2015-04-22T16:26:00.000Z",
+      "expiryDate": "2016-04-27",
+      "odometerValue": "20948",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": []
+    }
+  ]
+}
+[2025-07-11T10:09:23.262Z] Checking MOT API structure for registration: RF17XOP
+[2025-07-11T10:09:23.786Z] API Response Structure for RF17XOP:
+[2025-07-11T10:09:23.786Z] {
+  "registration": "RF17XOP",
+  "make": "DACIA",
+  "model": "SANDERO",
+  "firstUsedDate": "2017-07-14",
+  "fuelType": "Petrol",
+  "primaryColour": "White",
+  "registrationDate": "2017-07-14",
+  "manufactureDate": "2017-07-14",
+  "engineSize": "898",
+  "hasOutstandingRecall": "Unknown",
+  "motTests": [
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "177209823706",
+      "completedDate": "2025-05-23T11:08:54.000Z",
+      "expiryDate": "2026-05-27",
+      "odometerValue": "40557",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Nearside Front Tyre worn close to legal limit/worn on edge (5.2.3 (e))",
+          "type": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "352449931703",
+      "completedDate": "2024-05-10T11:00:54.000Z",
+      "expiryDate": "2025-05-27",
+      "odometerValue": "35820",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Nearside Rear Tyre slightly damaged/cracking or perishing (5.2.3 (d) (ii))",
+          "type": "ADVISORY"
+        },
+        {
+          "dangerous": false,
+          "text": "Offside Rear Tyre slightly damaged/cracking or perishing (5.2.3 (d) (ii))",
+          "type": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "967030926899",
+      "completedDate": "2023-05-12T14:19:26.000Z",
+      "expiryDate": "2024-05-27",
+      "odometerValue": "30485",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": []
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "885696744724",
+      "completedDate": "2023-05-12T09:54:27.000Z",
+      "expiryDate": null,
+      "odometerValue": "30485",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "FAILED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Nearside Headlamp aim projected beam image is obviously incorrect (4.1.2 (c))",
+          "type": "MAJOR"
+        },
+        {
+          "dangerous": false,
+          "text": "Offside Headlamp aim projected beam image is obviously incorrect (4.1.2 (c))",
+          "type": "MAJOR"
+        },
+        {
+          "dangerous": false,
+          "text": "Tyre pressure monitoring system malfunctioning or obviously inoperative (5.2.3 (h))",
+          "type": "MAJOR"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "808915824759",
+      "completedDate": "2022-05-27T10:15:05.000Z",
+      "expiryDate": "2023-05-27",
+      "odometerValue": "24692",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": []
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "994799575130",
+      "completedDate": "2021-05-28T14:07:02.000Z",
+      "expiryDate": "2022-05-27",
+      "odometerValue": "17221",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": []
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "367111839733",
+      "completedDate": "2020-06-30T09:33:13.000Z",
+      "expiryDate": "2021-07-13",
+      "odometerValue": "11758",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "PASSED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Rear Tyre slightly damaged/cracking or perishing (5.2.3 (d) (ii))",
+          "type": "ADVISORY"
+        }
+      ]
+    },
+    {
+      "registrationAtTimeOfTest": null,
+      "motTestNumber": "482145428606",
+      "completedDate": "2020-06-30T09:33:12.000Z",
+      "expiryDate": null,
+      "odometerValue": "11758",
+      "odometerUnit": "MI",
+      "odometerResultType": "READ",
+      "testResult": "FAILED",
+      "dataSource": "DVSA",
+      "defects": [
+        {
+          "dangerous": false,
+          "text": "Front Windscreen wiper does not clear the windscreen effectively  (3.4 (b) (ii))",
+          "type": "PRS"
+        },
+        {
+          "dangerous": false,
+          "text": "Rear Tyre slightly damaged/cracking or perishing (5.2.3 (d) (ii))",
+          "type": "ADVISORY"
+        }
+      ]
+    }
+  ]
+}
+[2025-07-11T10:09:24.788Z] API structure check completed

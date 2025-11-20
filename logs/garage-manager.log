@@ -1,0 +1,1720 @@
+
+> service-data-table@0.1.0 dev
+> next dev
+
+Environment variables in next.config.mjs: {
+  DATABASE_URL: '***',
+  NEXT_PUBLIC_APP_URL: 'http://localhost:3000',
+  NODE_ENV: 'development'
+}
+Exposing environment variables to the browser: [ 'NEXT_PUBLIC_APP_URL', 'NEXT_PUBLIC_DVSA_API_ENABLED' ]
+Environment variables in next.config.mjs: {
+  DATABASE_URL: '***',
+  NEXT_PUBLIC_APP_URL: 'http://localhost:3000',
+  NODE_ENV: 'development'
+}
+Exposing environment variables to the browser: [ 'NEXT_PUBLIC_APP_URL', 'NEXT_PUBLIC_DVSA_API_ENABLED' ]
+   ▲ Next.js 15.2.4
+   - Local:        http://localhost:3000
+   - Network:      http://127.0.2.2:3000
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 1506ms
+ ✓ Compiled /api/dashboard in 350ms (406 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 1912ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 82ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 378ms
+ ○ Compiling / ...
+ ✓ Compiled / in 760ms (1285 modules)
+ GET / 200 in 1095ms
+ ✓ Compiled /dashboard in 247ms (1308 modules)
+[Connector] Database is clean - returning empty connected data
+[Connector] Database is clean - returning empty connected data
+ GET /api/v2/data 200 in 253ms
+ GET /api/v2/data 200 in 276ms
+ GET /dashboard 200 in 271ms
+ ⚠ Cross origin request detected from garage-manager.eu.ngrok.io to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 355ms
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 386ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 389ms
+ ✓ Compiled /mot-critical in 299ms (1333 modules)
+ GET /mot-critical 200 in 354ms
+ ✓ Compiled /api/mot/critical-check in 251ms (1337 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[MOT-PROCESSING-STATUS] Checking processing status...
+[MOT-PROCESSING-STATUS] Checking processing status...
+[CRITICAL-MOT-CHECK] Starting critical MOT check with last visit data...
+[CRITICAL-MOT-CHECK] Starting critical MOT check with last visit data...
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 662ms
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 603ms
+[CRITICAL-MOT-CHECK] Found 500 vehicles with critical MOT status
+[CRITICAL-MOT-CHECK] Found 500 vehicles with critical MOT status
+ GET /api/mot/critical-check 200 in 1135ms
+ GET /api/mot/critical-check 200 in 964ms
+[MOT-PROCESSING-STATUS] Checking processing status...
+ ✓ Compiled /sms-config in 389ms (1354 modules)
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 511ms
+ GET /sms-config 200 in 433ms
+ ○ Compiling /api/sms/send-mot-reminders ...
+ ✓ Compiled /api/sms/send-mot-reminders in 542ms (2228 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[SMS-MOT-REMINDERS] DRY RUN - Sending MOT reminders via SMS
+[SMS-MOT-REMINDERS] Channel: sms, Cost per message: £0.04
+[SMS-MOT-REMINDERS] DRY RUN - Sending MOT reminders via SMS
+[SMS-MOT-REMINDERS] Channel: sms, Cost per message: £0.04
+[TWILIO] Error initializing SMS log table: Error [NeonDbError]: column "to_number" does not exist
+    at async initializeSMSLog (lib/twilio-service.ts:469:4)
+    at async POST (app/api/sms/send-mot-reminders/route.ts:13:4)
+  467 |     `
+  468 |
+> 469 |     await sql`
+      |    ^
+  470 |       CREATE INDEX IF NOT EXISTS idx_sms_log_to_number ON sms_log(to_number)
+  471 |     `
+  472 | {
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'indexcmds.c',
+  line: '1888',
+  routine: 'ComputeIndexAttrs',
+  sourceError: undefined
+}
+[TWILIO] Error initializing SMS log table: Error [NeonDbError]: column "to_number" does not exist
+    at async initializeSMSLog (lib/twilio-service.ts:469:4)
+    at async POST (app/api/sms/send-mot-reminders/route.ts:13:4)
+  467 |     `
+  468 |
+> 469 |     await sql`
+      |    ^
+  470 |       CREATE INDEX IF NOT EXISTS idx_sms_log_to_number ON sms_log(to_number)
+  471 |     `
+  472 | {
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'indexcmds.c',
+  line: '1888',
+  routine: 'ComputeIndexAttrs',
+  sourceError: undefined
+}
+[SMS-MOT-REMINDERS] Found 1 vehicles needing MOT reminders
+ POST /api/sms/send-mot-reminders 200 in 1238ms
+[SMS-MOT-REMINDERS] Found 1 vehicles needing MOT reminders
+ POST /api/sms/send-mot-reminders 200 in 1439ms
+[SMS-MOT-REMINDERS] DRY RUN - Sending MOT reminders via SMS
+[SMS-MOT-REMINDERS] Channel: sms, Cost per message: £0.04
+[TWILIO] Error initializing SMS log table: Error [NeonDbError]: column "to_number" does not exist
+    at async initializeSMSLog (lib/twilio-service.ts:469:4)
+    at async POST (app/api/sms/send-mot-reminders/route.ts:13:4)
+  467 |     `
+  468 |
+> 469 |     await sql`
+      |    ^
+  470 |       CREATE INDEX IF NOT EXISTS idx_sms_log_to_number ON sms_log(to_number)
+  471 |     `
+  472 | {
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'indexcmds.c',
+  line: '1888',
+  routine: 'ComputeIndexAttrs',
+  sourceError: undefined
+}
+[SMS-MOT-REMINDERS] Found 3 vehicles needing MOT reminders
+ POST /api/sms/send-mot-reminders 200 in 915ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 346ms
+ ✓ Compiled /api/sms/initialize-tables in 222ms (2186 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[SMS-INITIALIZE] Creating SMS tables...
+[TWILIO] Error initializing SMS log table: Error [NeonDbError]: column "to_number" does not exist
+    at async initializeSMSLog (lib/twilio-service.ts:469:4)
+    at async POST (app/api/sms/initialize-tables/route.ts:10:4)
+  467 |     `
+  468 |
+> 469 |     await sql`
+      |    ^
+  470 |       CREATE INDEX IF NOT EXISTS idx_sms_log_to_number ON sms_log(to_number)
+  471 |     `
+  472 | {
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'indexcmds.c',
+  line: '1888',
+  routine: 'ComputeIndexAttrs',
+  sourceError: undefined
+}
+ POST /api/sms/initialize-tables 200 in 1222ms
+ ✓ Compiled /sms-dashboard in 233ms (2196 modules)
+ GET /sms-dashboard 200 in 320ms
+ ✓ Compiled /api/sms/customer-responses in 143ms (2198 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+ GET /api/sms/customer-responses 200 in 577ms
+ GET /api/sms/customer-responses 200 in 572ms
+ GET /api/sms/customer-responses 200 in 365ms
+ GET /mot-critical 200 in 55ms
+ ✓ Compiled /api/mot/critical-check in 126ms (1614 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[MOT-PROCESSING-STATUS] Checking processing status...
+[CRITICAL-MOT-CHECK] Starting critical MOT check with last visit data...
+[MOT-PROCESSING-STATUS] Checking processing status...
+[CRITICAL-MOT-CHECK] Starting critical MOT check with last visit data...
+[CRITICAL-MOT-CHECK] Found 500 vehicles with critical MOT status
+ GET /api/mot/critical-check 200 in 216ms
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 492ms
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 531ms
+[CRITICAL-MOT-CHECK] Found 500 vehicles with critical MOT status
+ GET /api/mot/critical-check 200 in 535ms
+[SMS-MOT-REMINDERS] LIVE - Sending MOT reminders via SMS
+[SMS-MOT-REMINDERS] Channel: sms, Cost per message: £0.04
+[TWILIO] Error initializing SMS log table: Error [NeonDbError]: column "to_number" does not exist
+    at async initializeSMSLog (lib/twilio-service.ts:469:4)
+    at async POST (app/api/sms/send-mot-reminders/route.ts:13:4)
+  467 |     `
+  468 |
+> 469 |     await sql`
+      |    ^
+  470 |       CREATE INDEX IF NOT EXISTS idx_sms_log_to_number ON sms_log(to_number)
+  471 |     `
+  472 | {
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'indexcmds.c',
+  line: '1888',
+  routine: 'ComputeIndexAttrs',
+  sourceError: undefined
+}
+[SMS-MOT-REMINDERS] Found 4 vehicles needing MOT reminders
+[TWILIO] Sending SMS to +44
+[TWILIO] Error sending SMS: Error: Invalid 'To' Phone Number: XXX
+    at async TwilioService.sendSMS (lib/twilio-service.ts:82:28)
+    at async POST (app/api/sms/send-mot-reminders/route.ts:182:23)
+  80 |       console.log(`[TWILIO] Sending SMS to ${message.to}`)
+  81 |
+> 82 |       const twilioMessage = await twilioClient.messages.create({
+     |                            ^
+  83 |         body: message.body,
+  84 |         from: TWILIO_PHONE_NUMBER,
+  85 |         to: message.to {
+  status: 400,
+  code: 21211,
+  moreInfo: 'https://www.twilio.com/docs/errors/21211',
+  details: undefined
+}
+[SMS-MOT-REMINDERS] ❌ Error: Error [NeonDbError]: column "to_number" of relation "sms_log" does not exist
+    at async TwilioService.sendSMS (lib/twilio-service.ts:135:6)
+    at async POST (app/api/sms/send-mot-reminders/route.ts:182:23)
+  133 |
+  134 |       // Log failed attempt
+> 135 |       await sql`
+      |      ^
+  136 |         INSERT INTO sms_log (
+  137 |           customer_id,
+  138 |           to_number, {
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: '65',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_target.c',
+  line: '1065',
+  routine: 'checkInsertTargets',
+  sourceError: undefined
+}
+ POST /api/sms/send-mot-reminders 500 in 1498ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 380ms
+[MOT-PROCESSING-STATUS] Checking processing status...
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 131ms
+[MOT-PROCESSING-STATUS] Checking processing status...
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 490ms
+ ✓ Compiled / in 361ms (771 modules)
+ GET / 200 in 708ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 390ms
+[MOT-PROCESSING-STATUS] Checking processing status...
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 164ms
+[MOT-PROCESSING-STATUS] Checking processing status...
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 757ms
+[MOT-PROCESSING-STATUS] Checking processing status...
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 696ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 419ms
+[MOT-PROCESSING-STATUS] Checking processing status...
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 604ms
+ ✓ Compiled /_not-found in 356ms (1324 modules)
+ GET /api/sms/logs 404 in 618ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[MOT-PROCESSING-STATUS] Checking processing status...
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 577ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 376ms
+[MOT-PROCESSING-STATUS] Checking processing status...
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 557ms
+ ✓ Compiled /api/sms/send-mot-reminders in 255ms (1609 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[SMS-MOT-REMINDERS] DRY RUN - Sending MOT reminders via SMS
+[SMS-MOT-REMINDERS] Channel: sms, Cost per message: £0.04
+[TWILIO] Error initializing SMS log table: Error [NeonDbError]: column "to_number" does not exist
+    at async initializeSMSLog (lib/twilio-service.ts:469:4)
+    at async POST (app/api/sms/send-mot-reminders/route.ts:13:4)
+  467 |     `
+  468 |
+> 469 |     await sql`
+      |    ^
+  470 |       CREATE INDEX IF NOT EXISTS idx_sms_log_to_number ON sms_log(to_number)
+  471 |     `
+  472 | {
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'indexcmds.c',
+  line: '1888',
+  routine: 'ComputeIndexAttrs',
+  sourceError: undefined
+}
+[SMS-MOT-REMINDERS] Found 1 vehicles needing MOT reminders
+ POST /api/sms/send-mot-reminders 200 in 1220ms
+[MOT-PROCESSING-STATUS] Checking processing status...
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 870ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 434ms
+ ○ Compiling /sms ...
+ ✓ Compiled /sms in 527ms (2204 modules)
+ GET /sms 200 in 841ms
+ ✓ Compiled /api/sms/dashboard in 292ms (2206 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[SMS-DASHBOARD] 🔍 Generating SMS system dashboard
+[MOT-PROCESSING-STATUS] Checking processing status...
+[SMS-DASHBOARD] SMS campaigns table doesn't exist yet
+ GET /api/sms/dashboard 200 in 1001ms
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 320ms
+ ✓ Compiled /api/sms/campaigns/[urgency] in 225ms (2208 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+Error: Route "/api/sms/campaigns/[urgency]" used `params.urgency`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at GET (app/api/sms/campaigns/[urgency]/route.ts:9:27)
+   7 | ) {
+   8 |   try {
+>  9 |     const urgency = params.urgency
+     |                           ^
+  10 |     const { searchParams } = new URL(request.url)
+  11 |     const limit = parseInt(searchParams.get('limit') || '50')
+  12 |     const offset = parseInt(searchParams.get('offset') || '0')
+[SMS-CAMPAIGN-EXPIRED] 🔍 Getting campaign targets
+ GET /api/sms/campaigns/expired?limit=50 200 in 677ms
+ ✓ Compiled /api/sms/real-customers-check in 171ms (2210 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[REAL-CUSTOMERS-CHECK] 🔍 Checking real customer data for SMS campaigns
+Error: Route "/api/sms/campaigns/[urgency]" used `params.urgency`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at GET (app/api/sms/campaigns/[urgency]/route.ts:9:27)
+   7 | ) {
+   8 |   try {
+>  9 |     const urgency = params.urgency
+     |                           ^
+  10 |     const { searchParams } = new URL(request.url)
+  11 |     const limit = parseInt(searchParams.get('limit') || '50')
+  12 |     const offset = parseInt(searchParams.get('offset') || '0')
+[SMS-CAMPAIGN-CRITICAL] 🔍 Getting campaign targets
+ GET /api/sms/campaigns/critical?limit=50 200 in 25ms
+ GET /api/sms/real-customers-check 200 in 703ms
+[REAL-CUSTOMERS-CHECK] 🔍 Checking real customer data for SMS campaigns
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+ GET /api/sms/real-customers-check 200 in 281ms
+Error: Route "/api/sms/campaigns/[urgency]" used `params.urgency`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at GET (app/api/sms/campaigns/[urgency]/route.ts:9:27)
+   7 | ) {
+   8 |   try {
+>  9 |     const urgency = params.urgency
+     |                           ^
+  10 |     const { searchParams } = new URL(request.url)
+  11 |     const limit = parseInt(searchParams.get('limit') || '50')
+  12 |     const offset = parseInt(searchParams.get('offset') || '0')
+[SMS-CAMPAIGN-EXPIRED] 🔍 Getting campaign targets
+ GET /api/sms/campaigns/expired?limit=50 200 in 23ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[REAL-CUSTOMERS-CHECK] 🔍 Checking real customer data for SMS campaigns
+ GET /api/sms/real-customers-check 200 in 243ms
+ ✓ Compiled in 386ms (2208 modules)
+ GET /sms 200 in 287ms
+ GET /mot-critical 200 in 266ms
+ GET /sms 200 in 28ms
+ GET /mot-critical 200 in 28ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[MOT-PROCESSING-STATUS] Checking processing status...
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 546ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 353ms
+ ✓ Compiled /api/sms/send-mot-reminders in 207ms (1621 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[SMS-MOT-REMINDERS] LIVE - Sending MOT reminders via SMS
+[SMS-MOT-REMINDERS] Channel: sms, Cost per message: £0.04
+[TWILIO] Error initializing SMS log table: Error [NeonDbError]: column "to_number" does not exist
+    at async initializeSMSLog (lib/twilio-service.ts:469:4)
+    at async POST (app/api/sms/send-mot-reminders/route.ts:13:4)
+  467 |     `
+  468 |
+> 469 |     await sql`
+      |    ^
+  470 |       CREATE INDEX IF NOT EXISTS idx_sms_log_to_number ON sms_log(to_number)
+  471 |     `
+  472 | {
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'indexcmds.c',
+  line: '1888',
+  routine: 'ComputeIndexAttrs',
+  sourceError: undefined
+}
+[SMS-MOT-REMINDERS] Found 4 vehicles needing MOT reminders
+[TWILIO] Sending SMS to +44
+[TWILIO] Error sending SMS: Error: Invalid 'To' Phone Number: XXX
+    at async TwilioService.sendSMS (lib/twilio-service.ts:82:28)
+    at async POST (app/api/sms/send-mot-reminders/route.ts:182:23)
+  80 |       console.log(`[TWILIO] Sending SMS to ${message.to}`)
+  81 |
+> 82 |       const twilioMessage = await twilioClient.messages.create({
+     |                            ^
+  83 |         body: message.body,
+  84 |         from: TWILIO_PHONE_NUMBER,
+  85 |         to: message.to {
+  status: 400,
+  code: 21211,
+  moreInfo: 'https://www.twilio.com/docs/errors/21211',
+  details: undefined
+}
+[SMS-MOT-REMINDERS] ❌ Error: Error [NeonDbError]: column "to_number" of relation "sms_log" does not exist
+    at async TwilioService.sendSMS (lib/twilio-service.ts:135:6)
+    at async POST (app/api/sms/send-mot-reminders/route.ts:182:23)
+  133 |
+  134 |       // Log failed attempt
+> 135 |       await sql`
+      |      ^
+  136 |         INSERT INTO sms_log (
+  137 |           customer_id,
+  138 |           to_number, {
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: '65',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_target.c',
+  line: '1065',
+  routine: 'checkInsertTargets',
+  sourceError: undefined
+}
+ POST /api/sms/send-mot-reminders 500 in 1630ms
+ ✓ Compiled /api/sms/diagnose in 328ms (2212 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[SMS-DIAGNOSE] 🔍 Running comprehensive SMS diagnostics...
+ GET /mot-critical 200 in 300ms
+ ✓ Compiled /api/whatsapp/webhook in 191ms (2215 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[WHATSAPP-WEBHOOK] Webhook verification request: { hubMode: null, hubChallenge: null, hubVerifyToken: null }
+[WHATSAPP-WEBHOOK] Webhook verification failed
+ GET /api/whatsapp/webhook 403 in 249ms
+ GET /api/sms/diagnose 200 in 3147ms
+[MOT-PROCESSING-STATUS] Checking processing status...
+ ✓ Compiled /api/mot/critical-check in 246ms (1628 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[CRITICAL-MOT-CHECK] Starting critical MOT check with last visit data...
+[CRITICAL-MOT-CHECK] Found 500 vehicles with critical MOT status
+ GET /api/mot/critical-check 200 in 510ms
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 860ms
+[SMS-MOT-REMINDERS] LIVE - Sending MOT reminders via SMS
+[SMS-MOT-REMINDERS] Channel: sms, Cost per message: £0.04
+[TWILIO] Error initializing SMS log table: Error [NeonDbError]: column "to_number" does not exist
+    at async initializeSMSLog (lib/twilio-service.ts:469:4)
+    at async POST (app/api/sms/send-mot-reminders/route.ts:13:4)
+  467 |     `
+  468 |
+> 469 |     await sql`
+      |    ^
+  470 |       CREATE INDEX IF NOT EXISTS idx_sms_log_to_number ON sms_log(to_number)
+  471 |     `
+  472 | {
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'indexcmds.c',
+  line: '1888',
+  routine: 'ComputeIndexAttrs',
+  sourceError: undefined
+}
+[SMS-MOT-REMINDERS] Found 4 vehicles needing MOT reminders
+[TWILIO] Sending SMS to +44
+[TWILIO] Error sending SMS: Error: Invalid 'To' Phone Number: XXX
+    at async TwilioService.sendSMS (lib/twilio-service.ts:82:28)
+    at async POST (app/api/sms/send-mot-reminders/route.ts:182:23)
+  80 |       console.log(`[TWILIO] Sending SMS to ${message.to}`)
+  81 |
+> 82 |       const twilioMessage = await twilioClient.messages.create({
+     |                            ^
+  83 |         body: message.body,
+  84 |         from: TWILIO_PHONE_NUMBER,
+  85 |         to: message.to {
+  status: 400,
+  code: 21211,
+  moreInfo: 'https://www.twilio.com/docs/errors/21211',
+  details: undefined
+}
+[SMS-MOT-REMINDERS] ❌ Error: Error [NeonDbError]: column "to_number" of relation "sms_log" does not exist
+    at async TwilioService.sendSMS (lib/twilio-service.ts:135:6)
+    at async POST (app/api/sms/send-mot-reminders/route.ts:182:23)
+  133 |
+  134 |       // Log failed attempt
+> 135 |       await sql`
+      |      ^
+  136 |         INSERT INTO sms_log (
+  137 |           customer_id,
+  138 |           to_number, {
+  severity: 'ERROR',
+  code: '42703',
+  detail: undefined,
+  hint: undefined,
+  position: '65',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_target.c',
+  line: '1065',
+  routine: 'checkInsertTargets',
+  sourceError: undefined
+}
+ POST /api/sms/send-mot-reminders 500 in 1097ms
+[SMS-DIAGNOSE] 🔍 Running comprehensive SMS diagnostics...
+[WHATSAPP-WEBHOOK] Webhook verification request: { hubMode: null, hubChallenge: null, hubVerifyToken: null }
+[WHATSAPP-WEBHOOK] Webhook verification failed
+ GET /api/whatsapp/webhook 403 in 11ms
+ GET /api/sms/diagnose 200 in 2709ms
+ ✓ Compiled / in 395ms (1658 modules)
+ GET / 200 in 809ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 374ms
+ ✓ Compiled in 219ms (2247 modules)
+ ✓ Compiled in 224ms (2243 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 340ms
+ ✓ Compiled in 108ms (1328 modules)
+ ✓ Compiled /sms-debug in 315ms (1335 modules)
+ GET /sms-debug 200 in 615ms
+ ✓ Compiled /api/sms/diagnose in 193ms (1617 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[SMS-DIAGNOSE] 🔍 Running comprehensive SMS diagnostics...
+ ✓ Compiled /api/whatsapp/webhook in 122ms (1620 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[WHATSAPP-WEBHOOK] Webhook verification request: { hubMode: null, hubChallenge: null, hubVerifyToken: null }
+[WHATSAPP-WEBHOOK] Webhook verification failed
+ GET /api/whatsapp/webhook 403 in 189ms
+ GET /api/sms/diagnose 200 in 2095ms
+ ✓ Compiled /api/twilio/voice in 244ms (2205 modules)
+[TWILIO-VOICE] Incoming call to +447488896449
+[TWILIO-WEBHOOK] Signature validation: {
+  received: 'tJrd1+iWheOkGOHGlaLIERNukX4=',
+  computed: 'sha1=H/bNkNamvODEfcHQQjMNr5FAd+k=',
+  valid: false
+}
+[TWILIO-VOICE] Invalid webhook signature
+ POST /api/twilio/voice 403 in 271ms
+ ✓ Compiled /_not-found in 351ms (2209 modules)
+ POST /api/twilio/voice/status 404 in 582ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 383ms
+ ✓ Compiled in 367ms (1326 modules)
+ GET /sms-debug 200 in 48ms
+ GET /sms-debug 200 in 38ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 416ms
+ ✓ Compiled /api/twilio/fix-voice-webhook in 242ms (2199 modules)
+[FIX-VOICE-WEBHOOK] 🔧 Fixing voice webhook configuration...
+[FIX-VOICE-WEBHOOK] Updating webhooks for +447488896449
+[FIX-VOICE-WEBHOOK] Voice URL: https://garage-manager.eu.ngrok.io/api/twilio/voice
+[FIX-VOICE-WEBHOOK] SMS URL: https://garage-manager.eu.ngrok.io/api/sms/webhook
+ ✓ Compiled /api/twilio/voice in 98ms (1611 modules)
+ GET /api/twilio/voice 405 in 124ms
+ POST /api/twilio/fix-voice-webhook 200 in 2909ms
+ GET /sms-debug 200 in 30ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 339ms
+ GET /api/twilio/fix-voice-webhook 405 in 46ms
+ GET /api/twilio/fix-voice-webhook 405 in 8ms
+ ✓ Compiled in 467ms (2199 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 894ms (2248 modules)
+ GET / 200 in 1302ms
+ GET /voice-calls 200 in 1454ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 382ms
+ ✓ Compiled /api/twilio/test-voice in 319ms (1365 modules)
+ GET /api/twilio/test-voice 200 in 500ms
+ ✓ Compiled /api/twilio/voice in 135ms (773 modules)
+[TWILIO-VOICE] Incoming call to +447488896449
+[TWILIO-VOICE] Error handling voice call: TypeError: unusable
+    at POST (app/api/twilio/voice/route.ts:18:82)
+  16 |     // Validate webhook signature (but don't block in development)
+  17 |     const signature = request.headers.get('X-Twilio-Signature') || ''
+> 18 |     const { valid } = await TwilioWebhookValidator.validateWebhookRequest(request.clone())
+     |                                                                                  ^
+  19 |
+  20 |     if (!valid && process.env.NODE_ENV === 'production') {
+  21 |       console.error('[TWILIO-VOICE] Invalid webhook signature in production')
+ POST /api/twilio/voice 200 in 186ms
+[TWILIO-VOICE] Incoming call to +447488896449
+[TWILIO-VOICE] Error handling voice call: TypeError: unusable
+    at POST (app/api/twilio/voice/route.ts:18:82)
+  16 |     // Validate webhook signature (but don't block in development)
+  17 |     const signature = request.headers.get('X-Twilio-Signature') || ''
+> 18 |     const { valid } = await TwilioWebhookValidator.validateWebhookRequest(request.clone())
+     |                                                                                  ^
+  19 |
+  20 |     if (!valid && process.env.NODE_ENV === 'production') {
+  21 |       console.error('[TWILIO-VOICE] Invalid webhook signature in production')
+ POST /api/twilio/voice 200 in 28ms
+ ✓ Compiled /_not-found in 352ms (1373 modules)
+ POST /api/twilio/voice/status 404 in 762ms
+ POST /api/twilio/voice/status 404 in 714ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 384ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 392ms
+ ✓ Compiled in 256ms (680 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 418ms
+ ✓ Compiled in 183ms (1276 modules)
+ GET /voice-calls 200 in 75ms
+ GET /voice-calls 200 in 14ms
+ ✓ Compiled in 249ms (1276 modules)
+ GET /voice-calls 200 in 69ms
+ GET /voice-calls 200 in 12ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 388ms
+ ✓ Compiled in 397ms (1276 modules)
+ ✓ Compiled / in 316ms (767 modules)
+ GET / 200 in 694ms
+ ○ Compiling /api/twilio/fix-voice-webhook ...
+ ✓ Compiled /api/twilio/fix-voice-webhook in 769ms (1640 modules)
+ GET /api/twilio/fix-voice-webhook 405 in 919ms
+ GET /voice-calls 200 in 38ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 390ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 213ms
+ ✓ Compiled /api/twilio/voice in 205ms (684 modules)
+[TWILIO-VOICE] Incoming call to +447488896449
+[TWILIO-VOICE] Error handling voice call: TypeError: unusable
+    at POST (app/api/twilio/voice/route.ts:18:82)
+  16 |     // Validate webhook signature (but don't block in development)
+  17 |     const signature = request.headers.get('X-Twilio-Signature') || ''
+> 18 |     const { valid } = await TwilioWebhookValidator.validateWebhookRequest(request.clone())
+     |                                                                                  ^
+  19 |
+  20 |     if (!valid && process.env.NODE_ENV === 'production') {
+  21 |       console.error('[TWILIO-VOICE] Invalid webhook signature in production')
+ POST /api/twilio/voice 200 in 268ms
+ GET /voice-calls 200 in 59ms
+ ✓ Compiled /_not-found in 317ms (1284 modules)
+ POST /api/twilio/voice/status 404 in 606ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 411ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 332ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 327ms
+ ✓ Compiled in 322ms (1276 modules)
+ GET /voice-calls 200 in 69ms
+ GET /voice-calls 200 in 15ms
+ ✓ Compiled / in 79ms (767 modules)
+ GET / 200 in 430ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 401ms
+ ✓ Compiled in 124ms (1363 modules)
+ GET /voice-calls 200 in 43ms
+ GET /voice-calls 200 in 10ms
+ ✓ Compiled in 121ms (1363 modules)
+ GET /voice-calls 200 in 44ms
+ GET /voice-calls 200 in 11ms
+ ✓ Compiled in 150ms (1363 modules)
+ GET /voice-calls 200 in 42ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+ GET /voice-calls 200 in 12ms
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 444ms
+ ✓ Compiled in 131ms (1276 modules)
+ GET /voice-calls 200 in 53ms
+ GET /voice-calls 200 in 15ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 254ms
+ ○ Compiling /api/twilio/fix-voice-webhook ...
+ ✓ Compiled /api/twilio/fix-voice-webhook in 585ms (1553 modules)
+ GET /api/twilio/fix-voice-webhook 405 in 759ms
+ ✓ Compiled /verification-codes in 420ms (2162 modules)
+ GET /verification-codes 200 in 727ms
+ ✓ Compiled /api/verification-codes/list in 326ms (2164 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[VERIFICATION-CODES-LIST] Fetching verification recordings
+[VERIFICATION-CODES-LIST] Database table doesn't exist yet
+ GET /api/verification-codes/list 200 in 697ms
+ ✓ Compiled /api/twilio/voice in 204ms (1555 modules)
+[TWILIO-VOICE] Incoming call to +447488896449
+[TWILIO-VOICE] Error handling voice call: TypeError: unusable
+    at POST (app/api/twilio/voice/route.ts:18:82)
+  16 |     // Validate webhook signature (but don't block in development)
+  17 |     const signature = request.headers.get('X-Twilio-Signature') || ''
+> 18 |     const { valid } = await TwilioWebhookValidator.validateWebhookRequest(request.clone())
+     |                                                                                  ^
+  19 |
+  20 |     if (!valid && process.env.NODE_ENV === 'production') {
+  21 |       console.error('[TWILIO-VOICE] Invalid webhook signature in production')
+ POST /api/twilio/voice 200 in 260ms
+ ✓ Compiled /_not-found in 211ms (2160 modules)
+ POST /api/twilio/voice/status 404 in 511ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[VERIFICATION-CODES-LIST] Fetching verification recordings
+[VERIFICATION-CODES-LIST] Database table doesn't exist yet
+ GET /api/verification-codes/list 200 in 717ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 190ms
+[VERIFICATION-CODES-LIST] Fetching verification recordings
+[VERIFICATION-CODES-LIST] Database table doesn't exist yet
+ GET /api/verification-codes/list 200 in 717ms
+[VERIFICATION-CODES-LIST] Fetching verification recordings
+[VERIFICATION-CODES-LIST] Database table doesn't exist yet
+ GET /api/verification-codes/list 200 in 606ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 351ms
+[VERIFICATION-CODES-LIST] Fetching verification recordings
+[VERIFICATION-CODES-LIST] Database table doesn't exist yet
+ GET /api/verification-codes/list 200 in 123ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 147ms
+[VERIFICATION-CODES-LIST] Fetching verification recordings
+[VERIFICATION-CODES-LIST] Database table doesn't exist yet
+ GET /api/verification-codes/list 200 in 118ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 154ms
+[VERIFICATION-CODES-LIST] Fetching verification recordings
+[VERIFICATION-CODES-LIST] Database table doesn't exist yet
+ GET /api/verification-codes/list 200 in 113ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 153ms
+[VERIFICATION-CODES-LIST] Fetching verification recordings
+[VERIFICATION-CODES-LIST] Database table doesn't exist yet
+ GET /api/verification-codes/list 200 in 117ms
+ ✓ Compiled / in 478ms (769 modules)
+ GET / 200 in 785ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 161ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 126ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 149ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 175ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 189ms
+ GET / 200 in 171ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 154ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 146ms
+[VERIFICATION-CODES-LIST] Fetching verification recordings
+[VERIFICATION-CODES-LIST] Database table doesn't exist yet
+ GET /api/verification-codes/list 200 in 123ms
+[VERIFICATION-CODES-LIST] Fetching verification recordings
+[VERIFICATION-CODES-LIST] Database table doesn't exist yet
+ GET /api/verification-codes/list 200 in 111ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 129ms
+ GET /verification-codes 200 in 213ms
+[VERIFICATION-CODES-LIST] Fetching verification recordings
+[VERIFICATION-CODES-LIST] Database table doesn't exist yet
+ GET /api/verification-codes/list 200 in 114ms
+ GET / 200 in 10ms
+ ✓ Compiled /dashboard in 382ms (773 modules)
+ ✓ Compiled (782 modules)
+[Connector] Database is clean - returning empty connected data
+[Connector] Database is clean - returning empty connected data
+[Connector] Database is clean - returning empty connected data
+[Connector] Database is clean - returning empty connected data
+ GET /api/v2/data 200 in 568ms
+ GET /api/v2/data 200 in 553ms
+ GET /api/v2/data 200 in 429ms
+ GET /api/v2/data 200 in 672ms
+ GET /dashboard 200 in 469ms
+ GET /dashboard 200 in 466ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 150ms
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 135ms
+ ✓ Compiled /mot-check in 379ms (1400 modules)
+ GET /mot-check 200 in 417ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 531ms
+ ✓ Compiled /job-sheets in 315ms (1397 modules)
+ GET /job-sheets 200 in 405ms
+ ✓ Compiled /api/job-sheets in 151ms (1399 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[JOB-SHEETS-API] Fetching job sheets from documents table...
+[JOB-SHEETS-API] Fetching job sheets from documents table...
+[JOB-SHEETS-API] Found 0 job sheets
+ GET /api/job-sheets 200 in 318ms
+[JOB-SHEETS-API] Found 0 job sheets
+ GET /api/job-sheets 200 in 351ms
+ ✓ Compiled /jobs in 338ms (1409 modules)
+ GET /jobs 200 in 372ms
+ ✓ Compiled /api/jobs in 146ms (1411 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[JOBS-API] Fetching jobs from documents table...
+[JOBS-API] Fetching jobs from documents table...
+[JOBS-API] Found 0 jobs
+ GET /api/jobs 200 in 163ms
+[JOBS-API] Found 0 jobs
+ GET /api/jobs 200 in 194ms
+ GET /job-sheets 200 in 23ms
+[JOB-SHEETS-API] Fetching job sheets from documents table...
+[JOB-SHEETS-API] Fetching job sheets from documents table...
+[JOB-SHEETS-API] Found 0 job sheets
+ GET /api/job-sheets 200 in 117ms
+[JOB-SHEETS-API] Found 0 job sheets
+ GET /api/job-sheets 200 in 110ms
+ GET /mot-check 200 in 20ms
+ ○ Compiling /mot-critical ...
+ ✓ Compiled /mot-critical in 513ms (754 modules)
+ GET /mot-critical 200 in 558ms
+ ✓ Compiled /api/mot/critical-check in 97ms (756 modules)
+ ✓ Compiled (758 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[MOT-PROCESSING-STATUS] Checking processing status...
+[MOT-PROCESSING-STATUS] Checking processing status...
+[CRITICAL-MOT-CHECK] Starting critical MOT check with last visit data...
+[CRITICAL-MOT-CHECK] Starting critical MOT check with last visit data...
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 436ms
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 513ms
+[CRITICAL-MOT-CHECK] Found 500 vehicles with critical MOT status
+ GET /api/mot/critical-check 200 in 548ms
+[CRITICAL-MOT-CHECK] Found 500 vehicles with critical MOT status
+ GET /api/mot/critical-check 200 in 434ms
+ ✓ Compiled /vehicles/[registration] in 441ms (1395 modules)
+ GET /vehicles/LN55VSO 200 in 955ms
+ ✓ Compiled /api/vehicles/[registration] in 192ms (1388 modules)
+Found 0 MOT history records for LN55VSO
+Found 0 MOT history records for LN55VSO
+ GET /api/vehicles/LN55VSO 200 in 663ms
+ GET /api/vehicles/LN55VSO 200 in 708ms
+ ✓ Compiled /api/vehicles/[registration]/service-history in 140ms (1390 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+ GET /api/vehicles/LN55VSO/service-history 200 in 521ms
+ GET /api/vehicles/LN55VSO/service-history 200 in 560ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 145ms
+[CRITICAL-MOT-CHECK] Starting critical MOT check with last visit data...
+[MOT-PROCESSING-STATUS] Checking processing status...
+[MOT-PROCESSING-STATUS] Checking processing status...
+[CRITICAL-MOT-CHECK] Starting critical MOT check with last visit data...
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 185ms
+[CRITICAL-MOT-CHECK] Found 500 vehicles with critical MOT status
+ GET /api/mot/critical-check 200 in 186ms
+[CRITICAL-MOT-CHECK] Found 500 vehicles with critical MOT status
+ GET /api/mot/critical-check 200 in 224ms
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 293ms
+ GET /vehicles/HD07HYC 200 in 26ms
+Found 0 MOT history records for HD07HYC
+ GET /api/vehicles/HD07HYC 200 in 176ms
+Found 0 MOT history records for HD07HYC
+ GET /api/vehicles/HD07HYC 200 in 256ms
+ GET /api/vehicles/HD07HYC/service-history 200 in 170ms
+ GET /api/vehicles/HD07HYC/service-history 200 in 186ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+ ✓ Compiled / in 221ms (788 modules)
+ GET / 200 in 504ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[MOT-PROCESSING-STATUS] Checking processing status...
+[CRITICAL-MOT-CHECK] Starting critical MOT check with last visit data...
+[MOT-PROCESSING-STATUS] Checking processing status...
+[CRITICAL-MOT-CHECK] Starting critical MOT check with last visit data...
+[CRITICAL-MOT-CHECK] Found 500 vehicles with critical MOT status
+ GET /api/mot/critical-check 200 in 268ms
+[CRITICAL-MOT-CHECK] Found 500 vehicles with critical MOT status
+ GET /api/mot/critical-check 200 in 308ms
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 512ms
+[MOT-PROCESSING-STATUS] Processing: false, Critical: 514, Needs checking: 10393
+ GET /api/mot/processing-status 200 in 515ms
+ GET /jobs 200 in 23ms
+ ✓ Compiled /api/jobs in 114ms (788 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[JOBS-API] Fetching jobs from documents table...
+[JOBS-API] Fetching jobs from documents table...
+[JOBS-API] Found 0 jobs
+ GET /api/jobs 200 in 261ms
+[JOBS-API] Found 0 jobs
+ GET /api/jobs 200 in 284ms
+ ✓ Compiled /vehicles in 224ms (1416 modules)
+ GET /vehicles 200 in 298ms
+ ✓ Compiled /api/v2/data in 111ms (797 modules)
+[Connector] Database is clean - returning empty connected data
+[Connector] Database is clean - returning empty connected data
+ GET /api/v2/data 200 in 108ms
+ GET /api/v2/data 200 in 131ms
+ ✓ Compiled /customers in 382ms (1432 modules)
+ GET /customers 200 in 411ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 159ms
+ ✓ Compiled /api/customers in 181ms (1435 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+ GET /api/customers 200 in 743ms
+ GET /api/customers 200 in 1282ms
+ ✓ Compiled /customers/[id] in 357ms (1438 modules)
+ GET /customers/A66570C9A3B6F643962F9F886E0C6685 200 in 758ms
+ ✓ Compiled /api/customers/[id] in 478ms (1440 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+Error: Route "/api/customers/[id]" used `params.id`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at GET (app/api/customers/[id]/route.ts:6:30)
+  4 | export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+  5 |   try {
+> 6 |     const customerId = params.id
+    |                              ^
+  7 |     console.log(`[CUSTOMER-API] Fetching customer data for ID: ${customerId}`)
+  8 |
+  9 |     // Get customer from database
+[CUSTOMER-API] Fetching customer data for ID: A66570C9A3B6F643962F9F886E0C6685
+Error: Route "/api/customers/[id]" used `params.id`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at GET (app/api/customers/[id]/route.ts:6:30)
+  4 | export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+  5 |   try {
+> 6 |     const customerId = params.id
+    |                              ^
+  7 |     console.log(`[CUSTOMER-API] Fetching customer data for ID: ${customerId}`)
+  8 |
+  9 |     // Get customer from database
+[CUSTOMER-API] Fetching customer data for ID: A66570C9A3B6F643962F9F886E0C6685
+ GET /api/customers/A66570C9A3B6F643962F9F886E0C6685 200 in 910ms
+ GET /api/customers/A66570C9A3B6F643962F9F886E0C6685 200 in 986ms
+ GET /api/customers 200 in 399ms
+ GET /api/customers 200 in 1794ms
+ GET /customers/647007AC31DACE4B8D0EFCB76D4DD884 200 in 48ms
+Error: Route "/api/customers/[id]" used `params.id`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at GET (app/api/customers/[id]/route.ts:6:30)
+  4 | export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+  5 |   try {
+> 6 |     const customerId = params.id
+    |                              ^
+  7 |     console.log(`[CUSTOMER-API] Fetching customer data for ID: ${customerId}`)
+  8 |
+  9 |     // Get customer from database
+[CUSTOMER-API] Fetching customer data for ID: 647007AC31DACE4B8D0EFCB76D4DD884
+Error: Route "/api/customers/[id]" used `params.id`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at GET (app/api/customers/[id]/route.ts:6:30)
+  4 | export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+  5 |   try {
+> 6 |     const customerId = params.id
+    |                              ^
+  7 |     console.log(`[CUSTOMER-API] Fetching customer data for ID: ${customerId}`)
+  8 |
+  9 |     // Get customer from database
+[CUSTOMER-API] Fetching customer data for ID: 647007AC31DACE4B8D0EFCB76D4DD884
+ GET /api/customers/647007AC31DACE4B8D0EFCB76D4DD884 200 in 195ms
+ GET /api/customers/647007AC31DACE4B8D0EFCB76D4DD884 200 in 158ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+ GET /api/customers 200 in 1087ms
+ GET /api/customers 200 in 1383ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 183ms
+ GET /vehicles 200 in 27ms
+[Connector] Database is clean - returning empty connected data
+ GET /api/v2/data 200 in 9ms
+[Connector] Database is clean - returning empty connected data
+ GET /api/v2/data 200 in 6ms
+ GET /job-sheets 200 in 23ms
+ ✓ Compiled /api/job-sheets in 220ms (776 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[JOB-SHEETS-API] Fetching job sheets from documents table...
+[JOB-SHEETS-API] Fetching job sheets from documents table...
+[JOB-SHEETS-API] Found 0 job sheets
+ GET /api/job-sheets 200 in 246ms
+[JOB-SHEETS-API] Found 0 job sheets
+ GET /api/job-sheets 200 in 379ms
+ ✓ Compiled /mot-check in 178ms (787 modules)
+ GET /mot-check 200 in 258ms
+ ✓ Compiled /api/customers/by-vehicle in 318ms (1407 modules)
+[CUSTOMER-BY-VEHICLE] Looking up customer for registration: LN64 XFG
+[CUSTOMER-BY-VEHICLE] Checking database structure...
+[CUSTOMER-BY-VEHICLE] Found customer via documents: Martin Raphael
+ GET /api/customers/by-vehicle?registration=LN64%20XFG 200 in 626ms
+ ✓ Compiled /api/mot-check in 443ms (1541 modules)
+MOT Check API called
+GET Request URL: https://localhost:3000/api/mot-check?registration=LN64%20XFG
+Search params: { registration: 'LN64 XFG' }
+Processing MOT check for registration: LN64 XFG
+Fetching vehicle details...
+Fetching DVLA details for registration: LN64 XFG
+DVLA API Response Status: 200
+Successfully retrieved vehicle details
+Fetching MOT history...
+(node:37344) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[DVSA] Successfully authenticated
+Successfully retrieved MOT history
+ GET /api/mot-check?registration=LN64%20XFG 200 in 2092ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 168ms
+ ✓ Compiled / in 323ms (908 modules)
+ GET / 200 in 401ms
+ ✓ Compiled /dashboard in 163ms (912 modules)
+ ✓ Compiled (921 modules)
+[Connector] Database is clean - returning empty connected data
+[Connector] Database is clean - returning empty connected data
+[Connector] Database is clean - returning empty connected data
+[Connector] Database is clean - returning empty connected data
+ GET /api/v2/data 200 in 489ms
+ GET /api/v2/data 200 in 441ms
+ GET /api/v2/data 200 in 433ms
+ GET /api/v2/data 200 in 543ms
+ GET /dashboard 200 in 462ms
+ GET /dashboard 200 in 403ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 157ms
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 156ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 157ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 160ms
+ GET / 200 in 292ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 172ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 211ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 167ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 163ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 159ms
+ GET / 200 in 177ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 207ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 169ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 194ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 195ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 175ms
+ GET / 200 in 99ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 159ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 177ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 163ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 175ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 167ms
+ GET / 200 in 101ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 185ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 211ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 157ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 173ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 391ms
+ GET / 200 in 103ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 156ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 169ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 190ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 174ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 241ms
+ GET / 200 in 84ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 161ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 163ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 177ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 157ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 600ms
+ GET / 200 in 84ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 186ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 173ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 239ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 181ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 171ms
+ GET / 200 in 80ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 349ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 374ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 176ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 168ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 188ms
+ GET / 200 in 91ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 165ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 162ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 154ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 190ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 161ms
+ GET / 200 in 85ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 154ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 145ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 164ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 156ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 146ms
+ GET / 200 in 92ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 188ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 209ms
+ ✓ Compiled /verification-codes in 454ms (764 modules)
+ GET /verification-codes 200 in 719ms
+ ✓ Compiled /api/verification-codes/list in 99ms (766 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[VERIFICATION-CODES-LIST] Fetching verification recordings
+[VERIFICATION-CODES-LIST] Database table doesn't exist yet
+ GET /api/verification-codes/list 200 in 278ms
+ ✓ Compiled / in 87ms (773 modules)
+ GET / 200 in 128ms
+ ✓ Compiled /api/v2/data in 87ms (777 modules)
+ GET /dashboard 200 in 298ms
+[Connector] Database is clean - returning empty connected data
+[Connector] Database is clean - returning empty connected data
+[Connector] Database is clean - returning empty connected data
+[Connector] Database is clean - returning empty connected data
+ GET /api/v2/data 200 in 303ms
+ GET /api/v2/data 200 in 300ms
+ GET /api/v2/data 200 in 201ms
+ GET /api/v2/data 200 in 303ms
+ GET /dashboard 200 in 83ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 153ms
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 145ms
+ GET /mot-check 200 in 19ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 234ms
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 219ms
+ ✓ Compiled /customers in 265ms (785 modules)
+ GET /customers 200 in 303ms
+ ✓ Compiled /api/customers in 213ms (788 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+ GET /api/customers 200 in 2323ms
+ GET /api/customers 200 in 3735ms
+ ○ Compiling /customers/[id] ...
+ ✓ Compiled /customers/[id] in 638ms (792 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+ GET /customers/1FA093E387AEF549A5B64117154DA223 200 in 794ms
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 700ms
+ ✓ Compiled /api/customers/[id] in 258ms (794 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+Error: Route "/api/customers/[id]" used `params.id`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at GET (app/api/customers/[id]/route.ts:6:30)
+  4 | export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+  5 |   try {
+> 6 |     const customerId = params.id
+    |                              ^
+  7 |     console.log(`[CUSTOMER-API] Fetching customer data for ID: ${customerId}`)
+  8 |
+  9 |     // Get customer from database
+[CUSTOMER-API] Fetching customer data for ID: 1FA093E387AEF549A5B64117154DA223
+Error: Route "/api/customers/[id]" used `params.id`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at GET (app/api/customers/[id]/route.ts:6:30)
+  4 | export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+  5 |   try {
+> 6 |     const customerId = params.id
+    |                              ^
+  7 |     console.log(`[CUSTOMER-API] Fetching customer data for ID: ${customerId}`)
+  8 |
+  9 |     // Get customer from database
+[CUSTOMER-API] Fetching customer data for ID: 1FA093E387AEF549A5B64117154DA223
+ GET /api/customers/1FA093E387AEF549A5B64117154DA223 200 in 324ms
+ GET /api/customers/1FA093E387AEF549A5B64117154DA223 200 in 366ms
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+ GET /api/customers 200 in 2262ms
+ GET /api/customers 200 in 2844ms
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 233ms
+ ✓ Compiled in 399ms (733 modules)
+ ✓ Compiled in 403ms (1365 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+[DASHBOARD-API] Fetching live dashboard data...
+[DASHBOARD-API] Stats: 7021 customers, 10392 vehicles, 3865 critical MOTs
+ GET /api/dashboard 200 in 206ms
+ ✓ Compiled / in 144ms (776 modules)
+ GET / 200 in 445ms
+ ✓ Compiled in 190ms (1408 modules)
+ ✓ Compiled /api/customers in 193ms (779 modules)
+[NEON-CLIENT] Using database URL: postgres://neondb_owner:***@ep-snowy-truth-abtxy4yd-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require
+[NEON-CLIENT] Database client created successfully
+ GET /api/customers 200 in 2286ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 588ms (1415 modules)
+ GET /api/dashboard 404 in 1089ms
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/adamrutstein/v0dashboard-2/.next/server/app/customers/page.js'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/adamrutstein/v0dashboard-2/.next/server/app/customers/page.js',
+  page: '/customers'
+}
+ ○ Compiling /_error ...
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /customers 500 in 1167ms
+ ✓ Compiled /_error in 1146ms (1864 modules)
+ ✓ Compiled in 0ms (988 modules)
+ ✓ Compiled in 0ms (988 modules)
+ ✓ Compiled in 0ms (988 modules)
+Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://react.dev/link/invalid-hook-call for tips about how to debug and fix this problem.
+[TypeError: Cannot read properties of null (reading 'useReducer')]
+Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://react.dev/link/invalid-hook-call for tips about how to debug and fix this problem.
+[TypeError: Cannot read properties of null (reading 'useReducer')]
+ ⨯ [TypeError: Cannot read properties of null (reading 'useReducer')]
+ ⨯ [TypeError: Cannot read properties of null (reading 'useReducer')]
+[TypeError: Cannot read properties of null (reading 'useReducer')]
+ ⨯ unhandledRejection: [TypeError: Cannot read properties of null (reading 'useReducer')]
+ ⨯ unhandledRejection:  [TypeError: Cannot read properties of null (reading 'useReducer')]
+ GET /dashboard 200 in 1023ms
+ GET /customers 200 in 1253ms
+ GET /dashboard 200 in 250ms
+ GET /_next/static/css/app/layout.css?v=1753207390878 404 in 487ms
+ GET /_next/static/css/app/layout.css?v=1753207390670 404 in 415ms
+ GET /_next/static/chunks/app/layout.js 404 in 917ms
+ GET /_next/static/chunks/main-app.js?v=1753207390670 404 in 809ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 956ms
+ GET /_next/static/chunks/app/customers/page.js 404 in 826ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat '/Users/adamrutstein/v0dashboard-2/.next/server/app/api/customers/[id]/route.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/get-nonce' in /Users/adamrutstein/v0dashboard-2/.next/server for build dependencies doesn't lead to expected result '/Users/adamrutstein/v0dashboard-2/.next/server/vendor-chunks/get-nonce.js', but to 'Error: Can't resolve './vendor-chunks/get-nonce' in '/Users/adamrutstein/v0dashboard-2/.next/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/get-nonce (expected /Users/adamrutstein/v0dashboard-2/.next/server/vendor-chunks/get-nonce.js)
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/.next/server/webpack-runtime.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/.next/server/webpack-runtime.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/.next/server/app/dashboard/page.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/.next/server/app/dashboard/page.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/server/require.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/server/require.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/server/load-components.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/utils.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/entries.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/entries.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/webpack/utils.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/webpack/utils.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/webpack/loaders/next-flight-loader/index.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/webpack/loaders/next-flight-loader/index.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/webpack/sources.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/webpack/sources.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/Template.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/Template.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/config/defaults.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/config/defaults.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/util/serialization.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/util/serialization.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/util/makeSerializable.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/util/makeSerializable.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/WebpackError.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/WebpackError.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/EnvironmentPlugin.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/EnvironmentPlugin.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/index.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/index.js
+<w>  at resolve esm file webpack
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/next.config.mjs
+<w>  at file /Users/adamrutstein/v0dashboard-2/next.config.mjs
+<w>  at resolve commonjs /Users/adamrutstein/v0dashboard-2/next.config.mjs
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../../../../.next/server/app/api/customers/[id]/route' in /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/server for build dependencies doesn't lead to expected result '/Users/adamrutstein/v0dashboard-2/.next/server/app/api/customers/[id]/route.js', but to 'Error: Can't resolve '../../../../../../../.next/server/app/api/customers/[id]/route' in '/Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../../../../.next/server/app/api/customers/[id]/route (expected /Users/adamrutstein/v0dashboard-2/.next/server/app/api/customers/[id]/route.js)
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/server/require.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/server/require.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/server/load-components.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/utils.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/entries.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/entries.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/webpack/utils.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/webpack/utils.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/webpack/loaders/next-flight-loader/index.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/webpack/loaders/next-flight-loader/index.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/loader-runner/LoaderRunner.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/webpack/bundle5.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/webpack/webpack.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/webpack/sources.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/.pnpm/next@15.2.4_@opentelemetry+api@1.9.0_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/compiled/webpack/sources.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/Template.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/Template.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/config/defaults.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/config/defaults.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/util/serialization.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/util/serialization.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/util/makeSerializable.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/util/makeSerializable.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/WebpackError.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/WebpackError.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/EnvironmentPlugin.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/EnvironmentPlugin.js
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/index.js
+<w>  at file /Users/adamrutstein/v0dashboard-2/node_modules/webpack/lib/index.js
+<w>  at resolve esm file webpack
+<w>  at file dependencies /Users/adamrutstein/v0dashboard-2/next.config.mjs
+<w>  at file /Users/adamrutstein/v0dashboard-2/next.config.mjs
+<w>  at resolve commonjs /Users/adamrutstein/v0dashboard-2/next.config.mjs
+ GET /customers 200 in 184ms
+ GET /_next/static/chunks/app/customers/page.js 404 in 567ms
+ GET /_next/static/css/app/layout.css?v=1753207422248 404 in 420ms
+ GET /_next/static/chunks/app/layout.js 404 in 419ms
+ GET /_next/static/chunks/main-app.js?v=1753207422248 404 in 420ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 420ms
+ GET /customers 200 in 100ms
+ GET /_next/static/chunks/app/customers/page.js 404 in 288ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 288ms
+ GET /_next/static/chunks/app/layout.js 404 in 288ms
+ GET /_next/static/chunks/main-app.js?v=1753207433099 404 in 290ms
+ GET /_next/static/css/app/layout.css?v=1753207433099 404 in 75ms
+ GET /customers 200 in 89ms
+ GET /_next/static/css/app/layout.css?v=1753207435654 404 in 388ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 311ms
+ GET /_next/static/chunks/main-app.js?v=1753207435654 404 in 233ms
+ GET /_next/static/chunks/app/layout.js 404 in 234ms
+ GET /_next/static/chunks/app/customers/page.js 404 in 234ms
+ GET /customers 200 in 85ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 427ms
+ GET /_next/static/chunks/app/customers/page.js 404 in 330ms
+ GET /_next/static/chunks/main-app.js?v=1753207437272 404 in 336ms
+ GET /_next/static/chunks/app/layout.js 404 in 331ms
+ GET /_next/static/css/app/layout.css?v=1753207437272 404 in 84ms
+ GET / 200 in 138ms
+ GET /_next/static/chunks/main-app.js?v=1753207438878 404 in 413ms
+ GET /_next/static/css/app/layout.css?v=1753207438878 404 in 333ms
+ GET /_next/static/chunks/app/page.js 404 in 333ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 170ms
+ GET /_next/static/chunks/app/layout.js 404 in 169ms
+ ⨯ [Error: ENOENT: no such file or directory, open '/Users/adamrutstein/v0dashboard-2/.next/server/app/api/dashboard/route.js'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/adamrutstein/v0dashboard-2/.next/server/app/api/dashboard/route.js',
+  page: '/api/dashboard'
+}
+Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://react.dev/link/invalid-hook-call for tips about how to debug and fix this problem.
+[TypeError: Cannot read properties of null (reading 'useReducer')]
+Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://react.dev/link/invalid-hook-call for tips about how to debug and fix this problem.
+[TypeError: Cannot read properties of null (reading 'useReducer')]
+ ⨯ [TypeError: Cannot read properties of null (reading 'useReducer')]
+ ⨯ [TypeError: Cannot read properties of null (reading 'useReducer')]
+[TypeError: Cannot read properties of null (reading 'useReducer')]
+ ⨯ unhandledRejection: [TypeError: Cannot read properties of null (reading 'useReducer')]
+ ⨯ unhandledRejection:  [TypeError: Cannot read properties of null (reading 'useReducer')]
+ GET /api/dashboard 500 in 265ms
+ GET /api/dashboard 404 in 16ms
+ ⚠ Found a change in next.config.mjs. Restarting the server to apply the changes...
+Environment variables in next.config.mjs: {
+  DATABASE_URL: '***',
+  NEXT_PUBLIC_APP_URL: 'http://localhost:3000',
+  NODE_ENV: 'development'
+}
+Exposing environment variables to the browser: [ 'NEXT_PUBLIC_APP_URL', 'NEXT_PUBLIC_DVSA_API_ENABLED' ]
+   ▲ Next.js 15.2.4
+   - Local:        http://localhost:3000
+   - Network:      http://127.0.2.2:3000
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 2.1s
