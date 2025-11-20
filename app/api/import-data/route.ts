@@ -678,9 +678,10 @@ async function processDocuments(data: any[]) {
           }
         }
       }
+    }
 
-      return { batchInserts: batchInserts.length, batchProcessed: batch.length }
-    })
+    return { batchInserts: batchInserts.length, batchProcessed: batch.length }
+  })
 
     // Wait for all parallel batches to complete
     const batchResults = await Promise.all(batchPromises)
